@@ -1,5 +1,4 @@
 package Players;
-
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
