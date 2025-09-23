@@ -8,16 +8,16 @@ import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
 import java.awt.*;
 
-// This class is for the credits screen
-public class CreditsScreen extends Screen {
+// This class is for the Controls screen
+public class ControlsScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;
     protected Map background;
     protected KeyLocker keyLocker = new KeyLocker();
-    protected SpriteFont creditsLabel;
-    protected SpriteFont createdByLabel1, createdByLabel2, managedByLabel;
+    protected SpriteFont ControlsLabel;
+    protected SpriteFont MoveLabel, InteractLabel;
     protected SpriteFont returnInstructionsLabel;
 
-    public CreditsScreen(ScreenCoordinator screenCoordinator) {
+    public ControlsScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 
@@ -26,10 +26,9 @@ public class CreditsScreen extends Screen {
         // setup graphics on screen (background map, spritefont text)
         background = new TitleScreenMap();
         background.setAdjustCamera(false);
-        creditsLabel = new SpriteFont("Credits", 15, 7, "Times New Roman", 30, Color.white);
-        createdByLabel1 = new SpriteFont("Created by: Alex Thimineur, Ben Bailor, Jackson Sennhenn", 130, 91, "Times New Roman", 20, Color.white);
-        createdByLabel2 = new SpriteFont("Dean Acheampong, Aur\u00e9lien, and Mitchell Ryan Davis.", 130, 111, "Times New Roman", 20, Color.white);
-        managedByLabel = new SpriteFont("Managed by Isabela Ayers", 130, 141, "Times New Roman", 20, Color.white);
+        ControlsLabel = new SpriteFont("Controls", 15, 7, "Times New Roman", 30, Color.white);
+        MoveLabel = new SpriteFont("To move, use the arrow keys.", 150, 191, "Times New Roman", 20, Color.white);
+        InteractLabel = new SpriteFont("To interact with characters and objects, or to skip text, use the space bar.", 150, 221, "Times New Roman", 20, Color.white);
         returnInstructionsLabel = new SpriteFont("Press Space to return to the menu", 20, 532, "Times New Roman", 30, Color.white);
         keyLocker.lockKey(Key.SPACE);
     }
@@ -49,10 +48,9 @@ public class CreditsScreen extends Screen {
 
     public void draw(GraphicsHandler graphicsHandler) {
         background.draw(graphicsHandler);
-        creditsLabel.draw(graphicsHandler);
-        createdByLabel1.draw(graphicsHandler);
-        createdByLabel2.draw(graphicsHandler);
-        managedByLabel.draw(graphicsHandler);
+        ControlsLabel.draw(graphicsHandler);
+        MoveLabel.draw(graphicsHandler);
+        InteractLabel.draw(graphicsHandler);
         returnInstructionsLabel.draw(graphicsHandler);
     }
 }
