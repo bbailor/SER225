@@ -1,5 +1,6 @@
 package Screens;
 
+import Engine.GlobalKeyboardHandler;
 import Engine.GraphicsHandler;
 import Engine.Screen;
 import Game.GameState;
@@ -23,6 +24,9 @@ public class PlayLevelScreen extends Screen implements GameListener {
     }
 
     public void initialize() {
+        if (playLevelScreenState == PlayLevelScreenState.RUNNING) {
+            return;
+        }
         // setup state
         flagManager = new FlagManager();
         flagManager.addFlag("hasLostBall", false);
@@ -69,6 +73,7 @@ public class PlayLevelScreen extends Screen implements GameListener {
                 winScreen.update();
                 break;
         }
+        GlobalKeyboardHandler.runHandlers(this.screenCoordinator);
     }
 
     @Override
