@@ -15,7 +15,7 @@ public class Gnome extends Player {
 
 
     public Gnome(float x, float y) {
-        super(new SpriteSheet(ImageLoader.load("Gnome.png"), 31, 63), x, y, "STAND_RIGHT");
+        super(new SpriteSheet(ImageLoader.load("gnome.png"), 31, 63), x, y, "STAND_RIGHT");
         walkSpeed = 2.3f;
     }
 
