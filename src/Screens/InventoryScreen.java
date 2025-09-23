@@ -79,7 +79,7 @@ public class InventoryScreen extends Screen {
         if (openPressCD != 0) {
             openPressCD--;
         }
-        if (Keyboard.isKeyDown(Key.ESC) || Keyboard.isKeyDown(Key.E)) {
+        if ((Keyboard.isKeyDown(Key.ESC) || Keyboard.isKeyDown(Key.E)) && openPressCD <= 0) {
             this.screenCoordinator.setGameState(GameState.LEVEL);
             isOpen = false;
         }
