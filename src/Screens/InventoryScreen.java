@@ -76,6 +76,9 @@ public class InventoryScreen extends Screen {
             --this.pressCD;
             return;
         }
+        if (openPressCD != 0) {
+            openPressCD--;
+        }
         if (Keyboard.isKeyDown(Key.ESC) || Keyboard.isKeyDown(Key.E)) {
             this.screenCoordinator.setGameState(GameState.LEVEL);
             isOpen = false;
@@ -137,11 +140,13 @@ public class InventoryScreen extends Screen {
     }
 
     static boolean isOpen = false;
+    static int openPressCD = 0;
     static {
         GlobalKeyboardHandler.addListener("inventory", s -> {
-            if (Keyboard.isKeyDown(Key.E) && !isOpen) {
+            if (Keyboard.isKeyDown(Key.E) && !isOpen && openPressCD <= 0) {
                 isOpen = true;
-                s.setGameState(GameState.DEBUG);
+                s.setGameState(GameState.INVENTORY);
+                openPressCD = 12;
             }
         });
     }
