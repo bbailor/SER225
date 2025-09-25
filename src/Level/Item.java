@@ -1,8 +1,5 @@
 package Level;
 
-import static java.util.Map.entry;
-
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 import GameObject.Frame;
@@ -60,10 +57,12 @@ public class Item {
 
     public static class ItemList {
         public static Item test_item = new Item("Test Item", "A test item", 5) {
+            @Override
             public boolean canUse(ItemStack stack) {
                 return true;
             }
 
+            @Override
             public void use(ItemStack stack) {
                 System.out.println("Hello, World!");
                 stack.removeItem();

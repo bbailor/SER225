@@ -5,7 +5,6 @@ import java.util.Map;
 
 import Game.ScreenCoordinator;
 
-// TODO
 public abstract class GlobalKeyboardHandler {
     
     // Could maybe switch to <name, handler> to use these names better (will also remove the option of using multiple handlers for the same key without more changes)

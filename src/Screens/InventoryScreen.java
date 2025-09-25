@@ -3,8 +3,6 @@ package Screens;
 import java.awt.Color;
 import java.util.Arrays;
 
-import javax.xml.crypto.dsig.keyinfo.KeyValue;
-
 import Engine.Config;
 import Engine.GlobalKeyboardHandler;
 import Engine.GraphicsHandler;
@@ -76,12 +74,13 @@ public class InventoryScreen extends Screen {
             --this.pressCD;
             return;
         }
-        if (openPressCD != 0) {
+        if (openPressCD > 0) {
             openPressCD--;
         }
         if ((Keyboard.isKeyDown(Key.ESC) || Keyboard.isKeyDown(Key.E)) && openPressCD <= 0) {
             this.screenCoordinator.setGameState(GameState.LEVEL);
             isOpen = false;
+            openPressCD = 12;
         }
         if (Keyboard.isKeyDown(Key.ENTER) || Keyboard.isKeyDown(Key.SPACE)) {
             this.pressCD = PRESS_CD;
@@ -107,19 +106,19 @@ public class InventoryScreen extends Screen {
         if (Keyboard.isKeyDown(Key.DOWN) || Keyboard.isKeyDown(Key.S)) {
             this.hoveredID = this.hoveredID + this.length >= this.inventorySize ? (this.length * (this.hoveredID%this.length))/3 : this.hoveredID + this.length;
         }
-        if (Keyboard.isKeyDown(Key.R)) {
+        if (Keyboard.isKeyDown(Key.R) && this.slots[this.hoveredID].hasItem()) {
             this.pressCD = PRESS_CD;
             this.slots[this.hoveredID].getStack().removeItem();
             if (this.slots[this.hoveredID].getStack().getCount() == 0) {
                 this.slots[this.hoveredID].setStack(null);
             }
         }
-        if (Keyboard.isKeyDown(Key.BACKSPACE)) {
+        if (Keyboard.isKeyDown(Key.BACKSPACE) && this.slots[this.hoveredID].hasItem()) {
             this.pressCD = PRESS_CD;
             this.slots[this.hoveredID].setStack(null);
         }
 
-        if (Keyboard.isKeyDown(Key.U)) {
+        if (Keyboard.isKeyDown(Key.U) && this.slots[this.hoveredID].hasItem()) {
             this.pressCD = PRESS_CD;
             this.slots[this.hoveredID].getStack().use();
             if (this.slots[this.hoveredID].getStack().getCount() == 0) {
@@ -143,10 +142,16 @@ public class InventoryScreen extends Screen {
     static int openPressCD = 0;
     static {
         GlobalKeyboardHandler.addListener("inventory", s -> {
-            if (Keyboard.isKeyDown(Key.E) && !isOpen && openPressCD <= 0) {
-                isOpen = true;
-                s.setGameState(GameState.INVENTORY);
-                openPressCD = 12;
+            if (Keyboard.isKeyDown(Key.E) && !isOpen) {
+                if (openPressCD <= 0) {
+                    isOpen = true;
+                    s.setGameState(GameState.INVENTORY);
+                    openPressCD = 12;
+                    return;
+                }
+            }
+            if (openPressCD > 0) {
+                openPressCD--;
             }
         });
     }

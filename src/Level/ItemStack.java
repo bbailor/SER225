@@ -1,7 +1,5 @@
 package Level;
 
-import java.awt.image.BufferedImage;
-
 public class ItemStack {
     
     protected Item item;

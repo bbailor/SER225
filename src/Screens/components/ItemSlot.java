@@ -26,6 +26,10 @@ public class ItemSlot extends Slot {
         return this.stack;
     }
 
+    public boolean hasItem() {
+        return this.stack != null;
+    }
+
     @Override
     public void draw(GraphicsHandler handler, int x, int y) {
         super.draw(handler, x, y);
