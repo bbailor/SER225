@@ -27,9 +27,9 @@ public class CreditsScreen extends Screen {
         background = new TitleScreenMap();
         background.setAdjustCamera(false);
         creditsLabel = new SpriteFont("Credits", 15, 7, "Times New Roman", 30, Color.white);
-        createdByLabel1 = new SpriteFont("Created by: Alex Thimineur, Ben Bailor, Jackson Sennhenn", 130, 91, "Times New Roman", 20, Color.white);
-        createdByLabel2 = new SpriteFont("Dean Acheampong, Aur\u00e9lien, and Mitchell Ryan Davis.", 130, 111, "Times New Roman", 20, Color.white);
-        managedByLabel = new SpriteFont("Managed by Isabela Ayers", 130, 141, "Times New Roman", 20, Color.white);
+        createdByLabel1 = new SpriteFont("Created by: Alex Thimineur, Ben Bailor, Jackson Sennhenn", 145, 185, "Times New Roman", 20, Color.white);
+        createdByLabel2 = new SpriteFont("Dean Acheampong, Aur\u00e9lien, and Mitchell Ryan Davis.", 145, 220, "Times New Roman", 20, Color.white);
+        managedByLabel = new SpriteFont("Managed by Isabela Ayers", 145, 255, "Times New Roman", 20, Color.white);
         returnInstructionsLabel = new SpriteFont("Press Space to return to the menu", 20, 532, "Times New Roman", 30, Color.white);
         keyLocker.lockKey(Key.SPACE);
     }
