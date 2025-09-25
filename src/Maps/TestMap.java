@@ -5,6 +5,7 @@ import Level.*;
 import NPCs.Bug;
 import NPCs.Dinosaur;
 import NPCs.Walrus;
+import NPCs.Wizard; //imported wizard
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.*;
 import Tilesets.CommonTileset;
@@ -45,7 +46,13 @@ public class TestMap extends Map {
         Bug bug = new Bug(3, getMapTile(7, 12).getLocation().subtractX(20));
         bug.setInteractScript(new BugScript());
         npcs.add(bug);
+        
+        Wizard wizard = new Wizard(4, getMapTile(10, 15).getLocation());
+        wizard.setInteractScript(new WizardScript());
+        npcs.add(wizard);
 
+//added wizard
+        
         return npcs;
     }
 

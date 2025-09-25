@@ -101,4 +101,6 @@ public class MapEntity extends GameObject {
     public void setIsUncollidable(boolean isUncollidable) {
         this.isUncollidable = isUncollidable;
     }
+
+    
 }
