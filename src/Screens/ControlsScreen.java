@@ -16,6 +16,7 @@ public class ControlsScreen extends Screen {
     protected SpriteFont ControlsLabel;
     protected SpriteFont MoveLabel, InteractLabel;
     protected SpriteFont returnInstructionsLabel;
+    protected SpriteFont inventoryLabel, inventoryLabel2, inventoryLabel3;
 
     public ControlsScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -30,7 +31,11 @@ public class ControlsScreen extends Screen {
         MoveLabel = new SpriteFont("To move, use the arrow keys.", 150, 191, "Times New Roman", 20, Color.white);
         InteractLabel = new SpriteFont("To interact with characters and objects, or to skip text, use the space bar.", 150, 221, "Times New Roman", 20, Color.white);
         returnInstructionsLabel = new SpriteFont("Press Space to return to the menu", 20, 532, "Times New Roman", 30, Color.white);
-        keyLocker.lockKey(Key.SPACE);
+        inventoryLabel = new SpriteFont("Press \"E\" to open your inventory", 150, 251, "Times New Roman", 20, Color.white);
+        inventoryLabel2 = new SpriteFont("To interact with items in the inventory, press \"SPACE\"", 150, 281, "Times New Roman", 20, Color.white);
+        inventoryLabel3 = new SpriteFont("Use \"ESC\" to close your inventory", 150, 311, "Times New Roman", 20, Color.white);
+
+    keyLocker.lockKey(Key.SPACE);
     }
  
     public void update() {
@@ -51,6 +56,9 @@ public class ControlsScreen extends Screen {
         ControlsLabel.draw(graphicsHandler);
         MoveLabel.draw(graphicsHandler);
         InteractLabel.draw(graphicsHandler);
+        inventoryLabel.draw(graphicsHandler);
+        inventoryLabel2.draw(graphicsHandler);
+        inventoryLabel3.draw(graphicsHandler);
         returnInstructionsLabel.draw(graphicsHandler);
     }
 }
