@@ -27,7 +27,7 @@ public class WizardScript extends Script {
                     addText("Osiris: But Gnomeo, Juliet is-");
                     addText("Gnomeo: I must save her, she is my world!\nI cannot lose her!");
                     addText("Osiris: *sighs* If you are going.. then at least\ntake your mother’s Knife of Life.");
-                    addText("(Hint: Use [E] to add items to your inventory)");
+                    addText("(Hint: Use [E] to open your inventory)");
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToWizard", true));
             }});
