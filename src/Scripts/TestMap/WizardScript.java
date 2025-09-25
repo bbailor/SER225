@@ -1,9 +1,8 @@
 package Scripts.TestMap;
 
-import java.util.ArrayList;
-
 import Level.Script;
 import ScriptActions.*;
+import java.util.ArrayList;
 
 // script for interacting with the Wizard NPC
 public class WizardScript extends Script {
@@ -23,16 +22,19 @@ public class WizardScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToWizard", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Greetings, traveler!");
-                    addText("I sense great potential in you.");
-                    addText("Use it wisely on your journey.");
+                    addText("Osiris: Where are you rushing off to?" );
+                    addText("Gnomeo: To save Juliet!! She has been\ncaptured by evil forces!");
+                    addText("Osiris: But Gnomeo, Juliet is-");
+                    addText("Gnomeo: I must save her, she is my world!\nI cannot lose her!");
+                    addText("Osiris: *sighs* If you are going.. then at least\ntake your mother’s Knife of Life.");
+                    addText("(Hint: Use [E] to add items to your inventory)");
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToWizard", true));
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToWizard", true));
-                addScriptAction(new TextboxScriptAction("We meet again. Keep honing your skills!"));
+                addScriptAction(new TextboxScriptAction("Osiris: This is a journey you must take alone..\nFarewell, Gnomeo."));
             }});
         }});
 

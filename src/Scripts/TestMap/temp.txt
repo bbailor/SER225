@@ -1,0 +1,13 @@
+addText("Osiris: Where are you rushing off to?" );
+                    addText("Gnomeo: To save Juliet!! She has been\ncaptured by evil forces!");
+                    addText("Osiris: But Gnomeo, Juliet is-");
+                    addText("Gnomeo: I must save her, she is my world!\nI cannot lose her!");
+                    addText("Osiris: *sighs* If you are going.. then at least\ntake your mother’s Knife of Life.");
+                    addText("(Hint: Use [E] to add items to your inventory)");
+                }});
+                addScriptAction(new ChangeFlagScriptAction("hasTalkedToWalrus", true));
+            }});
+
+            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                addRequirement(new FlagRequirement("hasTalkedToWalrus", true));
+                addScriptAction(new TextboxScriptAction("Osiris: This is a journey you must take alone.. Farewell, Gnomeo."));
