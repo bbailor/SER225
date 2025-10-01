@@ -2,6 +2,9 @@ package Screens;
 
 import Engine.GlobalKeyboardHandler;
 import Engine.GraphicsHandler;
+import Engine.Inventory;
+import Engine.Key;
+import Engine.Keyboard;
 import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
@@ -9,15 +12,19 @@ import Level.*;
 import Maps.TestMap;
 import Players.Gnome;
 import Utils.Direction;
+import Utils.MenuListener;
 
 // This class is for when the RPG game is actually being played
-public class PlayLevelScreen extends Screen implements GameListener {
+public class PlayLevelScreen extends Screen implements GameListener, MenuListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
     protected Player player;
+    protected Inventory inventory;
     protected PlayLevelScreenState playLevelScreenState;
     protected WinScreen winScreen;
+    protected InventoryScreen inventoryScreen;
     protected FlagManager flagManager;
+    protected int menuClosecD = 0;
 
     public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -27,6 +34,7 @@ public class PlayLevelScreen extends Screen implements GameListener {
         if (playLevelScreenState == PlayLevelScreenState.RUNNING) {
             return;
         }
+        this.inventory = new Inventory(9);
         // setup state
         flagManager = new FlagManager();
         flagManager.addFlag("hasLostBall", false);
@@ -59,6 +67,9 @@ public class PlayLevelScreen extends Screen implements GameListener {
         map.preloadScripts();
 
         winScreen = new WinScreen(this);
+        this.inventoryScreen = new InventoryScreen(this.inventory);
+        this.inventory.setStack(4, new ItemStack(Item.ItemList.test_item, 3));
+        this.inventoryScreen.addistener("play_level_screen", this);
     }
 
     public void update() {
@@ -73,8 +84,17 @@ public class PlayLevelScreen extends Screen implements GameListener {
             case LEVEL_COMPLETED:
                 winScreen.update();
                 break;
+            case INVENTORY:
+                this.inventoryScreen.update();
+                break;
         }
         GlobalKeyboardHandler.runHandlers(this.screenCoordinator);
+        if (Keyboard.isKeyDown(Key.E) && menuClosecD <= 0) {
+            this.inventoryScreen.initialize();
+            this.inventoryScreen.open();
+            this.playLevelScreenState = PlayLevelScreenState.INVENTORY;
+        }
+        --menuClosecD;
     }
 
     @Override
@@ -92,6 +112,9 @@ public class PlayLevelScreen extends Screen implements GameListener {
             case LEVEL_COMPLETED:
                 winScreen.draw(graphicsHandler);
                 break;
+            case INVENTORY:
+                this.map.draw(this.player, graphicsHandler);
+                this.inventoryScreen.draw(graphicsHandler);
         }
     }
 
@@ -109,6 +132,12 @@ public class PlayLevelScreen extends Screen implements GameListener {
 
     // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {
-        RUNNING, LEVEL_COMPLETED
+        RUNNING, LEVEL_COMPLETED, INVENTORY
+    }
+
+    @Override
+    public void onClose() {
+        this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+        menuClosecD = 12;
     }
 }

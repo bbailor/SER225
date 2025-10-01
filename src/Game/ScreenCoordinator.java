@@ -34,7 +34,7 @@ public class ScreenCoordinator extends Screen {
 	public void initialize() {
 		// start game off with Menu Screen
 		gameState = GameState.MENU;
-		new InventoryScreen(null, 0);
+		new InventoryScreen(0);
 		level = new PlayLevelScreen(this);
 	}
 
@@ -42,7 +42,8 @@ public class ScreenCoordinator extends Screen {
 
 	@Override
 	public void update() {
-		do {
+		do { // wait why a while loop here
+			
 			// if previousGameState does not equal gameState, it means there was a change in gameState
 			// this triggers ScreenCoordinator to bring up a new Screen based on what the gameState is
 			if (previousGameState != gameState) {
@@ -59,11 +60,8 @@ public class ScreenCoordinator extends Screen {
 					case CONTROLS:
 						currentScreen = new ControlsScreen(this);
 						break;
-					case INVENTORY:
-						currentScreen = new InventoryScreen(this, 9);
-						break;
 					case DEBUG:
-						currentScreen = new InventoryScreen(this, 9);
+						currentScreen = new InventoryScreen(9);
 						break;
 				}
 				currentScreen.initialize();
