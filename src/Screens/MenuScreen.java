@@ -21,6 +21,7 @@ public class MenuScreen extends Screen {
     protected int pointerLocationX, pointerLocationY;
     //protected int cursorLocationX, cursorLocationY;
     protected KeyLocker keyLocker = new KeyLocker();
+    
 
     public MenuScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
