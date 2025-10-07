@@ -13,6 +13,7 @@ public class ControlsScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;
     protected Map background;
     protected KeyLocker keyLocker = new KeyLocker();
+    protected MouseLocker mouseLocker = new MouseLocker();
     protected SpriteFont ControlsLabel;
     protected SpriteFont MoveLabel, InteractLabel;
     protected SpriteFont returnInstructionsLabel;
@@ -30,7 +31,7 @@ public class ControlsScreen extends Screen {
         ControlsLabel = new SpriteFont("Controls", 15, 7, "Times New Roman", 30, Color.white);
         MoveLabel = new SpriteFont("To move, use the arrow keys.", 150, 191, "Times New Roman", 20, Color.white);
         InteractLabel = new SpriteFont("To interact with characters and objects, or to skip text, use the space bar.", 150, 221, "Times New Roman", 20, Color.white);
-        returnInstructionsLabel = new SpriteFont("Press Space to return to the menu", 20, 532, "Times New Roman", 30, Color.white);
+        returnInstructionsLabel = new SpriteFont("Click anywhere or press SPACE to return to menu.", 20, 532, "Times New Roman", 30, Color.white);
         inventoryLabel = new SpriteFont("Press \"E\" to open your inventory", 150, 251, "Times New Roman", 20, Color.white);
         inventoryLabel2 = new SpriteFont("To move items in the inventory, press \"SPACE\" OR \"ENTER\"", 150, 281, "Times New Roman", 20, Color.white);
         inventoryLabel3 = new SpriteFont("To use items in the inventory, press \"U\"", 150, 311, "Times New Roman", 20, Color.white);
@@ -38,7 +39,8 @@ public class ControlsScreen extends Screen {
         inventoryLabel5 = new SpriteFont("To remove all items in the slot, press \"BACKSPACE\"", 150, 371, "Times New Roman", 20, Color.white);
         inventoryLabel6 = new SpriteFont("Use \"ESC\" or \"E\" to close your inventory", 150, 401, "Times New Roman", 20, Color.white);
 
-    keyLocker.lockKey(Key.SPACE);
+        keyLocker.lockKey(Key.SPACE);
+        mouseLocker.lockMouse();
     }
  
     public void update() {
@@ -48,8 +50,13 @@ public class ControlsScreen extends Screen {
             keyLocker.unlockKey(Key.SPACE);
         }
 
-        // if space is pressed, go back to main menu
-        if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+        if(Mouse.isClickUp())
+        {
+            mouseLocker.unlockMouse();
+        }
+
+        // if space is pressed or mouse is clicked, go back to main menu
+        if ((!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) || Mouse.isClickDown()) {
             screenCoordinator.setGameState(GameState.MENU);
         }
     }

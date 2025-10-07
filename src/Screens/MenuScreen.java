@@ -21,6 +21,10 @@ public class MenuScreen extends Screen {
     protected int pointerLocationX, pointerLocationY;
     //protected int cursorLocationX, cursorLocationY;
     protected KeyLocker keyLocker = new KeyLocker();
+    protected MouseLocker mouseLocker = new MouseLocker();
+    // protected MouseListener mouseListener = Mouse.getMouseListener();
+
+    
     
 
     public MenuScreen(ScreenCoordinator screenCoordinator) {
@@ -43,6 +47,7 @@ public class MenuScreen extends Screen {
         keyPressTimer = 0;
         menuItemSelected = -1;
         keyLocker.lockKey(Key.SPACE);
+        mouseLocker.lockMouse();
     }
 
     public void update() {
@@ -106,6 +111,41 @@ public class MenuScreen extends Screen {
             {
                 screenCoordinator.setGameState(GameState.CONTROLS);
             }
+        }
+
+        //Mouse Function
+
+        Rectangle playGameBounds = new Rectangle(195, 100, 200, 90);
+        Rectangle creditsBounds  = new Rectangle(195, 190, 200, 90);
+        Rectangle controlsBounds = new Rectangle(195, 280, 200, 90);
+
+        Point mousePos = Mouse.getCurrentPosition();
+
+        if (playGameBounds.contains(mousePos)) {
+            currentMenuItemHovered = 0;
+        } else if (creditsBounds.contains(mousePos)) {
+            currentMenuItemHovered = 1;
+        } else if (controlsBounds.contains(mousePos)) {
+            currentMenuItemHovered = 2;
+        }
+
+        if (Mouse.isClickDown())
+        {
+            Point clickPos = Mouse.getLastPressedPosition();
+            mouseLocker.lockMouse();
+
+            if (playGameBounds.contains(clickPos)) {
+                screenCoordinator.setGameState(GameState.LEVEL);
+            } else if (creditsBounds.contains(clickPos)) {
+                screenCoordinator.setGameState(GameState.CREDITS);
+            } else if (controlsBounds.contains(clickPos)) {
+                screenCoordinator.setGameState(GameState.CONTROLS);
+            }
+        }
+
+        if(Mouse.isClickUp())
+        {
+            mouseLocker.unlockMouse();
         }
     }
 

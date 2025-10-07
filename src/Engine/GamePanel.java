@@ -3,9 +3,8 @@ package Engine;
 import GameObject.Rectangle;
 import SpriteFont.SpriteFont;
 import Utils.Colors;
-
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 /*
  * This is where the game loop process and render back buffer is setup
@@ -37,6 +36,9 @@ public class GamePanel extends JPanel {
 
 		// attaches Keyboard class's keyListener to this JPanel
 		this.addKeyListener(Keyboard.getKeyListener());
+		this.addMouseListener(Mouse.getMouseListener());
+		this.addMouseMotionListener(Mouse.getMouseMotionListener());
+
 
 		graphicsHandler = new GraphicsHandler();
 

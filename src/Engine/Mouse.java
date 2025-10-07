@@ -21,7 +21,7 @@ public class Mouse {
     private static Point lastReleasedPosition = new Point(0, 0);
 
     //Prevents default constructor from being made- prevents instantiation.
-    private Mouse(){}
+    //private Mouse(){}
 
     private static final MouseListener mouseListener = new MouseListener() {
         @Override
@@ -32,7 +32,7 @@ public class Mouse {
             lastPressedPosition = e.getPoint();
         }
         @Override
-        public void mouseReleased(MouseEvent e){
+        public void mouseReleased(MouseEvent e){ 
             clickDown = false;
             clickUp = true;
 

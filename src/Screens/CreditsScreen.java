@@ -13,6 +13,7 @@ public class CreditsScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;
     protected Map background;
     protected KeyLocker keyLocker = new KeyLocker();
+    protected MouseLocker mouseLocker = new MouseLocker();
     protected SpriteFont creditsLabel;
     protected SpriteFont createdByLabel1, createdByLabel2, managedByLabel;
     protected SpriteFont returnInstructionsLabel;
@@ -30,8 +31,9 @@ public class CreditsScreen extends Screen {
         createdByLabel1 = new SpriteFont("Created by: Alex Thimineur, Ben Bailor, Jackson Sennhenn", 145, 185, "Times New Roman", 20, Color.white);
         createdByLabel2 = new SpriteFont("Dean Acheampong, Aurélien Buisine, and Ryan Davis.", 145, 220, "Times New Roman", 20, Color.white);
         managedByLabel = new SpriteFont("Managed by Isabela Ayers", 145, 255, "Times New Roman", 20, Color.white);
-        returnInstructionsLabel = new SpriteFont("Press Space to return to the menu", 20, 532, "Times New Roman", 30, Color.white);
+        returnInstructionsLabel = new SpriteFont("Click anywhere or press SPACE to return to menu.", 20, 532, "Times New Roman", 30, Color.white);
         keyLocker.lockKey(Key.SPACE);
+        mouseLocker.lockMouse();
     }
  
     public void update() {
@@ -41,8 +43,13 @@ public class CreditsScreen extends Screen {
             keyLocker.unlockKey(Key.SPACE);
         }
 
-        // if space is pressed, go back to main menu
-        if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
+        if(Mouse.isClickUp())
+        {
+            mouseLocker.unlockMouse();
+        }
+
+        // if space is pressed or mouse is clicked, go back to main menu
+        if ((!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) || Mouse.isClickDown()) {
             screenCoordinator.setGameState(GameState.MENU);
         }
     }
