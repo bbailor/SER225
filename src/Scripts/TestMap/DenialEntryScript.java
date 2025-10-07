@@ -1,8 +1,6 @@
 package Scripts.TestMap;
 
-import Level.GameListener;
 import Level.Script;
-import Level.ScriptState;
 import ScriptActions.ChangeFlagScriptAction;
 import ScriptActions.ConditionalScriptAction;
 import ScriptActions.ConditionalScriptActionGroup;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 
 // script for talking to tree with hole in it
 // checkout the documentation website for a detailed guide on how this script works
-public class TreeScript extends Script {
+public class DenialEntryScript extends Script {
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -26,7 +24,7 @@ public class TreeScript extends Script {
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToWizard", true));
-                addRequirement(new FlagRequirement("hasFoundBall", false));
+                addRequirement(new FlagRequirement("hasEnteredDenial", false));
                 addRequirement(new CustomRequirement() {
 
                     @Override
@@ -46,20 +44,21 @@ public class TreeScript extends Script {
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Gnomeo: Juliet isn't dead, she's just beyond this door.");
+                    addText("*I- I wouldn't know what to do if I failed...\nNO!! I can't fail now.");
                 }});
 
-                addScriptAction(new ChangeFlagScriptAction("hasFoundBall", true));
+                addScriptAction(new ChangeFlagScriptAction("hasEnteredDenial", true));
 
                 // alert all listeners (which includes play level screen) that the game has been won
-                addScriptAction(new ScriptAction() {
-                    @Override
-                    public ScriptState execute() {
-                        for (GameListener listener: listeners) {
-                            listener.onWin();
-                        }
-                        return ScriptState.COMPLETED;
-                    }
-                });
+                // addScriptAction(new ScriptAction() {
+                //     @Override
+                //     public ScriptState execute() {
+                //         for (GameListener listener: listeners) {
+                //             listener.onWin();
+                //         }
+                //         return ScriptState.COMPLETED;
+                //     }
+                // });
             }});
         }});
        
