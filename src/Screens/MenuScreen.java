@@ -22,7 +22,6 @@ public class MenuScreen extends Screen {
     //protected int cursorLocationX, cursorLocationY;
     protected KeyLocker keyLocker = new KeyLocker();
     protected MouseLocker mouseLocker = new MouseLocker();
-    // protected MouseListener mouseListener = Mouse.getMouseListener();
 
     
     
@@ -129,10 +128,10 @@ public class MenuScreen extends Screen {
             currentMenuItemHovered = 2;
         }
 
-        if (Mouse.isClickDown())
+        if (!mouseLocker.isMouseLocked() && Mouse.isClickDown())
         {
-            Point clickPos = Mouse.getLastPressedPosition();
             mouseLocker.lockMouse();
+            Point clickPos = Mouse.getLastPressedPosition();
 
             if (playGameBounds.contains(clickPos)) {
                 screenCoordinator.setGameState(GameState.LEVEL);
