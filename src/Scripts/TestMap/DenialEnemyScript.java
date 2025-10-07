@@ -22,13 +22,16 @@ public class DenialEnemyScript extends Script {
                     addText("Gnomeo: What are you?? Some kind of monster?");
                     addText("Monster: You can't save her, she's too far gone!");
                     addText("Gnomeo: Liar!!! You'll pay for your treachery!");
+                    addText("Monster: Even in anger, your words betray your insecurities.");
+                    addText("Monster: You know why I'm here.\nTurn back now, or fight me if you dare continue your journey.");
+                    addText("Gnomeo: You try to deceive me! Juliet lies in wait for me.\nYou will regret standing in my way.");
                 }});
-                addScriptAction(new ChangeFlagScriptAction("hasTalkedToDenialEnemy", true));
+                addScriptAction(new ChangeFlagScriptAction("hasTalkedToDenialBoss", true));
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasTalkedToWalrus", true));
-                addScriptAction(new TextboxScriptAction("*An enemy... I can't let them stop me from reaching Juliet!"));
+                addRequirement(new FlagRequirement("hasTalkedToDenialBoss", true));
+                addScriptAction(new TextboxScriptAction("Gnomeo: An enemy... I can't let them stop me from reaching Juliet!"));
             }});
         }});
 
