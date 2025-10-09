@@ -5,7 +5,6 @@ import Engine.GraphicsHandler;
 import Engine.Screen;
 import Screens.ControlsScreen;
 import Screens.CreditsScreen;
-import Screens.InventoryScreen;
 import Screens.MenuScreen;
 import Screens.PlayLevelScreen;
 
@@ -34,7 +33,6 @@ public class ScreenCoordinator extends Screen {
 	public void initialize() {
 		// start game off with Menu Screen
 		gameState = GameState.MENU;
-		new InventoryScreen(0);
 		level = new PlayLevelScreen(this);
 	}
 
@@ -61,7 +59,7 @@ public class ScreenCoordinator extends Screen {
 						currentScreen = new ControlsScreen(this);
 						break;
 					case DEBUG:
-						currentScreen = new InventoryScreen(9);
+						// currentScreen = new InventoryScreen(9);
 						break;
 				}
 				currentScreen.initialize();

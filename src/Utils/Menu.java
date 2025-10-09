@@ -16,7 +16,11 @@ public interface Menu {
     }
 
     default void close() {
-        getListeners().forEach((k, v) -> v.onClose());
+        getListeners().forEach((k, v) -> v.onMenuClose());
+    }
+
+    default void sendEvent(String name, Object ...args) {
+        getListeners().forEach((k, v) -> v.onEvent(name, args));
     }
 
     void open();

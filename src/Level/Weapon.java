@@ -7,6 +7,8 @@ package Level;
 public class Weapon extends Item {
     
     protected double baseDamage = 10;
+    protected double weaponSkillDamage;
+    protected double weaponSkillCost = 5;
 
     public Weapon(String name) {
         super(name);
@@ -24,6 +26,12 @@ public class Weapon extends Item {
         super(name);
         this.baseDamage = baseDamage;
     }
+
+    public Weapon(String name, String description, double baseDamage) {
+        super(name);
+        this.description = description;
+        this.baseDamage = baseDamage;
+    }
     
     public Weapon(String name, int maxStackSize, double baseDamage) {
         super(name, maxStackSize);
@@ -38,4 +46,18 @@ public class Weapon extends Item {
     public double getBaseDamage() {
         return this.baseDamage;
     }
+
+    public double bonusDamage(Entity entity) {
+        return 0;
+    }
+
+    public double getWeaponSkillDamage() {
+        return this.weaponSkillDamage;
+    }
+
+    public double getWeaponSkillCost() {
+        return this.weaponSkillCost;
+    }
+
+    
 }

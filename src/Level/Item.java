@@ -29,12 +29,12 @@ public class Item {
         this.maxStackSize = maxStackSize;
     }
 
-    public void use(ItemStack stack) {
+    public void use(ItemStack stack, Entity targetedEntity) {
         // Subclasses can use this for usable items
     }
 
-    public boolean canUse(ItemStack stack) {
-        // For the item to be able to be used
+    public boolean canUse(ItemStack stack, Entity targetedEntity) {
+        // If the item to be able to be used
         return false;
     }
 
@@ -58,15 +58,34 @@ public class Item {
     public static class ItemList {
         public static Item test_item = new Item("Test Item", "A test item", 5) {
             @Override
-            public boolean canUse(ItemStack stack) {
+            public boolean canUse(ItemStack stack, Entity targetedEntity) {
                 return true;
             }
 
             @Override
-            public void use(ItemStack stack) {
+            public void use(ItemStack stack, Entity targetedEntity) {
                 System.out.println("Hello, World!");
+                targetedEntity.setMana(Math.min(targetedEntity.getMana() + 25, targetedEntity.getMaxMana()));
                 stack.removeItem();
             }
+        };
+
+        public static Item test_item2 = new Item("Test Item 2", "A second test item", 40) {
+            @Override
+            public boolean canUse(ItemStack stack, Entity targetedEntity) {
+                return true;
+            }
+
+            @Override
+            public void use(ItemStack stack, Entity targetedEntity) {
+                System.out.println("Hello, World! (from 2)");
+                targetedEntity.heal(10d);
+                stack.removeItem();
+            }
+        };
+
+        public static Weapon fist = new Weapon("Fist", "Your bare fist", 1d) {
+
         };
 
         private ItemList() {}

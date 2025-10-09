@@ -1,5 +1,7 @@
 package Screens;
 
+import java.util.random.RandomGenerator;
+
 import Engine.GlobalKeyboardHandler;
 import Engine.GraphicsHandler;
 import Engine.Inventory;
@@ -23,8 +25,12 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
     protected PlayLevelScreenState playLevelScreenState;
     protected WinScreen winScreen;
     protected InventoryScreen inventoryScreen;
+    protected LoseScreen loseScreen;
     protected FlagManager flagManager;
+    protected BattleScreen battleScreen;
     protected int menuClosecD = 0;
+
+    protected static final String LISTENER_NAME = "play_level_screen";
 
     public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -69,8 +75,11 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         map.preloadScripts();
 
         winScreen = new WinScreen(this);
-        this.inventoryScreen = new InventoryScreen(this.inventory);
+        this.loseScreen = new LoseScreen(this);
+
+        this.inventoryScreen = new InventoryScreen(this.inventory, this.player.getEntity());
         this.inventory.setStack(4, new ItemStack(Item.ItemList.test_item, 3));
+        this.inventory.setStack(8, new ItemStack(Item.ItemList.test_item2, 8));
         this.inventoryScreen.addistener("play_level_screen", this);
     }
 
@@ -89,12 +98,29 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             case INVENTORY:
                 this.inventoryScreen.update();
                 break;
+            case BATTLE:
+                this.battleScreen.update();
+                break;
+            case LOST:
+                this.loseScreen.update();
+                break;
         }
         GlobalKeyboardHandler.runHandlers(this.screenCoordinator);
         if (Keyboard.isKeyDown(Key.E) && menuClosecD <= 0) {
             this.inventoryScreen.initialize();
             this.inventoryScreen.open();
             this.playLevelScreenState = PlayLevelScreenState.INVENTORY;
+        }
+        if (Keyboard.isKeyDown(Key.B) && this.battleScreen == null) {
+            this.battleScreen = new BattleScreen(this.inventory, this.player, new Entity() {
+                {
+                    maxHealth = health = RandomGenerator.getDefault().nextDouble(1, 10);
+                    baseAttack = RandomGenerator.getDefault().nextDouble(1, 2);
+                }
+            });
+            this.battleScreen.open();
+            this.battleScreen.addistener(LISTENER_NAME, this);
+            this.playLevelScreenState = PlayLevelScreenState.BATTLE;
         }
         --menuClosecD;
     }
@@ -117,6 +143,13 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             case INVENTORY:
                 this.map.draw(this.player, graphicsHandler);
                 this.inventoryScreen.draw(graphicsHandler);
+                break;
+            case BATTLE:
+                this.battleScreen.draw(graphicsHandler);
+                break;
+            case LOST:
+                this.loseScreen.draw(graphicsHandler);
+                break;
         }
     }
 
@@ -134,12 +167,21 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
     // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {
-        RUNNING, LEVEL_COMPLETED, INVENTORY
+        RUNNING, LEVEL_COMPLETED, INVENTORY, BATTLE, LOST
     }
 
     @Override
-    public void onClose() {
+    public void onMenuClose() {
         this.playLevelScreenState = PlayLevelScreenState.RUNNING;
+        this.battleScreen = null;
         menuClosecD = 12;
+    }
+
+    @Override
+    public void onEvent(String eventName, Object... args) {
+        if (eventName.equals("player_lose")) {
+            this.playLevelScreenState = PlayLevelScreenState.LOST;
+            this.battleScreen = null;
+        }
     }
 }

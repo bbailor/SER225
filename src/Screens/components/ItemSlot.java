@@ -2,7 +2,6 @@ package Screens.components;
 
 import Engine.GraphicsHandler;
 import Engine.Inventory;
-import Level.ItemStack;
 import Utils.Resources;
 import Utils.TailwindColorScheme;
 
