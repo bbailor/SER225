@@ -1,12 +1,12 @@
-package Maps;
 
+package Maps;
+/*
 import EnhancedMapTiles.PushableRock;
 import Level.*;
 import NPCs.ArmoredSkeleton;
 import NPCs.Skeleton;
 import NPCs.Spirit;
 import NPCs.Wizard;
-import Scripts.SimpleTextScript;
 import Scripts.TestMap.*;
 import Tilesets.MainTileset;
 import java.util.ArrayList;
@@ -59,22 +59,5 @@ public class MainMap extends Map {
 
         return npcs;
     }
-
-    @Override
-    public ArrayList<Trigger> loadTriggers() {
-        ArrayList<Trigger> triggers = new ArrayList<>();
-        triggers.add(new Trigger(790, 1030, 100, 10, new LostBallScript(), "hasLostBall"));
-        triggers.add(new Trigger(790, 960, 10, 80, new LostBallScript(), "hasLostBall"));
-        triggers.add(new Trigger(890, 960, 10, 80, new LostBallScript(), "hasLostBall"));
-        return triggers;
-    }
-
-    // For signs
-    @Override
-    public void loadScripts() {
-        getMapTile(21, 19).setInteractScript(new SimpleTextScript("Cat's house"));
-        getMapTile(7, 26).setInteractScript(new SimpleTextScript("Walrus's house"));
-        getMapTile(20, 4).setInteractScript(new SimpleTextScript("Dino's house"));
-        getMapTile(2, 6).setInteractScript(new DenialEntryScript());
-    }
 }
+

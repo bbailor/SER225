@@ -62,7 +62,7 @@ public class TestMap extends Map {
 
         Spirit sp   = new Spirit(101, getMapTile(20, 21).getLocation().subtractY(16).subtractX(10));
         sp.setInteractScript(new DenialEnemyScript());
-        // player start is to the LEFT of (20,21) -> face LEFT
+        // player start is to the LEFT of (20,21) - face LEFT
         sp.setCurrentAnimationName("STAND_LEFT");
         npcs.add(sp);
 
