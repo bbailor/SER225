@@ -44,7 +44,7 @@ public class DenialEntryScript extends Script {
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Gnomeo: Juliet isn't dead, she's just beyond this door.");
-                    addText("*I- I wouldn't know what to do if I failed...\nNO!! I can't fail now.");
+                    addText("Gnomeo: I- I wouldn't know what to do if I failed...\nNO!! I can't fail now.");
                 }});
 
                 addScriptAction(new ChangeFlagScriptAction("hasEnteredDenial", true));
