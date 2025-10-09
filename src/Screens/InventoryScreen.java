@@ -6,17 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Engine.Config;
-import Engine.GlobalKeyboardHandler;
 import Engine.GraphicsHandler;
 import Engine.Inventory;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
-import Game.GameState;
-import Level.Item;
-import Level.ItemStack;
+import Level.Entity;
 import Screens.components.ItemSlot;
 import Screens.components.Slot;
+import Utils.Globals;
 import Utils.Menu;
 import Utils.MenuListener;
 import Utils.TailwindColorScheme;
@@ -33,20 +31,19 @@ public class InventoryScreen extends Screen implements Menu {
     protected int selectedID = -1;
     protected int pressCD = 0;
     protected int openPressCD = 0;
+    protected Entity openingEntity;
     protected Map<String, MenuListener> listeners = new HashMap<>();
-    protected static int INV_SLOT_WIDTH = 50;
-    protected static int INV_SLOT_HEIGHT = 50;
-    protected static Color SELECT_COLOR = TailwindColorScheme.sky400;
-    protected static Color HOVER_COLOR = TailwindColorScheme.amber600;
-    protected static Color BASE_COLOR = TailwindColorScheme.slate700;
-    protected static int PRESS_CD = 12;
+    public static final int INV_SLOT_WIDTH = 50;
+    public static final int INV_SLOT_HEIGHT = 50;
+    public static final Color BASE_COLOR = TailwindColorScheme.slate700;
 
-    public InventoryScreen(int size) {
-        this.inventory = new Inventory(size);
+    public InventoryScreen(int size, Entity entity) {
+        this(new Inventory(size), entity);
     }
 
-    public InventoryScreen(Inventory inventory) {
+    public InventoryScreen(Inventory inventory, Entity entity) {
         this.inventory = inventory;
+        this.openingEntity = entity;
     }
 
     public InventoryScreen setLength(int length) {
@@ -67,7 +64,7 @@ public class InventoryScreen extends Screen implements Menu {
     public void initialize() {
         this.slots = new ItemSlot[this.inventory.getSize()];
         Arrays.setAll(this.slots, i -> new ItemSlot(i, inventory, INV_SLOT_WIDTH, INV_SLOT_HEIGHT));
-        this.slots[0].setBorderColor(HOVER_COLOR);
+        this.slots[0].setBorderColor(Globals.HOVER_COLOR);
         this.hoveredID = 0;
         this.selectedID = -1;
     }
@@ -75,12 +72,12 @@ public class InventoryScreen extends Screen implements Menu {
     @Override
     public void update() {
         this.slots[this.prevHoveredID].setBorderColor(BASE_COLOR);
-        this.slots[this.hoveredID].setBorderColor(HOVER_COLOR);
+        this.slots[this.hoveredID].setBorderColor(Globals.HOVER_COLOR);
         if (selectedID != -1) {
-            this.slots[this.selectedID].setBorderColor(SELECT_COLOR);
+            this.slots[this.selectedID].setBorderColor(Globals.SELECT_COLOR);
         }
         if (this.hoveredID != this.prevHoveredID) {
-            this.pressCD = PRESS_CD;
+            this.pressCD = Globals.KEYBOARD_CD;
             this.prevHoveredID = this.hoveredID;
         }
         if (this.pressCD != 0) {
@@ -95,7 +92,7 @@ public class InventoryScreen extends Screen implements Menu {
             return;
         }
         if (Keyboard.isKeyDown(Key.ENTER) || Keyboard.isKeyDown(Key.SPACE)) {
-            this.pressCD = PRESS_CD;
+            this.pressCD = Globals.KEYBOARD_CD;
             if (selectedID == -1) {
                 this.selectedID = this.hoveredID;
                 return;
@@ -106,6 +103,30 @@ public class InventoryScreen extends Screen implements Menu {
             this.slots[this.selectedID].setBorderColor(BASE_COLOR);
             this.selectedID = -1;
         }
+        this.handleMovement();
+        var hoveredStack = this.inventory.getStack(this.hoveredID);
+        if (Keyboard.isKeyDown(Key.R) && hoveredStack != null) {
+            this.pressCD = Globals.KEYBOARD_CD;
+            hoveredStack.removeItem();
+            if (hoveredStack.getCount() == 0) {
+                this.inventory.setStack(this.hoveredID, null);
+            }
+        }
+        if (Keyboard.isKeyDown(Key.BACKSPACE) && hoveredStack != null) {
+            this.pressCD = Globals.KEYBOARD_CD;
+            this.inventory.setStack(this.hoveredID, null);
+        }
+
+        if (Keyboard.isKeyDown(Key.U) && hoveredStack != null && hoveredStack.getItem().canUse(hoveredStack, openingEntity)) {
+            this.pressCD = Globals.KEYBOARD_CD;
+            hoveredStack.use(this.openingEntity);
+            if (hoveredStack.getCount() == 0) {
+                this.inventory.setStack(this.hoveredID, null);
+            }
+        }
+    }
+
+    protected void handleMovement() {
         if (Keyboard.isKeyDown(Key.LEFT) || Keyboard.isKeyDown(Key.A)) {
             this.hoveredID = this.hoveredID == 0 ? (this.inventory.getSize() - 1) : this.hoveredID - 1;
         }
@@ -117,25 +138,6 @@ public class InventoryScreen extends Screen implements Menu {
         }
         if (Keyboard.isKeyDown(Key.DOWN) || Keyboard.isKeyDown(Key.S)) {
             this.hoveredID = this.hoveredID + this.length >= this.inventory.getSize() ? (this.length * (this.hoveredID%this.length))/3 : this.hoveredID + this.length;
-        }
-        if (Keyboard.isKeyDown(Key.R) && this.inventory.getStack(this.hoveredID) != null) {
-            this.pressCD = PRESS_CD;
-            this.inventory.getStack(this.hoveredID).removeItem();
-            if (this.inventory.getStack(this.hoveredID).getCount() == 0) {
-                this.inventory.setStack(this.hoveredID, null);
-            }
-        }
-        if (Keyboard.isKeyDown(Key.BACKSPACE) && this.inventory.getStack(this.hoveredID) != null) {
-            this.pressCD = PRESS_CD;
-            this.inventory.setStack(this.hoveredID, null);
-        }
-
-        if (Keyboard.isKeyDown(Key.U) && this.inventory.getStack(this.hoveredID) != null) {
-            this.pressCD = PRESS_CD;
-            this.inventory.getStack(this.hoveredID).use();
-            if (this.inventory.getStack(this.hoveredID).getCount() == 0) {
-                this.inventory.setStack(this.hoveredID, null);
-            }
         }
     }
 

@@ -1,9 +1,12 @@
 package Level;
 
+import Builders.FrameBuilder;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
+import GameObject.Frame;
 import GameObject.GameObject;
+import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Utils.Direction;
@@ -17,6 +20,7 @@ public abstract class Player extends GameObject {
     protected Direction currentWalkingYDirection;
     protected Direction lastWalkingXDirection;
     protected Direction lastWalkingYDirection;
+    protected Entity entity;
 
     // values used to handle player movement
     protected float moveAmountX, moveAmountY;
@@ -44,6 +48,22 @@ public abstract class Player extends GameObject {
         playerState = PlayerState.STANDING;
         previousPlayerState = playerState;
         this.affectedByTriggers = true;
+        this.entity = new Entity() {
+            {
+                this.health = 25;
+                this.maxHealth = 25;
+                this.baseAttack = 2;
+                this.maxMana = 50;
+                this.mana = 50;
+                this.resistance = 2;
+                this.animations.put("idle", new Frame[] {
+                    new FrameBuilder(spriteSheet.getSprite(0, 0))
+                            .withScale(2)
+                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                            .build()
+                });
+            }
+        };
     }
 
     public void update() {
@@ -202,6 +222,10 @@ public abstract class Player extends GameObject {
     public Direction getCurrentWalkingYDirection() { return currentWalkingYDirection; }
     public Direction getLastWalkingXDirection() { return lastWalkingXDirection; }
     public Direction getLastWalkingYDirection() { return lastWalkingYDirection; }
+
+    public Entity getEntity() {
+        return this.entity;
+    }
 
     
     public void lock() {

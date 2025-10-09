@@ -29,8 +29,8 @@ public class ItemStack {
         return this.item;
     }
 
-    public void use() {
-        this.item.use(this);
+    public void use(Entity entity) {
+        this.item.use(this, entity);
     }
 
     public ItemStack(Item item) {
