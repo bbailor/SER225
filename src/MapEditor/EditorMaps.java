@@ -11,6 +11,7 @@ public class EditorMaps {
     public static ArrayList<String> getMapNames() {
         return new ArrayList<String>() {{
             add("TestMap");
+            add("MainMap");
             add("TitleScreen");
             add("Map1Denial");
         }};
@@ -20,6 +21,8 @@ public class EditorMaps {
         switch(mapName) {
             case "TestMap":
                 return new TestMap();
+            case "MainMap":
+                return new MainMap();
             case "TitleScreen":
                 return new TitleScreenMap();
             case "Map1Denial":
