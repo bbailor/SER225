@@ -6,6 +6,7 @@ import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 import GameObject.SpriteSheetHorizontal;
+import GameObject.ImageEffect;
 import Level.NPC;
 import Utils.Point;
 
@@ -29,28 +30,28 @@ public class Wizard extends NPC {
         return new HashMap<String, Frame[]>() {{
             // --- RIGHT IDLE ---
             put("STAND_RIGHT", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 12).withScale(3).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 1), 12).withScale(3).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 2), 12).withScale(3).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 3), 12).withScale(3).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 4), 12).withScale(3).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 5), 12).withScale(3).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 6), 12).withScale(3).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 7), 12).withScale(3).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 8), 12).withScale(3).build()
+                new FrameBuilder(spriteSheet.getSprite(0, 0), 12).withScale(3).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 1), 12).withScale(3).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 2), 12).withScale(3).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 3), 12).withScale(3).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 4), 12).withScale(3).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 5), 12).withScale(3).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 6), 12).withScale(3).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 7), 12).withScale(3).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 8), 12).withScale(3).withBounds(8, 8, 16, 24).build()
             });
 
             // --- LEFT IDLE (mirrored) ---
             put("STAND_LEFT", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 12).withScale(3).withImageEffect(GameObject.ImageEffect.FLIP_HORIZONTAL).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 1), 12).withScale(3).withImageEffect(GameObject.ImageEffect.FLIP_HORIZONTAL).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 2), 12).withScale(3).withImageEffect(GameObject.ImageEffect.FLIP_HORIZONTAL).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 3), 12).withScale(3).withImageEffect(GameObject.ImageEffect.FLIP_HORIZONTAL).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 4), 12).withScale(3).withImageEffect(GameObject.ImageEffect.FLIP_HORIZONTAL).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 5), 12).withScale(3).withImageEffect(GameObject.ImageEffect.FLIP_HORIZONTAL).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 6), 12).withScale(3).withImageEffect(GameObject.ImageEffect.FLIP_HORIZONTAL).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 7), 12).withScale(3).withImageEffect(GameObject.ImageEffect.FLIP_HORIZONTAL).build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 8), 12).withScale(3).withImageEffect(GameObject.ImageEffect.FLIP_HORIZONTAL).build()
+                new FrameBuilder(spriteSheet.getSprite(0, 0), 12).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 1), 12).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 2), 12).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 3), 12).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 4), 12).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 5), 12).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 6), 12).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 7), 12).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 16, 24).build(),
+                new FrameBuilder(spriteSheet.getSprite(0, 8), 12).withScale(3).withImageEffect(ImageEffect.FLIP_HORIZONTAL).withBounds(8, 8, 16, 24).build()
             });
         }};
     }
