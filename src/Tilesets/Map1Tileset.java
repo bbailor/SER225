@@ -198,33 +198,33 @@ public class Map1Tileset extends Tileset {
                 mapTiles.add(floorTBRTile);
             
             //DeskTopLeft
-                Frame deskTopLeftFrame = new FrameBuilder(getSubImage(0, 7)).withScale(tileScale).build();
-                MapTileBuilder deskTopLeftTile = new MapTileBuilder(deskTopLeftFrame);
+                Frame deskTopLeftFrame = new FrameBuilder(getSubImage(0, 7)).withScale(tileScale).withBounds(0,0,16,16).build();
+                MapTileBuilder deskTopLeftTile = new MapTileBuilder(deskTopLeftFrame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(deskTopLeftTile);
 
             //DesktopCenter
-                Frame deskTopCenterFrame = new FrameBuilder(getSubImage(0,8)).withScale(tileScale).build();
-                MapTileBuilder deskTopCenterTile = new MapTileBuilder(deskTopCenterFrame);
+                Frame deskTopCenterFrame = new FrameBuilder(getSubImage(0,8)).withScale(tileScale).withBounds(0,0,16,16).build();
+                MapTileBuilder deskTopCenterTile = new MapTileBuilder(deskTopCenterFrame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(deskTopCenterTile);
 
             //DeskTopRight
-                Frame deskTopRightFrame = new FrameBuilder(getSubImage(0,9)).withScale(tileScale).build();
-                MapTileBuilder deskTopRighTile = new MapTileBuilder(deskTopRightFrame);
+                Frame deskTopRightFrame = new FrameBuilder(getSubImage(0,9)).withScale(tileScale).withBounds(0,0,16,16).build();
+                MapTileBuilder deskTopRighTile = new MapTileBuilder(deskTopRightFrame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(deskTopRighTile);
 
             //deskTopBottomLeft
-                Frame deskTopBLFrame = new FrameBuilder(getSubImage(1,7)).withScale(tileScale).build();
-                MapTileBuilder deskTopBLTile = new MapTileBuilder(deskTopBLFrame);
+                Frame deskTopBLFrame = new FrameBuilder(getSubImage(1,7)).withScale(tileScale).withBounds(0,0,16,16).build();
+                MapTileBuilder deskTopBLTile = new MapTileBuilder(deskTopBLFrame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(deskTopBLTile);
 
             //deskTopBottomCenter
-                Frame deskTopBCFrame = new FrameBuilder(getSubImage(1,8)).withScale(tileScale).build();
-                MapTileBuilder deskTopBCTile = new MapTileBuilder(deskTopBCFrame);
+                Frame deskTopBCFrame = new FrameBuilder(getSubImage(1,8)).withScale(tileScale).withBounds(0,0,16,16).build();
+                MapTileBuilder deskTopBCTile = new MapTileBuilder(deskTopBCFrame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(deskTopBCTile);
             
             //deskTopBottomRight
-                Frame deskTopBRFrame = new FrameBuilder(getSubImage(1,9)).withScale(tileScale).build();
-                MapTileBuilder deskTopBRTile = new MapTileBuilder(deskTopBRFrame);
+                Frame deskTopBRFrame = new FrameBuilder(getSubImage(1,9)).withScale(tileScale).withBounds(0,0,16,16).build();
+                MapTileBuilder deskTopBRTile = new MapTileBuilder(deskTopBRFrame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(deskTopBRTile);
 
             //chairLeft

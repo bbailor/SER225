@@ -9,6 +9,6 @@ import Scripts.TestMap.*;
 public class MapOneDenial extends Map {
     public MapOneDenial() {
         super("map_one_denial.txt", new Map1Tileset());
-        this.playerStartPosition = new Point(1, 11);
+        this.playerStartPosition = getMapTile(10, 10).getLocation();
     }
 }

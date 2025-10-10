@@ -11,6 +11,7 @@ import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
+import Maps.MapOneDenial;
 import Maps.TestMap;
 import Players.Gnome;
 import Utils.Direction;

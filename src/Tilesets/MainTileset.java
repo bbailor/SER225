@@ -238,7 +238,7 @@ public class MainTileset extends Tileset {
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder houseRoofBodyTile = new MapTileBuilder(grassFrame)
+        MapTileBuilder houseRoofBodyTile = new MapTileBuilder(houseRoofBodyFrame)
                 .withTopLayer(houseRoofBodyFrame)
                 .withTileType(TileType.PASSABLE);
 
@@ -249,7 +249,7 @@ public class MainTileset extends Tileset {
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder leftHouseRoofTile = new MapTileBuilder(grassFrame)
+        MapTileBuilder leftHouseRoofTile = new MapTileBuilder(leftHouseRoofFrame)
                 .withTopLayer(leftHouseRoofFrame)
                 .withTileType(TileType.PASSABLE);
 
@@ -261,7 +261,7 @@ public class MainTileset extends Tileset {
                 .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                 .build();
 
-        MapTileBuilder rightHouseRoofTile = new MapTileBuilder(grassFrame)
+        MapTileBuilder rightHouseRoofTile = new MapTileBuilder(rightHouseRoofFrame)
                 .withTopLayer(rightHouseRoofFrame)
                 .withTileType(TileType.PASSABLE);
 
