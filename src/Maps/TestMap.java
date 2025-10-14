@@ -3,11 +3,8 @@ package Maps;
 import EnhancedMapTiles.PushableRock;
 import Level.*;
 import NPCs.ArmoredSkeleton;
-import NPCs.Bug;
-import NPCs.Dinosaur;
 import NPCs.Skeleton;
 import NPCs.Spirit;
-import NPCs.Walrus;
 import NPCs.Wizard;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.*;
@@ -36,7 +33,7 @@ public class TestMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        Walrus walrus = new Walrus(1, getMapTile(4, 28).getLocation().subtractY(40));
+/*      Walrus walrus = new Walrus(1, getMapTile(4, 28).getLocation().subtractY(40));
         walrus.setInteractScript(new WalrusScript());
         npcs.add(walrus);
 
@@ -48,6 +45,7 @@ public class TestMap extends Map {
         Bug bug = new Bug(3, getMapTile(7, 12).getLocation().subtractX(20));
         bug.setInteractScript(new BugScript());
         npcs.add(bug);
+*/  
         
         Wizard wizard = new Wizard(4, getMapTile(10, 15).getLocation());
         wizard.setInteractScript(new WizardScript());
