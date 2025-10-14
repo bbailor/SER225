@@ -1,6 +1,7 @@
 package ScriptActions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Level.GameListener;
 import Level.Map;
@@ -13,6 +14,7 @@ public abstract class ScriptAction {
     protected Player player;
     protected MapEntity entity;
     protected ScriptActionOutputManager outputManager;
+    protected List<GameListener> listeners;
 
     public void setup() {}
 
@@ -32,6 +34,10 @@ public abstract class ScriptAction {
 
     public void setEntity(MapEntity entity) {
         this.entity = entity;
+    }
+
+    public void setListeners(List<GameListener> listeners) {
+        this.listeners = listeners;
     }
 
     public void setOutputManager(ScriptActionOutputManager outputManager) {
