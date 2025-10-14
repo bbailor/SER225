@@ -10,8 +10,13 @@ import Engine.Keyboard;
 import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
-import Level.*;
-import Maps.MapOneDenial;
+import Level.Entity;
+import Level.FlagManager;
+import Level.GameListener;
+import Level.Item;
+import Level.ItemStack;
+import Level.Map;
+import Level.Player;
 import Maps.TestMap;
 import Players.Gnome;
 import Utils.Direction;
@@ -37,6 +42,26 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         this.screenCoordinator = screenCoordinator;
     }
 
+    public void switchMap(Map map) {
+        this.map = map;
+        this.map.setFlagManager(this.flagManager);
+
+        // let pieces of map know which button to listen for as the "interact" button
+        this.map.getTextbox().setInteractKey(player.getInteractKey());
+        this.map.setPlayer(this.player);
+        this.player.setMap(map);
+        this.player.setLocation(this.map.getPlayerStartPosition().x, this.map.getPlayerStartPosition().y);
+        this.player.setFacingDirection(Direction.LEFT);
+        
+        // add this screen as a "game listener" so other areas of the game that don't normally have direct access to it (such as scripts) can "signal" to have it do something
+        // this is used in the "onWin" method -- a script signals to this class that the game has been won by calling its "onWin" method
+        this.map.addListener(this);
+
+        // preloads all scripts ahead of time rather than loading them dynamically
+        // both are supported, however preloading is recommended
+        this.map.preloadScripts();
+    }
+
     public void initialize() {
         if (playLevelScreenState == PlayLevelScreenState.RUNNING) {
             return;
@@ -52,28 +77,13 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("hasTalkedToDinosaur", false);
         flagManager.addFlag("hasFoundBall", false);
 
-        // define/setup map
-        map = new TestMap();
-        map.setFlagManager(flagManager);
-
         // setup player
-        player = new Gnome(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
-        player.setMap(map);
+        player = new Gnome(0, 0);
+        // player.setMap(map);
         playLevelScreenState = PlayLevelScreenState.RUNNING;
-        player.setFacingDirection(Direction.LEFT);
-
-        map.setPlayer(player);
-
-        // let pieces of map know which button to listen for as the "interact" button
-        map.getTextbox().setInteractKey(player.getInteractKey());
-
-        // add this screen as a "game listener" so other areas of the game that don't normally have direct access to it (such as scripts) can "signal" to have it do something
-        // this is used in the "onWin" method -- a script signals to this class that the game has been won by calling its "onWin" method
-        map.addListener(this);
-
-        // preloads all scripts ahead of time rather than loading them dynamically
-        // both are supported, however preloading is recommended
-        map.preloadScripts();
+        
+        // define/setup map
+        this.switchMap(new TestMap());
 
         winScreen = new WinScreen(this);
         this.loseScreen = new LoseScreen(this);

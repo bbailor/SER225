@@ -60,5 +60,4 @@ public class MainMap extends Map {
         return npcs;
     }
 }
-
 */
