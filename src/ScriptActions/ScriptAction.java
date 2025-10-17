@@ -1,13 +1,11 @@
 package ScriptActions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import Level.GameListener;
 import Level.Map;
 import Level.MapEntity;
 import Level.Player;
 import Level.ScriptState;
+import java.util.List;
 
 public abstract class ScriptAction {
     protected Map map;
@@ -38,7 +36,7 @@ public abstract class ScriptAction {
 
     public void setListeners(List<GameListener> listeners) {
         this.listeners = listeners;
-    }
+    }//for when you call OnEvent in PlayLevelScreen    //////////////////////////////
 
     public void setOutputManager(ScriptActionOutputManager outputManager) {
         this.outputManager = outputManager;
