@@ -25,6 +25,8 @@ dependencies {
     // implementation libs.guava
 
     implementation libs.gson
+
+    compileOnly libs.jetbrain.annotations
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -57,6 +59,6 @@ tasks.register("mapEditor", JavaExec) {
     mainClass = 'MapEditor.MapEditor'
 }
 
-tasks.register('hello_world') {
-    println('hi')
-}
+// tasks.register('hello_world') {
+//     println('hi')
+// }

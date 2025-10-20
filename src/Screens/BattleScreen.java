@@ -55,8 +55,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
      * @param player The Player Itself
      * @param entity The entity the player is fighting
      */
-    public BattleScreen(Inventory inventory, Player player, Entity entity) {
-        this.inventory = inventory;
+    public BattleScreen(Player player, Entity entity) {
+        this.inventory = player.getEntity().getInventory();
         this.player = player;
         this.entity = entity;
         
@@ -65,7 +65,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             BATTLE_LOG_HEIGHT + BATTLE_HEIGHT + BORDER_LINE_WIDTH,
             BATTLE_ACTIONS_WIDTH - ((BORDER_LINE_WIDTH + MARGIN) * 2),
             BATTLE_ACTIONS_HEIGHT  - ((BORDER_LINE_WIDTH + MARGIN) * 2),
-            inventory, player
+            this.inventory, player
         );
         this.actions.put("Inventory", inv);
         inv.addistener(LISTENER_NAME, this);
@@ -271,6 +271,12 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         }
 
     }
+
+    @Override
+    public void draw(GraphicsHandler handler, int x, int y) {
+        //TODO: Implement when submenu (take above draw)
+    }
+
 
     @Override
     public void onEvent(String eventName, Object ...args) {

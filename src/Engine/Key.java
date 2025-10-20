@@ -47,5 +47,6 @@ public enum Key {
     SPACE,
     ESC,
 
+    HOME,
     BACKSPACE
 }

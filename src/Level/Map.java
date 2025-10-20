@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.google.gson.annotations.Expose;
+
 /*
     This class is for defining a map that is used for a specific level
     The map class handles/manages a lot of different things, including:
@@ -27,7 +29,7 @@ import java.util.Scanner;
     5. calculating which tile a game object is currently on based on its x and y location
 */
 
-public abstract class Map {
+public class Map {
     // the tile map (map tiles that make up the entire map image)
     protected MapTile[] mapTiles;
 
@@ -86,7 +88,7 @@ public abstract class Map {
     // other external classes can use this to listen for events
     protected ArrayList<GameListener> listeners = new ArrayList<>();
 
-    public Map(String mapFileName, Tileset tileset) {
+    protected Map(String mapFileName, Tileset tileset) {
         this.mapFileName = mapFileName;
         this.tileset = tileset;
         setupMap();
@@ -98,6 +100,19 @@ public abstract class Map {
         this.yMidPoint = (ScreenManager.getScreenHeight() / 2);
         this.playerStartPosition = new Point(0, 0);
     }
+
+    // For serializtion without reading a file twice
+    private Map(Tileset tileset, String mapFileName) {
+        this.tileset = tileset;
+        this.mapFileName = mapFileName;
+        this.animatedMapTiles = new ArrayList<>();
+        this.enhancedMapTiles = new ArrayList<>();
+        this.npcs = new ArrayList<>();
+        this.triggers = new ArrayList<>();
+        this.collectableItems = new ArrayList<>();
+    }
+
+    private Map() {}
 
     // sets up map by reading in the map file to create the tile map
     // loads in enemies, enhanced map tiles, and npcs
@@ -130,6 +145,19 @@ public abstract class Map {
         this.loadScripts();
 
         this.camera = new Camera(0, 0, tileset.getScaledSpriteWidth(), tileset.getScaledSpriteHeight(), this);
+        this.textbox = new Textbox(this);
+    }
+
+    public void setupMapWithoutFile(int cameraX, int cameraY) {
+        for (NPC npc : this.npcs) {
+            npc.setMap(this);
+        }
+        for (Trigger trigger : this.triggers) {
+            trigger.setMap(this);
+        }
+        this.loadScripts();
+        this.camera = new Camera(0, 0, tileset.getScaledSpriteWidth(), tileset.getScaledSpriteHeight(), this);
+        this.camera.setLocation(cameraX, cameraY);
         this.textbox = new Textbox(this);
     }
 

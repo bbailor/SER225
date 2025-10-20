@@ -1,9 +1,11 @@
 package Level;
 
+import com.google.gson.annotations.Expose;
+
 public class ItemStack {
     
-    protected Item item;
-    protected int stackSize = 1;
+    @Expose protected Item item;
+    @Expose protected int stackSize = 1;
     
     public void onUse() {
         this.removeItem();

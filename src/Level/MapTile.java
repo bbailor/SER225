@@ -1,5 +1,7 @@
 package Level;
 
+import com.google.gson.annotations.Expose;
+
 import Engine.GraphicsHandler;
 import GameObject.GameObject;
 import GameObject.IntersectableRectangle;

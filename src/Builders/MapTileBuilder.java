@@ -4,6 +4,7 @@ import GameObject.Frame;
 import GameObject.GameObject;
 import Level.MapTile;
 import Level.TileType;
+import Utils.Point;
 
 import java.util.HashMap;
 
@@ -74,5 +75,9 @@ public class MapTileBuilder {
         }
 
         return new MapTile(x, y, bottomLayerAnimation, topLayerAnimation, tileType, tileIndex);
+    }
+
+    public MapTile build(Point location) {
+        return build(location.x, location.y);
     }
 }

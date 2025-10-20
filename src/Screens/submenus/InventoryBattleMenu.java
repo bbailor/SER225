@@ -135,5 +135,11 @@ public class InventoryBattleMenu extends BattleSubMenu {
         }
         graphicsHandler.drawRectangle(this.x + selected_offset_x - BORDER_WIDTH, this.y + (offset_y/2) - BORDER_WIDTH, (selected_length * FONT_SIZE) + BORDER_WIDTH, FONT_SIZE + 8 + BORDER_WIDTH, Globals.HOVER_COLOR, BORDER_WIDTH);
     }
+
+    @Override
+    public void draw(GraphicsHandler handler, int x, int y) {
+        //TODO: Implement when submenu (take above draw)
+    }
+
     
 }

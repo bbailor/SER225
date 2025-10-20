@@ -16,3 +16,6 @@ _site
 
 # Ignore Gradle build output directory
 build
+
+#ignore any crash log files
+hs_err_pid*

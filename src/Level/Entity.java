@@ -2,18 +2,22 @@ package Level;
 
 import java.util.HashMap;
 
+import com.google.gson.annotations.Expose;
+
+import Engine.Inventory;
 import GameObject.Frame;
 
 public class Entity {
     
-    protected double health = 10;
-    protected double maxHealth = 10;
-    protected double mana = 30;
-    protected double maxMana = 30;
-    protected double baseAttack = 1;
-    protected double resistance = 0;
-    protected double tempResistance = 0;
-    protected Weapon currentWeapon = Item.ItemList.fist;
+    @Expose protected double health = 10;
+    @Expose protected double maxHealth = 10;
+    @Expose protected double mana = 30;
+    @Expose protected double maxMana = 30;
+    @Expose protected double baseAttack = 1;
+    @Expose protected double resistance = 0;
+    @Expose protected double tempResistance = 0;
+    @Expose protected Weapon currentWeapon = Item.ItemList.fist;
+    @Expose protected Inventory inventory = new Inventory(9);
     protected java.util.Map<String, Frame[]> animations = new HashMap<>(); 
 
     public double getMana() {
@@ -34,6 +38,10 @@ public class Entity {
 
     public double getBaseAttack() {
         return this.baseAttack;
+    }
+
+    public void setBaseAttack(double baseAttack) {
+        this.baseAttack = baseAttack;
     }
 
     public double getResistance() {
@@ -110,5 +118,24 @@ public class Entity {
 
     public Frame[] getAnimations(String name) {
         return this.animations.get(name);
+    }
+
+    public java.util.Map<String, Frame[]> getAllAnimations() {
+        return this.animations;
+    }
+
+    public Inventory getInventory() {
+        return this.inventory;
+    }
+
+    public Entity() {}
+
+    public Entity(double maxHealth, double maxMana) {
+        this.maxHealth = this.health = maxHealth;
+        this.maxMana = this.mana = maxMana;
+    }
+    public Entity(double maxHealth, double maxMana, double resistance) {
+        this(maxHealth, maxMana);
+        this.resistance = resistance;
     }
 }

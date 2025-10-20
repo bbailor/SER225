@@ -1,14 +1,15 @@
 package Screens;
 
+import com.google.gson.annotations.Expose;
+
+import Engine.Config;
 import Engine.GlobalKeyboardHandler;
 import Engine.GraphicsHandler;
-import Engine.Inventory;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
-import Level.Entity;
 import Level.FlagManager;
 import Level.GameListener;
 import Level.Item;
@@ -18,22 +19,26 @@ import Level.Player;
 import Maps.TestMap;
 import Players.Gnome;
 import Utils.Direction;
+import Utils.Globals;
 import Utils.MenuListener;
-import java.util.random.RandomGenerator;
+import Utils.SaveData;
 
 // This class is for when the RPG game is actually being played
 public class PlayLevelScreen extends Screen implements GameListener, MenuListener {
     protected ScreenCoordinator screenCoordinator;
-    protected Map map;
-    protected Player player;
-    protected Inventory inventory;
+    @Expose protected Map map;
+    @Expose protected Player player;
+    // @Expose protected Inventory inventory;
     protected PlayLevelScreenState playLevelScreenState;
     protected WinScreen winScreen;
     protected InventoryScreen inventoryScreen;
     protected LoseScreen loseScreen;
-    protected FlagManager flagManager;
+    protected SaveScreen saveScreen;
+    @Expose protected FlagManager flagManager;
     protected BattleScreen battleScreen;
-    protected int menuClosecD = 0;
+    protected int menuCloseCD = 0;
+    protected int pressCD = 0;
+    // String save;
 
     protected static final String LISTENER_NAME = "play_level_screen";
 
@@ -51,6 +56,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         this.player.setMap(map);
         this.player.setLocation(this.map.getPlayerStartPosition().x, this.map.getPlayerStartPosition().y);
         this.player.setFacingDirection(Direction.LEFT);
+        this.player.unlock();
+        this.map.getCamera().setLocation(this.player.getX(), this.player.getY());
         
         // add this screen as a "game listener" so other areas of the game that don't normally have direct access to it (such as scripts) can "signal" to have it do something
         // this is used in the "onWin" method -- a script signals to this class that the game has been won by calling its "onWin" method
@@ -61,11 +68,19 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         this.map.preloadScripts();
     }
 
+    public void loadSave(SaveData data) {
+        this.player = data.player;
+        // this.inventory = data.inventory;
+        this.flagManager = data.flagManager;
+        this.switchMap(data.map);
+        this.player.setLocation(data.playerPos.x, data.playerPos.y);
+    }
+
     public void initialize() {
         if (playLevelScreenState == PlayLevelScreenState.RUNNING) {
             return;
         }
-        this.inventory = new Inventory(9);
+        
         // setup state
         flagManager = new FlagManager();
         flagManager.addFlag("hasLostBall", false);
@@ -78,6 +93,9 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         // setup player
         player = new Gnome(0, 0);
+        // inventory = new Inventory(9);
+        player.getEntity().getInventory().setStack(4, new ItemStack(Item.ItemList.test_item, 3));
+        player.getEntity().getInventory().setStack(8, new ItemStack(Item.ItemList.test_item2, 8));
         // player.setMap(map);
         playLevelScreenState = PlayLevelScreenState.RUNNING;
         
@@ -87,10 +105,22 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         winScreen = new WinScreen(this);
         this.loseScreen = new LoseScreen(this);
 
-        this.inventoryScreen = new InventoryScreen(this.inventory, this.player.getEntity());
-        this.inventory.setStack(4, new ItemStack(Item.ItemList.test_item, 3));
-        this.inventory.setStack(8, new ItemStack(Item.ItemList.test_item2, 8));
-        this.inventoryScreen.addistener("play_level_screen", this);
+        this.inventoryScreen = new InventoryScreen(this.player.getEntity().getInventory(), this.player.getEntity());
+        this.inventoryScreen.addistener(LISTENER_NAME, this);
+        
+        this.saveScreen = new SaveScreen(Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT);
+        this.saveScreen.addistener(LISTENER_NAME, this);
+        // var str = gson.toJson(new SaveData(map, player, inventory, flagManager));
+        // var temp = gson.fromJson(str, SaveData.class);
+        // var _str = gson.toJson(this.inventory);
+        // var __str = gson.toJson(new ItemStack(Item.ItemList.test_item));
+        // try {
+        //     Files.writeString(Path.of("Resources/test_save.json"), str);
+        // } catch (IOException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
+        // System.out.println(temp);
     }
 
     public void update() {
@@ -111,28 +141,49 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             case BATTLE:
                 this.battleScreen.update();
                 break;
+            case SAVE:
+                this.saveScreen.update();
+                break;
             case LOST:
                 this.loseScreen.update();
                 break;
         }
         GlobalKeyboardHandler.runHandlers(this.screenCoordinator);
-        if (Keyboard.isKeyDown(Key.E) && menuClosecD <= 0) {
+        // if ()
+        // if (Keyboard.isKeyDown(Key.B) && this.battleScreen == null) {
+        //     this.battleScreen = new BattleScreen(this.player, new Entity() {
+        //         {
+        //             maxHealth = health = RandomGenerator.getDefault().nextDouble(1, 10);
+        //             baseAttack = RandomGenerator.getDefault().nextDouble(1, 2);
+        //         }
+        //     });
+        //     this.battleScreen.open();
+        //     this.battleScreen.addistener(LISTENER_NAME, this);
+        //     this.playLevelScreenState = PlayLevelScreenState.BATTLE;
+        // }
+        --menuCloseCD;
+        if (this.pressCD >= 0) {
+            this.pressCD--;
+            return;
+        }
+        if (Keyboard.isKeyDown(Key.E) && menuCloseCD <= 0) {
             this.inventoryScreen.initialize();
             this.inventoryScreen.open();
             this.playLevelScreenState = PlayLevelScreenState.INVENTORY;
         }
-        if (Keyboard.isKeyDown(Key.B) && this.battleScreen == null) {
-            this.battleScreen = new BattleScreen(this.inventory, this.player, new Entity() {
-                {
-                    maxHealth = health = RandomGenerator.getDefault().nextDouble(1, 10);
-                    baseAttack = RandomGenerator.getDefault().nextDouble(1, 2);
-                }
-            });
-            this.battleScreen.open();
-            this.battleScreen.addistener(LISTENER_NAME, this);
-            this.playLevelScreenState = PlayLevelScreenState.BATTLE;
+        if (Keyboard.isKeyDown(Key.L)) {
+            this.saveScreen.open();
+            this.playLevelScreenState = PlayLevelScreenState.SAVE;
         }
-        --menuClosecD;
+        // if (Keyboard.isKeyDown(Key.L) && save != null) {
+        //     this.loadSave(Globals.GSON.fromJson(this.save, SaveData.class));
+        //     this.save = null;
+        //     this.pressCD = Globals.KEYBOARD_CD;
+        // }
+        // if (Keyboard.isKeyDown(Key.K)) {
+        //     this.save = Globals.GSON.toJson(new SaveData(this.map, this.player, this.flagManager));
+        //     this.pressCD = Globals.KEYBOARD_CD;
+        // }
     }
 
     @Override
@@ -154,6 +205,11 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
                 this.map.draw(this.player, graphicsHandler);
                 this.inventoryScreen.draw(graphicsHandler);
                 break;
+            case SAVE: {
+                this.map.draw(graphicsHandler);
+                this.saveScreen.draw(graphicsHandler);
+                break;
+            }
             case BATTLE:
                 this.battleScreen.draw(graphicsHandler);
                 break;
@@ -177,21 +233,34 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
     // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {
-        RUNNING, LEVEL_COMPLETED, INVENTORY, BATTLE, LOST
+        RUNNING, LEVEL_COMPLETED, INVENTORY, BATTLE, LOST, SAVE
     }
 
     @Override
     public void onMenuClose() {
         this.playLevelScreenState = PlayLevelScreenState.RUNNING;
         this.battleScreen = null;
-        menuClosecD = 12;
+        menuCloseCD = 12;
     }
 
     @Override
     public void onEvent(String eventName, Object... args) { //handle events sent from script action  ////////////////////////
-        if (eventName.equals("player_lose")) {
-            this.playLevelScreenState = PlayLevelScreenState.LOST;
-            this.battleScreen = null;
+        switch (eventName) {
+            case "player_lose": {
+                this.playLevelScreenState = PlayLevelScreenState.LOST;
+                this.battleScreen = null;
+                break;
+            }
+            case "save": {
+                Globals.saveToFile(new SaveData(this.map, this.player, this.flagManager), (int) args[0]);
+                break;
+            }
+            case "load": {
+                this.loadSave(
+                    Globals.loadSave((int) args[0])
+                );
+                break;
+            }
         }
     }
 }

@@ -18,9 +18,13 @@ import Level.TileType;
 import Scripts.Interactable;
 public class CollectableItems extends MapEntity{
 
-    public CollectableItems(float x, float y, Frame frame) 
-    {
+    public CollectableItems(float x, float y, Frame frame) {
         super(x, y, frame);
+        this.setInteractScript(new Interactable());
+    }
+
+    public CollectableItems(Point pos, Frame frame) {
+        super(pos.x, pos.y, frame);
         this.setInteractScript(new Interactable());
     }
  

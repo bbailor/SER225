@@ -1,13 +1,19 @@
 package Utils;
 
+import com.google.gson.annotations.Expose;
+
 // Represents a Point on a 2D plane, has some "point math" methods
 public class Point {
-    public final float x;
-    public final float y;
+    @Expose public final float x;
+    @Expose public final float y;
 
     public Point(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    private Point() {
+        this(0, 0);
     }
 
     public Point add(Point point) {

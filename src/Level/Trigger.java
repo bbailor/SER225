@@ -5,10 +5,12 @@ import GameObject.Rectangle;
 
 import java.awt.*;
 
+import com.google.gson.annotations.Expose;
+
 // This class represents a trigger script that can be placed on a map
 // upon the player colliding with the trigger, it will play out the attached script
 public class Trigger extends MapEntity {
-    protected Script triggerScript;
+    @Expose protected Script triggerScript;
 
     public Trigger(float x, float y, int width, int height, Script triggerScript) {
         super(x, y);
@@ -25,6 +27,14 @@ public class Trigger extends MapEntity {
         this.setHeight(height);
         this.setBounds(new Rectangle(0, 0, width, height));
         this.existenceFlag = existenceFlag;
+    }
+
+    /**
+     * For serialization<p>
+     * DO NOT USE
+     */
+    private Trigger() {
+        super(0, 0);
     }
 
     protected Script loadTriggerScript() { return null; }
