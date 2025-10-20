@@ -2,7 +2,10 @@ package Level;
 
 import Engine.Config;
 import Engine.GraphicsHandler;
+import Engine.Key;
+import Engine.Keyboard;
 import Engine.ScreenManager;
+import EnhancedMapTiles.CollectableItems;
 import GameObject.Rectangle;
 import Utils.Direction;
 import Utils.Point;
@@ -35,6 +38,9 @@ public abstract class Map {
     // the tileset this map uses for its map tiles
     protected Tileset tileset;
 
+    // //Tileset of all the items that can be placed on the map.
+    // protected Tileset itemSet;
+
     // camera class that handles the viewable part of the map that is seen by the player of a game during a level
     protected Camera camera;
 
@@ -57,6 +63,7 @@ public abstract class Map {
     protected ArrayList<EnhancedMapTile> enhancedMapTiles;
     protected ArrayList<NPC> npcs;
     protected ArrayList<Trigger> triggers;
+    protected ArrayList<CollectableItems> collectableItems;
 
     // current script that is being executed (if any)
     protected Script activeScript;
@@ -113,6 +120,11 @@ public abstract class Map {
         this.triggers = loadTriggers();
         for (Trigger trigger: this.triggers) {
             trigger.setMap(this);
+        }
+
+        this.collectableItems = loadCollectableItems();
+        for (CollectableItems collectableItems: this.collectableItems) {
+            collectableItems.setMap(this);
         }
 
         this.loadScripts();
@@ -295,6 +307,10 @@ public abstract class Map {
         return new ArrayList<>();
     }
 
+    protected ArrayList<CollectableItems> loadCollectableItems() {
+        return new ArrayList<>();
+    }
+
     public Camera getCamera() {
         return camera;
     }
@@ -310,6 +326,10 @@ public abstract class Map {
 
     public ArrayList<MapTile> getAnimatedMapTiles() {
         return animatedMapTiles;
+    }
+
+    public ArrayList<CollectableItems> getCollectableItems(){
+        return collectableItems;
     }
 
     public Script getActiveScript() {
@@ -352,6 +372,15 @@ public abstract class Map {
                 npc.getInteractScript().setPlayer(player);
                 npc.getInteractScript().setListeners(listeners);
                 npc.getInteractScript().initialize();
+            }
+        }
+
+        for(CollectableItems collectableItems: collectableItems){
+            if (collectableItems.getInteractScript() != null) {
+                collectableItems.getInteractScript().setMap(this);
+                collectableItems.getInteractScript().setPlayer(player);
+                collectableItems.getInteractScript().setListeners(listeners);
+                collectableItems.getInteractScript().initialize();
             }
         }
         for (EnhancedMapTile enhancedMapTile : enhancedMapTiles) {
@@ -413,6 +442,11 @@ public abstract class Map {
         this.triggers.add(trigger);
     }
 
+    public void addCollectableItem(CollectableItems collectableItem) {
+        collectableItem.setMap(this);
+        this.collectableItems.add(collectableItem);
+    }
+
     public void setAdjustCamera(boolean adjustCamera) {
         this.adjustCamera = adjustCamera;
     }
@@ -421,7 +455,6 @@ public abstract class Map {
     public ArrayList<MapEntity> getSurroundingMapEntities(Player player) {
         ArrayList<MapEntity> surroundingMapEntities = new ArrayList<>();
 
-        // gets surrounding tiles
         Point playerCurrentTile = getTileIndexByPosition((int)player.getBounds().getX1(), (int)player.getBounds().getY1());
         for (int i = (int)playerCurrentTile.y - 1; i <= playerCurrentTile.y + 1; i++) {
             for (int j = (int)playerCurrentTile.x - 1; j <= playerCurrentTile.x + 1; j++) {
@@ -431,44 +464,73 @@ public abstract class Map {
                 }
             }
         }
-        // gets active surrounding npcs
+
         surroundingMapEntities.addAll(getActiveNPCs());
         surroundingMapEntities.addAll(getActiveEnhancedMapTiles());
+        surroundingMapEntities.addAll(getCollectableItems()); 
+
         return surroundingMapEntities;
     }
 
-    public void entityInteract(Player player) {
-        ArrayList<MapEntity> surroundingMapEntities = getSurroundingMapEntities(player);
-        ArrayList<MapEntity> playerTouchingMapEntities = new ArrayList<>();
-        for (MapEntity mapEntity : surroundingMapEntities) {
-            if (mapEntity.getInteractScript() != null && mapEntity.intersects(player.getInteractionRange())) {
-                playerTouchingMapEntities.add(mapEntity);
-            }
-        }
-        MapEntity interactedEntity = null;
-        if (playerTouchingMapEntities.size() == 1) {
-            if (playerTouchingMapEntities.get(0).isUncollidable || isInteractedEntityValid(playerTouchingMapEntities.get(0), player)) {
-                interactedEntity = playerTouchingMapEntities.get(0);
-            }
-        }
-        else if (playerTouchingMapEntities.size() > 1) {
-            MapEntity currentLargestAreaOverlappedEntity = null;
-            float currentLargestAreaOverlapped = 0;
-            for (MapEntity mapEntity : playerTouchingMapEntities) {
-                if (mapEntity.isUncollidable() || isInteractedEntityValid(mapEntity, player)) {
-                    float areaOverlapped = mapEntity.getAreaOverlapped(player.getInteractionRange());
-                    if (areaOverlapped > currentLargestAreaOverlapped) {
-                        currentLargestAreaOverlappedEntity = mapEntity;
-                        currentLargestAreaOverlapped = areaOverlapped;
-                    }
-                }
-            }
-            interactedEntity = currentLargestAreaOverlappedEntity;
-        }
-        if (interactedEntity != null) {
-            setActiveScript(interactedEntity.getInteractScript());
+
+// Add this method to Map.java to replace the existing entityInteract method
+
+// Replace the existing entityInteract method in Map.java with this version
+
+public void entityInteract(Player player) {
+    ArrayList<MapEntity> surroundingMapEntities = getSurroundingMapEntities(player);
+    ArrayList<MapEntity> playerTouchingMapEntities = new ArrayList<>();
+    
+    for (MapEntity mapEntity : surroundingMapEntities) {
+        if (mapEntity.getInteractScript() != null && mapEntity.intersects(player.getInteractionRange())) {
+            playerTouchingMapEntities.add(mapEntity);
         }
     }
+    
+    MapEntity interactedEntity = null;
+    if (playerTouchingMapEntities.size() == 1) {
+        // CollectableItems don't need directional validation - pick up from any direction
+        if (playerTouchingMapEntities.get(0) instanceof CollectableItems) {
+            interactedEntity = playerTouchingMapEntities.get(0);
+        }
+        else if (playerTouchingMapEntities.get(0).isUncollidable || isInteractedEntityValid(playerTouchingMapEntities.get(0), player)) {
+            interactedEntity = playerTouchingMapEntities.get(0);
+        }
+    }
+    else if (playerTouchingMapEntities.size() > 1) {
+        MapEntity currentLargestAreaOverlappedEntity = null;
+        float currentLargestAreaOverlapped = 0;
+        for (MapEntity mapEntity : playerTouchingMapEntities) {
+            // CollectableItems don't need directional validation
+            boolean isValid = (mapEntity instanceof CollectableItems) || 
+                             mapEntity.isUncollidable() || 
+                             isInteractedEntityValid(mapEntity, player);
+            
+            if (isValid) {
+                float areaOverlapped = mapEntity.getAreaOverlapped(player.getInteractionRange());
+                if (areaOverlapped > currentLargestAreaOverlapped) {
+                    currentLargestAreaOverlappedEntity = mapEntity;
+                    currentLargestAreaOverlapped = areaOverlapped;
+                }
+            }
+        }
+        interactedEntity = currentLargestAreaOverlappedEntity;
+    }
+    if (interactedEntity != null) {
+        setActiveScript(interactedEntity.getInteractScript());
+    }
+}
+
+// Add this new helper method to Map.java
+// private Rectangle getLargerInteractionRange(Player player) {
+//     int largerRange = 32;  // Adjust this value for collectables
+//     return new Rectangle(
+//         player.getBounds().getX1() - largerRange,
+//         player.getBounds().getY1() - largerRange,
+//         player.getBounds().getWidth() + (largerRange * 2),
+//         player.getBounds().getHeight() + (largerRange * 2)
+//     );
+// }
 
     private boolean isInteractedEntityValid(MapEntity interactedEntity, Player player) {
         Rectangle playerBounds = player.getBounds();
@@ -519,6 +581,18 @@ public abstract class Map {
             textbox.update();
         }
     }
+
+
+    //feel like this is not the best way
+//     public void checkCollectableItemInteractions(Player player) {
+//     for (CollectableItems item : collectableItems) {
+//         if (!item.isCollected() && player.intersects(item)) {
+//             if (Keyboard.isKeyDown(Key.SPACE)) {
+//                 item.collect();
+//             }
+//         }
+//     }
+// }
 
     // based on the player's current X position (which in a level can potentially be updated each frame),
     // adjust the player's and camera's positions accordingly in order to properly create the map "scrolling" effect

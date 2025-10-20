@@ -80,5 +80,6 @@ public class PushableRock extends EnhancedMapTile {
                 .withScale(3)
                 .build();
         return new GameObject(x, y, frame);
+
     }
 }

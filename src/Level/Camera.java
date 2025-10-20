@@ -2,6 +2,7 @@ package Level;
 
 import Engine.GraphicsHandler;
 import Engine.ScreenManager;
+import EnhancedMapTiles.CollectableItems;
 import GameObject.GameObject;
 import GameObject.Rectangle;
 
@@ -26,6 +27,7 @@ public class Camera extends Rectangle {
     private ArrayList<EnhancedMapTile> activeEnhancedMapTiles = new ArrayList<>();
     private ArrayList<NPC> activeNPCs = new ArrayList<>();
     private ArrayList<Trigger> activeTriggers = new ArrayList<>();
+    private ArrayList<CollectableItems> activeCollectableItems = new ArrayList<>();
 
     // determines how many tiles off screen an entity can be before it will be deemed inactive and not included in the update/draw cycles until it comes back in range
     private final int UPDATE_OFF_SCREEN_RANGE = 4;
@@ -66,6 +68,7 @@ public class Camera extends Rectangle {
         activeEnhancedMapTiles = loadActiveEnhancedMapTiles();
         activeNPCs = loadActiveNPCs();
         activeTriggers = loadActiveTriggers();
+        activeCollectableItems = loadCollectableItems();
 
         for (EnhancedMapTile enhancedMapTile : activeEnhancedMapTiles) {
             enhancedMapTile.update(player);
@@ -73,6 +76,10 @@ public class Camera extends Rectangle {
 
         for (NPC npc : activeNPCs) {
             npc.update(player);
+        }
+
+        for (CollectableItems collectableItem : activeCollectableItems) {
+            collectableItem.update(player);
         }
     }
 
@@ -124,6 +131,28 @@ public class Camera extends Rectangle {
         }
         return activeNPCs;
     }
+
+private ArrayList<CollectableItems> loadCollectableItems() {
+    activeCollectableItems.clear();
+
+    for (int i = map.getCollectableItems().size() - 1; i >= 0; i--) {
+        CollectableItems collectableItem = map.getCollectableItems().get(i);
+
+        if (isMapEntityActive(collectableItem)) {
+            activeCollectableItems.add(collectableItem);
+
+            if (collectableItem.mapEntityStatus == MapEntityStatus.INACTIVE) {
+                collectableItem.setMapEntityStatus(MapEntityStatus.ACTIVE);
+            }
+        } else if (collectableItem.getMapEntityStatus() == MapEntityStatus.ACTIVE) {
+            collectableItem.setMapEntityStatus(MapEntityStatus.INACTIVE);
+        } else if (collectableItem.getMapEntityStatus() == MapEntityStatus.REMOVED) {
+            map.getCollectableItems().remove(i);
+        }
+    }
+
+    return activeCollectableItems;
+}
 
     // determine which trigger map tiles are active (exist and are within range of the camera)
     private ArrayList<Trigger> loadActiveTriggers() {
@@ -228,6 +257,13 @@ public class Camera extends Rectangle {
 
         // player is drawn to screen
         player.draw(graphicsHandler);
+
+        for (CollectableItems collectableItem : activeCollectableItems) {
+            if (containsDraw(collectableItem)) {
+            collectableItem.draw(graphicsHandler);
+        }
+        
+}
 
         // npcs determined to be drawn after player from the above step are drawn here
         for (NPC npc : drawNpcsAfterPlayer) {

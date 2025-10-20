@@ -63,5 +63,4 @@ public class TextboxScriptAction extends ScriptAction {
     public void cleanup() {
         this.map.getTextbox().setIsActive(false);
     }
-    
 }
