@@ -3,6 +3,7 @@ package Maps;
 import EnhancedMapTiles.PushableRock;
 import Level.*;
 import NPCs.ArmoredSkeleton;
+import NPCs.DenialBoss;
 import NPCs.Skeleton;
 import NPCs.Spirit;
 import NPCs.Wizard;
@@ -10,13 +11,18 @@ import Scripts.SimpleTextScript;
 import Scripts.TestMap.*;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
+import NPCs.DenialBoss;
 
 // Represents a test map to be used in a level
 public class TestMap extends Map {
 
+    //Tileset of all the items that can be placed on the map.
+    protected Tileset itemSet;
+
     public TestMap() {
         super("test_map.txt", new CommonTileset());
         this.playerStartPosition = getMapTile(17, 20).getLocation();
+        //itemSet = 
     }
 
     @Override
@@ -70,6 +76,15 @@ public class TestMap extends Map {
         // player start is to the LEFT of (22,19) -> face LEFT
         as.setCurrentAnimationName("STAND_LEFT");
         npcs.add(as);
+
+
+        // adding boss into game (fingers crossed)
+        DenialBoss db = new DenialBoss(102, getMapTile(17, 10).getLocation().subtractY(16).subtractX(4));
+        db.setInteractScript(new DenialBossScript());
+        // player start is to the LEFT of (22,19) -> face LEFT
+        db.setCurrentAnimationName("STAND_RIGHT");
+        npcs.add(db);
+
 
         return npcs;
     }

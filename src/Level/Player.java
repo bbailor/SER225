@@ -1,6 +1,9 @@
 package Level;
 
+import java.awt.Color;
+
 import Builders.FrameBuilder;
+import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
@@ -15,7 +18,7 @@ public abstract class Player extends GameObject {
     // values that affect player movement
     // these should be set in a subclass
     protected float walkSpeed = 0;
-    protected int interactionRange = 1;
+    protected int interactionRange = 2;
     protected Direction currentWalkingXDirection;
     protected Direction currentWalkingYDirection;
     protected Direction lastWalkingXDirection;
@@ -277,10 +280,10 @@ public abstract class Player extends GameObject {
     }
 
     // Uncomment this to have game draw player's bounds to make it easier to visualize
-    /*
+    
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
-        drawBounds(graphicsHandler, new Color(255, 0, 0, 100));
+        //gitdrawBounds(graphicsHandler, new Color(255, 0, 0, 100));
     }
-    */
+    
 }

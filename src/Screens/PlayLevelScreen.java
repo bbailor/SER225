@@ -1,7 +1,5 @@
 package Screens;
 
-import java.util.random.RandomGenerator;
-
 import Engine.GlobalKeyboardHandler;
 import Engine.GraphicsHandler;
 import Engine.Inventory;
@@ -21,6 +19,7 @@ import Maps.TestMap;
 import Players.Gnome;
 import Utils.Direction;
 import Utils.MenuListener;
+import java.util.random.RandomGenerator;
 
 // This class is for when the RPG game is actually being played
 public class PlayLevelScreen extends Screen implements GameListener, MenuListener {
@@ -189,7 +188,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
     }
 
     @Override
-    public void onEvent(String eventName, Object... args) {
+    public void onEvent(String eventName, Object... args) { //handle events sent from script action  ////////////////////////
         if (eventName.equals("player_lose")) {
             this.playLevelScreenState = PlayLevelScreenState.LOST;
             this.battleScreen = null;
