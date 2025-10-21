@@ -4,8 +4,7 @@ import Level.Script;
 import ScriptActions.*;
 import java.util.ArrayList;
 
-// script for talking to walrus npc
-// checkout the documentation website for a detailed guide on how this script works
+// script for talking to denial enemy npc
 public class DenialEnemyScript extends Script {
 
     @Override
@@ -22,7 +21,6 @@ public class DenialEnemyScript extends Script {
                     addText("Monster: Forfeit your journey!");
                     addText("Monster: You can't save her, she's too far gone!");
                     addText("Gnomeo: Liar!!! You'll pay for your treachery!");
-
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToDenialEnemy", true));
             }});
@@ -30,34 +28,38 @@ public class DenialEnemyScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToDenialEnemy", true));
 
-                // Prompt with Yes/No (same pattern as BugScript)
+                // Prompt with Yes/No
                 addScriptAction(new TextboxScriptAction() {{
                     addText("A foe blocks your path.");
                     addText("Start battle?", new String[] { "Yes", "No" });
                 }});
 
-                // Handle the selection (0 = Yes, 1 = No)
+                // Handle selection
                 addScriptAction(new ConditionalScriptAction() {{
+
+                    // Yes
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
                             public boolean isRequirementMet() {
                                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-                                return answer == 0; // Yes
+                                return answer == 0;
                             }
                         });
-                        addScriptAction(new TextboxScriptAction("*growl*..."));
+                        // IMPORTANT: pass the actual NPC tied to this script
+                        addScriptAction(new StartBattleScriptAction(DenialEnemyScript.this.entity));
                     }});
 
+                    // No
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
                             public boolean isRequirementMet() {
                                 int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
-                                return answer == 1; // No
+                                return answer == 1;
                             }
                         });
-                        addScriptAction(new TextboxScriptAction("You cower in retreat."));
+                        addScriptAction(new TextboxScriptAction("Monster: Cowardice... Typical of Gnomes"));
                     }});
                 }});
             }});

@@ -78,7 +78,7 @@ public class TestMap extends Map {
         DenialBoss db = new DenialBoss(102, getMapTile(17, 10).getLocation().subtractY(16).subtractX(4));
         db.setInteractScript(new DenialBossScript());
         // player start is to the LEFT of (22,19) -> face LEFT
-        db.setCurrentAnimationName("STAND_RIGHT");
+        db.setCurrentAnimationName("STAND_LEFT");
         npcs.add(db);
 
 

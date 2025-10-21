@@ -2,26 +2,40 @@ package Screens;
 
 import Engine.GlobalKeyboardHandler;
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Inventory;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
+
 import Game.GameState;
 import Game.ScreenCoordinator;
+
+import GameObject.Frame;
+import GameObject.SpriteSheet;
+import Builders.FrameBuilder;
+
 import Level.Entity;
 import Level.FlagManager;
 import Level.GameListener;
 import Level.Item;
 import Level.ItemStack;
 import Level.Map;
+import Level.MapEntity;
+import Level.NPC;
 import Level.Player;
+
 import Maps.TestMap;
 import Players.Gnome;
+
+import NPCs.Skeleton;
+import NPCs.Spirit;
+import NPCs.ArmoredSkeleton;
+import NPCs.DenialBoss;
+
 import Utils.Direction;
 import Utils.MenuListener;
-import java.util.random.RandomGenerator;
 
-// This class is for when the RPG game is actually being played
 public class PlayLevelScreen extends Screen implements GameListener, MenuListener {
     protected ScreenCoordinator screenCoordinator;
     protected Map map;
@@ -45,19 +59,13 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         this.map = map;
         this.map.setFlagManager(this.flagManager);
 
-        // let pieces of map know which button to listen for as the "interact" button
         this.map.getTextbox().setInteractKey(player.getInteractKey());
         this.map.setPlayer(this.player);
         this.player.setMap(map);
         this.player.setLocation(this.map.getPlayerStartPosition().x, this.map.getPlayerStartPosition().y);
         this.player.setFacingDirection(Direction.LEFT);
-        
-        // add this screen as a "game listener" so other areas of the game that don't normally have direct access to it (such as scripts) can "signal" to have it do something
-        // this is used in the "onWin" method -- a script signals to this class that the game has been won by calling its "onWin" method
-        this.map.addListener(this);
 
-        // preloads all scripts ahead of time rather than loading them dynamically
-        // both are supported, however preloading is recommended
+        this.map.addListener(this);
         this.map.preloadScripts();
     }
 
@@ -66,7 +74,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             return;
         }
         this.inventory = new Inventory(9);
-        // setup state
+
+        // setup flags
         flagManager = new FlagManager();
         flagManager.addFlag("hasLostBall", false);
         flagManager.addFlag("hasEnteredDenial", false);
@@ -78,10 +87,9 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         // setup player
         player = new Gnome(0, 0);
-        // player.setMap(map);
         playLevelScreenState = PlayLevelScreenState.RUNNING;
-        
-        // define/setup map
+
+        // load map
         this.switchMap(new TestMap());
 
         winScreen = new WinScreen(this);
@@ -94,55 +102,110 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
     }
 
     public void update() {
-        // based on screen state, perform specific actions
         switch (playLevelScreenState) {
-            // if level is "running" update player and map to keep game logic for the platformer level going
             case RUNNING:
                 player.update();
                 map.update(player);
                 break;
-            // if level has been completed, bring up level cleared screen
+
             case LEVEL_COMPLETED:
                 winScreen.update();
                 break;
+
             case INVENTORY:
                 this.inventoryScreen.update();
                 break;
+
             case BATTLE:
                 this.battleScreen.update();
                 break;
+
             case LOST:
                 this.loseScreen.update();
                 break;
         }
+
         GlobalKeyboardHandler.runHandlers(this.screenCoordinator);
+
         if (Keyboard.isKeyDown(Key.E) && menuClosecD <= 0) {
             this.inventoryScreen.initialize();
             this.inventoryScreen.open();
             this.playLevelScreenState = PlayLevelScreenState.INVENTORY;
         }
-        if (Keyboard.isKeyDown(Key.B) && this.battleScreen == null) {
-            this.battleScreen = new BattleScreen(this.inventory, this.player, new Entity() {
-                {
-                    maxHealth = health = RandomGenerator.getDefault().nextDouble(1, 10);
-                    baseAttack = RandomGenerator.getDefault().nextDouble(1, 2);
-                }
-            });
-            this.battleScreen.open();
-            this.battleScreen.addistener(LISTENER_NAME, this);
-            this.playLevelScreenState = PlayLevelScreenState.BATTLE;
-        }
+
         --menuClosecD;
     }
 
+    /**
+     * Creates an Entity with a single "idle" frame that matches the interacted NPC's sprite.
+     * This is used when the "start_battle" event is triggered (Yes pressed).
+     */
+    private Entity buildEnemyEntityFor(MapEntity me) {
+    // If it's an NPC subtype we recognize, choose its sheet; else fallback
+    String path = null;
+    int spriteW = 32;
+    int spriteH = 32;
+    int scale   = 3;
+
+    int enemyHealth = 10;   // default health
+    int enemyAttack = 2;    // default attack
+
+    if (me instanceof Skeleton) {
+        path = "Enemies/skeleton.png";
+    } else if (me instanceof Spirit) {
+        path = "Enemies/spirit.png";
+    } else if (me instanceof ArmoredSkeleton) {
+        path = "Enemies/armored_skeleton.png";
+        enemyHealth = 15;  //Armored Skeleton HP
+    } else if (me instanceof DenialBoss) {
+        path = "Bosses/DenialBoss.png";
+        spriteW = 120;
+        spriteH = 120;
+        enemyHealth = 50;  //Boss HP
+    } else if (me instanceof NPC) {
+        // generic NPC fallback
+        return new Entity() {
+            {
+                maxHealth = health = 10;
+                baseAttack = 2;
+            }
+        };
+    } else {
+        // non-NPC fallback
+        return new Entity() {
+            {
+                maxHealth = health = 10;
+                baseAttack = 2;
+            }
+        };
+    }
+
+    final String finalPath = path;
+    final int w = spriteW, h = spriteH, sc = scale;
+    final int fHealth = enemyHealth;
+    final int fAttack = enemyAttack;
+
+    return new Entity() {
+        {
+            maxHealth = health = fHealth;
+            baseAttack = fAttack;
+
+            SpriteSheet ss = new SpriteSheet(ImageLoader.load(finalPath), w, h);
+            Frame idle = new FrameBuilder(ss.getSprite(0, 0), 9999)
+                    .withScale(sc)
+                    .build();
+            this.animations.put("idle", new Frame[] { idle });
+        }
+    };
+}
+
+
     @Override
     public void onWin() {
-        // when this method is called within the game, it signals the game has been "won"
         playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-        // based on screen state, draw appropriate graphics
         switch (playLevelScreenState) {
             case RUNNING:
                 map.draw(player, graphicsHandler);
@@ -175,7 +238,6 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         screenCoordinator.setGameState(GameState.MENU);
     }
 
-    // This enum represents the different states this screen can be in
     private enum PlayLevelScreenState {
         RUNNING, LEVEL_COMPLETED, INVENTORY, BATTLE, LOST
     }
@@ -188,10 +250,23 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
     }
 
     @Override
-    public void onEvent(String eventName, Object... args) { //handle events sent from script action  ////////////////////////
+    public void onEvent(String eventName, Object... args) {
         if (eventName.equals("player_lose")) {
             this.playLevelScreenState = PlayLevelScreenState.LOST;
             this.battleScreen = null;
+        }
+        else if (eventName.equals("start_battle") && args.length > 0 && args[0] instanceof MapEntity me) {
+            System.out.println("[PlayLevelScreen] start_battle received with: " + me.getClass().getSimpleName());
+            Entity enemy = buildEnemyEntityFor(me);
+
+            // Detect boss here
+            boolean isBossBattle = me instanceof DenialBoss;
+
+            // Pass boss flag to BattleScreen
+            this.battleScreen = new BattleScreen(this.inventory, this.player, enemy, isBossBattle);
+            this.battleScreen.open();
+            this.battleScreen.addistener(LISTENER_NAME, this);
+            this.playLevelScreenState = PlayLevelScreenState.BATTLE;
         }
     }
 }

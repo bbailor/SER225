@@ -36,6 +36,7 @@ public class Spirit extends NPC {
         HashMap<String, Frame[]> map = new HashMap<>();
         map.put("STAND_RIGHT", new Frame[] { standRight });
         map.put("STAND_LEFT",  new Frame[] { standLeft  });
+        map.put("idle",        new Frame[] { standRight }); // 👈 Added idle animation
         return map;
     }
 }

@@ -13,6 +13,7 @@ import Engine.Inventory;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
+import GameObject.ImageEffect;
 import Level.Entity;
 import Level.Player;
 import Screens.submenus.BattleSubMenu;
@@ -37,6 +38,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     protected Map<String, MenuListener> listeners = new HashMap<>();
     protected Color borderColor = TailwindColorScheme.slate700;
 
+
     public static final String LISTENER_NAME = "battle_screen";
     public static final String LOSE_EVENT_NAME = "player_lose";
     public static final int BORDER_LINE_WIDTH = 5;
@@ -50,16 +52,16 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     public static final int BATTLE_SELECTION_WIDTH = (int)(BORDER_WIDTH * .3);
     public static final float FONT_SIZE = 12f;
 
-    /**
-     * @param inventory The Player's Inventory
-     * @param player The Player Itself
-     * @param entity The entity the player is fighting
-     */
-    public BattleScreen(Inventory inventory, Player player, Entity entity) {
+    // New field to track if this battle involves the boss
+    private boolean isBossBattle = false;
+
+    // New constructor that accepts the boss flag
+    public BattleScreen(Inventory inventory, Player player, Entity entity, boolean isBossBattle) {
         this.inventory = inventory;
         this.player = player;
         this.entity = entity;
-        
+        this.isBossBattle = isBossBattle;
+
         var inv = new InventoryBattleMenu(
             BATTLE_SELECTION_WIDTH + BORDER_LINE_WIDTH,
             BATTLE_LOG_HEIGHT + BATTLE_HEIGHT + BORDER_LINE_WIDTH,
@@ -89,10 +91,13 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         this.history = new ArrayList<>();
     }
 
-    @Override
-    public void initialize() {
-        // This type of screen will be initalized in the constructor
+    // original constructor for backwards compatibility
+    public BattleScreen(Inventory inventory, Player player, Entity entity) {
+        this(inventory, player, entity, false);
     }
+
+    @Override
+    public void initialize() {}
 
     @Override
     public void update() {
@@ -117,23 +122,14 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         if (Keyboard.isKeyDown(Key.K)) {
             this.player.getEntity().kill();
         }
-        // if (Globals.DEBUG) {
-        //     this.selector.setX(BORDER_LINE_WIDTH);
-        //     this.selector.setY(BATTLE_LOG_HEIGHT + BATTLE_HEIGHT + MARGIN);
-        //     this.selector.setWidth(BATTLE_SELECTION_WIDTH - ((BORDER_LINE_WIDTH) * 2));
-        //     this.selector.setHeight(BATTLE_ACTIONS_HEIGHT - ((BORDER_LINE_WIDTH*3 + MARGIN) * 2));
-        // }
     }
-
-    // protected void handleTurnAction() {
-
-    // }
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
         graphicsHandler.drawFilledRectangle(0, 0, Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT, TailwindColorScheme.black);
+
         // Status Log Section
-        graphicsHandler.drawRectangle( // Border
+        graphicsHandler.drawRectangle(
             BORDER_LINE_WIDTH/2,
             0,
             BORDER_WIDTH,
@@ -167,7 +163,6 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             TailwindColorScheme.slate900,
             3
         );
-
         graphicsHandler.drawStringWithOutline(
             String.format("Enemy Health: %.2f/%.2f", this.entity.getHealth(), this.entity.getMaxHealth()),
             (BORDER_LINE_WIDTH + MARGIN * 2),
@@ -177,7 +172,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             TailwindColorScheme.slate900,
             3
         );
-        
+
         // Selector Section
         graphicsHandler.drawRectangle(
             0,
@@ -203,7 +198,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         }
 
         // Battle Section
-        graphicsHandler.drawRectangle( // Border
+        graphicsHandler.drawRectangle(
             BORDER_LINE_WIDTH/2,
             BATTLE_LOG_HEIGHT,
             BORDER_WIDTH,
@@ -225,13 +220,13 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             TailwindColorScheme.cyan500
         );
 
-        // TODO: Actual Animations
         var entityIdleAnimations = this.entity.getAnimations("idle");
         var playerIdleAnimations = this.player.getEntity().getAnimations("idle");
 
         int placeholderHeight = battleHeight / 2;
         int placeholderWidth = placeholderHeight / 2;
 
+        // PLAYER SPRITE
         if (playerIdleAnimations == null) {
             graphicsHandler.drawFilledRectangle(
                 battleY0 + entityPadding,
@@ -246,14 +241,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 battleY0 + (battleHeight - playerIdleAnimations[0].getHeight()) / 2
             );
             playerIdleAnimations[0].draw(graphicsHandler);
-            // graphicsHandler.drawFilledRectangle(
-            //     battleY0 + entityPadding,
-            //     battleY0 + (battleHeight - placeholderHeight) / 2,
-            //     placeholderWidth,
-            //     placeholderHeight,
-            //     this.borderColor
-            // );
         }
+
+        // ENEMY SPRITE
         if (entityIdleAnimations == null) {
             graphicsHandler.drawFilledRectangle(
                 DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding),
@@ -262,14 +252,21 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 placeholderHeight,
                 this.borderColor
             );
-        }  else {
-            entityIdleAnimations[0].setLocation(
-                (DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding)) - entityIdleAnimations[0].getWidth() * entityIdleAnimations[0].getScale(),
-                battleY0 + (battleHeight - entityIdleAnimations[0].getHeight()) / 2
-            );
+        } else {
+            float scale = entityIdleAnimations[0].getScale();
+            float enemyX = battleX0 + DEFAULT_SECTION_WIDTH * 0.85f
+                    - (entityIdleAnimations[0].getWidth() * scale) / 2f;
+            float enemyY = battleY0 + (battleHeight - entityIdleAnimations[0].getHeight()) / 2f;
+
+            // 👇 if boss battle, shift to the right
+            if (isBossBattle) {
+                enemyX += 300f;
+            }
+
+            entityIdleAnimations[0].setLocation(enemyX, enemyY);
+            entityIdleAnimations[0].setImageEffect(ImageEffect.FLIP_HORIZONTAL);
             entityIdleAnimations[0].draw(graphicsHandler);
         }
-
     }
 
     @Override
@@ -280,9 +277,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 this.currentTurn = BattleTurn.Enemy;
                 break;
             }
-            // Other skills through args later
             case "attack.skill": {
-                // For now just use weapon skill
                 this.entity.handleDamage(this.player.getEntity(), true);
                 this.currentTurn = BattleTurn.Enemy;
                 break;
@@ -298,7 +293,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                         break;
                     }
                     case "Defend": {
-                        this.player.getEntity().setTempResistance(RandomGenerator.getDefault().nextDouble(this.player.getEntity().getMaxHealth() * .05f));
+                        this.player.getEntity().setTempResistance(
+                            RandomGenerator.getDefault().nextDouble(this.player.getEntity().getMaxHealth() * .05f)
+                        );
                         this.currentTurn = BattleTurn.Enemy;
                         break;
                     }
@@ -313,7 +310,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                         break;
                     }
                     case "Flee": {
-                        if (RandomGenerator.getDefault().nextInt(3) == 1) {
+                        if (RandomGenerator.getDefault().nextInt(3) == 1) { 
                             this.close();
                             return;
                         }
@@ -332,9 +329,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     }
 
     @Override
-    public void open() {
-        // Unused (currently)
-    }
+    public void open() {}
 
     @Override
     public void onMenuClose() {
@@ -346,6 +341,4 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         Player,
         Enemy
     }
-
-    
 }
