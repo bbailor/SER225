@@ -1,33 +1,18 @@
 package Items;
 
-import java.awt.Color;
-import java.io.File;
-
-import javax.imageio.ImageIO;
-
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
-import EnhancedMapTiles.CollectableItems;
-import GameObject.Frame;
+import EnhancedMapTiles.CollectableItem;
 import GameObject.Rectangle;
-import GameObject.SpriteSheet;
-import Level.Map;
-import Scripts.Interactable;
+import Level.Item;
 import Utils.Point;
 
-public class KnifeOfLife extends CollectableItems {
+public class KnifeOfLife extends CollectableItem {
 
     protected Rectangle bounds;
     public KnifeOfLife(Point location) {
-        super(location.x, location.y, 
-            new FrameBuilder(ImageLoader.load("weapons//knifeOfLife.png"))
-                .withScale(2.0f)
-                .withBounds(8, 0, 16, 32)  // 2x the sprite size
-                .build()
-        );
-
-        this.setInteractScript(new Interactable());
+        super(location.x, location.y, Item.ItemList.knife_of_life);
     }
 
     @Override

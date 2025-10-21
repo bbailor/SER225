@@ -15,7 +15,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-import EnhancedMapTiles.CollectableItems;
+import EnhancedMapTiles.CollectableItem;
 import Level.EnhancedMapTile;
 import Level.Map;
 import Level.MapEntity;
@@ -67,6 +67,7 @@ public class MapSerializer implements JsonDeserializer<Map>, JsonSerializer<Map>
             tile_obj.addProperty("a", tile.isAnimated());
             tile_obj.add("p", context.serialize(tile.getLocation()));
             tile_obj.addProperty("i", tile.getTileIndex());
+            tile_obj.add("script", context.serialize(tile.getInteractScript(), Script.class));
             tiles.add(tile_obj);
         }
         obj.add("tiles", tiles);
@@ -77,6 +78,7 @@ public class MapSerializer implements JsonDeserializer<Map>, JsonSerializer<Map>
             
             tile_obj.addProperty("class", tile.getClass().getName());
             tile_obj.add("pos", context.serialize(tile.getLocation()));
+            tile_obj.add("script", context.serialize(tile.getInteractScript(), Script.class));
             etiles.add(tile_obj);
         }
         obj.add("etiles", etiles);
@@ -87,6 +89,7 @@ public class MapSerializer implements JsonDeserializer<Map>, JsonSerializer<Map>
             
             collectable_obj.addProperty("class", collectable.getClass().getName());
             collectable_obj.add("pos", context.serialize(collectable.getLocation()));
+            collectable_obj.add("script", context.serialize(collectable.getInteractScript(), Script.class));
             collectables.add(collectable_obj);
         }
         obj.add("collectables", collectables);
@@ -174,6 +177,9 @@ public class MapSerializer implements JsonDeserializer<Map>, JsonSerializer<Map>
                 var location = context.<Point>deserialize(tile_json.get("p"), Point.class);
                 var tile = map.getTileset().getTile(tile_json.get("i").getAsInt()).build(location);
                 // tile.setMap(map);
+                if (!tile_json.get("script").isJsonNull()) {
+                    tile.setInteractScript(context.deserialize(tile_json.get("script"), Script.class));
+                }
                 map.setMapTile((int)location.x / tileset.getScaledSpriteWidth(), (int)location.y / tileset.getScaledSpriteHeight(), tile);
                 if (tile_json.get("a").getAsBoolean()) {
                     map.getAnimatedMapTiles().add(tile);
@@ -182,19 +188,27 @@ public class MapSerializer implements JsonDeserializer<Map>, JsonSerializer<Map>
 
             for (var _tile_json : json.get("etiles").getAsJsonArray()) {
                 var tile_json = _tile_json.getAsJsonObject();
-                map.addEnhancedMapTile(Class.forName(tile_json.get("class").getAsString())
+                var tile = Class.forName(tile_json.get("class").getAsString())
                     .asSubclass(EnhancedMapTile.class)
                     .getConstructor(Point.class)
-                    .newInstance(context.<Point>deserialize(tile_json.get("pos"), Point.class))
-                );
+                    .newInstance(context.<Point>deserialize(tile_json.get("pos"), Point.class));
+                if (!tile_json.get("script").isJsonNull()) {
+                    tile.setInteractScript(context.deserialize(tile_json.get("script"), Script.class));
+                }
+                map.addEnhancedMapTile(tile);
             }
 
             for (var _collectable_json : json.get("collectables").getAsJsonArray()) {
                 var collectable_json = _collectable_json.getAsJsonObject();
-                map.addCollectableItem(Class.forName(collectable_json.get("class").getAsString())
-                    .asSubclass(CollectableItems.class)
+                var collectable = Class.forName(collectable_json.get("class").getAsString())
+                    .asSubclass(CollectableItem.class)
                     .getConstructor(Point.class)
-                    .newInstance(context.<Point>deserialize(collectable_json.get("pos"), Point.class))
+                    .newInstance(context.<Point>deserialize(collectable_json.get("pos"), Point.class));
+                if (!collectable_json.get("script").isJsonNull()) {
+                    collectable.setInteractScript(context.deserialize(collectable_json.get("script"), Script.class));
+                }
+                map.addCollectableItem(
+                    collectable
                 );
             }
 
@@ -206,7 +220,7 @@ public class MapSerializer implements JsonDeserializer<Map>, JsonSerializer<Map>
                 var npc_json = _npc.getAsJsonObject();
                 var clazz = Class.forName(npc_json.get("class").getAsString()).asSubclass(NPC.class);
                 var npc = clazz.getDeclaredConstructor(int.class, Point.class).newInstance(npc_json.get("id").getAsInt(), context.deserialize(npc_json.get("pos"), Point.class));
-                npc.setInteractScript(Class.forName(npc_json.get("interactScript").getAsString()).asSubclass(Script.class).getConstructor().newInstance());
+                npc.setInteractScript(context.deserialize(npc_json.get("interactScript"), Script.class));
                 // npc.setIsUpdateOffScreen(npc_json.get("isUpdateOffScreen").getAsBoolean());
                 // npc.setIsHidden(npc_json.get("isHidden").getAsBoolean());
                 // npc.setMapEntityStatus(context.deserialize(npc_json.get("mapEntityStatus"), MapEntityStatus.class));

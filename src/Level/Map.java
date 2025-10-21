@@ -1,15 +1,5 @@
 package Level;
 
-import Engine.Config;
-import Engine.GraphicsHandler;
-import Engine.Key;
-import Engine.Keyboard;
-import Engine.ScreenManager;
-import EnhancedMapTiles.CollectableItems;
-import GameObject.Rectangle;
-import Utils.Direction;
-import Utils.Point;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -17,7 +7,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.google.gson.annotations.Expose;
+import Engine.Config;
+import Engine.GraphicsHandler;
+import Engine.ScreenManager;
+import EnhancedMapTiles.CollectableItem;
+import GameObject.Rectangle;
+import Utils.Direction;
+import Utils.Point;
 
 /*
     This class is for defining a map that is used for a specific level
@@ -65,7 +61,7 @@ public class Map {
     protected ArrayList<EnhancedMapTile> enhancedMapTiles;
     protected ArrayList<NPC> npcs;
     protected ArrayList<Trigger> triggers;
-    protected ArrayList<CollectableItems> collectableItems;
+    protected ArrayList<CollectableItem> collectableItems;
 
     // current script that is being executed (if any)
     protected Script activeScript;
@@ -138,7 +134,7 @@ public class Map {
         }
 
         this.collectableItems = loadCollectableItems();
-        for (CollectableItems collectableItems: this.collectableItems) {
+        for (CollectableItem collectableItems: this.collectableItems) {
             collectableItems.setMap(this);
         }
 
@@ -335,7 +331,7 @@ public class Map {
         return new ArrayList<>();
     }
 
-    protected ArrayList<CollectableItems> loadCollectableItems() {
+    protected ArrayList<CollectableItem> loadCollectableItems() {
         return new ArrayList<>();
     }
 
@@ -356,7 +352,7 @@ public class Map {
         return animatedMapTiles;
     }
 
-    public ArrayList<CollectableItems> getCollectableItems(){
+    public ArrayList<CollectableItem> getCollectableItems(){
         return collectableItems;
     }
 
@@ -403,7 +399,7 @@ public class Map {
             }
         }
 
-        for(CollectableItems collectableItems: collectableItems){
+        for(CollectableItem collectableItems: collectableItems){
             if (collectableItems.getInteractScript() != null) {
                 collectableItems.getInteractScript().setMap(this);
                 collectableItems.getInteractScript().setPlayer(player);
@@ -470,7 +466,7 @@ public class Map {
         this.triggers.add(trigger);
     }
 
-    public void addCollectableItem(CollectableItems collectableItem) {
+    public void addCollectableItem(CollectableItem collectableItem) {
         collectableItem.setMap(this);
         this.collectableItems.add(collectableItem);
     }
@@ -518,7 +514,7 @@ public void entityInteract(Player player) {
     MapEntity interactedEntity = null;
     if (playerTouchingMapEntities.size() == 1) {
         // CollectableItems don't need directional validation - pick up from any direction
-        if (playerTouchingMapEntities.get(0) instanceof CollectableItems) {
+        if (playerTouchingMapEntities.get(0) instanceof CollectableItem) {
             interactedEntity = playerTouchingMapEntities.get(0);
         }
         else if (playerTouchingMapEntities.get(0).isUncollidable || isInteractedEntityValid(playerTouchingMapEntities.get(0), player)) {
@@ -530,7 +526,7 @@ public void entityInteract(Player player) {
         float currentLargestAreaOverlapped = 0;
         for (MapEntity mapEntity : playerTouchingMapEntities) {
             // CollectableItems don't need directional validation
-            boolean isValid = (mapEntity instanceof CollectableItems) || 
+            boolean isValid = (mapEntity instanceof CollectableItem) || 
                              mapEntity.isUncollidable() || 
                              isInteractedEntityValid(mapEntity, player);
             

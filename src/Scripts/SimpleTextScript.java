@@ -1,6 +1,9 @@
 package Scripts;
 
 import java.util.ArrayList;
+
+import com.google.gson.annotations.Expose;
+
 import Level.Script;
 import ScriptActions.*;
 
@@ -9,7 +12,7 @@ import ScriptActions.*;
 // useful for generic dialogue, signs, etc.
 // checkout the documentation website for a detailed guide on how this script works
 public class SimpleTextScript extends Script {
-    private String[] textItems;
+    @Expose private String[] textItems;
 
     public SimpleTextScript(String text) {
         this.textItems = new String[] { text };
@@ -18,6 +21,8 @@ public class SimpleTextScript extends Script {
     public SimpleTextScript(String[] text) {
         this.textItems = text;
     }
+
+    private SimpleTextScript() {}
     
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {

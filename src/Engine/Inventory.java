@@ -9,14 +9,15 @@ import java.util.TreeMap;
 
 import com.google.gson.annotations.Expose;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import Level.ItemStack;
 
 public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
     
-    @Expose protected Map<NamedSlot, ItemStack> equipped_items = new EnumMap<>(NamedSlot.class);
-    @Expose protected Map<Integer, ItemStack> items;
+    @Expose protected Map<NamedSlot, @Nullable ItemStack> equipped_items = new EnumMap<>(NamedSlot.class);
+    @Expose protected Map<Integer, @Nullable ItemStack> items;
 
     public ItemStack getStack(NamedSlot slot) {
         return this.equipped_items.get(slot);
@@ -39,6 +40,34 @@ public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
         var old_item = this.items.get(slot_id);
         this.items.put(slot_id, item);
         return old_item;
+    }
+
+    @Nullable
+    public ItemStack setStack(NamedSlot slot, @Nullable ItemStack item) {
+        var old_item = this.equipped_items.get(slot);
+        this.equipped_items.put(slot, item);
+        return old_item;
+    }
+
+    @SuppressWarnings("null")
+    public boolean addStack(@NotNull ItemStack stack) {
+        int i = -1;
+        int initStackCount = stack.getCount();
+        while (stack.getCount() > 0 && i < this.items.size()) {
+            ++i;
+            if (this.items.get(i) == null) {
+                this.items.put(i, stack);
+                initStackCount = Integer.MAX_VALUE;
+                break;
+            }
+            if (!this.items.get(i).getItem().equals(stack.getItem())) {
+                continue;
+            }
+            if (this.items.get(i).merge(stack) != 0) {
+                break;
+            }
+        }
+        return initStackCount < stack.getCount();
     }
 
     public boolean isEmpty() {

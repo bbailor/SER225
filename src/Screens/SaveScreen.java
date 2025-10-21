@@ -79,7 +79,9 @@ public class SaveScreen extends Screen implements Menu {
         this.selectedElement = -1;
         for (var slot : this.slots) {
             slot.refreshData();
+            slot.setBorderColor(null);
         }
+        this.slots[0].setBorderColor(Globals.HOVER_COLOR);
     }
 
     @Override
@@ -114,7 +116,7 @@ public class SaveScreen extends Screen implements Menu {
         }
 
         if (prevSel != this.selectedID) {
-            if (prevSel != -1) {
+            if (prevSel != -1 && prevSel != this.hoveredID) {
                 this.slots[prevSel].setBorderColor(null);
             }
             if (this.selectedID != -1) {
@@ -126,7 +128,7 @@ public class SaveScreen extends Screen implements Menu {
     protected boolean handleMouseMovement() {
         Point mousePos = Mouse.getCurrentPosition();
 
-        if (!Mouse.getCurrentPosition().equals(this.lastMousePosition)) {
+        if (!mousePos.equals(this.lastMousePosition)) {
             if (this.saveButtonBounds.contains(mousePos)) {
                 this.selectedElement = 1;
             } else if (this.loadButtonBounds.contains(mousePos)) {
@@ -140,16 +142,18 @@ public class SaveScreen extends Screen implements Menu {
             }
         }
 
-        this.lastMousePosition = mousePos;
         boolean isHoveringSave = false;
         for (int i = 0; i < this.saveBounds.length; ++i) {
             var rec = this.saveBounds[i];
             if (rec.contains(mousePos)) {
-                this.hoveredID = i;
+                if (!mousePos.equals(this.lastMousePosition)) {
+                    this.hoveredID = i;
+                }
                 isHoveringSave = true;
                 break;
             }
         }
+        this.lastMousePosition = mousePos;
         return isHoveringSave;
     }
 
@@ -199,7 +203,7 @@ public class SaveScreen extends Screen implements Menu {
         if ((Keyboard.isKeyDown(Key.LEFT) || Keyboard.isKeyDown(Key.A))) {
             this.pressCD = Globals.KEYBOARD_CD;
             if (this.selectedID != -1) {
-                this.selectedElement = this.selectedElement < 1 ? 3 : this.selectedElement-1;
+                this.selectedElement = this.selectedElement == 1 ? 2 : 1;
                 return;
             }
             if (this.hoveredID == 0) {
@@ -212,7 +216,7 @@ public class SaveScreen extends Screen implements Menu {
         if (Keyboard.isKeyDown(Key.RIGHT) || Keyboard.isKeyDown(Key.D)) {
             this.pressCD = Globals.KEYBOARD_CD;
             if (this.selectedID != -1) {
-                this.selectedElement = this.selectedElement > 2 ? 0 : this.selectedElement+1;
+                this.selectedElement = this.selectedElement == 1 ? 2 : 1;
                 return;
             }
             if (this.hoveredID == this.slots.length - 1) {
@@ -222,7 +226,7 @@ public class SaveScreen extends Screen implements Menu {
                 this.hoveredID = this.hoveredID + 1;
             }
         }
-        if ((Keyboard.isKeyDown(Key.UP) || Keyboard.isKeyDown(Key.W))) {
+        if ((Keyboard.isKeyDown(Key.UP) || Keyboard.isKeyDown(Key.W)) && this.selectedID == -1) {
             this.pressCD = Globals.KEYBOARD_CD;
             if (this.hoveredID < this.maxSlotsX) {
                 this.hoveredID = this.slots.length - (this.maxSlotsX - this.hoveredID);
@@ -231,7 +235,7 @@ public class SaveScreen extends Screen implements Menu {
                 this.hoveredID = this.hoveredID - this.maxSlotsX;
             }
         }
-        if (Keyboard.isKeyDown(Key.DOWN) || Keyboard.isKeyDown(Key.S)) {
+        if ((Keyboard.isKeyDown(Key.DOWN) || Keyboard.isKeyDown(Key.S)) && this.selectedID == -1) {
             this.pressCD = Globals.KEYBOARD_CD;
             if (this.hoveredID + this.maxSlotsX >= this.slots.length) {
                 this.hoveredID = (this.maxSlotsX * (this.hoveredID%this.maxSlotsX))/3;
@@ -248,18 +252,27 @@ public class SaveScreen extends Screen implements Menu {
             this.pressCD = Globals.KEYBOARD_CD;
             if (this.selectedElement == -1) {
                 this.close();
+                return;
             }
+            this.slots[this.selectedID].setBorderColor(Globals.HOVER_COLOR);
             this.selectedElement = -1;
             this.selectedID = -1;
         }
-        // if (Keyboard.isKeyDown(Key.LEFT) && this.page > 0) {
-        //     this.pressCD = Globals.KEYBOARD_CD;
-        //     this.page--;
-        // }
-        // if (Keyboard.isKeyDown(Key.RIGHT)) {
-        //     this.pressCD = Globals.KEYBOARD_CD;
-        //     this.page++;
-        // }
+        if (Keyboard.isKeyDown(Key.ENTER)) {
+            this.pressCD = Globals.KEYBOARD_CD;
+            if (this.selectedElement == -1) {
+                this.selectedID = this.hoveredID;
+                this.selectedElement = 1;
+            } else {
+                if (this.selectedElement == 1) {
+                    this.sendEvent("save", this.selectedID + this.page * this.slots.length);
+                    this.close();
+                } else if (this.slots[this.selectedID].getSaveData() != null) {
+                    this.sendEvent("load", this.selectedID + this.page * this.slots.length);
+                    this.close();
+                }
+            }
+        }
     }
 
     public void changePage(int page) {
