@@ -9,13 +9,17 @@ import java.util.random.RandomGenerator;
 
 import Engine.Config;
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Inventory;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
 import GameObject.ImageEffect;
+import GameObject.SpriteSheet;
 import Level.Entity;
 import Level.Player;
+import FightAnimations.AttackAnimation;
+import FightAnimations.SkeletonAttack;
 import Screens.submenus.BattleSubMenu;
 import Screens.submenus.InventoryBattleMenu;
 import Screens.submenus.SelectionBattleMenu;
@@ -37,6 +41,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     protected Map<String, BattleSubMenu> actions = new HashMap<>();
     protected Map<String, MenuListener> listeners = new HashMap<>();
     protected Color borderColor = TailwindColorScheme.slate700;
+    protected AttackAnimation activeAttackAnimation = null;
+    protected boolean enemyTurnStarted = false;
 
     // New field to track if this battle involves the boss
     private boolean isBossBattle = false;
@@ -113,9 +119,22 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             this.sendEvent(LOSE_EVENT_NAME);
             return;
         }
+        
+        // Handle active attack animation
+        if (activeAttackAnimation != null) {
+            activeAttackAnimation.update();
+            if (activeAttackAnimation.isComplete()) {
+                // Apply damage when animation completes
+                this.player.getEntity().handleDamage(this.entity, false);
+                activeAttackAnimation = null;
+                this.currentTurn = BattleTurn.Player;
+            }
+            return;
+        }
+        
         if (this.currentTurn == BattleTurn.Enemy) {
-            this.player.getEntity().handleDamage(this.entity, false);
-            this.currentTurn = BattleTurn.Player;
+            // Start attack animation instead of immediate damage
+            startEnemyAttackAnimation();
             return;
         }
         if (this.selectedAction == null) {
@@ -262,7 +281,6 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                     - (entityIdleAnimations[0].getWidth() * scale) / 2f;
             float enemyY = battleY0 + (battleHeight - entityIdleAnimations[0].getHeight()) / 2f;
 
-            // 👇 if boss battle, shift to the right
             if (isBossBattle) {
                 enemyX += 300f;
             }
@@ -270,6 +288,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             entityIdleAnimations[0].setLocation(enemyX, enemyY);
             entityIdleAnimations[0].setImageEffect(ImageEffect.FLIP_HORIZONTAL);
             entityIdleAnimations[0].draw(graphicsHandler);
+        }
+        
+        // Draw active attack animation if present
+        if (activeAttackAnimation != null) {
+            activeAttackAnimation.draw(graphicsHandler);
         }
     }
 
@@ -344,6 +367,73 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     public void onMenuClose() {
         this.selectedAction = null;
         this.selector.setHoverColor(Globals.HOVER_COLOR);
+    }
+    
+    private void startEnemyAttackAnimation() {
+        // Calculate battle area positions
+        int entityPadding = DEFAULT_SECTION_WIDTH / 10;
+        int battleX0 = BORDER_LINE_WIDTH * 2;
+        int battleY0 = BATTLE_LOG_HEIGHT + BORDER_LINE_WIDTH + MARGIN;
+        int battleHeight = BATTLE_HEIGHT - ((BORDER_LINE_WIDTH + MARGIN) * 2);
+        
+        // Get enemy and player sprite positions
+        var entityIdleAnimations = this.entity.getAnimations("idle");
+        var playerIdleAnimations = this.player.getEntity().getAnimations("idle");
+        
+        float enemyX, enemyY, playerX, playerY;
+        
+        // Calculate enemy position (where animation starts)
+        if (entityIdleAnimations != null) {
+            float scale = entityIdleAnimations[0].getScale();
+            enemyX = battleX0 + DEFAULT_SECTION_WIDTH * 0.85f
+                    - (entityIdleAnimations[0].getWidth() * scale) / 2f;
+            if (isBossBattle) {
+                enemyX += 300f;
+            }
+            enemyY = battleY0 + (battleHeight - entityIdleAnimations[0].getHeight()) / 2f;
+        } else {
+            // Fallback to placeholder position
+            int placeholderHeight = battleHeight / 2;
+            int placeholderWidth = placeholderHeight / 2;
+            enemyX = DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding);
+            enemyY = battleY0 + (battleHeight - placeholderHeight) / 2;
+        }
+        
+        // Calculate player position (where animation ends)
+        if (playerIdleAnimations != null) {
+            playerX = battleX0 + entityPadding + playerIdleAnimations[0].getWidth() * playerIdleAnimations[0].getScale();
+            playerY = battleY0 + (battleHeight - playerIdleAnimations[0].getHeight()) / 2;
+        } else {
+            // Fallback to placeholder position
+            int placeholderHeight = battleHeight / 2;
+            playerX = battleY0 + entityPadding;
+            playerY = battleY0 + (battleHeight - placeholderHeight) / 2;
+        }
+        
+        try {
+            // Load the attack sprite sheet
+            SpriteSheet attackSheet = new SpriteSheet(
+                ImageLoader.load("Enemies/SkeletonAttack.png"), 
+                24, // sprite width
+                24  // sprite height
+            );
+            
+            // Create animation with 30 frame duration (adjust for speed)
+            activeAttackAnimation = new SkeletonAttack(
+                attackSheet,
+                enemyX, enemyY,
+                playerX, playerY,
+                45 // duration in frames (lower = faster travel)
+            );
+            
+            // Catch error if attack animation fails to play
+        } catch (Exception e) {
+            System.err.println("Failed to load skeleton attack animation: " + e.getMessage());
+            e.printStackTrace();
+            // Fallback: just do immediate damage if animation fails
+            this.player.getEntity().handleDamage(this.entity, false);
+            this.currentTurn = BattleTurn.Player;
+        }
     }
 
     public enum BattleTurn {

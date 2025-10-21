@@ -294,7 +294,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         // Start battle event
         if (eventName.equals("start_battle") && args.length > 0 && args[0] instanceof MapEntity me) {
-            System.out.println("[PlayLevelScreen] start_battle received with: " + me.getClass().getSimpleName());
+            // Debugging messsage
+            // System.out.println("[PlayLevelScreen] start_battle received with: " + me.getClass().getSimpleName());
             Entity enemy = buildEnemyEntityFor(me);
 
             boolean isBossBattle = me instanceof DenialBoss;
