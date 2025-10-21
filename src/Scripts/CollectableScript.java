@@ -34,7 +34,7 @@ public class CollectableScript extends Script {
         ArrayList<ScriptAction> actions = new ArrayList<>();
 
         actions.add(new LockPlayerScriptAction());
-        actions.add(new TextboxScriptAction("You picked up an interactable item"));
+        actions.add(new TextboxScriptAction("You picked up the " + stack.getItem().getName() + "!"));
         actions.add(new CollectableScriptAction(this.stack));
         actions.add(new UnlockPlayerScriptAction());
         

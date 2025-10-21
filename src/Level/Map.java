@@ -11,7 +11,6 @@ import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ScreenManager;
 import EnhancedMapTiles.CollectableItem;
-import EnhancedMapTiles.CollectableItems;
 import GameObject.Rectangle;
 import Utils.Direction;
 import Utils.Point;
@@ -526,7 +525,7 @@ public void entityInteract(Player player) {
         MapEntity currentLargestAreaOverlappedEntity = null;
         float currentLargestAreaOverlapped = 0;
         for (MapEntity mapEntity : playerTouchingMapEntities) {
-            boolean isValid = (mapEntity instanceof CollectableItems) || 
+            boolean isValid = (mapEntity instanceof CollectableItem) || 
                              mapEntity.isUncollidable() || 
                              isInteractedEntityValid(mapEntity, player);
             
