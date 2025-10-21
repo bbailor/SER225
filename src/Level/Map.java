@@ -525,7 +525,6 @@ public void entityInteract(Player player) {
         MapEntity currentLargestAreaOverlappedEntity = null;
         float currentLargestAreaOverlapped = 0;
         for (MapEntity mapEntity : playerTouchingMapEntities) {
-            // CollectableItems don't need directional validation
             boolean isValid = (mapEntity instanceof CollectableItem) || 
                              mapEntity.isUncollidable() || 
                              isInteractedEntityValid(mapEntity, player);
@@ -544,18 +543,6 @@ public void entityInteract(Player player) {
         setActiveScript(interactedEntity.getInteractScript());
     }
 }
-
-// Add this new helper method to Map.java
-// private Rectangle getLargerInteractionRange(Player player) {
-//     int largerRange = 32;  // Adjust this value for collectables
-//     return new Rectangle(
-//         player.getBounds().getX1() - largerRange,
-//         player.getBounds().getY1() - largerRange,
-//         player.getBounds().getWidth() + (largerRange * 2),
-//         player.getBounds().getHeight() + (largerRange * 2)
-//     );
-// }
-
     private boolean isInteractedEntityValid(MapEntity interactedEntity, Player player) {
         Rectangle playerBounds = player.getBounds();
         Rectangle entityBounds = interactedEntity.getBounds();

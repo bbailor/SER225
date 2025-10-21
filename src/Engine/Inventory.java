@@ -106,4 +106,16 @@ public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
     public Iterator<Entry<Integer, ItemStack>> iterator() {
         return this.items.entrySet().iterator();
     }
+
+    public boolean isFull()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            if (getStack(i) == null)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -58,5 +58,10 @@ public class Weapon extends Item {
         return this.weaponSkillCost;
     }
 
+    public void use(ItemStack stack, Entity targetedEntity) {
+        System.out.println("Use from weapon class" + this);
+
+        targetedEntity.setCurrentWeapon(this);
+    }
     
 }

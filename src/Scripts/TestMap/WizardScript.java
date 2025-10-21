@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import EnhancedMapTiles.CollectableItem;
 import Items.KnifeOfLife;
+import Level.Item;
 import Level.Script;
 import Level.ScriptState;
 import ScriptActions.ChangeFlagScriptAction;
@@ -51,7 +52,7 @@ public class WizardScript extends Script {
         @Override
         public ScriptState execute() {
             Point location = map.getMapTile(10, 18).getLocation();
-            CollectableItem knifeOfLife = new KnifeOfLife(location);
+            CollectableItem knifeOfLife = new CollectableItem(location.x, location.y, Item.ItemList.knife_of_life);
             map.addCollectableItem(knifeOfLife);
 
             return ScriptState.COMPLETED;
