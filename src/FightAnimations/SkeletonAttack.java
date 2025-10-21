@@ -51,7 +51,7 @@ public class SkeletonAttack extends AttackAnimation {
             setLocation(stoppedX, stoppedY);
         }
     }
-    
+
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{

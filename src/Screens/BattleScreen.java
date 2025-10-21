@@ -127,13 +127,15 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 // Apply damage when animation completes
                 this.player.getEntity().handleDamage(this.entity, false);
                 activeAttackAnimation = null;
+                enemyTurnStarted = false;
                 this.currentTurn = BattleTurn.Player;
             }
             return;
         }
         
-        if (this.currentTurn == BattleTurn.Enemy) {
+        if (this.currentTurn == BattleTurn.Enemy && !enemyTurnStarted) {
             // Start attack animation instead of immediate damage
+            enemyTurnStarted = true;
             startEnemyAttackAnimation();
             return;
         }
@@ -375,13 +377,13 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         int battleX0 = BORDER_LINE_WIDTH * 2;
         int battleY0 = BATTLE_LOG_HEIGHT + BORDER_LINE_WIDTH + MARGIN;
         int battleHeight = BATTLE_HEIGHT - ((BORDER_LINE_WIDTH + MARGIN) * 2);
-        
+
         // Get enemy and player sprite positions
         var entityIdleAnimations = this.entity.getAnimations("idle");
         var playerIdleAnimations = this.player.getEntity().getAnimations("idle");
-        
+
         float enemyX, enemyY, playerX, playerY;
-        
+
         // Calculate enemy position (where animation starts)
         if (entityIdleAnimations != null) {
             float scale = entityIdleAnimations[0].getScale();
@@ -398,7 +400,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             enemyX = DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding);
             enemyY = battleY0 + (battleHeight - placeholderHeight) / 2;
         }
-        
+
         // Calculate player position (where animation ends)
         if (playerIdleAnimations != null) {
             playerX = battleX0 + entityPadding + playerIdleAnimations[0].getWidth() * playerIdleAnimations[0].getScale();
@@ -409,30 +411,46 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             playerX = battleY0 + entityPadding;
             playerY = battleY0 + (battleHeight - placeholderHeight) / 2;
         }
-        
+
         try {
+            // Get the enemy's attack animation class name
+            String enemyClassName = entity.getClass().getSimpleName();
+            String attackFileName = "Enemies/" + enemyClassName + "Attack.png";
+            String attackClassName = "FightAnimations." + enemyClassName + "Attack";
+
             // Load the attack sprite sheet
             SpriteSheet attackSheet = new SpriteSheet(
-                ImageLoader.load("Enemies/SkeletonAttack.png"), 
-                24, // sprite width
-                24  // sprite height
+                ImageLoader.load(attackFileName),
+                24,
+                24
             );
-            
-            // Create animation with 30 frame duration (adjust for speed)
-            activeAttackAnimation = new SkeletonAttack(
-                attackSheet,
-                enemyX, enemyY,
-                playerX, playerY,
-                45 // duration in frames (lower = faster travel)
-            );
-            
-            // Catch error if attack animation fails to play
+
+            // Use reflection to create the appropriate attack animation class
+            Class<?> attackClass = Class.forName(attackClassName);
+            activeAttackAnimation = (AttackAnimation) attackClass
+                .getConstructor(SpriteSheet.class, float.class, float.class, float.class, float.class, int.class)
+                .newInstance(attackSheet, enemyX, enemyY, playerX, playerY, 45);
+
         } catch (Exception e) {
-            System.err.println("Failed to load skeleton attack animation: " + e.getMessage());
-            e.printStackTrace();
-            // Fallback: just do immediate damage if animation fails
-            this.player.getEntity().handleDamage(this.entity, false);
-            this.currentTurn = BattleTurn.Player;
+            System.err.println("Failed to load dynamic attack animation: " + e.getMessage());
+            try {
+                // Fallback to SkeletonAttack
+                SpriteSheet fallbackSheet = new SpriteSheet(
+                    ImageLoader.load("Enemies/SkeletonAttack.png"),
+                    24,
+                    24
+                );
+                activeAttackAnimation = new SkeletonAttack(
+                    fallbackSheet,
+                    enemyX, enemyY,
+                    playerX, playerY,
+                    45
+                );
+            } catch (Exception fallbackError) {
+                System.err.println("Fallback animation also failed: " + fallbackError.getMessage());
+                this.player.getEntity().handleDamage(this.entity, false);
+                this.currentTurn = BattleTurn.Player;
+            }
         }
     }
 
