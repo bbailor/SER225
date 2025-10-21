@@ -18,7 +18,7 @@ import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Entity;
 import Level.Player;
-import FightAnimations.AttackAnimation;
+import FightAnimations.EnemyProjectileAttackAnimation;
 import FightAnimations.SkeletonAttack;
 import Screens.submenus.BattleSubMenu;
 import Screens.submenus.InventoryBattleMenu;
@@ -41,7 +41,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     protected Map<String, BattleSubMenu> actions = new HashMap<>();
     protected Map<String, MenuListener> listeners = new HashMap<>();
     protected Color borderColor = TailwindColorScheme.slate700;
-    protected AttackAnimation activeAttackAnimation = null;
+    protected EnemyProjectileAttackAnimation activeAttackAnimation = null;
     protected boolean enemyTurnStarted = false;
 
     // New field to track if this battle involves the boss
@@ -415,6 +415,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         try {
             // Get the enemy's attack animation class name
             String enemyClassName = entity.getClass().getSimpleName();
+        
             String attackFileName = "Enemies/" + enemyClassName + "Attack.png";
             String attackClassName = "FightAnimations." + enemyClassName + "Attack";
 
@@ -427,7 +428,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
             // Use reflection to create the appropriate attack animation class
             Class<?> attackClass = Class.forName(attackClassName);
-            activeAttackAnimation = (AttackAnimation) attackClass
+            activeAttackAnimation = (EnemyProjectileAttackAnimation) attackClass
                 .getConstructor(SpriteSheet.class, float.class, float.class, float.class, float.class, int.class)
                 .newInstance(attackSheet, enemyX, enemyY, playerX, playerY, 45);
 
