@@ -1,11 +1,11 @@
-package Scripts.TestMap;
+package Scripts.MapOneDenial;
 
 import Level.Script;
 import ScriptActions.*;
 import java.util.ArrayList;
 
-// script for talking to denial enemy npc
-public class DenialEnemyScript extends Script {
+// script for talking to boss npc
+public class DenialBossScript extends Script {
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -17,10 +17,7 @@ public class DenialEnemyScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToDenialEnemy", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Gnomeo: What are you?? Some kind of monster?");
-                    addText("Monster: Forfeit your journey!");
-                    addText("Monster: You can't save her, she's too far gone!");
-                    addText("Gnomeo: Liar!!! You'll pay for your treachery!");
+                    addText("[insert boss dialogue here]");
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToDenialEnemy", true));
             }});
@@ -47,7 +44,7 @@ public class DenialEnemyScript extends Script {
                             }
                         });
                         // IMPORTANT: pass the actual NPC tied to this script
-                        addScriptAction(new StartBattleScriptAction(DenialEnemyScript.this.entity));
+                        addScriptAction(new StartBattleScriptAction(DenialBossScript.this.entity));
                     }});
 
                     // No
@@ -59,7 +56,7 @@ public class DenialEnemyScript extends Script {
                                 return answer == 1;
                             }
                         });
-                        addScriptAction(new TextboxScriptAction("Monster: Cowardice... Typical of Gnomes"));
+                        addScriptAction(new TextboxScriptAction("Monster: Cowardice... Entirely expected"));
                     }});
                 }});
             }});

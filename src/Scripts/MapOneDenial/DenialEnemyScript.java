@@ -1,11 +1,11 @@
-package Scripts.TestMap;
+package Scripts.MapOneDenial;
 
 import Level.Script;
 import ScriptActions.*;
 import java.util.ArrayList;
 
-// script for talking to boss npc
-public class DenialBossScript extends Script {
+// script for talking to denial enemy npc
+public class DenialEnemyScript extends Script {
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -17,7 +17,10 @@ public class DenialBossScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToDenialEnemy", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("[insert boss dialogue here]");
+                    addText("Gnomeo: What are you?? Some kind of monster?");
+                    addText("Monster: Forfeit your journey!");
+                    addText("Monster: You can't save her, she's too far gone!");
+                    addText("Gnomeo: Liar!!! You'll pay for your treachery!");
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToDenialEnemy", true));
             }});
@@ -44,7 +47,7 @@ public class DenialBossScript extends Script {
                             }
                         });
                         // IMPORTANT: pass the actual NPC tied to this script
-                        addScriptAction(new StartBattleScriptAction(DenialBossScript.this.entity));
+                        addScriptAction(new StartBattleScriptAction(DenialEnemyScript.this.entity));
                     }});
 
                     // No
@@ -56,7 +59,7 @@ public class DenialBossScript extends Script {
                                 return answer == 1;
                             }
                         });
-                        addScriptAction(new TextboxScriptAction("Monster: Cowardice... Entirely expected"));
+                        addScriptAction(new TextboxScriptAction("Monster: Cowardice... Typical of Gnomes"));
                     }});
                 }});
             }});

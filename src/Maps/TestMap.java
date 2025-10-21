@@ -8,6 +8,8 @@ import NPCs.Skeleton;
 import NPCs.Spirit;
 import NPCs.Wizard;
 import Scripts.SimpleTextScript;
+import Scripts.MapOneDenial.DenialBossScript;
+import Scripts.MapOneDenial.DenialEnemyScript;
 import Scripts.TestMap.*;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
