@@ -3,6 +3,7 @@ package Scripts.TestMap;
 import java.util.ArrayList;
 
 import EnhancedMapTiles.CollectableItem;
+import EnhancedMapTiles.CollectableItems;
 import Items.KnifeOfLife;
 import Level.Script;
 import Level.ScriptState;
