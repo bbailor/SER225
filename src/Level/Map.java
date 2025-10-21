@@ -717,4 +717,14 @@ public void entityInteract(Player player) {
     public ArrayList<GameListener> getListeners() {
         return listeners;
     }
+
+    public NPC getInteractingNPC(Player player) {
+    for (NPC npc : npcs) { // use your actual list of NPCs here
+        if (npc.intersects(player)) {  // 👈 most engines support this
+            return npc;
+        }
+    }
+    return null;
+}
+
 }

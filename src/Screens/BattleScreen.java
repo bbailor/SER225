@@ -9,12 +9,17 @@ import java.util.random.RandomGenerator;
 
 import Engine.Config;
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Inventory;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
+import GameObject.ImageEffect;
+import GameObject.SpriteSheet;
 import Level.Entity;
 import Level.Player;
+import FightAnimations.AttackAnimation;
+import FightAnimations.SkeletonAttack;
 import Screens.submenus.BattleSubMenu;
 import Screens.submenus.InventoryBattleMenu;
 import Screens.submenus.SelectionBattleMenu;
@@ -36,6 +41,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     protected Map<String, BattleSubMenu> actions = new HashMap<>();
     protected Map<String, MenuListener> listeners = new HashMap<>();
     protected Color borderColor = TailwindColorScheme.slate700;
+    protected AttackAnimation activeAttackAnimation = null;
+    protected boolean enemyTurnStarted = false;
+
+    // New field to track if this battle involves the boss
+    private boolean isBossBattle = false;
 
     public static final String LISTENER_NAME = "battle_screen";
     public static final String LOSE_EVENT_NAME = "player_lose";
@@ -50,16 +60,13 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     public static final int BATTLE_SELECTION_WIDTH = (int)(BORDER_WIDTH * .3);
     public static final float FONT_SIZE = 12f;
 
-    /**
-     * @param inventory The Player's Inventory
-     * @param player The Player Itself
-     * @param entity The entity the player is fighting
-     */
-    public BattleScreen(Player player, Entity entity) {
-        this.inventory = player.getEntity().getInventory();
+    // Main constructor with boss flag
+    public BattleScreen(Inventory inventory, Player player, Entity entity, boolean isBossBattle) {
+        this.inventory = inventory;
         this.player = player;
         this.entity = entity;
-        
+        this.isBossBattle = isBossBattle;
+
         var inv = new InventoryBattleMenu(
             BATTLE_SELECTION_WIDTH + BORDER_LINE_WIDTH,
             BATTLE_LOG_HEIGHT + BATTLE_HEIGHT + BORDER_LINE_WIDTH,
@@ -85,14 +92,22 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         );
         this.selector.addistener(LISTENER_NAME, this);
         this.selector.initialize();
-        
+
         this.history = new ArrayList<>();
     }
 
-    @Override
-    public void initialize() {
-        // This type of screen will be initalized in the constructor
+    // Old constructor for backward compatibility
+    public BattleScreen(Player player, Entity entity) {
+        this(player.getEntity().getInventory(), player, entity, false);
     }
+
+    // Standard constructor without boss flag
+    public BattleScreen(Inventory inventory, Player player, Entity entity) {
+        this(inventory, player, entity, false);
+    }
+
+    @Override
+    public void initialize() {}
 
     @Override
     public void update() {
@@ -104,9 +119,22 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             this.sendEvent(LOSE_EVENT_NAME);
             return;
         }
+        
+        // Handle active attack animation
+        if (activeAttackAnimation != null) {
+            activeAttackAnimation.update();
+            if (activeAttackAnimation.isComplete()) {
+                // Apply damage when animation completes
+                this.player.getEntity().handleDamage(this.entity, false);
+                activeAttackAnimation = null;
+                this.currentTurn = BattleTurn.Player;
+            }
+            return;
+        }
+        
         if (this.currentTurn == BattleTurn.Enemy) {
-            this.player.getEntity().handleDamage(this.entity, false);
-            this.currentTurn = BattleTurn.Player;
+            // Start attack animation instead of immediate damage
+            startEnemyAttackAnimation();
             return;
         }
         if (this.selectedAction == null) {
@@ -117,23 +145,14 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         if (Keyboard.isKeyDown(Key.K)) {
             this.player.getEntity().kill();
         }
-        // if (Globals.DEBUG) {
-        //     this.selector.setX(BORDER_LINE_WIDTH);
-        //     this.selector.setY(BATTLE_LOG_HEIGHT + BATTLE_HEIGHT + MARGIN);
-        //     this.selector.setWidth(BATTLE_SELECTION_WIDTH - ((BORDER_LINE_WIDTH) * 2));
-        //     this.selector.setHeight(BATTLE_ACTIONS_HEIGHT - ((BORDER_LINE_WIDTH*3 + MARGIN) * 2));
-        // }
     }
-
-    // protected void handleTurnAction() {
-
-    // }
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
         graphicsHandler.drawFilledRectangle(0, 0, Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT, TailwindColorScheme.black);
+
         // Status Log Section
-        graphicsHandler.drawRectangle( // Border
+        graphicsHandler.drawRectangle(
             BORDER_LINE_WIDTH/2,
             0,
             BORDER_WIDTH,
@@ -167,7 +186,6 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             TailwindColorScheme.slate900,
             3
         );
-
         graphicsHandler.drawStringWithOutline(
             String.format("Enemy Health: %.2f/%.2f", this.entity.getHealth(), this.entity.getMaxHealth()),
             (BORDER_LINE_WIDTH + MARGIN * 2),
@@ -177,7 +195,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             TailwindColorScheme.slate900,
             3
         );
-        
+
         // Selector Section
         graphicsHandler.drawRectangle(
             0,
@@ -203,7 +221,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         }
 
         // Battle Section
-        graphicsHandler.drawRectangle( // Border
+        graphicsHandler.drawRectangle(
             BORDER_LINE_WIDTH/2,
             BATTLE_LOG_HEIGHT,
             BORDER_WIDTH,
@@ -211,7 +229,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             this.borderColor,
             BORDER_LINE_WIDTH
         );
-        
+
         int entityPadding = DEFAULT_SECTION_WIDTH / 10;
         int battleX0 = BORDER_LINE_WIDTH*2;
         int battleY0 = BATTLE_LOG_HEIGHT + BORDER_LINE_WIDTH + MARGIN;
@@ -225,13 +243,13 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             TailwindColorScheme.cyan500
         );
 
-        // TODO: Actual Animations
         var entityIdleAnimations = this.entity.getAnimations("idle");
         var playerIdleAnimations = this.player.getEntity().getAnimations("idle");
 
         int placeholderHeight = battleHeight / 2;
         int placeholderWidth = placeholderHeight / 2;
 
+        // PLAYER SPRITE
         if (playerIdleAnimations == null) {
             graphicsHandler.drawFilledRectangle(
                 battleY0 + entityPadding,
@@ -246,14 +264,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 battleY0 + (battleHeight - playerIdleAnimations[0].getHeight()) / 2
             );
             playerIdleAnimations[0].draw(graphicsHandler);
-            // graphicsHandler.drawFilledRectangle(
-            //     battleY0 + entityPadding,
-            //     battleY0 + (battleHeight - placeholderHeight) / 2,
-            //     placeholderWidth,
-            //     placeholderHeight,
-            //     this.borderColor
-            // );
         }
+
+        // ENEMY SPRITE
         if (entityIdleAnimations == null) {
             graphicsHandler.drawFilledRectangle(
                 DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding),
@@ -262,21 +275,31 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 placeholderHeight,
                 this.borderColor
             );
-        }  else {
-            entityIdleAnimations[0].setLocation(
-                (DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding)) - entityIdleAnimations[0].getWidth() * entityIdleAnimations[0].getScale(),
-                battleY0 + (battleHeight - entityIdleAnimations[0].getHeight()) / 2
-            );
+        } else {
+            float scale = entityIdleAnimations[0].getScale();
+            float enemyX = battleX0 + DEFAULT_SECTION_WIDTH * 0.85f
+                    - (entityIdleAnimations[0].getWidth() * scale) / 2f;
+            float enemyY = battleY0 + (battleHeight - entityIdleAnimations[0].getHeight()) / 2f;
+
+            if (isBossBattle) {
+                enemyX += 300f;
+            }
+
+            entityIdleAnimations[0].setLocation(enemyX, enemyY);
+            entityIdleAnimations[0].setImageEffect(ImageEffect.FLIP_HORIZONTAL);
             entityIdleAnimations[0].draw(graphicsHandler);
         }
-
+        
+        // Draw active attack animation if present
+        if (activeAttackAnimation != null) {
+            activeAttackAnimation.draw(graphicsHandler);
+        }
     }
 
     @Override
     public void draw(GraphicsHandler handler, int x, int y) {
-        //TODO: Implement when submenu (take above draw)
+        // TODO: Implement when submenu (take above draw)
     }
-
 
     @Override
     public void onEvent(String eventName, Object ...args) {
@@ -286,9 +309,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 this.currentTurn = BattleTurn.Enemy;
                 break;
             }
-            // Other skills through args later
             case "attack.skill": {
-                // For now just use weapon skill
                 this.entity.handleDamage(this.player.getEntity(), true);
                 this.currentTurn = BattleTurn.Enemy;
                 break;
@@ -304,7 +325,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                         break;
                     }
                     case "Defend": {
-                        this.player.getEntity().setTempResistance(RandomGenerator.getDefault().nextDouble(this.player.getEntity().getMaxHealth() * .05f));
+                        this.player.getEntity().setTempResistance(
+                            RandomGenerator.getDefault().nextDouble(this.player.getEntity().getMaxHealth() * .05f)
+                        );
                         this.currentTurn = BattleTurn.Enemy;
                         break;
                     }
@@ -319,7 +342,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                         break;
                     }
                     case "Flee": {
-                        if (RandomGenerator.getDefault().nextInt(3) == 1) {
+                        if (RandomGenerator.getDefault().nextInt(3) == 1) { 
                             this.close();
                             return;
                         }
@@ -338,20 +361,83 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     }
 
     @Override
-    public void open() {
-        // Unused (currently)
-    }
+    public void open() {}
 
     @Override
     public void onMenuClose() {
         this.selectedAction = null;
         this.selector.setHoverColor(Globals.HOVER_COLOR);
     }
+    
+    private void startEnemyAttackAnimation() {
+        // Calculate battle area positions
+        int entityPadding = DEFAULT_SECTION_WIDTH / 10;
+        int battleX0 = BORDER_LINE_WIDTH * 2;
+        int battleY0 = BATTLE_LOG_HEIGHT + BORDER_LINE_WIDTH + MARGIN;
+        int battleHeight = BATTLE_HEIGHT - ((BORDER_LINE_WIDTH + MARGIN) * 2);
+        
+        // Get enemy and player sprite positions
+        var entityIdleAnimations = this.entity.getAnimations("idle");
+        var playerIdleAnimations = this.player.getEntity().getAnimations("idle");
+        
+        float enemyX, enemyY, playerX, playerY;
+        
+        // Calculate enemy position (where animation starts)
+        if (entityIdleAnimations != null) {
+            float scale = entityIdleAnimations[0].getScale();
+            enemyX = battleX0 + DEFAULT_SECTION_WIDTH * 0.85f
+                    - (entityIdleAnimations[0].getWidth() * scale) / 2f;
+            if (isBossBattle) {
+                enemyX += 300f;
+            }
+            enemyY = battleY0 + (battleHeight - entityIdleAnimations[0].getHeight()) / 2f;
+        } else {
+            // Fallback to placeholder position
+            int placeholderHeight = battleHeight / 2;
+            int placeholderWidth = placeholderHeight / 2;
+            enemyX = DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding);
+            enemyY = battleY0 + (battleHeight - placeholderHeight) / 2;
+        }
+        
+        // Calculate player position (where animation ends)
+        if (playerIdleAnimations != null) {
+            playerX = battleX0 + entityPadding + playerIdleAnimations[0].getWidth() * playerIdleAnimations[0].getScale();
+            playerY = battleY0 + (battleHeight - playerIdleAnimations[0].getHeight()) / 2;
+        } else {
+            // Fallback to placeholder position
+            int placeholderHeight = battleHeight / 2;
+            playerX = battleY0 + entityPadding;
+            playerY = battleY0 + (battleHeight - placeholderHeight) / 2;
+        }
+        
+        try {
+            // Load the attack sprite sheet
+            SpriteSheet attackSheet = new SpriteSheet(
+                ImageLoader.load("Enemies/SkeletonAttack.png"), 
+                24, // sprite width
+                24  // sprite height
+            );
+            
+            // Create animation with 30 frame duration (adjust for speed)
+            activeAttackAnimation = new SkeletonAttack(
+                attackSheet,
+                enemyX, enemyY,
+                playerX, playerY,
+                45 // duration in frames (lower = faster travel)
+            );
+            
+            // Catch error if attack animation fails to play
+        } catch (Exception e) {
+            System.err.println("Failed to load skeleton attack animation: " + e.getMessage());
+            e.printStackTrace();
+            // Fallback: just do immediate damage if animation fails
+            this.player.getEntity().handleDamage(this.entity, false);
+            this.currentTurn = BattleTurn.Player;
+        }
+    }
 
     public enum BattleTurn {
         Player,
         Enemy
     }
-
-    
 }

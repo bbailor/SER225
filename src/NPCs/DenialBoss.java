@@ -4,7 +4,7 @@ import Builders.FrameBuilder;
 import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.ImageEffect;
-import GameObject.SpriteSheet;  // <-- add this
+import GameObject.SpriteSheet;
 import Level.NPC;
 import Utils.Point;
 import java.util.HashMap;
@@ -19,23 +19,25 @@ public class DenialBoss extends NPC {
             "STAND_RIGHT"
         );
     }
+    
 
     @Override
     public HashMap<String, Frame[]> loadAnimations(GameObject.SpriteSheet spriteSheet) {
         Frame standRight = new FrameBuilder(spriteSheet.getSprite(0, 0), 9999)
                 .withScale(3)
-                .withBounds(8, 8, 120, 120)
+                .withBounds(30, 25, 70, 80)
                 .build();
 
         Frame standLeft = new FrameBuilder(spriteSheet.getSprite(0, 0), 9999)
                 .withScale(3)
-                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)  // <-- mirror for left
-                .withBounds(8, 8, 120, 120)
+                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                .withBounds(30, 25, 70, 80)
                 .build();
 
         HashMap<String, Frame[]> map = new HashMap<>();
-        map.put("STAND_LEFT", new Frame[] { standRight });
-        map.put("STAND_RIGHT",  new Frame[] { standLeft  });
+        map.put("STAND_RIGHT", new Frame[] { standRight });
+        map.put("STAND_LEFT",  new Frame[] { standLeft  });
+        map.put("idle",        new Frame[] { standRight }); //Added idle animation(though its not animated yet)
         return map;
     }
 }
