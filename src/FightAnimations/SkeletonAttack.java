@@ -73,13 +73,13 @@ public class SkeletonAttack extends AttackAnimation {
                 new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 1), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 1), 16)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 2), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 2), 16)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 3), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 3), 16)
                         .withScale(2)
                         .build()
             });
