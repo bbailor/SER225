@@ -8,7 +8,7 @@ import GameObject.SpriteSheet;
  * Base class for all attack animations in battle
  * Handles movement from start position to target position
  */
-public abstract class AttackAnimation extends AnimatedSprite {
+public abstract class EnemyProjectileAttackAnimation extends AnimatedSprite {
     
     protected float startX, startY;
     protected float targetX, targetY;
@@ -26,7 +26,7 @@ public abstract class AttackAnimation extends AnimatedSprite {
      * @param duration Number of game frames the animation should take to travel
      * @param startingAnimationName The animation to play (e.g., "ATTACK")
      */
-    public AttackAnimation(SpriteSheet spriteSheet, float startX, float startY, 
+    public EnemyProjectileAttackAnimation(SpriteSheet spriteSheet, float startX, float startY, 
                           float targetX, float targetY, int duration, String startingAnimationName) {
         super(spriteSheet, startX, startY, startingAnimationName);
         this.startX = startX;

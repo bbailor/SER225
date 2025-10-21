@@ -9,7 +9,7 @@ import java.util.HashMap;
 /**
  * Skeleton attack animation that moves from enemy to player
  */
-public class SkeletonAttack extends AttackAnimation {
+public class SkeletonAttack extends EnemyProjectileAttackAnimation {
     
     private static final int FRAMES_UNTIL_STOP = 5;
     private float stoppedX, stoppedY;
@@ -73,13 +73,13 @@ public class SkeletonAttack extends AttackAnimation {
                 new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 1), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 1), 16)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 2), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 2), 16)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 3), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 3), 16)
                         .withScale(2)
                         .build()
             });
