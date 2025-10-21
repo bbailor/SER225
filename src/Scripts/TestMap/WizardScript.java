@@ -1,23 +1,22 @@
 package Scripts.TestMap;
 
-import Level.MapTile;
-import Level.Script;
-import Level.ScriptState;
-import Level.TileType;
-import ScriptActions.*;
-import Utils.Point;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-
-import Builders.FrameBuilder;
-import Builders.MapTileBuilder;
-import EnhancedMapTiles.CollectableItems;
-import GameObject.Frame;
+import EnhancedMapTiles.CollectableItem;
 import Items.KnifeOfLife;
+import Level.Script;
+import Level.ScriptState;
+import ScriptActions.ChangeFlagScriptAction;
+import ScriptActions.ConditionalScriptAction;
+import ScriptActions.ConditionalScriptActionGroup;
+import ScriptActions.FlagRequirement;
+import ScriptActions.LockPlayerScriptAction;
+import ScriptActions.NPCFacePlayerScriptAction;
+import ScriptActions.ScriptAction;
+import ScriptActions.TextboxScriptAction;
+import ScriptActions.UnlockPlayerScriptAction;
+import ScriptActions.WaitScriptAction;
+import Utils.Point;
 
 // script for interacting with the Wizard NPC
 public class WizardScript extends Script {
@@ -52,7 +51,7 @@ public class WizardScript extends Script {
         @Override
         public ScriptState execute() {
             Point location = map.getMapTile(10, 18).getLocation();
-            CollectableItems knifeOfLife = new KnifeOfLife(location);
+            CollectableItem knifeOfLife = new KnifeOfLife(location);
             map.addCollectableItem(knifeOfLife);
 
             return ScriptState.COMPLETED;

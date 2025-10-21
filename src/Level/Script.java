@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.google.gson.annotations.Expose;
+
 import ScriptActions.ConditionalScriptAction;
 import ScriptActions.ConditionalScriptActionGroup;
 import ScriptActions.LoopFixedScriptAction;
@@ -19,10 +21,10 @@ public abstract class Script {
     private int currentScriptActionIndex;
 
     // this is set to true if script is currently being executed
-    protected boolean isActive = false;
+    @Expose protected boolean isActive = false;
 
     // if true, script should perform "setup" logic
-    protected boolean start = true;
+    @Expose protected boolean start = true;
 
     // references to the map entity the script is attached to
     protected MapEntity entity;

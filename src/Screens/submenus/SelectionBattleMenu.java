@@ -57,15 +57,15 @@ public class SelectionBattleMenu extends BattleSubMenu {
             this.pressCD--;
             return;
         }
-        if (Keyboard.isKeyDown(Key.DOWN)) {
+        if (Keyboard.isKeyDown(Key.DOWN) || Keyboard.isKeyDown(Key.S)) {
             this.pressCD = Globals.KEYBOARD_CD;
             this.selectedID = this.selectedID + 1 >= selections.size() ? 0 : this.selectedID + 1;
         }
-        if (Keyboard.isKeyDown(Key.UP)) {
+        if (Keyboard.isKeyDown(Key.UP) || Keyboard.isKeyDown(Key.W)) {
             this.pressCD = Globals.KEYBOARD_CD;
             this.selectedID = this.selectedID - 1 < 0 ? this.selections.size() - 1 : this.selectedID - 1;
         }
-        if (Keyboard.isKeyDown(Key.ENTER)) {
+        if (Keyboard.isKeyDown(Key.ENTER) || Keyboard.isKeyDown(Key.SPACE)) {
             this.pressCD = Globals.KEYBOARD_CD;
             this.sendEvent(SUBMENU_SELECTION_NAME, this.selections.get(this.selectedID));
         }

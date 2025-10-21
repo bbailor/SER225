@@ -12,12 +12,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
-import Engine.Inventory;
 import Level.Item;
 import Level.ItemStack;
 import Level.Map;
 import Level.Player;
 import Level.Script;
+import Level.Weapon;
 import Utils.Serializers.ItemSerializer;
 import Utils.Serializers.ItemStackSerializer;
 import Utils.Serializers.MapSerializer;
@@ -37,6 +37,7 @@ public abstract class Globals {
     /** The Gson serializer */
     public static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(Item.class, new ItemSerializer())
+        .registerTypeAdapter(Weapon.class, new ItemSerializer())
         .registerTypeAdapter(ItemStack.class, new ItemStackSerializer())
         .registerTypeAdapter(Script.class, new ScriptSerializer())
         .registerTypeAdapter(Map.class, new MapSerializer())
@@ -44,6 +45,7 @@ public abstract class Globals {
         .excludeFieldsWithoutExposeAnnotation()
         .serializeNulls()
         .disableJdkUnsafe()
+        // .enableComplexMapKeySerialization()
         // .serializeNulls()
         .setPrettyPrinting()
         .create();

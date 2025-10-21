@@ -32,6 +32,9 @@ public class Item {
     public Item(String id, String name) {
         this.id = id;
         this.name = name;
+        if (ItemList.IDMap.containsKey(this.id)) {
+            throw new RuntimeException("Duplicate ID found for items");
+        }
         ItemList.IDMap.put(this.id, this);
     }
     
@@ -69,6 +72,21 @@ public class Item {
 
     public java.util.Map<String, Frame[]> getFrames() {
         return java.util.Map.copyOf(this.animations);
+    }
+
+    public Frame[] getFrame(String name) {
+        return !this.animations.containsKey(name) ? this.animations.get("default") : this.animations.get(name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // TODO Auto-generated method stub
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 
     public static class ItemList {
@@ -115,6 +133,39 @@ public class Item {
 
         public static Weapon fist = new Weapon("fist", "Fist", "Your bare fist", 1d) {
 
+        };
+
+        // Needs to be changed to the actual knife stats and description
+        public static Weapon knife_of_life = new Weapon("knife_of_life", "Knife of Life", "-desc-", 5d) {
+            @Override
+            public boolean canUse(ItemStack stack, Entity targetedEntity) {
+                return true;
+            }
+
+            @Override
+            public void use(ItemStack stack, Entity targetedEntity) {
+                targetedEntity.currentWeapon = this;
+                stack.removeItem();
+            }
+
+            @Override
+            public double getWeaponSkillCost() {
+                return 5d;
+            }
+
+            @Override
+            public double getWeaponSkillDamage() {
+                return 10d;
+            }
+
+            {
+                this.animations.put("default", new Frame[] {
+                    new FrameBuilder(ImageLoader.load("weapons//knifeOfLife.png"))
+                    .withScale(2.0f)
+                    .withBounds(8, 0, 16, 32)  // 2x the sprite size
+                    .build()
+                });
+            }
         };
 
         public static Item getFromID(String id) {

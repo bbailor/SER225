@@ -55,6 +55,10 @@ public class InventoryScreen extends Screen implements Menu {
         return this;
     }
 
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
     @Override
     public Map<String, MenuListener> getListeners() {
         return this.listeners;

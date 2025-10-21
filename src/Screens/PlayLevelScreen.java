@@ -80,6 +80,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         this.flagManager = data.flagManager;
         this.switchMap(data.map);
         this.player.setLocation(data.playerPos.x, data.playerPos.y);
+        this.inventoryScreen.setInventory(this.player.getEntity().getInventory());
     }
 
     public void initialize() {
