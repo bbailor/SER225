@@ -19,6 +19,7 @@ public class Item {
     protected String name;
     protected String description;
     protected int maxStackSize = 25;
+    protected boolean canUse;
     protected java.util.Map<String, Frame[]> animations = new HashMap<>();
 
     public Item(String name) {
@@ -50,6 +51,7 @@ public class Item {
 
     public void use(ItemStack stack, Entity targetedEntity) {
         // Subclasses can use this for usable items
+        System.out.println("Use from item class");
     }
 
     public boolean canUse(ItemStack stack, Entity targetedEntity) {
@@ -87,6 +89,15 @@ public class Item {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public void addAnimation(String name, Frame[] frames) {
+        this.animations.put(name, frames);
+    }
+
+    public void setCanUse(boolean canUse)
+    {
+        this.canUse = canUse;
     }
 
     public static class ItemList {
@@ -175,3 +186,4 @@ public class Item {
         private ItemList() {}
     }
 }
+
