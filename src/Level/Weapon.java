@@ -10,26 +10,25 @@ public class Weapon extends Item {
     protected double weaponSkillDamage;
     protected double weaponSkillCost = 5;
 
-    public Weapon(String name) {
-        super(name);
+    public Weapon(String id, String name) {
+        super(id, name, 1);
     }
     
-    public Weapon(String name, int maxStackSize) {
-        super(name, maxStackSize);
+    public Weapon(String id, String name, int maxStackSize) {
+        super(id, name, maxStackSize);
     }
 
-    public Weapon(String name, String description, int maxStackSize) {
-        super(name, description, maxStackSize);
+    public Weapon(String id, String name, String description, int maxStackSize) {
+        super(id, name, description, maxStackSize);
     }
 
-    public Weapon(String name, double baseDamage) {
-        super(name);
+    public Weapon(String id, String name, double baseDamage) {
+        super(id, name);
         this.baseDamage = baseDamage;
     }
 
-    public Weapon(String name, String description, double baseDamage) {
-        super(name);
-        this.description = description;
+    public Weapon(String id, String name, String description, double baseDamage) {
+        super(id, name, description, 1);
         this.baseDamage = baseDamage;
     }
     

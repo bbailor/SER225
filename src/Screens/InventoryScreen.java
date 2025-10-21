@@ -153,6 +153,11 @@ public class InventoryScreen extends Screen implements Menu {
     }
 
     @Override
+    public void draw(GraphicsHandler handler, int x, int y) {
+        //TODO: Implement when submenu (take above draw)
+    }
+
+    @Override
     public void open() {
         this.openPressCD = 12;
     }

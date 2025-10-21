@@ -7,10 +7,12 @@ import Utils.Direction;
 
 import java.util.HashMap;
 
+import com.google.gson.annotations.Expose;
+
 // This class is a base class for all npcs in the game -- all npcs should extend from it
 public class NPC extends MapEntity {
-    protected int id = 0;
-    protected boolean isLocked = false;
+    @Expose protected int id = 0;
+    @Expose protected boolean isLocked = false;
 
     public NPC(int id, float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
         super(x, y, spriteSheet, startingAnimation);

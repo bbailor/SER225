@@ -97,5 +97,11 @@ public class SelectionBattleMenu extends BattleSubMenu {
         }
         graphicsHandler.drawRectangle(this.x, this.y + 10 + this.selectedID * (FONT_SIZE + 8 + BORDER_WIDTH), this.width, BORDER_WIDTH+8+FONT_SIZE, this.hoverColor);
     }
+
+    @Override
+    public void draw(GraphicsHandler handler, int x, int y) {
+        //TODO: Implement when submenu (take above draw)
+    }
+
     
 }

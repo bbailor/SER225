@@ -16,9 +16,13 @@ import NPCs.DenialBoss;
 // Represents a test map to be used in a level
 public class TestMap extends Map {
 
+    //Tileset of all the items that can be placed on the map.
+    protected Tileset itemSet;
+
     public TestMap() {
         super("test_map.txt", new CommonTileset());
         this.playerStartPosition = getMapTile(17, 20).getLocation();
+        //itemSet = 
     }
 
     @Override

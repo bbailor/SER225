@@ -9,7 +9,7 @@ import SpriteFont.SpriteFont;
 import java.awt.*;
 
 // This is the class for the main menu screen
-public class MenuScreen extends Screen {
+public class MainMenuScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;
     protected int currentMenuItemHovered = 0; // current menu item being "hovered" over
     protected int menuItemSelected = -1;
@@ -26,7 +26,7 @@ public class MenuScreen extends Screen {
     
     
 
-    public MenuScreen(ScreenCoordinator screenCoordinator) {
+    public MainMenuScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
     }
 

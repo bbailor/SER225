@@ -9,6 +9,8 @@ import Utils.MathUtils;
 import java.awt.*;
 import java.util.HashMap;
 
+import com.google.gson.annotations.Expose;
+
 /*
 	The all important GameObject class is what every "entity" used in this game should be based off of
 	It encapsulates all the other class logic in the GameObject package to be a "one stop shop" for all entity needs
@@ -22,19 +24,19 @@ public class GameObject extends AnimatedSprite {
 
 	// stores game object's start position
 	// important to keep track of this as it's what allows the special draw logic to work
-	protected float startPositionX, startPositionY;
+	@Expose protected float startPositionX, startPositionY;
 
 	// how much game object's position has changed from start position over time
 	// also important to keep track of for the special draw logic
-	protected float amountMovedX, amountMovedY;
+	@Expose protected float amountMovedX, amountMovedY;
 
 	// previous location the game object was in from the last frame
-	protected float previousX, previousY;
+	@Expose protected float previousX, previousY;
 
 	// the map instance this game object "belongs" to.
 	protected Map map;
 
-	protected boolean affectedByTriggers = false;
+	@Expose protected boolean affectedByTriggers = false;
 
 	public GameObject(SpriteSheet spriteSheet, float x, float y, String startingAnimation) {
 		super(spriteSheet, x, y, startingAnimation);

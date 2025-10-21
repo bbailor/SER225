@@ -5,18 +5,24 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
+
+import com.google.gson.annotations.Expose;
+
+import org.jetbrains.annotations.Nullable;
 
 import Level.ItemStack;
 
 public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
     
-    protected Map<NamedSlot, ItemStack> equipped_items = new EnumMap<>(NamedSlot.class);
-    protected Map<Integer, ItemStack> items;
+    @Expose protected Map<NamedSlot, ItemStack> equipped_items = new EnumMap<>(NamedSlot.class);
+    @Expose protected Map<Integer, ItemStack> items;
 
     public ItemStack getStack(NamedSlot slot) {
         return this.equipped_items.get(slot);
     }
 
+    @Nullable
     public ItemStack getStack(int slot_id) {
         try {
             if (this.items.get(slot_id) != null && this.items.get(slot_id).getCount() == 0) {
@@ -28,7 +34,8 @@ public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
         }
     }
 
-    public ItemStack setStack(int slot_id, ItemStack item) {
+    @Nullable
+    public ItemStack setStack(int slot_id, @Nullable ItemStack item) {
         var old_item = this.items.get(slot_id);
         this.items.put(slot_id, item);
         return old_item;
@@ -43,7 +50,12 @@ public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
     }
 
     public Map<Integer, ItemStack> getItems() {
-        return Map.copyOf(this.items);
+        Map<Integer, ItemStack> new_items = new TreeMap<>();
+        for (var e : this.items.entrySet()) {
+            new_items.put(e.getKey(), e.getValue());
+            System.out.println(e.getValue() != null ? e.getValue().getItem().getName() : "null");
+        }
+        return new_items;
     }
 
     public Inventory(int size) {
@@ -52,6 +64,9 @@ public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
             this.items.put(i, null);
         }
     }
+
+    @SuppressWarnings("unused")
+    private Inventory() {}
 
     public enum NamedSlot {
         Armor,

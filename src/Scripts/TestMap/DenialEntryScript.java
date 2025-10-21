@@ -1,6 +1,10 @@
 package Scripts.TestMap;
 
+import Level.GameListener;
+
 import Level.Script;
+import Level.ScriptState;
+import Maps.MapOneDenial;
 import ScriptActions.ChangeFlagScriptAction;
 import ScriptActions.ConditionalScriptAction;
 import ScriptActions.ConditionalScriptActionGroup;
@@ -49,16 +53,17 @@ public class DenialEntryScript extends Script {
 
                 addScriptAction(new ChangeFlagScriptAction("hasEnteredDenial", true));
 
-                // alert all listeners (which includes play level screen) that the game has been won
-                // addScriptAction(new ScriptAction() {
-                //     @Override
-                //     public ScriptState execute() {
-                //         for (GameListener listener: listeners) {
-                //             listener.onWin();
-                //         }
-                //         return ScriptState.COMPLETED;
-                //     }
-                // });
+                 //alert all listeners (which includes play level screen) that the game has been won
+                 addScriptAction(new ScriptAction() {
+                     @Override
+                     public ScriptState execute() {
+                         for (GameListener listener: listeners) {
+                             listener.switchMap(new MapOneDenial());
+                             
+                         }
+                         return ScriptState.COMPLETED;
+                     }
+                 });
             }});
         }});
        

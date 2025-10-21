@@ -3,8 +3,10 @@ package Level;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import com.google.gson.annotations.Expose;
+
 public class FlagManager {
-    protected HashMap<String, Boolean> flags = new HashMap<>();
+    @Expose protected HashMap<String, Boolean> flags = new HashMap<>();
 
     public void addFlag(String flagName) {
         flags.put(flagName, false);

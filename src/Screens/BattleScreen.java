@@ -38,6 +38,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     protected Map<String, MenuListener> listeners = new HashMap<>();
     protected Color borderColor = TailwindColorScheme.slate700;
 
+    // New field to track if this battle involves the boss
+    private boolean isBossBattle = false;
 
     public static final String LISTENER_NAME = "battle_screen";
     public static final String LOSE_EVENT_NAME = "player_lose";
@@ -52,10 +54,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     public static final int BATTLE_SELECTION_WIDTH = (int)(BORDER_WIDTH * .3);
     public static final float FONT_SIZE = 12f;
 
-    // New field to track if this battle involves the boss
-    private boolean isBossBattle = false;
-
-    // New constructor that accepts the boss flag
+    // Main constructor with boss flag
     public BattleScreen(Inventory inventory, Player player, Entity entity, boolean isBossBattle) {
         this.inventory = inventory;
         this.player = player;
@@ -67,7 +66,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             BATTLE_LOG_HEIGHT + BATTLE_HEIGHT + BORDER_LINE_WIDTH,
             BATTLE_ACTIONS_WIDTH - ((BORDER_LINE_WIDTH + MARGIN) * 2),
             BATTLE_ACTIONS_HEIGHT  - ((BORDER_LINE_WIDTH + MARGIN) * 2),
-            inventory, player
+            this.inventory, player
         );
         this.actions.put("Inventory", inv);
         inv.addistener(LISTENER_NAME, this);
@@ -87,11 +86,16 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         );
         this.selector.addistener(LISTENER_NAME, this);
         this.selector.initialize();
-        
+
         this.history = new ArrayList<>();
     }
 
-    // original constructor for backwards compatibility
+    // Old constructor for backward compatibility
+    public BattleScreen(Player player, Entity entity) {
+        this(player.getEntity().getInventory(), player, entity, false);
+    }
+
+    // Standard constructor without boss flag
     public BattleScreen(Inventory inventory, Player player, Entity entity) {
         this(inventory, player, entity, false);
     }
@@ -206,7 +210,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             this.borderColor,
             BORDER_LINE_WIDTH
         );
-        
+
         int entityPadding = DEFAULT_SECTION_WIDTH / 10;
         int battleX0 = BORDER_LINE_WIDTH*2;
         int battleY0 = BATTLE_LOG_HEIGHT + BORDER_LINE_WIDTH + MARGIN;
@@ -267,6 +271,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             entityIdleAnimations[0].setImageEffect(ImageEffect.FLIP_HORIZONTAL);
             entityIdleAnimations[0].draw(graphicsHandler);
         }
+    }
+
+    @Override
+    public void draw(GraphicsHandler handler, int x, int y) {
+        // TODO: Implement when submenu (take above draw)
     }
 
     @Override

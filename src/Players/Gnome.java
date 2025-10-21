@@ -25,6 +25,10 @@ public class Gnome extends Player {
         walkSpeed = 2.3f;
     }
 
+    private Gnome() {
+        this(0, 0);
+    }
+
     public void update() {
         super.update();
     }

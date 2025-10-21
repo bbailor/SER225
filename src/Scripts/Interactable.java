@@ -7,25 +7,21 @@ import Level.Item;
 // import Level.ItemStack;
 import Level.Script;
 import ScriptActions.ScriptAction;
+import ScriptActions.TextboxScriptAction;
+import ScriptActions.UnlockPlayerScriptAction;
+import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.PickUpItemScriptAction;
 public class Interactable extends Script {
-    // protected Item item;
-    // protected int stackSize;
-    // public Interactable(Item i)
-    // {
-    //     item = i;
-    //     stackSize = 1;
-    // }
-    // public Interactable(Item i, int s)
-    // {
-    //     item = i;
-    //     stackSize = s;
-    // }
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
-        ArrayList<ScriptAction> scriptActions = new ArrayList<>();
-        return scriptActions;
+        ArrayList<ScriptAction> actions = new ArrayList<>();
+
+        actions.add(new TextboxScriptAction("You picked up an interactable item"));
+   
+        System.out.println("knife of life picked up");
+
+        //implement logic
+
+        return actions;
     }
-
-
 }

@@ -1,6 +1,11 @@
 package Level;
 
+import com.google.gson.annotations.Expose;
+
+import java.awt.Color;
+
 import Builders.FrameBuilder;
+import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
@@ -11,34 +16,34 @@ import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Utils.Direction;
 
-public abstract class Player extends GameObject {
+public class Player extends GameObject {
     // values that affect player movement
     // these should be set in a subclass
-    protected float walkSpeed = 0;
-    protected int interactionRange = 1;
+    @Expose protected float walkSpeed = 0;
+    @Expose protected int interactionRange = 2;
     protected Direction currentWalkingXDirection;
     protected Direction currentWalkingYDirection;
-    protected Direction lastWalkingXDirection;
-    protected Direction lastWalkingYDirection;
-    protected Entity entity;
+    @Expose protected Direction lastWalkingXDirection;
+    @Expose protected Direction lastWalkingYDirection;
+    @Expose protected Entity entity;
 
     // values used to handle player movement
-    protected float moveAmountX, moveAmountY;
-    protected float lastAmountMovedX, lastAmountMovedY;
+    @Expose protected float moveAmountX, moveAmountY;
+    @Expose protected float lastAmountMovedX, lastAmountMovedY;
 
     // values used to keep track of player's current state
-    protected PlayerState playerState;
-    protected PlayerState previousPlayerState;
-    protected Direction facingDirection;
-    protected Direction lastMovementDirection;
+    @Expose protected PlayerState playerState;
+    @Expose protected PlayerState previousPlayerState;
+    @Expose protected Direction facingDirection;
+    @Expose protected Direction lastMovementDirection;
 
     // define keys
     protected KeyLocker keyLocker = new KeyLocker();
-    protected Key MOVE_LEFT_KEY = Key.A;
-    protected Key MOVE_RIGHT_KEY = Key.D;
-    protected Key MOVE_UP_KEY = Key.W;
-    protected Key MOVE_DOWN_KEY = Key.S;
-    protected Key INTERACT_KEY = Key.SPACE;
+    @Expose protected Key MOVE_LEFT_KEY = Key.A;
+    @Expose protected Key MOVE_RIGHT_KEY = Key.D;
+    @Expose protected Key MOVE_UP_KEY = Key.W;
+    @Expose protected Key MOVE_DOWN_KEY = Key.S;
+    @Expose protected Key INTERACT_KEY = Key.SPACE;
 
     protected boolean isLocked = false;
 
@@ -48,22 +53,22 @@ public abstract class Player extends GameObject {
         playerState = PlayerState.STANDING;
         previousPlayerState = playerState;
         this.affectedByTriggers = true;
-        this.entity = new Entity() {
-            {
-                this.health = 25;
-                this.maxHealth = 25;
-                this.baseAttack = 2;
-                this.maxMana = 50;
-                this.mana = 50;
-                this.resistance = 2;
-                this.animations.put("idle", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(2)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .build()
-                });
-            }
-        };
+        this.entity = new Entity(25d, 50d);
+        this.entity.setBaseAttack(2);
+        this.entity.getAllAnimations().put("idle", new Frame[] {
+            new FrameBuilder(spriteSheet.getSprite(0, 0))
+            .withScale(2)
+            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+            .build()
+        });
+    }
+
+    /**
+     * For serialization<p>
+     * DO NOT USE
+     */
+    protected Player() {
+        super(0, 0);
     }
 
     public void update() {
@@ -277,10 +282,10 @@ public abstract class Player extends GameObject {
     }
 
     // Uncomment this to have game draw player's bounds to make it easier to visualize
-    /*
+    
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
-        drawBounds(graphicsHandler, new Color(255, 0, 0, 100));
+        //gitdrawBounds(graphicsHandler, new Color(255, 0, 0, 100));
     }
-    */
+    
 }

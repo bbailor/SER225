@@ -3,7 +3,11 @@ package Utils;
 import java.util.Map;
 
 // Add anything else you want to have all menu's do
-public interface Menu {
+/**
+ * Section for menus and submenus (will replace the screen class for menu items)
+ * //TODO: Menu screen for Menu objects
+ */
+public interface Menu extends Drawable {
     
     Map<String, MenuListener> getListeners();
 
@@ -22,6 +26,8 @@ public interface Menu {
     default void sendEvent(String name, Object ...args) {
         getListeners().forEach((k, v) -> v.onEvent(name, args));
     }
+
+    default void update() {}
 
     void open();
 }
