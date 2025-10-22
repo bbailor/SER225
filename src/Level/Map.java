@@ -134,8 +134,8 @@ public class Map {
         }
 
         this.collectableItems = loadCollectableItems();
-        for (CollectableItem collectableItems: this.collectableItems) {
-            collectableItems.setMap(this);
+        for (CollectableItem collectableItem : this.collectableItems) {
+            collectableItem.setMap(this);
         }
 
         this.loadScripts();

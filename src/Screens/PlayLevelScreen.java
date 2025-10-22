@@ -100,8 +100,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         // setup player
         player = new Gnome(0, 0);
-        player.getEntity().getInventory().setStack(4, new ItemStack(Item.ItemList.test_item, 3));
-        player.getEntity().getInventory().setStack(8, new ItemStack(Item.ItemList.test_item2, 8));
+        // player.getEntity().getInventory().setStack(4, new ItemStack(Item.ItemList.test_item, 3));
+        // player.getEntity().getInventory().setStack(8, new ItemStack(Item.ItemList.test_item2, 8));
         playLevelScreenState = PlayLevelScreenState.RUNNING;
 
         // load map

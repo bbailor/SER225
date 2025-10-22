@@ -1,19 +1,17 @@
 package EnhancedMapTiles;
 
-import java.awt.Point;
-
 import Engine.GraphicsHandler;
-import GameObject.Frame;
 import Level.Item;
 import Level.ItemStack;
 import Level.MapEntity;
 import Level.Player;
 import Scripts.CollectableScript;
+import Utils.Point;
 
 public class CollectableItem extends MapEntity{
 
     public CollectableItem(float x, float y, ItemStack stack) {
-        super(x, y, stack.getItem().getFrame("world"));
+        super(x, y, stack.getItem().getFrames("world"));
         this.setInteractScript(new CollectableScript(stack));
     }
 

@@ -25,7 +25,7 @@ public class Entity {
     }
 
     public void setMana(double mana) {
-        this.mana = mana;
+        this.mana = Math.min(mana, this.maxMana);
     }
 
     public double getMaxMana() {

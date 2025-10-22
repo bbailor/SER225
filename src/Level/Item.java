@@ -9,6 +9,7 @@ import Builders.FrameBuilder;
 import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
+import Items.KnifeOfLife;
 
 /**
  * Definition for an item type
@@ -76,7 +77,7 @@ public class Item {
         return java.util.Map.copyOf(this.animations);
     }
 
-    public Frame[] getFrame(String name) {
+    public Frame[] getFrames(String name) {
         return !this.animations.containsKey(name) ? this.animations.get("default") : this.animations.get(name);
     }
 
@@ -103,7 +104,48 @@ public class Item {
     public static class ItemList {
         protected static final java.util.Map<String, Item> IDMap = new HashMap<>();
 
-        public static Item test_item = new Item("test_item", "Test Item", "A test item", 5) {
+        public static Item apple = new Item("apple", "Apple", "A tasty red apple", 20) {
+            public boolean canUse(ItemStack stack, Entity targetedEntity) {
+                return targetedEntity.getHealth() != targetedEntity.getMaxHealth();
+            }
+
+            public void use(ItemStack stack, Entity targetedEntity) {
+                targetedEntity.heal(15);
+            }
+
+            {
+                var sheet = new SpriteSheet(ImageLoader.load("items/apple.png"), 32, 32);
+                Frame[] frames = new Frame[2];
+                Arrays.parallelSetAll(frames, i -> new FrameBuilder(sheet.getSprite(0, i), (int)(60 / 1.5))
+                    .withScale(1.25f)
+                    .build()
+                );
+                addAnimation("default", frames);
+            }
+        };
+
+        public static Item cherry = new Item("cherry", "Cherry", "A tasty cherry", 20) {
+            public boolean canUse(ItemStack stack, Entity targetedEntity) {
+                return targetedEntity.getHealth() != targetedEntity.getMaxHealth();
+            }
+
+            public void use(ItemStack stack, Entity targetedEntity) {
+                targetedEntity.setMana(targetedEntity.getMana() + 20);
+            }
+
+            {
+                var world_sheet = new SpriteSheet(ImageLoader.load("items/cherry_world.png"), 32, 32);
+                var sheet = new SpriteSheet(ImageLoader.load("items/cherry_default.png"), 32, 32);
+                Frame[] world = new Frame[4];
+                Arrays.parallelSetAll(world, i -> new FrameBuilder(world_sheet.getSprite(0, i), 60 / 3).build());
+                addAnimation("world", world);
+                addAnimation("inventory", new Frame[] {
+                    new FrameBuilder(sheet.getSprite(0, 0)).build()
+                });
+            }
+        };
+
+        /* public static Item test_item = new Item("test_item", "Test Item", "A test item", 5) {
             @Override
             public boolean canUse(ItemStack stack, Entity targetedEntity) {
                 return true;
@@ -129,16 +171,16 @@ public class Item {
                 targetedEntity.heal(10d);
                 stack.removeItem();
             }
-        };
+        }; */
 
-        public static Item cat = new Weapon("cat", "Cat", "A Cat", 0d) {
+        public static Weapon cat = new Weapon("cat", "Cat", "A Cat", 0d) {
             {
                 this.weaponSkillDamage = 100d;
                 this.weaponSkillCost = 40d;
                 var sheet = new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24);
                 Frame[] frames = new Frame[4];
-                Arrays.parallelSetAll(frames, i -> new FrameBuilder(sheet.getSprite(1, i)).build());
-                this.animations.put("inventory", frames);
+                Arrays.parallelSetAll(frames, i -> new FrameBuilder(sheet.getSprite(1, i)).withScale(3).withBounds(6, 12, 12, 7).build());
+                this.animations.put("default", frames);
             }
         };
 
@@ -146,35 +188,13 @@ public class Item {
 
         };
 
-        // Needs to be changed to the actual knife stats and description
-        public static Weapon knife_of_life = new Weapon("knife_of_life", "Knife of Life", "-desc-", 5d) {
-            @Override
-            public boolean canUse(ItemStack stack, Entity targetedEntity) {
-                return true;
-            }
-
-            @Override
-            public void use(ItemStack stack, Entity targetedEntity) {
-                targetedEntity.currentWeapon = this;
-                stack.removeItem();
-            }
-
-            @Override
-            public double getWeaponSkillCost() {
-                return 5d;
-            }
-
-            @Override
-            public double getWeaponSkillDamage() {
-                return 10d;
-            }
-
+        public static Weapon knife_of_life = new KnifeOfLife(null) {
             {
-                this.animations.put("default", new Frame[] {
-                    new FrameBuilder(ImageLoader.load("weapons//knifeOfLife.png"))
-                    .withScale(2.0f)
-                    .withBounds(8, 0, 16, 32)  // 2x the sprite size
-                    .build()
+                addAnimation("default", new Frame[] {
+                    new FrameBuilder(ImageLoader.load("weapons/knifeOfLife.png"))
+                        .withScale(2.0f)
+                        .withBounds(8, 0, 16, 32)
+                        .build()
                 });
             }
         };

@@ -42,7 +42,7 @@ public class ItemSlot extends Slot {
             return;
         }
         this.frameCount++;
-        var frames = stack.getItem().getFrame("inventory");
+        var frames = stack.getItem().getFrames("inventory");
         if (frames != null) {
             var item_width = (int) Math.floor(this.width * .95f);
             var item_height = (int) Math.floor(this.height * .95f);
