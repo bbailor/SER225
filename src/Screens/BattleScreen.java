@@ -492,7 +492,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             // 
             // case "ArmoredSkeleton":
             //     return new ArmoredSkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
-            
+            // 
             // case "DenialBoss":
             //     return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 45);
             
