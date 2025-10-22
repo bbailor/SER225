@@ -34,6 +34,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     protected Inventory inventory;
     protected Player player;
     protected Entity entity;
+    protected Object enemySource; // Store the actual NPC/enemy object
     protected BattleTurn currentTurn = BattleTurn.Player;
     protected List<String> history;
     protected SelectionBattleMenu selector;
@@ -60,11 +61,12 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     public static final int BATTLE_SELECTION_WIDTH = (int)(BORDER_WIDTH * .3);
     public static final float FONT_SIZE = 12f;
 
-    // Main constructor with boss flag
-    public BattleScreen(Inventory inventory, Player player, Entity entity, boolean isBossBattle) {
+    // Main constructor with boss flag and enemy source
+    public BattleScreen(Inventory inventory, Player player, Entity entity, Object enemySource, boolean isBossBattle) {
         this.inventory = inventory;
         this.player = player;
         this.entity = entity;
+        this.enemySource = enemySource;
         this.isBossBattle = isBossBattle;
 
         var inv = new InventoryBattleMenu(
@@ -98,12 +100,17 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
     // Old constructor for backward compatibility
     public BattleScreen(Player player, Entity entity) {
-        this(player.getEntity().getInventory(), player, entity, false);
+        this(player.getEntity().getInventory(), player, entity, entity, false);
     }
 
     // Standard constructor without boss flag
     public BattleScreen(Inventory inventory, Player player, Entity entity) {
-        this(inventory, player, entity, false);
+        this(inventory, player, entity, entity, false);
+    }
+    
+    // Constructor with boss flag but no enemy source
+    public BattleScreen(Inventory inventory, Player player, Entity entity, boolean isBossBattle) {
+        this(inventory, player, entity, entity, isBossBattle);
     }
 
     @Override
@@ -412,45 +419,86 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             playerY = battleY0 + (battleHeight - placeholderHeight) / 2;
         }
 
+        // Get enemy type name
+        String enemyType = getEnemyType();
+        
         try {
-            // Get the enemy's attack animation class name
-            String enemyClassName = entity.getClass().getSimpleName();
-            String attackFileName = "Enemies/" + enemyClassName + "Attack.png";
-            String attackClassName = "FightAnimations." + enemyClassName + "Attack";
-
+            String attackFileName = "Enemies/" + enemyType + "Attack.png";
+            
             // Load the attack sprite sheet
             SpriteSheet attackSheet = new SpriteSheet(
                 ImageLoader.load(attackFileName),
-                24,
-                24
+                24,  // sprite width - adjust per enemy if needed
+                24   // sprite height - adjust per enemy if needed
             );
-
-            // Use reflection to create the appropriate attack animation class
-            Class<?> attackClass = Class.forName(attackClassName);
-            activeAttackAnimation = (EnemyProjectileAttackAnimation) attackClass
-                .getConstructor(SpriteSheet.class, float.class, float.class, float.class, float.class, int.class)
-                .newInstance(attackSheet, enemyX, enemyY, playerX, playerY, 45);
-
+            
+            // Create the appropriate attack animation based on enemy type
+            activeAttackAnimation = createAttackAnimation(enemyType, attackSheet, enemyX, enemyY, playerX, playerY);
+            
         } catch (Exception e) {
-            System.err.println("Failed to load dynamic attack animation: " + e.getMessage());
-            try {
-                // Fallback to SkeletonAttack
-                SpriteSheet fallbackSheet = new SpriteSheet(
-                    ImageLoader.load("Enemies/SkeletonAttack.png"),
-                    24,
-                    24
-                );
-                activeAttackAnimation = new SkeletonAttack(
-                    fallbackSheet,
-                    enemyX, enemyY,
-                    playerX, playerY,
-                    45
-                );
-            } catch (Exception fallbackError) {
-                System.err.println("Fallback animation also failed: " + fallbackError.getMessage());
-                this.player.getEntity().handleDamage(this.entity, false);
-                this.currentTurn = BattleTurn.Player;
-            }
+            System.err.println("Failed to load " + enemyType + " attack animation: " + e.getMessage());
+            // Fallback: just do immediate damage if animation fails
+            this.player.getEntity().handleDamage(this.entity, false);
+            this.currentTurn = BattleTurn.Player;
+            enemyTurnStarted = false;
+        }
+    }
+    
+    /**
+     * Determines the enemy type for loading the correct attack animation
+     */
+    protected String getEnemyType() {
+        // First try to use enemySource if it's different from entity
+        Object sourceToCheck = (enemySource != null && enemySource != entity) ? enemySource : entity;
+        
+        // Try to get class name from the full class path
+        String fullClassName = sourceToCheck.getClass().getName();
+
+        
+        
+        // Check if it contains "NPCs." package (e.g., "NPCs.Skeleton")
+        if (fullClassName.contains("NPCs.")) {
+            return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
+        }
+        
+        // Check if it contains "Enemies." package
+        if (fullClassName.contains("Enemies.")) {
+            return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
+        }
+        
+        // Otherwise use simple name
+        String simpleName = sourceToCheck.getClass().getSimpleName();
+        if (simpleName != null && !simpleName.isEmpty() && !simpleName.equals("Entity")) {
+            return simpleName;
+        }
+        
+        // Final fallback
+        return null;
+    }
+    
+    /**
+     * Creates the appropriate attack animation instance based on enemy type
+     * Add new cases here when you create new enemy attack animations
+     */
+    protected EnemyProjectileAttackAnimation createAttackAnimation(String enemyType, SpriteSheet sheet, 
+                                                   float startX, float startY, float targetX, float targetY) {
+        switch (enemyType) {
+            case "Skeleton":
+                return new SkeletonAttack(sheet, startX, startY, targetX, targetY, 45); // Update the '45' for a slower or faster animation
+                
+            // Add more enemy attack animations here as you create them:
+            // case "Spirit":
+            //     return new SpiritAttack(sheet, startX, startY, targetX, targetY, 45);
+            // 
+            // case "ArmoredSkeleton":
+            //     return new ArmoredSkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
+            // 
+            // case "DenialBoss":
+            //     return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 45);
+            
+            default:
+                System.err.println("Unknown enemy type: " + enemyType + ", using Skeleton attack");
+                return new SkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
         }
     }
 

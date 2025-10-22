@@ -1,6 +1,7 @@
 package MapEditor;
 
 import Engine.GraphicsHandler;
+import EnhancedMapTiles.CollectableItem;
 import Level.*;
 import Utils.Colors;
 
@@ -19,6 +20,7 @@ public class TileBuilder extends JPanel {
     private boolean showNPCs;
     private boolean showEnhancedMapTiles;
     private boolean showTriggers;
+    private boolean showCollectables;
 
     public TileBuilder(SelectedTileIndexHolder controlPanelHolder, JLabel hoveredTileIndexLabel) {
         setBackground(Colors.MAGENTA);
@@ -89,6 +91,12 @@ public class TileBuilder extends JPanel {
         if (showTriggers) {
             for (Trigger trigger : map.getTriggers()) {
                 trigger.draw(graphicsHandler, new Color(255, 0, 255, 100));
+            }
+        }
+
+        if (showCollectables) {
+            for (CollectableItem collectable : map.getCollectableItems()) {
+                collectable.draw(graphicsHandler);
             }
         }
 
@@ -182,5 +190,13 @@ public class TileBuilder extends JPanel {
     public void setShowTriggers(boolean showTriggers) {
         this.showTriggers = showTriggers;
         repaint();
+    }
+
+    public boolean getShowCollectables() {
+        return showCollectables;
+    }
+
+    public void setShowCollectables(boolean showCollectables) {
+        this.showCollectables = showCollectables;
     }
 }

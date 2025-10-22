@@ -319,14 +319,32 @@ public class SaveScreen extends Screen implements Menu {
             this.getDrawHeight() - 07,
             buttonWidth,
             buttonHeight);
-        graphicsHandler.drawImage(ImageLoader.load("left.png", new Color(0, true)), x + (this.getDrawWidth() - imageSize)/2 - (buttonWidth + buttonMargin + 35), this.getDrawHeight() - 10, imageSize, imageSize);
+        this.leftButtonBounds.setBounds(
+            x + (this.getDrawWidth() - imageSize)/2 - (buttonWidth + buttonMargin + 35),
+            this.getDrawHeight() - 10,
+            imageSize,
+            imageSize
+        );
+        this.rightButtonBounds.setBounds(
+            x + (this.getDrawWidth() - imageSize)/2 + (buttonWidth + buttonMargin + 35),
+            this.getDrawHeight() - 10,
+            imageSize,
+            imageSize
+        );
+        graphicsHandler.drawImage(
+            ImageLoader.load("left.png", new Color(0, true)),
+            this.leftButtonBounds.x,
+            this.leftButtonBounds.y,
+            this.leftButtonBounds.width,
+            this.leftButtonBounds.height
+        );
 
         graphicsHandler.drawFilledRectangle(this.saveButtonBounds.x, this.saveButtonBounds.y, this.saveButtonBounds.width, this.saveButtonBounds.height, this.selectedElement == 1 ? BUTTON_COLOR_HOVER : BUTTON_COLOR_BASE);
         graphicsHandler.drawString("Save", this.saveButtonBounds.x + (this.saveButtonBounds.width - 4 * 14)/2, this.saveButtonBounds.y + (this.saveButtonBounds.width - 14*3)/3, Resources.press_start.deriveFont(14f), TailwindColorScheme.white);
         graphicsHandler.drawFilledRectangle(this.loadButtonBounds.x, this.loadButtonBounds.y, this.loadButtonBounds.width, this.loadButtonBounds.height, this.selectedElement == 2 ? BUTTON_COLOR_HOVER : BUTTON_COLOR_BASE);
         graphicsHandler.drawString("Load", this.loadButtonBounds.x + (this.loadButtonBounds.width - 4 * 15)/2, this.loadButtonBounds.y + (this.loadButtonBounds.width - 14*3)/3, Resources.press_start.deriveFont(14f), TailwindColorScheme.white);
 
-        graphicsHandler.drawImage(ImageLoader.load("right.png", new Color(0, true)), x + (this.getDrawWidth() - imageSize)/2 + (buttonWidth + buttonMargin + 35), this.getDrawHeight() - 10, imageSize, imageSize);
+        graphicsHandler.drawImage(ImageLoader.load("right.png", new Color(0, true)), this.rightButtonBounds.x, this.rightButtonBounds.y, this.rightButtonBounds.width, this.rightButtonBounds.height);
         // slot.draw(graphicsHandler, x + 7, y);
     }
 

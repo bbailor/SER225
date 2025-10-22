@@ -100,8 +100,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         // setup player
         player = new Gnome(0, 0);
-        player.getEntity().getInventory().setStack(4, new ItemStack(Item.ItemList.test_item, 3));
-        player.getEntity().getInventory().setStack(8, new ItemStack(Item.ItemList.test_item2, 8));
+        // player.getEntity().getInventory().setStack(4, new ItemStack(Item.ItemList.test_item, 3));
+        // player.getEntity().getInventory().setStack(8, new ItemStack(Item.ItemList.test_item2, 8));
         playLevelScreenState = PlayLevelScreenState.RUNNING;
 
         // load map
@@ -300,7 +300,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             Entity enemy = buildEnemyEntityFor(me);
 
             boolean isBossBattle = me instanceof DenialBoss;
-            this.battleScreen = new BattleScreen(this.player.getEntity().getInventory(), this.player, enemy, isBossBattle);
+            this.battleScreen = new BattleScreen(this.player.getEntity().getInventory(), this.player, enemy, me, isBossBattle);
             this.battleScreen.open();
             this.battleScreen.addistener(LISTENER_NAME, this);
             this.playLevelScreenState = PlayLevelScreenState.BATTLE;

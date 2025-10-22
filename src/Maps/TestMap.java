@@ -1,5 +1,6 @@
 package Maps;
 
+import EnhancedMapTiles.CollectableItem;
 import EnhancedMapTiles.PushableRock;
 import Level.*;
 import NPCs.ArmoredSkeleton;
@@ -41,7 +42,7 @@ public class TestMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-/*      Walrus walrus = new Walrus(1, getMapTile(4, 28).getLocation().subtractY(40));
+        /*Walrus walrus = new Walrus(1, getMapTile(4, 28).getLocation().subtractY(40));
         walrus.setInteractScript(new WalrusScript());
         npcs.add(walrus);
 
@@ -53,7 +54,7 @@ public class TestMap extends Map {
         Bug bug = new Bug(3, getMapTile(7, 12).getLocation().subtractX(20));
         bug.setInteractScript(new BugScript());
         npcs.add(bug);
-*/  
+        */  
         
         Wizard wizard = new Wizard(4, getMapTile(10, 15).getLocation());
         wizard.setInteractScript(new WizardScript());
@@ -91,6 +92,25 @@ public class TestMap extends Map {
         triggers.add(new Trigger(790, 960, 10, 80, new LostBallScript(), "hasLostBall"));
         triggers.add(new Trigger(890, 960, 10, 80, new LostBallScript(), "hasLostBall"));
         return triggers;
+    }
+
+    @Override
+    protected ArrayList<CollectableItem> loadCollectableItems() {
+        ArrayList<CollectableItem> collectables = new ArrayList<>();
+        collectables.add(new CollectableItem(getMapTile(10, 24).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(12, 26).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(9, 10).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(9, 18).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(16, 14).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(1, 20).getLocation(), Item.ItemList.apple));
+        
+        collectables.add(new CollectableItem(getMapTile(22, 2).getLocation(), Item.ItemList.cherry));
+        collectables.add(new CollectableItem(getMapTile(22, 5).getLocation(), Item.ItemList.cherry));
+        collectables.add(new CollectableItem(getMapTile(12, 6).getLocation(), Item.ItemList.cherry));
+
+        // collectables.add(new CollectableItem(getMapTile(10, 24).getLocation(), Item.ItemList.cat));
+        // collectables.add(new CollectableItem(getMapTile(16, 20).getLocation(), Item.ItemList.cat));
+        return collectables;
     }
 
     @Override

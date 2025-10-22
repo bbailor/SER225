@@ -1,8 +1,12 @@
 package Maps;
 
+import java.util.ArrayList;
+
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
+import EnhancedMapTiles.CollectableItem;
 import GameObject.Sprite;
+import Level.Item;
 import Level.Map;
 import Tilesets.CommonTileset;
 import Utils.Colors;
@@ -26,4 +30,5 @@ public class TitleScreenMap extends Map {
         super.draw(graphicsHandler);
         cat.draw(graphicsHandler);
     }
+
 }
