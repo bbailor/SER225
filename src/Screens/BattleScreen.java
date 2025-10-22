@@ -415,7 +415,6 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         try {
             // Get the enemy's attack animation class name
             String enemyClassName = entity.getClass().getSimpleName();
-        
             String attackFileName = "Enemies/" + enemyClassName + "Attack.png";
             String attackClassName = "FightAnimations." + enemyClassName + "Attack";
 
