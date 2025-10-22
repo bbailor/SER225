@@ -300,7 +300,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             Entity enemy = buildEnemyEntityFor(me);
 
             boolean isBossBattle = me instanceof DenialBoss;
-            this.battleScreen = new BattleScreen(this.player.getEntity().getInventory(), this.player, enemy, isBossBattle);
+            this.battleScreen = new BattleScreen(this.player.getEntity().getInventory(), this.player, enemy, me, isBossBattle);
             this.battleScreen.open();
             this.battleScreen.addistener(LISTENER_NAME, this);
             this.playLevelScreenState = PlayLevelScreenState.BATTLE;
