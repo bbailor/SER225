@@ -76,6 +76,14 @@ public class Keyboard {
     	return true;
     }
 
+	public static void clear() {
+		for (Key key : keyMap.keySet()) {
+			int keyCode = keyMap.get(key);
+			keyDown.put(keyCode, false);
+			keyUp.put(keyCode, true);
+		}
+	}	
+
     // maps a Key enum type to its keycode
 	// Java keycodes were found here: https://stackoverflow.com/a/31637206
     private static EnumMap<Key, Integer> buildKeyMap() {

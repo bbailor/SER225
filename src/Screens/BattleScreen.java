@@ -400,7 +400,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     }
 
     @Override
-    public void open() {}
+    public void open() {
+        Keyboard.clear();
+    }
 
     @Override
     public void onMenuClose() {

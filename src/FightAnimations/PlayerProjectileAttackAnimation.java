@@ -30,9 +30,9 @@ public abstract class PlayerProjectileAttackAnimation extends AnimatedSprite {
                           float targetX, float targetY, int duration, String startingAnimationName) {
         super(spriteSheet, startX, startY, startingAnimationName);
         this.startX = targetX;
-        this.startY = targetX;
+        this.startY = targetY;
         this.targetX = startX;
-        this.targetY = startX;
+        this.targetY = startY;
         this.totalFrames = duration;
         this.currentTravelFrame = 0;
         this.isComplete = false;
