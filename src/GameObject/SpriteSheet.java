@@ -41,4 +41,10 @@ public class SpriteSheet {
 	public int getSpriteHeight() {
 		return spriteHeight;
 	}
+	public void setSpriteWidth(int width){
+		this.spriteWidth = width;
+	}
+	public void setSpriteHeight(int height){
+		this.spriteHeight = height;
+	}
 }

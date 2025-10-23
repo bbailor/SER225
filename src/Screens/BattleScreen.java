@@ -18,8 +18,11 @@ import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Entity;
 import Level.Player;
+import NPCs.DenialBoss;
 import FightAnimations.EnemyProjectileAttackAnimation;
 import FightAnimations.SkeletonAttack;
+import FightAnimations.SpiritAttack;
+import FightAnimations.DenialBossAttack;
 import Screens.submenus.BattleSubMenu;
 import Screens.submenus.InventoryBattleMenu;
 import Screens.submenus.SelectionBattleMenu;
@@ -421,6 +424,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
         // Get enemy type name
         String enemyType = getEnemyType();
+       
         
         try {
             String attackFileName = "Enemies/" + enemyType + "Attack.png";
@@ -487,14 +491,14 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 return new SkeletonAttack(sheet, startX, startY, targetX, targetY, 45); // Update the '45' for a slower or faster animation
                 
             // Add more enemy attack animations here as you create them:
-            // case "Spirit":
-            //     return new SpiritAttack(sheet, startX, startY, targetX, targetY, 45);
-            // 
+            case "Spirit":
+                  return new SpiritAttack(sheet, startX, startY, targetX, targetY, 45);
+        
             // case "ArmoredSkeleton":
             //     return new ArmoredSkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
             // 
-            // case "DenialBoss":
-            //     return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 45);
+            case "DenialBoss":
+                 return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 45);
             
             default:
                 System.err.println("Unknown enemy type: " + enemyType + ", using Skeleton attack");
