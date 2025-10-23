@@ -114,7 +114,7 @@ public class Item {
             }
 
             {
-                var sheet = new SpriteSheet(ImageLoader.load("items/apple.png"), 32, 32);
+                var sheet = new SpriteSheet(ImageLoader.load("item_imgs/apple.png"), 32, 32);
                 Frame[] frames = new Frame[2];
                 Arrays.parallelSetAll(frames, i -> new FrameBuilder(sheet.getSprite(0, i), (int)(60 / 1.5))
                     .withScale(1.25f)
@@ -134,8 +134,8 @@ public class Item {
             }
 
             {
-                var world_sheet = new SpriteSheet(ImageLoader.load("items/cherry_world.png"), 32, 32);
-                var sheet = new SpriteSheet(ImageLoader.load("items/cherry_default.png"), 32, 32);
+                var world_sheet = new SpriteSheet(ImageLoader.load("item_imgs/cherry_world.png"), 32, 32);
+                var sheet = new SpriteSheet(ImageLoader.load("item_imgs/cherry_default.png"), 32, 32);
                 Frame[] world = new Frame[4];
                 Arrays.parallelSetAll(world, i -> new FrameBuilder(world_sheet.getSprite(0, i), 60 / 3).build());
                 addAnimation("world", world);
