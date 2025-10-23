@@ -68,7 +68,7 @@ public class TestMap extends Map {
         questSkeleton.setCurrentAnimationName("STAND_LEFT");
         npcs.add(questSkeleton);
        
-        Skeleton s  = new Skeleton(100, getMapTile(14, 18).getLocation().subtractY(16).subtractX(6));
+/*         Skeleton s  = new Skeleton(100, getMapTile(14, 18).getLocation().subtractY(16).subtractX(6));
         s.setInteractScript(new DenialEnemyScript());
         s.setCurrentAnimationName("STAND_RIGHT");
         npcs.add(s);
@@ -87,7 +87,7 @@ public class TestMap extends Map {
         db.setInteractScript(new DenialBossScript());
         db.setCurrentAnimationName("STAND_LEFT");
         npcs.add(db);
-
+*/
 
         return npcs;
     }

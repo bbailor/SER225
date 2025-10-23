@@ -36,13 +36,13 @@ public class MapOneDenial extends Map {
 
 
         // enemies near player, all share DenialEnemyScript (spread out a bit)
-        Skeleton s  = new Skeleton(100, getMapTile(21, 15).getLocation().subtractY(16).subtractX(6));
+        Skeleton s  = new Skeleton(100, getMapTile(10, 8).getLocation().subtractY(16).subtractX(6));
         s.setInteractScript(new DenialEnemyScript());
         // face the player at start (player is to the RIGHT of (14,18) -> face RIGHT)
         s.setCurrentAnimationName("STAND_RIGHT");
         npcs.add(s);
 
-        Spirit sp   = new Spirit(101, getMapTile(10, 8).getLocation().subtractY(16).subtractX(10));
+        Spirit sp   = new Spirit(101, getMapTile(21, 15).getLocation().subtractY(16).subtractX(10));
         sp.setInteractScript(new DenialEnemyScript());
         // player start is to the LEFT of (20,21) -> face LEFT
         sp.setCurrentAnimationName("STAND_LEFT");
