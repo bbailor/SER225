@@ -48,6 +48,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     protected Color borderColor = TailwindColorScheme.slate700;
     protected EnemyProjectileAttackAnimation activeAttackAnimation = null;
     protected boolean enemyTurnStarted = false;
+    protected String currentEnemyType = null; // For debugging
 
     // New field to track if this battle involves the boss
     private boolean isBossBattle = false;
@@ -425,8 +426,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
         // Get enemy type name
         String enemyType = getEnemyType();
-       
-        
+        currentEnemyType = enemyType;
+
         try {
             String attackFileName = "Enemies/" + enemyType + "Attack.png";
               // Load the attack sprite sheet
@@ -440,6 +441,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             }
             case "DenialBoss":{
                 attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 255, 255);
+                break;
             }
             default: {
                 attackSheet= new SpriteSheet(ImageLoader.load(attackFileName), 24, 24);
@@ -450,7 +452,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             
             // Create the appropriate attack animation based on enemy type
             activeAttackAnimation = createAttackAnimation(enemyType, attackSheet, enemyX, enemyY, playerX, playerY);
-            
+
         } catch (Exception e) {
             System.err.println("Failed to load " + enemyType + " attack animation: " + e.getMessage());
             // Fallback: just do immediate damage if animation fails
@@ -510,7 +512,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 return new ArmoredSkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
             // 
             case "DenialBoss":
-                 return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 80);
+                 return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 48);
             
             default:
                 System.err.println("Unknown enemy type: " + enemyType + ", using Skeleton attack");

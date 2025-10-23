@@ -4,6 +4,7 @@ import Builders.FrameBuilder;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 /**
@@ -25,18 +26,15 @@ public class DenialBossAttack extends EnemyProjectileAttackAnimation {
      * @param duration Number of game frames the animation should take to travel
      * 
      */
-    public DenialBossAttack(SpriteSheet spriteSheet, float startX, float startY, 
-                          float targetX, float targetY, int duration) { 
+    public DenialBossAttack(SpriteSheet spriteSheet, float startX, float startY,
+                          float targetX, float targetY, int duration) {
         super(spriteSheet, startX, startY, targetX, targetY, duration, "ATTACK");
-        spriteSheet.setSpriteWidth(255);
-        spriteSheet.setSpriteHeight(255); 
-       
     }
     
     @Override
     protected void updatePosition(float progress) {
        
-        setLocation(startX + (targetX - startX) * .5f, startY + (targetY - startY) * .5f);
+        setLocation(startX + (targetX - 300 - startX) * .66f, startY + (targetY - startY) * .66f);
     }
 
     @Override
@@ -45,159 +43,159 @@ public class DenialBossAttack extends EnemyProjectileAttackAnimation {
             // Adjust these based on your sprite sheet layout
             // Assuming the attack animation frames are in rows 0-1, columns 0-3
             put("ATTACK", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(0, 0), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 1), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(0, 1), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 2), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(0, 2), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 3), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(0, 3), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 4), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(0, 4), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 5), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(0, 5), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 6), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(0, 6), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 7), 8)
-                        .withScale(scale)
-                        .build(),
-
-                
-                new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
-                        .withScale(scale)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 1), 8)
-                        .withScale(scale)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 2), 8)
-                        .withScale(scale)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 3), 8)
-                        .withScale(scale)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 4), 8)
-                        .withScale(scale)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 5), 8)
-                        .withScale(scale)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 6), 8)
-                        .withScale(scale)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 7), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(0, 7), 1)
+                        .withScale(1)
                         .build(),
 
                 
-                new FrameBuilder(spriteSheet.getSprite(2, 0), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(1, 0), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(2, 1), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(1, 1), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(2, 2), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(1, 2), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(2, 3), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(1, 3), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(2, 4), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(1, 4), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(2, 5), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(1, 5), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(2, 6), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(1, 6), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(2, 7), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(1, 7), 1)
+                        .withScale(1)
+                        .build(),
+
+                
+                new FrameBuilder(spriteSheet.getSprite(2, 0), 1)
+                        .withScale(1)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(2, 1), 1)
+                        .withScale(1)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(2, 2), 1)
+                        .withScale(1)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(2, 3), 1)
+                        .withScale(1)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(2, 4), 1)
+                        .withScale(1)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(2, 5), 1)
+                        .withScale(1)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(2, 6), 1)
+                        .withScale(1)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(2, 7), 1)
+                        .withScale(1)
                         .build(),
                
                 
-                new FrameBuilder(spriteSheet.getSprite(3, 0), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(3, 0), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 1), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(3, 1), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 2), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(3, 2), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 3), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(3, 3), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 4), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(3, 4), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 5), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(3, 5), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 6), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(3, 6), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 7), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(3, 7), 1)
+                        .withScale(1)
                         .build(),
                 
                 
-                new FrameBuilder(spriteSheet.getSprite(4, 0), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(4, 0), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(4, 1), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(4, 1), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(4, 2), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(4, 2), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(4, 3), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(4, 3), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(4, 4), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(4, 4), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(4, 5), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(4, 5), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(4, 6), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(4, 6), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(4, 7), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(4, 7), 1)
+                        .withScale(1)
                         .build(),
                 
 
-                new FrameBuilder(spriteSheet.getSprite(5, 0), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(5, 0), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(5, 1), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(5, 1), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(5, 2), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(5, 2), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(5, 3), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(5, 3), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(5, 4), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(5, 4), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(5, 5), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(5, 5), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(5, 6), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(5, 6), 1)
+                        .withScale(1)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(5, 7), 8)
-                        .withScale(scale)
+                new FrameBuilder(spriteSheet.getSprite(5, 7), 1)
+                        .withScale(1)
                         .build(),
             });
        }};
