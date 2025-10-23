@@ -15,9 +15,15 @@ public class DenialBossScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToDenialBoss", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Denial: What have we here...\nGnomes are quite a rare sight! ");
-                    addText("Gnomeo: You are no ordinary monster.\nRegardless, nothing will stop me from finding Juliet.");
-                    addText("Denial: You will fall by my hand.\nYour journey ends here!");
+                    addText("Denial: What have we here... Gnomes are quite\na rare sight! ");
+                    addText("Gnomeo: You are no ordinary monster. Regardless,\nnothing will stop me from finding Juliet.");
+                    addText("Denial: You will fall by my hand, just as Juliet\nfell to my master.");
+                    addText("Gnomeo: Y- your master.? Death couldn't get her!");
+                    addText("Gnomeo: No... this is trickery! I made sure she\nwas safe!");
+                    addText("Gnomeo: You monsters speak only lies!");
+                    addText("Denial: Listen to you try to convince yourself!\nIt's unbecoming of a hero.");
+                    addText("Denial: Pathetic... It's a shame your journey must\nend here!");
+                    addText("Denial: You've been quite the entertainement.");
                     
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToDenialBoss", true));
@@ -53,7 +59,7 @@ public class DenialBossScript extends Script {
                                 return answer == 1;
                             }
                         });
-                        addScriptAction(new TextboxScriptAction("Denial: Cowardice... Entirely expected"));
+                        addScriptAction(new TextboxScriptAction("Denial: Cowardice... Entirely expected."));
                     }});
                 }});
             }});
