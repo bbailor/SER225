@@ -10,11 +10,10 @@ import java.util.HashMap;
  * Spirit attack animation that moves from enemy to player
  */
 public class DenialBossAttack extends EnemyProjectileAttackAnimation {
-    
     private static final int FRAMES_UNTIL_STOP = 48;
     private float stoppedX, stoppedY;
     private boolean hasStopped = false;
-    private float scale = 0.25f;
+    private float scale = 1.0f;
     
     /**
      * Creates a spirit attack animation
@@ -29,33 +28,15 @@ public class DenialBossAttack extends EnemyProjectileAttackAnimation {
     public DenialBossAttack(SpriteSheet spriteSheet, float startX, float startY, 
                           float targetX, float targetY, int duration) { 
         super(spriteSheet, startX, startY, targetX, targetY, duration, "ATTACK");
-        spriteSheet.setSpriteWidth(512);
-        spriteSheet.setSpriteHeight(512);
-        
+        spriteSheet.setSpriteWidth(255);
+        spriteSheet.setSpriteHeight(255); 
        
     }
     
     @Override
     protected void updatePosition(float progress) {
-        // Check which animation frame we're on (not travel frame)
-        int currentAnimFrame = getCurrentFrameIndex();
-        
-        if (currentAnimFrame < FRAMES_UNTIL_STOP) {
-            // Still moving - use linear interpolation
-            float newX = startX + (targetX - startX) * progress;
-            float newY = startY + (targetY - startY) * progress;
-            setLocation(newX, newY);
-            
-            // Store position when we reach frame 5
-            if (currentAnimFrame == FRAMES_UNTIL_STOP - 1) {
-                stoppedX = newX;
-                stoppedY = newY;
-                hasStopped = true;
-            }
-        } else if (hasStopped) {
-            // Frame 5+ - stay at stopped position
-            setLocation(stoppedX, stoppedY);
-        }
+       
+        setLocation(startX + (targetX - startX) * .5f, startY + (targetY - startY) * .5f);
     }
 
     @Override
@@ -219,6 +200,7 @@ public class DenialBossAttack extends EnemyProjectileAttackAnimation {
                         .withScale(scale)
                         .build(),
             });
-        }};
+       }};
     }
+    
 }

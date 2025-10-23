@@ -22,6 +22,7 @@ import NPCs.DenialBoss;
 import FightAnimations.EnemyProjectileAttackAnimation;
 import FightAnimations.SkeletonAttack;
 import FightAnimations.SpiritAttack;
+import FightAnimations.ArmoredSkeletonAttack;
 import FightAnimations.DenialBossAttack;
 import Screens.submenus.BattleSubMenu;
 import Screens.submenus.InventoryBattleMenu;
@@ -428,13 +429,24 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         
         try {
             String attackFileName = "Enemies/" + enemyType + "Attack.png";
+              // Load the attack sprite sheet
+           
+
+        SpriteSheet attackSheet = null;
+        switch (enemyType) {
+            case "ArmoredSkeleton": {
+                attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 63, 63);
+                break;
+            }
+            case "DenialBoss":{
+                attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 255, 255);
+            }
+            default: {
+                attackSheet= new SpriteSheet(ImageLoader.load(attackFileName), 24, 24);
+            }
+        }
             
-            // Load the attack sprite sheet
-            SpriteSheet attackSheet = new SpriteSheet(
-                ImageLoader.load(attackFileName),
-                24,  // sprite width - adjust per enemy if needed
-                24   // sprite height - adjust per enemy if needed
-            );
+          
             
             // Create the appropriate attack animation based on enemy type
             activeAttackAnimation = createAttackAnimation(enemyType, attackSheet, enemyX, enemyY, playerX, playerY);
@@ -494,11 +506,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             case "Spirit":
                   return new SpiritAttack(sheet, startX, startY, targetX, targetY, 45);
         
-            // case "ArmoredSkeleton":
-            //     return new ArmoredSkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
+            case "ArmoredSkeleton":
+                return new ArmoredSkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
             // 
             case "DenialBoss":
-                 return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 45);
+                 return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 80);
             
             default:
                 System.err.println("Unknown enemy type: " + enemyType + ", using Skeleton attack");

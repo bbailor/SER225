@@ -43,8 +43,13 @@ public class SpriteSheet {
 	}
 	public void setSpriteWidth(int width){
 		this.spriteWidth = width;
+		this.columnLength = image.getWidth() / spriteWidth;
+
 	}
 	public void setSpriteHeight(int height){
 		this.spriteHeight = height;
+		this.rowLength = image.getHeight() / spriteHeight;
 	}
+	
+	
 }
