@@ -126,16 +126,13 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
     @Override
     public void update() {
-        // 🩸 Check if enemy is dead
         if (this.entity.getHealth() <= 0) {
             // Notify PlayLevelScreen that this enemy was defeated
             this.sendEvent("enemy_defeated", this.enemySource);
-            // Close the battle screen
             this.close();
             return;
         }
 
-        // 💀 Check if player is dead
         if (this.player.getEntity().getHealth() <= 0) {
             this.sendEvent(LOSE_EVENT_NAME);
             return;
@@ -145,7 +142,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         if (activePlayerAttackAnimation != null) {
             activePlayerAttackAnimation.update();
             if (activePlayerAttackAnimation.isComplete()) {
+                // Apply damage when player animation completes
+                this.entity.handleDamage(this.player.getEntity(), false);
                 activePlayerAttackAnimation = null;
+                // Switch to enemy turn after damage is dealt
+                this.currentTurn = BattleTurn.Enemy;
             }
             return; // Don't process other updates while animating
         }
@@ -177,7 +178,6 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             this.player.getEntity().kill();
         }
     }
-
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
         graphicsHandler.drawFilledRectangle(0, 0, Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT, TailwindColorScheme.black);
@@ -344,8 +344,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         switch (eventName) {
             case "attack.basic_attack": {
                 startPlayerAttackAnimation();                
-                this.entity.handleDamage(this.player.getEntity(), false);
-                this.currentTurn = BattleTurn.Enemy;
+                //this.entity.handleDamage(this.player.getEntity(), false);
+                //this.currentTurn = BattleTurn.Enemy;
                 break;
             }
             case "attack.skill": {
