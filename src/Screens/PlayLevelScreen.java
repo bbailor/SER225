@@ -98,7 +98,10 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("hasTalkedToDinosaur", false);
         flagManager.addFlag("hasFoundBall", false);
         flagManager.addFlag("hasTalkedToDenialBoss", false);
-
+        flagManager.addFlag("wizardQuestStarted", false);
+        flagManager.addFlag("wizardSaved", false);
+        flagManager.addFlag("wizardRewardGiven", false);
+        
         // setup player
         player = new Gnome(0, 0);
         // player.getEntity().getInventory().setStack(4, new ItemStack(Item.ItemList.test_item, 3));

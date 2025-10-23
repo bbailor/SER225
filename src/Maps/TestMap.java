@@ -60,6 +60,13 @@ public class TestMap extends Map {
         wizard.setInteractScript(new WizardScript());
         npcs.add(wizard);
 
+        // Quest skeleton - appears when quest starts, disappears when defeated
+        Skeleton questSkeleton = new Skeleton(103, getMapTile(20, 1).getLocation().subtractY(16).subtractX(6));
+        questSkeleton.setInteractScript(new WizardQuestSkeletonScript());
+        // Will appear when wizardQuestStarted is true AND wizardSaved is false
+        questSkeleton.setExistenceFlag("wizardSaved"); 
+        questSkeleton.setCurrentAnimationName("STAND_LEFT");
+        npcs.add(questSkeleton);
        
         Skeleton s  = new Skeleton(100, getMapTile(14, 18).getLocation().subtractY(16).subtractX(6));
         s.setInteractScript(new DenialEnemyScript());
