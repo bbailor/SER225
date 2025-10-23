@@ -15,19 +15,21 @@ public class DenialBossScript extends Script {
 
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasTalkedToDenialEnemy", false));
+                addRequirement(new FlagRequirement("hasTalkedToDenialBoss", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("[insert boss dialogue here]");
+                    addText("Monster: What have we here...\nGnomes are quite a rare sight ");
+                    addText("Gnomeo: You are no ordinary monster\nRegardless, nothing will stop me from finding Juliet");
+                    addText("Monster: You will fall by my hand\nYour journey ends here");
+                    addText("Gnomeo: Juliet, wait for me");
                 }});
-                addScriptAction(new ChangeFlagScriptAction("hasTalkedToDenialEnemy", true));
+                addScriptAction(new ChangeFlagScriptAction("hasTalkedToDenialBoss", true));
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasTalkedToDenialEnemy", true));
+                addRequirement(new FlagRequirement("hasTalkedToDenialBoss", true));
 
                 // Prompt with Yes/No
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("A foe blocks your path.");
                     addText("Start battle?", new String[] { "Yes", "No" });
                 }});
 
