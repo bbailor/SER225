@@ -139,7 +139,7 @@ public class Map1Tileset extends Tileset {
                 mapTiles.add(floorLeftWallTile1);
             
             //floorGeneric1
-                Frame floorGeneric1Frame = new FrameBuilder(getSubImage(3,1)).withBounds(0,0,16,16).withScale(tileScale).build();
+                Frame floorGeneric1Frame = new FrameBuilder(getSubImage(3,1)).withScale(tileScale).build();
                 MapTileBuilder floorGeneric1Tile = new MapTileBuilder(floorGeneric1Frame);
                 mapTiles.add(floorGeneric1Tile);
 
@@ -208,7 +208,7 @@ public class Map1Tileset extends Tileset {
                 mapTiles.add(deskTopCenterTile);
 
             //DeskTopRight
-                Frame deskTopRightFrame = new FrameBuilder(getSubImage(0,9)).withBounds(0,0,16,16).withScale(tileScale).build();
+                Frame deskTopRightFrame = new FrameBuilder(getSubImage(0,9)).withBounds(0,0,6,16).withScale(tileScale).build();
                 MapTileBuilder deskTopRighTile = new MapTileBuilder(deskTopRightFrame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(deskTopRighTile);
 
@@ -223,7 +223,7 @@ public class Map1Tileset extends Tileset {
                 mapTiles.add(deskTopBCTile);
             
             //deskTopBottomRight
-                Frame deskTopBRFrame = new FrameBuilder(getSubImage(1,9)).withBounds(0,0,16,16).withScale(tileScale).build();
+                Frame deskTopBRFrame = new FrameBuilder(getSubImage(1,9)).withBounds(0,0,6,16).withScale(tileScale).build();
                 MapTileBuilder deskTopBRTile = new MapTileBuilder(deskTopBRFrame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(deskTopBRTile);
 
@@ -418,7 +418,7 @@ public class Map1Tileset extends Tileset {
                 mapTiles.add(blankTile);
 
             //floorMidWall1
-                Frame floorMidWall1Frame = new FrameBuilder(getSubImage(7, 5)).withBounds(0,0,10,16).withScale(tileScale).build();
+                Frame floorMidWall1Frame = new FrameBuilder(getSubImage(7, 5)).withBounds(0,0,10,10).withScale(tileScale).build();
                 MapTileBuilder floorMidWall1Tile = new MapTileBuilder(floorMidWall1Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(floorMidWall1Tile);
 
@@ -428,28 +428,28 @@ public class Map1Tileset extends Tileset {
                 mapTiles.add(floorMidWall2Tile);
             
             //floorMidWall3
-                Frame floorMidWall3Frame = new FrameBuilder(getSubImage(8, 5)).withBounds(0,0,16,16).withScale(tileScale).build();
+                Frame floorMidWall3Frame = new FrameBuilder(getSubImage(8, 5)).withBounds(0,6,16,10).withScale(tileScale).build();
                 MapTileBuilder floorMidWall3Tile = new MapTileBuilder(floorMidWall3Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(floorMidWall3Tile);
 
             
             //floorMidWall4
-                Frame floorMidWall4Frame = new FrameBuilder(getSubImage(8, 6)).withBounds(0,0,16,16).withScale(tileScale).build();
+                Frame floorMidWall4Frame = new FrameBuilder(getSubImage(8, 6)).withBounds(6,0,6,16).withScale(tileScale).build();
                 MapTileBuilder floorMidWall4Tile = new MapTileBuilder(floorMidWall4Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(floorMidWall4Tile);
 
             //floorMidWall5
-                Frame floorMidWall5Frame = new FrameBuilder(getSubImage(7,4)).withBounds(0,0,16,16).withScale(tileScale).build();
+                Frame floorMidWall5Frame = new FrameBuilder(getSubImage(7,4)).withBounds(0,0,10,10).withScale(tileScale).build();
                 MapTileBuilder floorMidWall5Tile = new MapTileBuilder(floorMidWall5Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(floorMidWall5Tile);
 
             //floorMidWall6
-                Frame floorMidWall6Frame = new FrameBuilder(getSubImage(9,5)).withBounds(0,0,16,16).withScale(tileScale).build();
+                Frame floorMidWall6Frame = new FrameBuilder(getSubImage(9,5)).withBounds(0,0,10,10).withScale(tileScale).build();
                 MapTileBuilder floorMidWall6Tile = new MapTileBuilder(floorMidWall6Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(floorMidWall6Tile);
 
             //floorMidWall7
-                Frame floorMidWall7Frame = new FrameBuilder(getSubImage(10,5)).withBounds(0,0,16,16).withScale(tileScale).build();
+                Frame floorMidWall7Frame = new FrameBuilder(getSubImage(10,5)).withBounds(0,0,10,10).withScale(tileScale).build();
                 MapTileBuilder floorMidWall7Tile = new MapTileBuilder(floorMidWall7Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(floorMidWall7Tile);
 
@@ -478,7 +478,7 @@ public class Map1Tileset extends Tileset {
                 mapTiles.add(wallDiv2Tile);
 
             //wallDiv3
-                Frame wallDiv3Frame = new FrameBuilder(getSubImage(10,4)).withBounds(0,0,16,16).withScale(tileScale).build();
+                Frame wallDiv3Frame = new FrameBuilder(getSubImage(10,4)).withBounds(0,0,16,5).withScale(tileScale).build();
                 MapTileBuilder wallDiv3Tile = new MapTileBuilder(wallDiv3Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(wallDiv3Tile);
 
