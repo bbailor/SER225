@@ -188,16 +188,7 @@ public class Item {
 
         };
 
-        public static Weapon knife_of_life = new KnifeOfLife(null) {
-            {
-                addAnimation("default", new Frame[] {
-                    new FrameBuilder(ImageLoader.load("weapons/knifeOfLife.png"))
-                        .withScale(2.0f)
-                        .withBounds(8, 0, 16, 32)
-                        .build()
-                });
-            }
-        };
+        public static Weapon knife_of_life = new KnifeOfLife();
 
         public static Item getFromID(String id) {
             return IDMap.get(id);

@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 import EnhancedMapTiles.CollectableItem;
 import Level.EnhancedMapTile;
+import Level.ItemStack;
 import Level.Map;
 import Level.MapEntity;
 import Level.MapTile;
@@ -90,6 +91,7 @@ public class MapSerializer implements JsonDeserializer<Map>, JsonSerializer<Map>
             collectable_obj.addProperty("class", collectable.getClass().getName());
             collectable_obj.add("pos", context.serialize(collectable.getLocation()));
             collectable_obj.add("script", context.serialize(collectable.getInteractScript(), Script.class));
+            collectable_obj.add("stack", context.serialize(collectable.getStack(), ItemStack.class));
             collectables.add(collectable_obj);
         }
         obj.add("collectables", collectables);
@@ -202,8 +204,8 @@ public class MapSerializer implements JsonDeserializer<Map>, JsonSerializer<Map>
                 var collectable_json = _collectable_json.getAsJsonObject();
                 var collectable = Class.forName(collectable_json.get("class").getAsString())
                     .asSubclass(CollectableItem.class)
-                    .getConstructor(Point.class)
-                    .newInstance(context.<Point>deserialize(collectable_json.get("pos"), Point.class));
+                    .getConstructor(Point.class, ItemStack.class)
+                    .newInstance(context.<Point>deserialize(collectable_json.get("pos"), Point.class), context.<ItemStack>deserialize(collectable_json.get("stack"), ItemStack.class));
                 if (!collectable_json.get("script").isJsonNull()) {
                     collectable.setInteractScript(context.deserialize(collectable_json.get("script"), Script.class));
                 }

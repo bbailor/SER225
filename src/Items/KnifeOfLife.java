@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
+import Engine.Inventory;
 import EnhancedMapTiles.CollectableItem;
 import GameObject.Frame;
 import GameObject.Rectangle;
@@ -23,17 +24,28 @@ import Utils.Point;
 
 public class KnifeOfLife extends Weapon {
 
-    protected Rectangle bounds;
-    protected String name;
-    protected int maxStack;
-    protected Item item;
-    public KnifeOfLife(Point location) {
+    public KnifeOfLife() {
         //this.animations.put('battle...')
         //add battle animation battlescreen
-
         super("knifeoflife", "Knife of Life", "desc", 2.0);
 
-        name = "Knife of Life";
-        maxStack = 1;
+        addAnimation("default", new Frame[] {
+            new FrameBuilder(ImageLoader.load("weapons/knifeOfLife.png"))
+                .withScale(2.0f)
+                .withBounds(8, 0, 16, 32)
+                .build()
+        });
+    }
+
+    @Override
+    public boolean canUse(ItemStack stack, Entity targetedEntity) {
+        return true;
+    }
+
+    @Override
+    public void use(ItemStack stack, Entity targetedEntity) {
+        targetedEntity.getInventory().setStack(Inventory.NamedSlot.Weapon, stack.copy());
+        super.use(stack, targetedEntity);
+        stack.removeItem();
     }
 }

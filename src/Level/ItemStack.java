@@ -50,6 +50,10 @@ public class ItemStack {
         return this.item;
     }
 
+    public ItemStack copy() {
+        return new ItemStack(item, stackSize);
+    }
+
     public void use(Entity entity) {
         this.item.use(this, entity);
     }

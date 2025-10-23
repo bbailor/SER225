@@ -258,7 +258,7 @@ public class SaveScreen extends Screen implements Menu {
             this.selectedElement = -1;
             this.selectedID = -1;
         }
-        if (Keyboard.isKeyDown(Key.ENTER)) {
+        if (Keyboard.isKeyDown(Key.ENTER) || Keyboard.isKeyDown(Key.SPACE)) {
             this.pressCD = Globals.KEYBOARD_CD;
             if (this.selectedElement == -1) {
                 this.selectedID = this.hoveredID;
