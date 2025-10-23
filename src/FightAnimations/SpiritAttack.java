@@ -76,10 +76,10 @@ public class SpiritAttack extends EnemyProjectileAttackAnimation {
                 new FrameBuilder(spriteSheet.getSprite(1, 1), 8)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 2), 16)
+                new FrameBuilder(spriteSheet.getSprite(1, 2), 8)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(1, 3), 16)
+                new FrameBuilder(spriteSheet.getSprite(1, 3), 8)
                         .withScale(2)
                         .build()
             });
