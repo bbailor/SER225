@@ -53,7 +53,7 @@ public class DenialBossScript extends Script {
                                 return answer == 1;
                             }
                         });
-                        addScriptAction(new TextboxScriptAction("Monster: Cowardice... Entirely expected"));
+                        addScriptAction(new TextboxScriptAction("Denial: Cowardice... Entirely expected"));
                     }});
                 }});
             }});
