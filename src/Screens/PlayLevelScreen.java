@@ -97,6 +97,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("hasTalkedToWalrus", false);
         flagManager.addFlag("hasTalkedToDinosaur", false);
         flagManager.addFlag("hasFoundBall", false);
+        flagManager.addFlag("hasTalkedToDenialBoss", false);
 
         // setup player
         player = new Gnome(0, 0);

@@ -18,9 +18,7 @@ public class DenialEnemyScript extends Script {
                 addRequirement(new FlagRequirement("hasTalkedToDenialEnemy", false));
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Gnomeo: What are you?? Some kind of monster?");
-                    addText("Monster: Forfeit your journey!");
-                    addText("Monster: You can't save her, she's too far gone!");
-                    addText("Gnomeo: Liar!!! You'll pay for your treachery!");
+                    addText("Monster: *screeches* Kill... the... gnome");
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToDenialEnemy", true));
             }});
@@ -30,7 +28,6 @@ public class DenialEnemyScript extends Script {
 
                 // Prompt with Yes/No
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("A foe blocks your path.");
                     addText("Start battle?", new String[] { "Yes", "No" });
                 }});
 
@@ -59,7 +56,7 @@ public class DenialEnemyScript extends Script {
                                 return answer == 1;
                             }
                         });
-                        addScriptAction(new TextboxScriptAction("Monster: Cowardice... Typical of Gnomes"));
+                        addScriptAction(new TextboxScriptAction("Monster: weak... "));
                     }});
                 }});
             }});
