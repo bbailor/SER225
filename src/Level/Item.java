@@ -145,7 +145,7 @@ public class Item {
         public static Item cherry = new Item("cherry", "Cherry", "A tasty cherry", 20) {
             @Override
             public boolean canUse(ItemStack stack, Entity targetedEntity) {
-                return targetedEntity.getHealth() != targetedEntity.getMaxHealth();
+                return targetedEntity.getMana() != targetedEntity.getMaxMana();
             }
 
             @Override
