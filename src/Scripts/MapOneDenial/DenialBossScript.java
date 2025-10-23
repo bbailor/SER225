@@ -15,10 +15,10 @@ public class DenialBossScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToDenialBoss", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Monster: What have we here...\nGnomes are quite a rare sight ");
-                    addText("Gnomeo: You are no ordinary monster\nRegardless, nothing will stop me from finding Juliet");
-                    addText("Monster: You will fall by my hand\nYour journey ends here");
-                    addText("Gnomeo: Juliet, wait for me");
+                    addText("Denial: What have we here...\nGnomes are quite a rare sight! ");
+                    addText("Gnomeo: You are no ordinary monster.\nRegardless, nothing will stop me from finding Juliet.");
+                    addText("Denial: You will fall by my hand.\nYour journey ends here!");
+                    
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToDenialBoss", true));
             }});
@@ -38,6 +38,10 @@ public class DenialBossScript extends Script {
                                 return answer == 0;
                             }
                         });
+                        addScriptAction(new TextboxScriptAction() {{
+                            addText("Gnomeo: Juliet, wait for me...");
+                        }});
+                       
                         addScriptAction(new StartBattleScriptAction(DenialBossScript.this.entity));
                     }});
 
