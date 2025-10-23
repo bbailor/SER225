@@ -24,6 +24,7 @@ import Level.Item;
 import Level.ItemStack;
 import Level.Map;
 import Level.MapEntity;
+import Level.MapEntityStatus;
 import Level.NPC;
 import Level.Player;
 
@@ -308,6 +309,12 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             this.battleScreen.open();
             this.battleScreen.addistener(LISTENER_NAME, this);
             this.playLevelScreenState = PlayLevelScreenState.BATTLE;
+        }
+
+        // 👇 Enemy defeated event (added)
+        if (eventName.equals("enemy_defeated") && args.length > 0 && args[0] instanceof MapEntity defeatedEnemy) {
+            defeatedEnemy.setMapEntityStatus(MapEntityStatus.REMOVED);
+            defeatedEnemy.setIsHidden(true);
         }
     }
 }

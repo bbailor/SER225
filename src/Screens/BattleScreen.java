@@ -1,4 +1,3 @@
-
 package Screens;
 
 import java.awt.Color;
@@ -125,102 +124,59 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     @Override
     public void initialize() {}
 
-    // @Override
-    // public void update() {
-    //     if (this.entity.getHealth() <= 0) {
-    //         this.close();
-    //         return;
-    //     }
-    //     if (this.player.getEntity().getHealth() <= 0) {
-    //         this.sendEvent(LOSE_EVENT_NAME);
-    //         return;
-    //     }
-        
-    //     // Handle active attack animation
-    //     if (activeAttackAnimation != null) {
-    //         activeAttackAnimation.update();
-    //         if (activeAttackAnimation.isComplete()) {
-    //             // Apply damage when animation completes
-    //             this.player.getEntity().handleDamage(this.entity, false);
-    //             activeAttackAnimation = null;
-    //             enemyTurnStarted = false;
-    //             this.currentTurn = BattleTurn.Player;
-    //         }
-    //         return;
-    //     }
-        
-    //     if (this.currentTurn == BattleTurn.Enemy && !enemyTurnStarted) {
-    //         // Start attack animation instead of immediate damage
-    //         enemyTurnStarted = true;
-    //         startEnemyAttackAnimation();
-    //         return;
-    //     }
-
-    //     // if (this.currentTurn == BattleTurn.Player) {
-    //     //     // Start attack animation instead of immediate damage
-    //     //     enemyTurnStarted = false;
-    //     //     startPlayerAttackAnimation();
-    //     //     return;
-    //     // }
-
-
-    //     if (this.selectedAction == null) {
-    //         this.selector.update();
-    //     } else {
-    //         this.actions.get(this.selectedAction).update();
-    //     }
-    //     if (Keyboard.isKeyDown(Key.K)) {
-    //         this.player.getEntity().kill();
-    //     }
-    // }
-
     @Override
-public void update() {
-    if (this.entity.getHealth() <= 0) {
-        this.close();
-        return;
-    }
-    if (this.player.getEntity().getHealth() <= 0) {
-        this.sendEvent(LOSE_EVENT_NAME);
-        return;
-    }
-    
-    // Handle active PLAYER attack animation
-    if (activePlayerAttackAnimation != null) {
-        activePlayerAttackAnimation.update();
-        if (activePlayerAttackAnimation.isComplete()) {
-            activePlayerAttackAnimation = null;
+    public void update() {
+        // 🩸 Check if enemy is dead
+        if (this.entity.getHealth() <= 0) {
+            // Notify PlayLevelScreen that this enemy was defeated
+            this.sendEvent("enemy_defeated", this.enemySource);
+            // Close the battle screen
+            this.close();
+            return;
         }
-        return; // Don't process other updates while animating
-    }
-    
-    // Handle active ENEMY attack animation
-    if (activeAttackAnimation != null) {
-        activeAttackAnimation.update();
-        if (activeAttackAnimation.isComplete()) {
-            this.player.getEntity().handleDamage(this.entity, false);
-            activeAttackAnimation = null;
-            enemyTurnStarted = false;
-            this.currentTurn = BattleTurn.Player;
-        }
-        return;
-    }
-    
-    if (this.currentTurn == BattleTurn.Enemy && !enemyTurnStarted) {
-        enemyTurnStarted = true;
-        startEnemyAttackAnimation();
-        return;
-    }
 
-    if (this.selectedAction == null) {
-        this.selector.update();
-    } else {
-        this.actions.get(this.selectedAction).update();
+        // 💀 Check if player is dead
+        if (this.player.getEntity().getHealth() <= 0) {
+            this.sendEvent(LOSE_EVENT_NAME);
+            return;
+        }
+        
+        // Handle active PLAYER attack animation
+        if (activePlayerAttackAnimation != null) {
+            activePlayerAttackAnimation.update();
+            if (activePlayerAttackAnimation.isComplete()) {
+                activePlayerAttackAnimation = null;
+            }
+            return; // Don't process other updates while animating
+        }
+        
+        // Handle active ENEMY attack animation
+        if (activeAttackAnimation != null) {
+            activeAttackAnimation.update();
+            if (activeAttackAnimation.isComplete()) {
+                this.player.getEntity().handleDamage(this.entity, false);
+                activeAttackAnimation = null;
+                enemyTurnStarted = false;
+                this.currentTurn = BattleTurn.Player;
+            }
+            return;
+        }
+        
+        if (this.currentTurn == BattleTurn.Enemy && !enemyTurnStarted) {
+            enemyTurnStarted = true;
+            startEnemyAttackAnimation();
+            return;
+        }
+
+        if (this.selectedAction == null) {
+            this.selector.update();
+        } else {
+            this.actions.get(this.selectedAction).update();
+        }
+        if (Keyboard.isKeyDown(Key.K)) {
+            this.player.getEntity().kill();
+        }
     }
-    if (Keyboard.isKeyDown(Key.K)) {
-        this.player.getEntity().kill();
-    }
-}
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
@@ -452,12 +408,6 @@ public void update() {
         this.selector.setHoverColor(Globals.HOVER_COLOR);
     }
     
-
-
-
-
-
-
     private void startPlayerAttackAnimation() {
         // Calculate battle area positions
         int entityPadding = DEFAULT_SECTION_WIDTH / 10;
@@ -505,31 +455,18 @@ public void update() {
 
         try {
             String attackFileName = "weapons//" + weapon + "Attack.png";
-            // Load the attack sprite sheet
-           
-
             SpriteSheet attackSheet = null;
-            //add cases
             attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 32, 32);
-
             
-            // Create the appropriate attack animation based on enemy type
             activePlayerAttackAnimation = createPlayerAttackAnimation(weapon, attackSheet, enemyX, enemyY, playerX, playerY);
 
         } catch (Exception e) {
             System.err.println("Failed to load " + weapon + " attack animation: " + e.getMessage());
-            // Fallback: just do immediate damage if animation fails
             this.player.getEntity().handleDamage(this.entity, false);
             this.currentTurn = BattleTurn.Player;
             enemyTurnStarted = false;
         }
     }
-
-
-
-
-
-
 
     private void startEnemyAttackAnimation() {
         // Calculate battle area positions
@@ -572,36 +509,29 @@ public void update() {
             playerY = battleY0 + (battleHeight - placeholderHeight) / 2;
         }
 
-        // Get enemy type name
         String enemyType = getEnemyType();
         currentEnemyType = enemyType;
 
         try {
             String attackFileName = "Enemies/" + enemyType + "Attack.png";
-              // Load the attack sprite sheet
-           
-
-        SpriteSheet attackSheet = null;
-        switch (enemyType) {
-            case "ArmoredSkeleton": {
-                attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 63, 63);
-                break;
+            SpriteSheet attackSheet = null;
+            switch (enemyType) {
+                case "ArmoredSkeleton": {
+                    attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 63, 63);
+                    break;
+                }
+                case "DenialBoss":{
+                    attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 255, 255);
+                    break;
+                }
+                default: {
+                    attackSheet= new SpriteSheet(ImageLoader.load(attackFileName), 24, 24);
+                }
             }
-            case "DenialBoss":{
-                attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 255, 255);
-                break;
-            }
-            default: {
-                attackSheet= new SpriteSheet(ImageLoader.load(attackFileName), 24, 24);
-            }
-        }
-            
-            // Create the appropriate attack animation based on enemy type
             activeAttackAnimation = createAttackAnimation(enemyType, attackSheet, enemyX, enemyY, playerX, playerY);
 
         } catch (Exception e) {
             System.err.println("Failed to load " + enemyType + " attack animation: " + e.getMessage());
-            // Fallback: just do immediate damage if animation fails
             this.player.getEntity().handleDamage(this.entity, false);
             this.currentTurn = BattleTurn.Player;
             enemyTurnStarted = false;
@@ -612,31 +542,18 @@ public void update() {
      * Determines the enemy type for loading the correct attack animation
      */
     protected String getEnemyType() {
-        // First try to use enemySource if it's different from entity
         Object sourceToCheck = (enemySource != null && enemySource != entity) ? enemySource : entity;
-        
-        // Try to get class name from the full class path
         String fullClassName = sourceToCheck.getClass().getName();
-
-        
-        
-        // Check if it contains "NPCs." package (e.g., "NPCs.Skeleton")
         if (fullClassName.contains("NPCs.")) {
             return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
         }
-        
-        // Check if it contains "Enemies." package
         if (fullClassName.contains("Enemies.")) {
             return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
         }
-        
-        // Otherwise use simple name
         String simpleName = sourceToCheck.getClass().getSimpleName();
         if (simpleName != null && !simpleName.isEmpty() && !simpleName.equals("Entity")) {
             return simpleName;
         }
-        
-        // Final fallback
         return null;
     }
     
@@ -648,47 +565,29 @@ public void update() {
                                                    float startX, float startY, float targetX, float targetY) {
         switch (enemyType) {
             case "Skeleton":
-                return new SkeletonAttack(sheet, startX, startY, targetX, targetY, 45); // Update the '45' for a slower or faster animation
-                
-            // Add more enemy attack animations here as you create them:
+                return new SkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
             case "Spirit":
-                  return new SpiritAttack(sheet, startX, startY, targetX, targetY, 45);
-        
+                return new SpiritAttack(sheet, startX, startY, targetX, targetY, 45);
             case "ArmoredSkeleton":
                 return new ArmoredSkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
-            // 
             case "DenialBoss":
-                 return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 48);
-            
+                return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 48);
             default:
                 System.err.println("Unknown enemy type: " + enemyType + ", using Skeleton attack");
                 return new SkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
         }
     }
 
-
-
-
-
-
     protected PlayerProjectileAttackAnimation createPlayerAttackAnimation(String weapon, SpriteSheet sheet, 
                                                    float startX, float startY, float targetX, float targetY) {
         switch (weapon) {
             case "KnifeOfLife":
-                return new KnifeOfLifeAttack(sheet, startX, startY, targetX, targetY, 100); // Update the '45' for a slower or faster animation
-                
-            
+                return new KnifeOfLifeAttack(sheet, startX, startY, targetX, targetY, 100);
             default:
                 System.err.println("Unknown enemy type: " + weapon + ", using Skeleton attack");
                 return new KnifeOfLifeAttack(sheet, startX, startY, targetX, targetY, 120);
         }
     }
-
-
-
-
-
-
 
     public enum BattleTurn {
         Player,

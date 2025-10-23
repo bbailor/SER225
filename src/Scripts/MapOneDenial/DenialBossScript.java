@@ -4,9 +4,7 @@ import Level.Script;
 import ScriptActions.*;
 import java.util.ArrayList;
 
-// script for talking to boss npc
 public class DenialBossScript extends Script {
-
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
@@ -27,16 +25,11 @@ public class DenialBossScript extends Script {
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToDenialBoss", true));
-
-                // Prompt with Yes/No
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Start battle?", new String[] { "Yes", "No" });
                 }});
 
-                // Handle selection
                 addScriptAction(new ConditionalScriptAction() {{
-
-                    // Yes
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -45,11 +38,9 @@ public class DenialBossScript extends Script {
                                 return answer == 0;
                             }
                         });
-                        // IMPORTANT: pass the actual NPC tied to this script
                         addScriptAction(new StartBattleScriptAction(DenialBossScript.this.entity));
                     }});
 
-                    // No
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
