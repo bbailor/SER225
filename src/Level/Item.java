@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import com.google.gson.annotations.Expose;
 
+import org.jetbrains.annotations.Nullable;
+
 import Builders.FrameBuilder;
 import Engine.ImageLoader;
 import GameObject.Frame;
@@ -21,7 +23,7 @@ public class Item {
     protected String description;
     protected int maxStackSize = 25;
     protected boolean canUse;
-    protected java.util.Map<String, Frame[]> animations = new HashMap<>();
+    protected java.util.Map<String, FrameBuilder[]> animations = new HashMap<>();
 
     public Item(String name) {
         this(name.replace(' ', '_').toLowerCase(), name);
@@ -74,11 +76,25 @@ public class Item {
     }
 
     public java.util.Map<String, Frame[]> getFrames() {
-        return java.util.Map.copyOf(this.animations);
+        var map = new HashMap<String, Frame[]>();
+        for (var entry : this.animations.entrySet()) {
+            Frame[] values = new Frame[entry.getValue().length];
+            Arrays.parallelSetAll(values, i -> entry.getValue()[i].build());
+            map.put(entry.getKey(), values);
+        }
+        return map;
     }
 
+    @Nullable
     public Frame[] getFrames(String name) {
-        return !this.animations.containsKey(name) ? this.animations.get("default") : this.animations.get(name);
+
+        var array = !this.animations.containsKey(name) ? this.animations.get("default") : this.animations.get(name);
+        if (array == null) {
+            return null;
+        }
+        Frame[] frames = new Frame[array.length];
+        Arrays.parallelSetAll(frames, i -> array[i].build());
+        return frames;
     }
 
     @Override
@@ -92,7 +108,7 @@ public class Item {
         return id.hashCode();
     }
 
-    public void addAnimation(String name, Frame[] frames) {
+    public void addAnimation(String name, FrameBuilder[] frames) {
         this.animations.put(name, frames);
     }
 
@@ -105,30 +121,34 @@ public class Item {
         protected static final java.util.Map<String, Item> IDMap = new HashMap<>();
 
         public static Item apple = new Item("apple", "Apple", "A tasty red apple", 20) {
+            @Override
             public boolean canUse(ItemStack stack, Entity targetedEntity) {
                 return targetedEntity.getHealth() != targetedEntity.getMaxHealth();
             }
 
+            @Override
             public void use(ItemStack stack, Entity targetedEntity) {
                 targetedEntity.heal(15);
             }
 
             {
                 var sheet = new SpriteSheet(ImageLoader.load("item_imgs/apple.png"), 32, 32);
-                Frame[] frames = new Frame[2];
+                FrameBuilder[] frames = new FrameBuilder[2];
                 Arrays.parallelSetAll(frames, i -> new FrameBuilder(sheet.getSprite(0, i), (int)(60 / 1.5))
                     .withScale(1.25f)
-                    .build()
+                    // .build()
                 );
                 addAnimation("default", frames);
             }
         };
 
         public static Item cherry = new Item("cherry", "Cherry", "A tasty cherry", 20) {
+            @Override
             public boolean canUse(ItemStack stack, Entity targetedEntity) {
                 return targetedEntity.getHealth() != targetedEntity.getMaxHealth();
             }
 
+            @Override
             public void use(ItemStack stack, Entity targetedEntity) {
                 targetedEntity.setMana(targetedEntity.getMana() + 20);
             }
@@ -136,11 +156,11 @@ public class Item {
             {
                 var world_sheet = new SpriteSheet(ImageLoader.load("item_imgs/cherry_world.png"), 32, 32);
                 var sheet = new SpriteSheet(ImageLoader.load("item_imgs/cherry_default.png"), 32, 32);
-                Frame[] world = new Frame[4];
-                Arrays.parallelSetAll(world, i -> new FrameBuilder(world_sheet.getSprite(0, i), 60 / 3).build());
+                FrameBuilder[] world = new FrameBuilder[4];
+                Arrays.parallelSetAll(world, i -> new FrameBuilder(world_sheet.getSprite(0, i), 60 / 3));
                 addAnimation("world", world);
-                addAnimation("inventory", new Frame[] {
-                    new FrameBuilder(sheet.getSprite(0, 0)).build()
+                addAnimation("inventory", new FrameBuilder[] {
+                    new FrameBuilder(sheet.getSprite(0, 0))
                 });
             }
         };
@@ -178,8 +198,8 @@ public class Item {
                 this.weaponSkillDamage = 100d;
                 this.weaponSkillCost = 40d;
                 var sheet = new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24);
-                Frame[] frames = new Frame[4];
-                Arrays.parallelSetAll(frames, i -> new FrameBuilder(sheet.getSprite(1, i)).withScale(3).withBounds(6, 12, 12, 7).build());
+                FrameBuilder[] frames = new FrameBuilder[4];
+                Arrays.parallelSetAll(frames, i -> new FrameBuilder(sheet.getSprite(1, i)).withScale(3).withBounds(6, 12, 12, 7));
                 this.animations.put("default", frames);
             }
         };

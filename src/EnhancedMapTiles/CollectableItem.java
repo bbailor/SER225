@@ -35,7 +35,6 @@ public class CollectableItem extends MapEntity {
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
-        // this.drawBounds(graphicsHandler, Color.magenta);
     }
 
     @Override

@@ -29,11 +29,10 @@ public class KnifeOfLife extends Weapon {
         //add battle animation battlescreen
         super("knifeoflife", "Knife of Life", "desc", 2.0);
 
-        addAnimation("default", new Frame[] {
+        addAnimation("default", new FrameBuilder[] {
             new FrameBuilder(ImageLoader.load("weapons/knifeOfLife.png"))
                 .withScale(2.0f)
                 .withBounds(8, 0, 16, 32)
-                .build()
         });
     }
 
