@@ -15,6 +15,7 @@ import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Utils.Direction;
+import Utils.TailwindColorScheme;
 
 public class Player extends GameObject {
     // values that affect player movement
@@ -285,6 +286,19 @@ public class Player extends GameObject {
     
     public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
+        int bar_length = 75;
+        var health_rec = new Rectangle(this.getCalibratedXLocation() - 7, this.getCalibratedYLocation() + 5, bar_length, 10);
+        // switch if we want to have a mana bar later
+        // var mana_rec = new Rectangle(this.getCalibratedXLocation() - 7, this.getCalibratedYLocation() + 5, bar_length, 10);
+        // var health_rec = new Rectangle(mana_rec.getX(), mana_rec.getY() - 17, bar_length, 10);
+        graphicsHandler.drawFilledRectangle(health_rec, TailwindColorScheme.black);
+        graphicsHandler.drawFilledRectangle(
+            (int)health_rec.getX(),
+            (int)health_rec.getY(),
+            (int) (health_rec.getWidth() * (this.entity.getHealth() / this.entity.getMaxHealth())),
+            health_rec.getHeight(),
+            TailwindColorScheme.lime500
+        );
         //gitdrawBounds(graphicsHandler, new Color(255, 0, 0, 100));
     }
     

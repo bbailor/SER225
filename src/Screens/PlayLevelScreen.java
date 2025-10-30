@@ -27,10 +27,11 @@ import Level.MapEntity;
 import Level.MapEntityStatus;
 import Level.NPC;
 import Level.Player;
-
+import Level.Weapon;
 import Maps.TestMap;
 import Players.Gnome;
-
+import Screens.submenus.InventorySubmenu;
+import Screens.submenus.SaveSubmenu;
 import NPCs.Skeleton;
 import NPCs.Spirit;
 import NPCs.ArmoredSkeleton;
@@ -39,7 +40,9 @@ import NPCs.DenialBoss;
 import Utils.Direction;
 import Utils.Globals;
 import Utils.MenuListener;
+import Utils.Resources;
 import Utils.SaveData;
+import Utils.TailwindColorScheme;
 
 public class PlayLevelScreen extends Screen implements GameListener, MenuListener {
     protected ScreenCoordinator screenCoordinator;
@@ -47,9 +50,9 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
     @Expose protected Player player;
     protected PlayLevelScreenState playLevelScreenState;
     protected WinScreen winScreen;
-    protected InventoryScreen inventoryScreen;
+    protected InventorySubmenu inventoryScreen;
     protected LoseScreen loseScreen;
-    protected SaveScreen saveScreen;
+    protected SaveSubmenu saveScreen;
     @Expose protected FlagManager flagManager;
     protected BattleScreen battleScreen;
     protected int menuCloseCD = 0;
@@ -115,10 +118,10 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         winScreen = new WinScreen(this);
         this.loseScreen = new LoseScreen(this);
 
-        this.inventoryScreen = new InventoryScreen(this.player.getEntity().getInventory(), this.player.getEntity());
+        this.inventoryScreen = new InventorySubmenu(this.player.getEntity().getInventory(), this.player.getEntity());
         this.inventoryScreen.addistener(LISTENER_NAME, this);
 
-        this.saveScreen = new SaveScreen(Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT);
+        this.saveScreen = new SaveSubmenu(Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT);
         this.saveScreen.addistener(LISTENER_NAME, this);
     }
 
@@ -133,6 +136,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
                 break;
             case INVENTORY:
                 this.inventoryScreen.update();
+                this.map.getTextbox().update();
                 break;
             case BATTLE:
                 this.battleScreen.update();
@@ -236,6 +240,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         switch (playLevelScreenState) {
             case RUNNING:
                 map.draw(player, graphicsHandler);
+                graphicsHandler.drawFilledRectangle(0, 0, 290 * 2, 30, TailwindColorScheme.slate800);
+                graphicsHandler.drawString(String.format("Health: %s/%s | Mana: %s/%s", this.player.getEntity().getHealth(), this.player.getEntity().getMaxHealth(), this.player.getEntity().getMana(), this.player.getEntity().getMaxMana()), 8, 16 + 3, Resources.press_start.deriveFont(16f), TailwindColorScheme.white);
                 break;
             case LEVEL_COMPLETED:
                 winScreen.draw(graphicsHandler);
@@ -294,6 +300,12 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             }
             case "load": {
                 this.loadSave(Globals.loadSave((int) args[0]));
+                break;
+            }
+            case "inventory.use": {
+                Item item = (Item) args[0];
+                this.map.getTextbox().addText(String.format("You have %s the %s", item instanceof Weapon ? "equipped" : "used", item.getName()));
+                this.map.getTextbox().setIsActive(true);
                 break;
             }
         }

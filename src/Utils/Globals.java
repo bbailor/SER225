@@ -29,7 +29,7 @@ public abstract class Globals {
     /** Base hover color for ui's */
     public static final Color HOVER_COLOR = TailwindColorScheme.amber600;
     /** Base unfocused hover color for ui's */
-    public static final Color UNFOCUS_HOVER_COLOR = TailwindColorScheme.slate400;
+    public static final Color UNFOCUS_HOVER_COLOR = TailwindColorScheme.sky800;
     /** Base select color for ui's */
     public static final Color SELECT_COLOR = TailwindColorScheme.sky400;
     /** UI interact cooldowns */

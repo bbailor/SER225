@@ -10,15 +10,18 @@ import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.Keyboard;
 import Utils.Globals;
+import Utils.Menu;
 import Utils.MenuListener;
 import Utils.Resources;
 import Utils.TailwindColorScheme;
 
-public class SelectionBattleMenu extends BattleSubMenu {
+public class SelectionSubmenu implements Menu {
 
-    protected Map<String, MenuListener> listeners = new HashMap<>();
     protected int selectedID = 0;
     protected int pressCD = 0;
+    protected int width;
+    protected int height;
+    protected Map<String, MenuListener> listeners = new HashMap<>();
     protected List<String> selections;
     protected Color hoverColor = Globals.HOVER_COLOR;
 
@@ -26,10 +29,11 @@ public class SelectionBattleMenu extends BattleSubMenu {
     public static final int BORDER_WIDTH = 4;
     public static final String SUBMENU_SELECTION_NAME = "selector.submenu";
 
-    public SelectionBattleMenu(int x, int y, int width, int height, List<String> selectors) {
-        super(x, y, width, height);
+    public SelectionSubmenu(int width, int height, List<String> selectors) {
+        // super(x, y, width, height);
         this.selections = selectors;
-        
+        this.width = width;
+        this.height = height;
     }
 
     public void setHoverColor(Color color) {
@@ -43,11 +47,6 @@ public class SelectionBattleMenu extends BattleSubMenu {
 
     @Override
     public void open() {
-        // No Open (perm open)
-    }
-
-    @Override
-    public void initialize() {
         this.selectedID = 0;
     }
 
@@ -72,13 +71,15 @@ public class SelectionBattleMenu extends BattleSubMenu {
     }
 
     @Override
-    public void draw(GraphicsHandler graphicsHandler) {
-        graphicsHandler.drawFilledRectangle(
-            this.x,
-            this.y,
+    public void draw(GraphicsHandler graphicsHandler, int x, int y) {
+        graphicsHandler.drawFilledRectangleWithBorder(
+            x,
+            y,
             this.width,
             this.height,
-            TailwindColorScheme.rose400
+            TailwindColorScheme.slate400,
+            TailwindColorScheme.slate800,
+            5
         );
         int offset_y = 30;
         for (int i = 0; i < this.selections.size(); ++i) {
@@ -86,8 +87,8 @@ public class SelectionBattleMenu extends BattleSubMenu {
             
             graphicsHandler.drawStringWithOutline(
                 name,
-                this.x + (this.width - (name.length() * FONT_SIZE)) / 2,
-                this.y + offset_y,
+                x + (this.width - (name.length() * FONT_SIZE)) / 2,
+                y + offset_y,
                 Resources.press_start.deriveFont(Font.PLAIN, FONT_SIZE),
                 TailwindColorScheme.white,
                 TailwindColorScheme.slate700,
@@ -95,13 +96,7 @@ public class SelectionBattleMenu extends BattleSubMenu {
             );
             offset_y += FONT_SIZE + 8 + BORDER_WIDTH;
         }
-        graphicsHandler.drawRectangle(this.x, this.y + 10 + this.selectedID * (FONT_SIZE + 8 + BORDER_WIDTH), this.width, BORDER_WIDTH+8+FONT_SIZE, this.hoverColor);
+        graphicsHandler.drawRectangle(x + 5, y + 10 + this.selectedID * (FONT_SIZE + 8 + BORDER_WIDTH), this.width - 12, BORDER_WIDTH+8+FONT_SIZE, this.hoverColor);
     }
-
-    @Override
-    public void draw(GraphicsHandler handler, int x, int y) {
-        //TODO: Implement when submenu (take above draw)
-    }
-
     
 }

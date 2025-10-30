@@ -1,6 +1,7 @@
 package Engine;
 
 import GameObject.ImageEffect;
+import GameObject.Rectangle;
 
 import java.awt.*;
 import java.awt.font.GlyphVector;
@@ -23,10 +24,18 @@ public class GraphicsHandler {
         g.drawImage(image, x, y, null);
     }
 
+    public void drawImage(BufferedImage image, Rectangle rec) {
+        this.drawImage(image, (int)rec.getX(), (int) rec.getY(), rec.getWidth(), rec.getHeight());
+    }
+
     public void drawImage(BufferedImage image, int x, int y, int width, int height) {
         g.drawImage(image, x, y, width, height, null);
     }
 
+    public void drawImage(BufferedImage image, Rectangle rec, ImageEffect effect) {
+        this.drawImage(image, (int)rec.getX(), (int) rec.getY(), rec.getWidth(), rec.getHeight(), effect);
+    }
+    
     public void drawImage(BufferedImage image, int x, int y, int width, int height, ImageEffect imageEffect) {
         switch (imageEffect) {
             case NONE:
@@ -44,9 +53,17 @@ public class GraphicsHandler {
         }
     }
 
+    public void drawRectangle(Rectangle rec, Color color) {
+        this.drawRectangle((int)rec.getX(), (int)rec.getY(), rec.getWidth(), rec.getHeight(), color);
+    }
+
     public void drawRectangle(int x, int y, int width, int height, Color color) {
         g.setColor(color);
         g.drawRect(x, y, width, height);
+    }
+
+    public void drawRectangle(Rectangle rec, Color color, int borderThickness) {
+        this.drawRectangle((int)rec.getX(), (int)rec.getY(), rec.getWidth(), rec.getHeight(), color, borderThickness);
     }
 
     public void drawRectangle(int x, int y, int width, int height, Color color, int borderThickness) {
@@ -55,9 +72,17 @@ public class GraphicsHandler {
         g.drawRect(x, y, width, height);
     }
 
+    public void drawFilledRectangle(Rectangle rec, Color color) {
+        this.drawFilledRectangle((int)rec.getX(), (int)rec.getY(), rec.getWidth(), rec.getHeight(), color);
+    }
+
     public void drawFilledRectangle(int x, int y, int width, int height, Color color) {
         g.setColor(color);
         g.fillRect(x, y, width, height);
+    }
+
+    public void drawFilledRectangleWithBorder(Rectangle rec, Color color, Color borderColor, int borderThickness) {
+        this.drawFilledRectangleWithBorder((int)rec.getX(), (int)rec.getY(), rec.getWidth(), rec.getHeight(), color, borderColor, borderThickness);
     }
 
     public void drawFilledRectangleWithBorder(int x, int y, int width, int height, Color fillColor, Color borderColor, int borderThickness) {

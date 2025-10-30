@@ -129,6 +129,7 @@ public class Item {
             @Override
             public void use(ItemStack stack, Entity targetedEntity) {
                 targetedEntity.heal(15);
+                stack.removeItem();
             }
 
             {
@@ -151,6 +152,7 @@ public class Item {
             @Override
             public void use(ItemStack stack, Entity targetedEntity) {
                 targetedEntity.setMana(targetedEntity.getMana() + 20);
+                stack.removeItem();
             }
 
             {

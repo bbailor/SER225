@@ -3,7 +3,7 @@ package Screens.submenus;
 import Engine.Screen;
 import Utils.Menu;
 
-public abstract class BattleSubMenu extends Screen implements Menu {
+public abstract class BattleSubmenu extends Screen implements Menu {
     
     
     protected int x;
@@ -11,7 +11,7 @@ public abstract class BattleSubMenu extends Screen implements Menu {
     protected int width;
     protected int height;
 
-    protected BattleSubMenu(int x, int y, int width, int height) {
+    protected BattleSubmenu(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;

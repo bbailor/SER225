@@ -129,7 +129,9 @@ public class Textbox {
         // if interact key is pressed, remove the current text from the queue to prepare for the next text item to be displayed
         if (Keyboard.isKeyDown(interactKey) && !keyLocker.isKeyLocked(interactKey)) {
             keyLocker.lockKey(interactKey);
-            textQueue.poll();
+            if (textQueue.poll() == null) {
+                isActive = false;
+            };
 
             // if an option was selected, set output manager flag to the index of the selected option
             // a script can then look at output manager later to see which option was selected and do with that information what it wants

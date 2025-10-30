@@ -1,158 +1,77 @@
 package Screens;
 
-import Engine.*;
-import Game.GameState;
-import Game.ScreenCoordinator;
-import Level.Map;
-import Maps.TitleScreenMap;
-import SpriteFont.SpriteFont;
-import java.awt.*;
+import java.awt.Point;
+import java.util.HashMap;
+import java.util.Map;
+
+import Engine.Config;
+import Engine.GraphicsHandler;
+import Engine.Screen;
+import GameObject.Rectangle;
+import Screens.submenus.MenuSelector;
+import Utils.Menu;
+import Utils.MenuListener;
+import Utils.TailwindColorScheme;
 
 // This is the class for the main menu screen
-public class MenuScreen extends Screen {
-    protected ScreenCoordinator screenCoordinator;
-    protected int currentMenuItemHovered = 0; // current menu item being "hovered" over
-    protected int menuItemSelected = -1;
-    protected SpriteFont playGame;
-    protected SpriteFont credits;
-    protected SpriteFont controls;
-    protected Map background;
-    protected int keyPressTimer;
-    protected int pointerLocationX, pointerLocationY;
-    //protected int cursorLocationX, cursorLocationY;
-    protected KeyLocker keyLocker = new KeyLocker();
-    protected MouseLocker mouseLocker = new MouseLocker();
+public class MenuScreen extends Screen implements Menu {
 
-    
-    
+    public Map<String, MenuListener> listeners = new HashMap<>();
+    public MenuSelector selector = new MenuSelector((int) (Config.GAME_WINDOW_WIDTH * .3f), (int) (Config.GAME_WINDOW_HEIGHT * .7f));
+    public Rectangle menuStart = new Rectangle((int) (Config.GAME_WINDOW_WIDTH * .3f), 0, 0, 0);
+    public Rectangle menuInfo = new Rectangle((int) (Config.GAME_WINDOW_WIDTH * .3f), 0, 0, 0);
 
-    public MenuScreen(ScreenCoordinator screenCoordinator) {
-        this.screenCoordinator = screenCoordinator;
+    @Override
+    public void draw(GraphicsHandler handler, int x, int y) {
+        draw(handler);
+    }
+
+    @Override
+    public Map<String, MenuListener> getListeners() {
+        return this.listeners;
+    }
+
+    @Override
+    public void open() {
+        
     }
 
     @Override
     public void initialize() {
-        playGame = new SpriteFont("PLAY GAME", 200, 123, "Arial", 30, new Color(49, 207, 240));
-        playGame.setOutlineColor(Color.black);
-        playGame.setOutlineThickness(3);
-        credits = new SpriteFont("CREDITS", 200, 223, "Arial", 30, new Color(49, 207, 240));
-        credits.setOutlineColor(Color.black);
-        credits.setOutlineThickness(3);
-        controls = new SpriteFont("CONTROLS", 200, 323, "Arial", 30, new Color(49, 207, 240));
-        controls.setOutlineColor(Color.black);
-        controls.setOutlineThickness(3);
-        background = new TitleScreenMap();
-        background.setAdjustCamera(false);
-        keyPressTimer = 0;
-        menuItemSelected = -1;
-        keyLocker.lockKey(Key.SPACE);
-        mouseLocker.lockMouse();
+        
     }
 
-    public void update() {
-        // update background map (to play tile animations)
-        background.update(null);
-
-        // if down or up is pressed, change menu item "hovered" over (blue square in front of text will move along with currentMenuItemHovered changing)
-        if (Keyboard.isKeyDown(Key.DOWN) && keyPressTimer == 0) {
-            keyPressTimer = 14;
-            currentMenuItemHovered++;
-        } else if (Keyboard.isKeyDown(Key.UP) && keyPressTimer == 0) {
-            keyPressTimer = 14;
-            currentMenuItemHovered--;
-        } else {
-            if (keyPressTimer > 0) {
-                keyPressTimer--;
-            }
-        }
-
-        // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
-        if (currentMenuItemHovered > 2) {
-            currentMenuItemHovered = 0;
-        } else if (currentMenuItemHovered < 0) {
-            currentMenuItemHovered = 2;
-        }
-
-        // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
-        if (currentMenuItemHovered == 0) {
-            playGame.setColor(new Color(255, 215, 0));
-            credits.setColor(new Color(49, 207, 240));
-            controls.setColor(new Color(49, 207, 240));
-            pointerLocationX = 170;
-            pointerLocationY = 130;
-        } else if (currentMenuItemHovered == 1) {
-            playGame.setColor(new Color(49, 207, 240));
-            credits.setColor(new Color(255, 215, 0));
-            controls.setColor(new Color(49, 207, 240));
-            pointerLocationX = 170;
-            pointerLocationY = 230;
-        }
-        else if (currentMenuItemHovered == 2) {
-            playGame.setColor(new Color(49, 207, 240));
-            credits.setColor(new Color(49, 207, 240));
-            controls.setColor(new Color(255, 215, 0));
-            pointerLocationX = 170;
-            pointerLocationY = 330;
-        }
-
-        // if space is pressed on menu item, change to appropriate screen based on which menu item was chosen
-        if (Keyboard.isKeyUp(Key.SPACE)) {
-            keyLocker.unlockKey(Key.SPACE);
-        }
-        if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
-            menuItemSelected = currentMenuItemHovered;
-            if (menuItemSelected == 0) {
-                screenCoordinator.setGameState(GameState.LEVEL);
-            } else if (menuItemSelected == 1) {
-                screenCoordinator.setGameState(GameState.CREDITS);
-            }
-            else if (menuItemSelected == 2)
-            {
-                screenCoordinator.setGameState(GameState.CONTROLS);
-            }
-        }
-
-        //Mouse Function
-
-        Rectangle playGameBounds = new Rectangle(195, 100, 200, 90);
-        Rectangle creditsBounds  = new Rectangle(195, 190, 200, 90);
-        Rectangle controlsBounds = new Rectangle(195, 280, 200, 90);
-
-        Point mousePos = Mouse.getCurrentPosition();
-
-        if (playGameBounds.contains(mousePos)) {
-            currentMenuItemHovered = 0;
-        } else if (creditsBounds.contains(mousePos)) {
-            currentMenuItemHovered = 1;
-        } else if (controlsBounds.contains(mousePos)) {
-            currentMenuItemHovered = 2;
-        }
-
-        if (!mouseLocker.isMouseLocked() && Mouse.isClickDown())
-        {
-            mouseLocker.lockMouse();
-            Point clickPos = Mouse.getLastPressedPosition();
-
-            if (playGameBounds.contains(clickPos)) {
-                screenCoordinator.setGameState(GameState.LEVEL);
-            } else if (creditsBounds.contains(clickPos)) {
-                screenCoordinator.setGameState(GameState.CREDITS);
-            } else if (controlsBounds.contains(clickPos)) {
-                screenCoordinator.setGameState(GameState.CONTROLS);
-            }
-        }
-
-        if(Mouse.isClickUp())
-        {
-            mouseLocker.unlockMouse();
-        }
-    }
-
+    @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        background.draw(graphicsHandler);
-        playGame.draw(graphicsHandler);
-        credits.draw(graphicsHandler);
-        controls.draw(graphicsHandler);
-        graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
+        this.menuStart = new Rectangle(
+            (Config.GAME_WINDOW_WIDTH * .3f) + 2,
+            2,
+            Config.GAME_WINDOW_WIDTH - (int) (Config.GAME_WINDOW_WIDTH * .3f) - 9,
+            (int)(Config.GAME_WINDOW_HEIGHT * .8f)
+        );
+        this.menuInfo = new Rectangle(
+            this.menuStart.getX(),
+            Config.GAME_WINDOW_HEIGHT - (Config.GAME_WINDOW_HEIGHT - this.menuStart.getHeight()) + 2,
+            this.menuStart.getWidth(),
+            (Config.GAME_WINDOW_HEIGHT - this.menuStart.getHeight()) - 39 // why 39???
+        );
+        
+        
+        // Background
+        graphicsHandler.drawFilledRectangle(2, 0, Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT, TailwindColorScheme.slate800);
+        
+        // Preview + Selector
+        graphicsHandler.drawFilledRectangleWithBorder(2, 2, (int) (Config.GAME_WINDOW_WIDTH * .3f), (int) (Config.GAME_WINDOW_HEIGHT * .25f)-7, TailwindColorScheme.zinc500, TailwindColorScheme.slate400, 5);
+        this.selector.draw(graphicsHandler, 2, (int) (Config.GAME_WINDOW_HEIGHT * .25f)-6);
+
+        graphicsHandler.drawFilledRectangleWithBorder(this.menuStart, TailwindColorScheme.slate600, TailwindColorScheme.slate400, 5);
+        graphicsHandler.drawFilledRectangleWithBorder(this.menuInfo, TailwindColorScheme.zinc500, TailwindColorScheme.slate400, 5);
+        // this.selector.draw(graphicsHandler, 0, (int) (Config.GAME_WINDOW_HEIGHT * .24f));
     }
+
+    @Override
+    public void update() {
+        
+    }
+    
 }

@@ -1,13 +1,12 @@
 package Players;
+import java.util.HashMap;
+
 import Builders.FrameBuilder;
-import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Player;
-
-import java.util.HashMap;
 
 
 // This is the class for the Gnome player character
@@ -27,14 +26,6 @@ public class Gnome extends Player {
 
     private Gnome() {
         this(0, 0);
-    }
-
-    public void update() {
-        super.update();
-    }
-
-    public void draw(GraphicsHandler graphicsHandler) {
-        super.draw(graphicsHandler);
     }
 
     @Override

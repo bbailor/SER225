@@ -1,4 +1,4 @@
-package Screens;
+package Screens.submenus;
 
 import java.awt.Color;
 import java.util.Arrays;
@@ -19,7 +19,7 @@ import Utils.Menu;
 import Utils.MenuListener;
 import Utils.TailwindColorScheme;
 
-public class InventoryScreen extends Screen implements Menu {
+public class InventorySubmenu extends Screen implements Menu {
 
     protected int currentSlot = 0;
     protected Inventory inventory;
@@ -37,20 +37,20 @@ public class InventoryScreen extends Screen implements Menu {
     public static final int INV_SLOT_HEIGHT = 50;
     public static final Color BASE_COLOR = TailwindColorScheme.slate700;
 
-    public InventoryScreen(int size, Entity entity) {
+    public InventorySubmenu(int size, Entity entity) {
         this(new Inventory(size), entity);
     }
 
-    public InventoryScreen(Inventory inventory, Entity entity) {
+    public InventorySubmenu(Inventory inventory, Entity entity) {
         this.inventory = inventory;
         this.openingEntity = entity;
     }
 
-    public InventoryScreen setLength(int length) {
+    public InventorySubmenu setLength(int length) {
         this.length = length;
         return this;
     }
-    public InventoryScreen setHeight(int height) {
+    public InventorySubmenu setHeight(int height) {
         this.height = height;
         return this;
     }
@@ -121,8 +121,9 @@ public class InventoryScreen extends Screen implements Menu {
             this.inventory.setStack(this.hoveredID, null);
         }
 
-        if (Keyboard.isKeyDown(Key.U) && hoveredStack != null && hoveredStack.getItem().canUse(hoveredStack, openingEntity)) {
+        if (Keyboard.isKeyDown(Key.U) && hoveredStack != null && hoveredStack.getItem().canUse(hoveredStack, this.openingEntity)) {
             this.pressCD = Globals.KEYBOARD_CD;
+            this.sendEvent("inventory.use", hoveredStack.getItem());
             hoveredStack.use(this.openingEntity);
             if (hoveredStack.getCount() == 0) {
                 this.inventory.setStack(this.hoveredID, null);

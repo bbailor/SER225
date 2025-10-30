@@ -1,4 +1,4 @@
-package Screens;
+package Screens.submenus;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -19,7 +19,7 @@ import Utils.MenuListener;
 import Utils.Resources;
 import Utils.TailwindColorScheme;
 
-public class SaveScreen extends Screen implements Menu {
+public class SaveSubmenu extends Screen implements Menu {
     protected int width, height;
     protected Map<String, MenuListener> listeners = new HashMap<>();
     protected int page = 0;
@@ -41,7 +41,7 @@ public class SaveScreen extends Screen implements Menu {
     protected static Color BUTTON_COLOR_BASE = TailwindColorScheme.slate700;
     protected static Color BUTTON_COLOR_HOVER = TailwindColorScheme.slate500;
     
-    public SaveScreen(int width, int height) {
+    public SaveSubmenu(int width, int height) {
         this.width = width;
         this.height = height;
         this.maxSlotsX = (this.getDrawWidth() - 14) / SaveSlot.SAVE_SLOT_WIDTH;

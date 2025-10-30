@@ -15,7 +15,7 @@ import Utils.MenuListener;
 import Utils.Resources;
 import Utils.TailwindColorScheme;
 
-public class InventoryBattleMenu extends BattleSubMenu {
+public class InventoryBattleMenu extends BattleSubmenu {
     
     protected Map<String, MenuListener> listeners = new HashMap<>();
     protected Inventory inventory;
