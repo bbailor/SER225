@@ -16,12 +16,13 @@ import Utils.Point;
 // when the player walks into it, it will be "pushed" forward in the same direction the player was moving in
 public class PushableRock extends EnhancedMapTile {
     public PushableRock(Point location) {
-        super(location.x, location.y, new SpriteSheet(ImageLoader.load("Rock.png"), 16, 16), TileType.NOT_PASSABLE);
+        super(location.x, location.y, new SpriteSheet(ImageLoader.load("AnimatedMapTiles//PushableRock.png"), 16, 16), TileType.NOT_PASSABLE);
     }
 
     @Override
     public void update(Player player) {
         super.update(player);
+
         if (player.touching(this) && player.getPlayerState() == PlayerState.WALKING) {
             if (player.getCurrentWalkingXDirection() == Direction.LEFT) {
                 if (canMoveLeft(player)) {
@@ -44,6 +45,7 @@ public class PushableRock extends EnhancedMapTile {
                 }
             }
         }
+        
     }
 
     private boolean canMoveLeft(Player player) {
@@ -76,10 +78,19 @@ public class PushableRock extends EnhancedMapTile {
 
     @Override
     protected GameObject loadBottomLayer(SpriteSheet spriteSheet) {
-        Frame frame = new FrameBuilder(spriteSheet.getSubImage(0, 0))
-                .withScale(3)
-                .build();
-        return new GameObject(x, y, frame);
 
+        Frame[] frames = new Frame[] {
+            new FrameBuilder(spriteSheet.getSubImage(0, 0), 10)
+                .withScale(3)
+                .build(),
+            new FrameBuilder(spriteSheet.getSubImage(0, 1), 10)
+                .withScale(3)
+                .build(),
+            new FrameBuilder(spriteSheet.getSubImage(0, 2), 10)
+                .withScale(3)
+                .build(),
+        };
+
+        return new GameObject(x, y, frames);
     }
 }

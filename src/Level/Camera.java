@@ -260,10 +260,11 @@ private ArrayList<CollectableItem> loadCollectableItems() {
 
         for (CollectableItem collectableItem : activeCollectableItems) {
             if (containsDraw(collectableItem)) {
+                //spewing errors to console
             collectableItem.draw(graphicsHandler);
-        }
+            }
         
-}
+        }   
 
         // npcs determined to be drawn after player from the above step are drawn here
         for (NPC npc : drawNpcsAfterPlayer) {
