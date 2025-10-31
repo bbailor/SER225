@@ -36,7 +36,7 @@ import NPCs.Skeleton;
 import NPCs.Spirit;
 import NPCs.ArmoredSkeleton;
 import NPCs.DenialBoss;
-
+import NPCs.DepressionBoss;
 import Utils.Direction;
 import Utils.Globals;
 import Utils.MenuListener;
@@ -102,9 +102,11 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("hasTalkedToDinosaur", false);
         flagManager.addFlag("hasFoundBall", false);
         flagManager.addFlag("hasTalkedToDenialBoss", false);
+        flagManager.addFlag("hasTalkedToDepressionBoss", false);
         flagManager.addFlag("wizardQuestStarted", false);
         flagManager.addFlag("wizardSaved", false);
         flagManager.addFlag("wizardRewardGiven", false);
+        
         
         // setup player
         player = new Gnome(0, 0);
@@ -194,6 +196,11 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             spriteW = 120;
             spriteH = 120;
             enemyHealth = 50;  // Boss HP
+        } else if (me instanceof DepressionBoss) {
+            path = "Bosses/DepressionBoss.png";
+            spriteW = 120;
+            spriteH = 120;
+            enemyHealth = 65;  // Depression Boss HP
         } else if (me instanceof NPC) {
             // generic NPC fallback
             return new Entity() {
@@ -316,7 +323,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             // System.out.println("[PlayLevelScreen] start_battle received with: " + me.getClass().getSimpleName());
             Entity enemy = buildEnemyEntityFor(me);
 
-            boolean isBossBattle = me instanceof DenialBoss;
+            boolean isBossBattle = me.getClass().getSimpleName().contains("Boss");
             this.battleScreen = new BattleScreen(this.player.getEntity().getInventory(), this.player, enemy, me, isBossBattle);
             this.battleScreen.open();
             this.battleScreen.addistener(LISTENER_NAME, this);
