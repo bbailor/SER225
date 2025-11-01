@@ -6,6 +6,7 @@ import Level.*;
 import NPCs.ArmoredSkeleton;
 import NPCs.DenialBoss;
 import NPCs.DepressionBoss;
+import NPCs.AngerBoss;
 import NPCs.Skeleton;
 import NPCs.Spirit;
 import NPCs.Wizard;
@@ -13,6 +14,7 @@ import Scripts.SimpleTextScript;
 import Scripts.MapOneDenial.DenialBossScript;
 import Scripts.MapOneDenial.DenialEnemyScript;
 import Scripts.MapFourDepression.DepressionBossScript;
+import Scripts.MapTwoAnger.AngerBossScript;
 import Scripts.TestMap.*;
 import Tilesets.CommonTileset;
 import java.util.ArrayList;
@@ -75,6 +77,11 @@ public class TestMap extends Map {
         dp.setInteractScript(new DepressionBossScript());
         dp.setCurrentAnimationName("STAND_RIGHT");
         npcs.add(dp);
+
+        AngerBoss ab = new AngerBoss(102, getMapTile(15, 10).getLocation().subtractY(16).subtractX(4));
+        ab.setInteractScript(new AngerBossScript());
+        ab.setCurrentAnimationName("STAND_RIGHT");
+        npcs.add(ab);
        
 /*         Skeleton s  = new Skeleton(100, getMapTile(14, 18).getLocation().subtractY(16).subtractX(6));
         s.setInteractScript(new DenialEnemyScript());

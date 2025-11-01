@@ -1,10 +1,10 @@
-package Scripts.MapFourDepression;
+package Scripts.MapTwoAnger;
 
 import Level.Script;
 import ScriptActions.*;
 import java.util.ArrayList;
 
-public class DepressionBossScript extends Script {
+public class AngerBossScript extends Script {
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
@@ -13,16 +13,16 @@ public class DepressionBossScript extends Script {
 
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasTalkedToDepressionBoss", false));
+                addRequirement(new FlagRequirement("hasTalkedToAngerBoss", false));
                 addScriptAction(new TextboxScriptAction() {{
                     addText("[INSERT DEPRESSION DIALOGUE HERE]");
                     
                 }});
-                addScriptAction(new ChangeFlagScriptAction("hasTalkedToDepressionBoss", true));
+                addScriptAction(new ChangeFlagScriptAction("hasTalkedToAngerBoss", true));
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasTalkedToDepressionBoss", true));
+                addRequirement(new FlagRequirement("hasTalkedToAngerBoss", true));
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Start battle?", new String[] { "Yes", "No" });
                 }});
@@ -40,7 +40,7 @@ public class DepressionBossScript extends Script {
                             addText("[INSERT TEXT HERE]"); //what u say after hitting start battle 'yes'
                         }});
                        
-                        addScriptAction(new StartBattleScriptAction(DepressionBossScript.this.entity));
+                        addScriptAction(new StartBattleScriptAction(AngerBossScript.this.entity));
                     }});
 
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
@@ -51,7 +51,7 @@ public class DepressionBossScript extends Script {
                                 return answer == 1;
                             }
                         });
-                        addScriptAction(new TextboxScriptAction("Depression: Cowardice... Entirely expected."));
+                        addScriptAction(new TextboxScriptAction("Anger: Cowardice... Entirely expected."));
                     }});
                 }});
             }});

@@ -34,6 +34,7 @@ import Screens.submenus.InventorySubmenu;
 import Screens.submenus.SaveSubmenu;
 import NPCs.Skeleton;
 import NPCs.Spirit;
+import NPCs.AngerBoss;
 import NPCs.ArmoredSkeleton;
 import NPCs.DenialBoss;
 import NPCs.DepressionBoss;
@@ -103,6 +104,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("hasFoundBall", false);
         flagManager.addFlag("hasTalkedToDenialBoss", false);
         flagManager.addFlag("hasTalkedToDepressionBoss", false);
+        flagManager.addFlag("hasTalkedToAngerBoss", false);
         flagManager.addFlag("wizardQuestStarted", false);
         flagManager.addFlag("wizardSaved", false);
         flagManager.addFlag("wizardRewardGiven", false);
@@ -200,7 +202,14 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             path = "Bosses/DepressionBoss.png";
             spriteW = 120;
             spriteH = 120;
+            enemyHealth = 75;  // Depression Boss HP
+        } else if (me instanceof AngerBoss) {
+            path = "Bosses/AngerBoss.png";
+            spriteW = 120;
+            spriteH = 120;
             enemyHealth = 65;  // Depression Boss HP
+            
+        
         } else if (me instanceof NPC) {
             // generic NPC fallback
             return new Entity() {
