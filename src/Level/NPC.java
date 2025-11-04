@@ -32,7 +32,7 @@ public class NPC extends MapEntity {
         super(x, y, spriteSheet, startingAnimation);
         this.id = id;
         getStartingDirection(this.getCurrentAnimationName());
-        getVisionTiles();
+        //getVisionTiles();
     }
 
     public NPC(int id, float x, float y, HashMap<String, Frame[]> animations, String startingAnimation) {
@@ -156,7 +156,7 @@ public class NPC extends MapEntity {
 
     public void update(Player player) {
         if (!isLocked) {
-            this.performAction(player);
+            //this.performAction(player);
         }
         // getStartingDirection(this.currentAnimationName);
         // getVisionTiles();
@@ -181,14 +181,14 @@ public class NPC extends MapEntity {
             Point playerTile = toTileCoords(player.getLocation());
 
             // Check each tile in the NPC's vision
-            for (Point tile : getVisionTiles()) {
-                if (toTileCoords(tile).equals(playerTile)) {
-                    battleTriggered = true;
-                    System.out.println("Player spotted at: " + playerTile + " by " + this.getClass().getSimpleName());
-                    initiateBattle();
-                    break;
-                }
-            }
+            // for (Point tile : getVisionTiles()) {
+            //     if (toTileCoords(tile).equals(playerTile)) {
+            //         battleTriggered = true;
+            //         System.out.println("Player spotted at: " + playerTile + " by " + this.getClass().getSimpleName());
+            //         initiateBattle();
+            //         break;
+            //     }
+            // }
         }
     }
 
@@ -217,14 +217,14 @@ public class NPC extends MapEntity {
         super.draw(graphicsHandler);
 
         // Draw vision boxes if debug mode is enabled
-        if (true) {
-            for (Point tile : getVisionTiles()) {
-                // Convert map coordinates to screen coordinates using the camera
-                int screenX = Math.round(tile.x - map.getCamera().getX());
-                int screenY = Math.round(tile.y - map.getCamera().getY());
-                Rectangle visionBox = new Rectangle(screenX, screenY, 16, 16);
-                graphicsHandler.drawRectangle(visionBox, Color.RED);
-            }
-        }
+        // if (true) {
+        //     for (Point tile : getVisionTiles()) {
+        //         // Convert map coordinates to screen coordinates using the camera
+        //         int screenX = Math.round(tile.x - map.getCamera().getX());
+        //         int screenY = Math.round(tile.y - map.getCamera().getY());
+        //         Rectangle visionBox = new Rectangle(screenX, screenY, 16, 16);
+        //         graphicsHandler.drawRectangle(visionBox, Color.RED);
+        //     }
+        // }
     }
 }

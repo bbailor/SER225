@@ -405,6 +405,32 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             entityIdleAnimations[0].draw(graphicsHandler);
         }
         
+        graphicsHandler.drawFilledRectangleWithBorder(
+            DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding),
+            battleY0 + (battleHeight - placeholderHeight) / 2,
+            70,
+            8,
+            TailwindColorScheme.black,
+            this.borderColor,
+            BORDER_LINE_WIDTH
+        );
+
+        graphicsHandler.drawFilledRectangle(
+            DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding) + 1,
+            battleY0 + (battleHeight - placeholderHeight) / 2 + 1,
+            70 - 2,
+            8 - 2,
+            TailwindColorScheme.red500
+        );
+
+        graphicsHandler.drawFilledRectangle(
+            DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding) + 1,
+            battleY0 + (battleHeight - placeholderHeight) / 2 + 1,
+            (int)(68 * ((playerEntity.getHealth()) / playerEntity.getMaxHealth())),
+            8 - 2,
+            TailwindColorScheme.lime500
+        );
+        
         // Draw active attack animation if present
         if (activeAttackAnimation != null) {
             activeAttackAnimation.draw(graphicsHandler);

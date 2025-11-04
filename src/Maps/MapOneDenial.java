@@ -40,14 +40,14 @@ public class MapOneDenial extends Map {
         s.setInteractScript(new DenialEnemyScript());
         // face the player at start (player is to the RIGHT of (14,18) -> face RIGHT)
         s.setCurrentAnimationName("STAND_RIGHT");
-        s.getVisionTiles();
+        //s.getVisionTiles();
         npcs.add(s);
 
         Spirit sp   = new Spirit(101, getMapTile(21, 15).getLocation().subtractY(16).subtractX(10));
         sp.setInteractScript(new DenialEnemyScript());
         // player start is to the LEFT of (20,21) -> face LEFT
         sp.setCurrentAnimationName("STAND_LEFT");
-        sp.getVisionTiles();
+        //sp.getVisionTiles();
         npcs.add(sp);
 
         // moved Armored Skeleton to an open tile
@@ -55,7 +55,7 @@ public class MapOneDenial extends Map {
         as.setInteractScript(new DenialEnemyScript());
         // player start is to the LEFT of (22,19) -> face LEFT
         as.setCurrentAnimationName("STAND_RIGHT");
-        as.getVisionTiles();
+        //as.getVisionTiles();
         npcs.add(as);
 
         // moved Armored Skeleton to an open tile
@@ -63,7 +63,7 @@ public class MapOneDenial extends Map {
         ass.setInteractScript(new DenialEnemyScript());
         // player start is to the LEFT of (22,19) -> face LEFT
         ass.setCurrentAnimationName("STAND_LEFT");
-        ass.getVisionTiles();
+        //ass.getVisionTiles();
         npcs.add(ass);
         
         // enemies near player, all share DenialEnemyScript (spread out a bit)
