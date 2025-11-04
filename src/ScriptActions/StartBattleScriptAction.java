@@ -21,18 +21,13 @@ public class StartBattleScriptAction extends ScriptAction {
 
     @Override
     public ScriptState execute() {
-        // Debugging info to make sure the event is actually firing
-        // System.out.println("[DEBUG] StartBattleScriptAction triggered for: " + enemy);
-        // System.out.println("[DEBUG] Listeners count: " + listeners.size());
-
         if (enemy == null) {
             System.out.println("[ERROR] StartBattleScriptAction enemy is NULL!");
-            System.out.println("[HINT] This means the script that called this action didn't pass an enemy NPC.");
+            return ScriptState.COMPLETED;
         }
 
         // Notify all listeners (e.g. PlayLevelScreen)
         for (GameListener listener : listeners) {
-            // System.out.println("[DEBUG] Notifying listener: " + listener.getClass().getSimpleName());
             listener.onEvent("start_battle", enemy);
         }
 

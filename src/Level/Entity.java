@@ -18,6 +18,7 @@ public class Entity {
     @Expose protected double tempResistance = 0;
     @Expose protected Weapon currentWeapon = Item.ItemList.fist;
     @Expose protected Inventory inventory = new Inventory(9);
+    protected boolean isEnemy;
     protected java.util.Map<String, Frame[]> animations = new HashMap<>(); 
 
     public double getMana() {
@@ -133,6 +134,12 @@ public class Entity {
     public Entity(double maxHealth, double maxMana) {
         this.maxHealth = this.health = maxHealth;
         this.maxMana = this.mana = maxMana;
+        this.isEnemy = false;
+    }
+    public Entity(double maxHealth, double maxMana, boolean isEnemy) {
+        this.maxHealth = this.health = maxHealth;
+        this.maxMana = this.mana = maxMana;
+        this.isEnemy = isEnemy;
     }
     public Entity(double maxHealth, double maxMana, double resistance) {
         this(maxHealth, maxMana);

@@ -244,6 +244,15 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         //     TailwindColorScheme.amber400
         // );
         var playerEntity = this.player.getEntity();
+
+        graphicsHandler.drawFilledRectangle(
+            10,
+            10,
+            60,
+            10,
+            Color.BLACK
+        );
+
         graphicsHandler.drawStringWithOutline(
             String.format("Player Health: %.2f/%.2f", playerEntity.getHealth(), playerEntity.getMaxHealth()),
             (int) (statusLogRec.getX() + FONT_SIZE) + 2,
@@ -271,6 +280,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             TailwindColorScheme.slate900,
             3
         );
+        
+
 
         // Selector Section
         // graphicsHandler.drawRectangle(
@@ -340,6 +351,35 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             );
             playerIdleAnimations[0].draw(graphicsHandler);
         }
+
+        graphicsHandler.drawFilledRectangleWithBorder(
+            battleY0 + entityPadding - 9,
+            battleY0 + (battleHeight - placeholderHeight) / 2 + 12,
+            70,
+            8,
+            TailwindColorScheme.black,
+            this.borderColor,
+            BORDER_LINE_WIDTH
+        );
+
+        graphicsHandler.drawFilledRectangle(
+            battleY0 + entityPadding - 9 + 1,
+            battleY0 + (battleHeight - placeholderHeight) / 2 + 12 + 1,
+            70 - 2,
+            8 - 2,
+            TailwindColorScheme.red500
+        );
+
+        graphicsHandler.drawFilledRectangle(
+            battleY0 + entityPadding - 9 + 1,
+            battleY0 + (battleHeight - placeholderHeight) / 2 + 12 + 1,
+            (int)(68 * ((playerEntity.getHealth()) / playerEntity.getMaxHealth())),
+            8 - 2,
+            TailwindColorScheme.lime500
+        );
+
+
+        //System.out.println(            (int)((playerEntity.getHealth() / (battleY0 + (battleHeight - placeholderHeight) / 2 + 12 + 1)) * (battleY0 + (battleHeight - placeholderHeight)) / 2 + 12 + 1));
 
         // ENEMY SPRITE
         if (entityIdleAnimations == null) {
