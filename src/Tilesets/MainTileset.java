@@ -21,7 +21,7 @@ public class MainTileset extends Tileset {
     public ArrayList<MapTileBuilder> defineTiles() {
         ArrayList<MapTileBuilder> mapTiles = new ArrayList<>();
 
-        // grass
+        // snow
         Frame snowFrame = new FrameBuilder(getSubImage(0, 0))
                 .withScale(tileScale)
                 .build();

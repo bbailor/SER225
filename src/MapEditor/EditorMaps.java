@@ -3,6 +3,7 @@ package MapEditor;
 import Level.Map;
 import Maps.MapOneDenial;
 import Maps.TestMap;
+import Maps.AngerMap;
 import Maps.TitleScreenMap;
 import java.util.ArrayList;
 
@@ -13,6 +14,7 @@ public class EditorMaps {
 //            add("MainMap");
             add("TitleScreen");
             add("Map1Denial");
+            add("Anger");
         }};
     }
 
@@ -27,6 +29,8 @@ public class EditorMaps {
                 return new TitleScreenMap();
             case "Map1Denial":
                 return new MapOneDenial();
+            case "Anger":
+                return new AngerMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }
