@@ -32,6 +32,7 @@ import Maps.TestMap;
 import Players.Gnome;
 import Screens.submenus.InventorySubmenu;
 import Screens.submenus.SaveSubmenu;
+import ScriptActions.FlagRequirement;
 import NPCs.Skeleton;
 import NPCs.Spirit;
 import NPCs.AngerBoss;
@@ -109,6 +110,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("wizardQuestStarted", false);
         flagManager.addFlag("wizardSaved", false);
         flagManager.addFlag("wizardRewardGiven", false);
+        flagManager.addFlag("hasEnteredAnger", false);
+        flagManager.addFlag("hasDefeatedDenial", true);
         
         
         // setup player
@@ -346,6 +349,20 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         // 👇 Enemy defeated event (added)
         if (eventName.equals("enemy_defeated") && args.length > 0 && args[0] instanceof MapEntity defeatedEnemy) {
+            // Check if this is the wizard quest skeleton
+            if (defeatedEnemy instanceof Skeleton) {
+            Skeleton skeleton = (Skeleton) defeatedEnemy;
+            if (skeleton.getId() == 103) { // The quest skeleton ID
+                // Set the flag when ACTUALLY defeated
+                map.getFlagManager().setFlag("wizardSaved");
+            }
+        }
+        
+        // Check if this is the Denial Boss
+        if (defeatedEnemy instanceof DenialBoss || 
+            (defeatedEnemy.getClass().getSimpleName().equals("DenialBoss"))) {
+            map.getFlagManager().setFlag("hasDefeatedDenial");
+        }
             defeatedEnemy.setMapEntityStatus(MapEntityStatus.REMOVED);
             defeatedEnemy.setIsHidden(true);
         }

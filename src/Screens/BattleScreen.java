@@ -29,6 +29,7 @@ import Level.Player;
 import Screens.submenus.BattleSubmenu;
 import Screens.submenus.InventoryBattleMenu;
 import Screens.submenus.SelectionSubmenu;
+import ScriptActions.ChangeFlagScriptAction;
 import Utils.Globals;
 import Utils.Menu;
 import Utils.MenuListener;
@@ -144,6 +145,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     @Override
     public void update() {
         if (this.entity.getHealth() <= 0) {
+    
             // Notify PlayLevelScreen that this enemy was defeated
             this.sendEvent("enemy_defeated", this.enemySource);
             this.close();

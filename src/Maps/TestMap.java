@@ -28,7 +28,7 @@ public class TestMap extends Map {
 
     public TestMap() {
         super("test_map.txt", new CommonTileset());
-        this.playerStartPosition = getMapTile(17, 20).getLocation();
+        this.playerStartPosition = getMapTile(10, 22).getLocation();
         //itemSet = 
     }
 
@@ -36,7 +36,7 @@ public class TestMap extends Map {
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
-        PushableRock pushableRock = new PushableRock(getMapTile(2, 7).getLocation());
+        PushableRock pushableRock = new PushableRock(getMapTile(21, 7).getLocation());
         enhancedMapTiles.add(pushableRock);
 
         return enhancedMapTiles;
@@ -60,12 +60,12 @@ public class TestMap extends Map {
         npcs.add(bug);
         */  
         
-        Wizard wizard = new Wizard(4, getMapTile(10, 15).getLocation());
+        Wizard wizard = new Wizard(4, getMapTile(2, 22).getLocation());
         wizard.setInteractScript(new WizardScript());
         npcs.add(wizard);
 
         // Quest skeleton - appears when quest starts, disappears when defeated
-        Skeleton questSkeleton = new Skeleton(103, getMapTile(20, 1).getLocation().subtractY(16).subtractX(6));
+        Skeleton questSkeleton = new Skeleton(103, getMapTile(2, 3).getLocation().subtractY(16).subtractX(6));
         questSkeleton.setInteractScript(new WizardQuestSkeletonScript());
         // Will appear when wizardQuestStarted is true AND wizardSaved is false
         questSkeleton.setExistenceFlag("wizardSaved"); 
@@ -119,16 +119,16 @@ public class TestMap extends Map {
     @Override
     protected ArrayList<CollectableItem> loadCollectableItems() {
         ArrayList<CollectableItem> collectables = new ArrayList<>();
-        collectables.add(new CollectableItem(getMapTile(10, 24).getLocation(), Item.ItemList.apple));
-        collectables.add(new CollectableItem(getMapTile(12, 26).getLocation(), Item.ItemList.apple));
-        collectables.add(new CollectableItem(getMapTile(9, 10).getLocation(), Item.ItemList.apple));
-        collectables.add(new CollectableItem(getMapTile(9, 18).getLocation(), Item.ItemList.apple));
-        collectables.add(new CollectableItem(getMapTile(16, 14).getLocation(), Item.ItemList.apple));
-        collectables.add(new CollectableItem(getMapTile(1, 20).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(1, 27).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(1, 22).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(1, 17).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(15, 20).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(18, 14).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(12, 9).getLocation(), Item.ItemList.apple));
         
-        collectables.add(new CollectableItem(getMapTile(22, 2).getLocation(), Item.ItemList.cherry));
-        collectables.add(new CollectableItem(getMapTile(22, 5).getLocation(), Item.ItemList.cherry));
-        collectables.add(new CollectableItem(getMapTile(12, 6).getLocation(), Item.ItemList.cherry));
+        collectables.add(new CollectableItem(getMapTile(14, 3).getLocation(), Item.ItemList.cherry));
+        collectables.add(new CollectableItem(getMapTile(4, 3).getLocation(), Item.ItemList.cherry));
+        collectables.add(new CollectableItem(getMapTile(2, 9).getLocation(), Item.ItemList.cherry));
 
         // collectables.add(new CollectableItem(getMapTile(10, 24).getLocation(), Item.ItemList.cat));
         // collectables.add(new CollectableItem(getMapTile(16, 20).getLocation(), Item.ItemList.cat));
@@ -137,9 +137,8 @@ public class TestMap extends Map {
 
     @Override
     public void loadScripts() {
-        getMapTile(21, 19).setInteractScript(new SimpleTextScript("Cat's house"));
-        getMapTile(7, 26).setInteractScript(new SimpleTextScript("Walrus's house"));
-        getMapTile(20, 4).setInteractScript(new SimpleTextScript("Dino's house"));
-        getMapTile(2, 6).setInteractScript(new DenialEntryScript());
+        getMapTile(3, 3).setInteractScript(new SimpleTextScript("Storage Shack"));
+        getMapTile(7, 22).setInteractScript(new SimpleTextScript("Isis x Osiris <3 <3 <3"));
+        getMapTile(21, 6).setInteractScript(new DenialEntryScript());
     }
 }

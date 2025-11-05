@@ -53,8 +53,6 @@ public class WizardQuestSkeletonScript extends Script {
                             addText("Gnomeo: Hold on, Osiris! I'm coming!");
                         }});
                         addScriptAction(new StartBattleScriptAction(WizardQuestSkeletonScript.this.entity));
-                        // After battle, set the wizard as saved, which should remove the skeleton
-                        addScriptAction(new ChangeFlagScriptAction("wizardSaved", true));
                     }});
 
                     // No

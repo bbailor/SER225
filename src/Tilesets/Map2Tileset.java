@@ -61,7 +61,7 @@ public class Map2Tileset extends Tileset {
 
         Frame pillarTopFrame = new FrameBuilder(getSubImage(0, 5))
                 .withScale(tileScale)
-                .withBounds(8, 13, 18, 13)
+                .withBounds(8, 32, 18, 13)
                 .build();
 
         MapTileBuilder pillarTopTile = new MapTileBuilder(baseFrame)
@@ -73,7 +73,7 @@ public class Map2Tileset extends Tileset {
         // Skinny dark pillar
         Frame rightDarkPillarFrame = new FrameBuilder(getSubImage(4, 2))
                 .withScale(tileScale)
-                .withBounds(8, 0, 21, 30)
+                .withBounds(8, 32, 21, 30)
                 .build();
 
         MapTileBuilder rightDarkPillarTile = new MapTileBuilder(baseFrame)
@@ -84,13 +84,13 @@ public class Map2Tileset extends Tileset {
 
         Frame leftDarkPillarFrame = new FrameBuilder(getSubImage(4, 2))
                 .withScale(tileScale)
-                .withBounds(8, 0, 21, 30)
+                .withBounds(8, 32, 21, 30)
                 .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                 .build();
 
         MapTileBuilder leftDarkPillarTile = new MapTileBuilder(baseFrame)
                 .withTopLayer(leftDarkPillarFrame)
-                .withTileType(TileType.PASSABLE);
+                .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(leftDarkPillarTile);
         
@@ -230,7 +230,6 @@ public class Map2Tileset extends Tileset {
                 .build();
 
         MapTileBuilder leftCaveTile = new MapTileBuilder(leftCaveFrame)
-                .withTopLayer(leftCaveFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(leftCaveTile);
@@ -241,7 +240,6 @@ public class Map2Tileset extends Tileset {
                 .build();
 
         MapTileBuilder rightCaveTile = new MapTileBuilder(rightCaveFrame)
-                .withTopLayer(rightCaveFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(rightCaveTile);
@@ -252,7 +250,6 @@ public class Map2Tileset extends Tileset {
                 .build();
 
         MapTileBuilder leftTopCaveTile = new MapTileBuilder(leftTopCaveFrame)
-                .withTopLayer(leftTopCaveFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(leftTopCaveTile);
@@ -262,7 +259,6 @@ public class Map2Tileset extends Tileset {
                 .build();
 
         MapTileBuilder middleTopCaveTile = new MapTileBuilder(middleTopCaveFrame)
-                .withTopLayer(middleTopCaveFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(middleTopCaveTile);
@@ -272,7 +268,6 @@ public class Map2Tileset extends Tileset {
                 .build();
 
         MapTileBuilder rightTopCaveTile = new MapTileBuilder(rightTopCaveFrame)
-                .withTopLayer(rightTopCaveFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(rightTopCaveTile);
@@ -283,7 +278,6 @@ public class Map2Tileset extends Tileset {
                 .build();
 
         MapTileBuilder leftMiddleCaveTile = new MapTileBuilder(leftMiddleCaveFrame)
-                .withTopLayer(leftMiddleCaveFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(leftMiddleCaveTile);
@@ -293,7 +287,6 @@ public class Map2Tileset extends Tileset {
                 .build();
 
         MapTileBuilder middleMiddleCaveTile = new MapTileBuilder(middleMiddleCaveFrame)
-                .withTopLayer(middleMiddleCaveFrame)
                 .withTileType(TileType.PASSABLE);
 
         mapTiles.add(middleMiddleCaveTile);
@@ -304,7 +297,6 @@ public class Map2Tileset extends Tileset {
                 .build();
 
         MapTileBuilder rightMiddleCaveTile = new MapTileBuilder(rightMiddleCaveFrame)
-                .withTopLayer(rightMiddleCaveFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(rightMiddleCaveTile);
@@ -315,7 +307,6 @@ public class Map2Tileset extends Tileset {
                 .build();
 
         MapTileBuilder leftBottomCaveTile = new MapTileBuilder(leftBottomCaveFrame)
-                .withTopLayer(leftBottomCaveFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(leftBottomCaveTile);
@@ -325,7 +316,6 @@ public class Map2Tileset extends Tileset {
                 .build();
 
         MapTileBuilder middleBottomCaveTile = new MapTileBuilder(middleBottomCaveFrame)
-                .withTopLayer(middleBottomCaveFrame)
                 .withTileType(TileType.PASSABLE);
 
         mapTiles.add(middleBottomCaveTile);
@@ -336,7 +326,6 @@ public class Map2Tileset extends Tileset {
                 .build();
 
         MapTileBuilder rightBottomCaveTile = new MapTileBuilder(rightBottomCaveFrame)
-                .withTopLayer(rightBottomCaveFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(rightBottomCaveTile);
@@ -345,15 +334,15 @@ public class Map2Tileset extends Tileset {
         Frame[] fireFrames = new Frame[] {
                 new FrameBuilder(getSubImage(0, 0), 65)
                     .withScale(tileScale)
-                    .withBounds(0, 0, 32, 25)
+                    .withBounds(0, 32, 32, 25)
                     .build(),
-                new FrameBuilder(getSubImage(1, 0), 65)
+                new FrameBuilder(getSubImage(0, 1), 65)
                     .withScale(tileScale)
-                    .withBounds(0, 0, 32, 25)
+                    .withBounds(0, 32, 32, 25)
                     .build(),
-                new FrameBuilder(getSubImage(2, 0), 65)
+                new FrameBuilder(getSubImage(0, 2), 65)
                     .withScale(tileScale)
-                    .withBounds(0, 0, 32, 25)
+                    .withBounds(0, 32, 32, 25)
                     .build(),
         };
 
