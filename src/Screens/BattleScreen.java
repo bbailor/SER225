@@ -431,7 +431,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         
         graphicsHandler.drawFilledRectangleWithBorder(
             (int)enemyX + entityIdleAnimations[0].getWidth() / 2 - 35,
-            (int)enemyY - 6,
+            (int)enemyY - 10,
             70,
             8,
             TailwindColorScheme.black,
@@ -441,7 +441,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
         graphicsHandler.drawFilledRectangle(
             (int)enemyX + entityIdleAnimations[0].getWidth() / 2 + 1 - 35,
-            (int)enemyY - 5,
+            (int)enemyY - 9,
             70 - 2,
             8 - 2,
             TailwindColorScheme.red500
@@ -449,7 +449,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
         graphicsHandler.drawFilledRectangle(
             (int)enemyX + entityIdleAnimations[0].getWidth() / 2 + 1 - 35,
-            (int)enemyY - 5,
+            (int)enemyY - 9,
             (int)(68 * ((this.entity.getHealth()) / this.entity.getMaxHealth())),
             8 - 2,
             TailwindColorScheme.lime500
