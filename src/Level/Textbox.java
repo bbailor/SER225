@@ -1,4 +1,4 @@
-package Level;
+aspackage Level;
 
 import Engine.GraphicsHandler;
 import Engine.Key;

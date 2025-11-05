@@ -19,7 +19,7 @@ public class Spirit extends NPC {
             new SpriteSheet(ImageLoader.load("Enemies/spirit.png"), 32, 32),
             "STAND_RIGHT"
         );
-        enemyType = "Spirit";
+        enemyType = "A Spirit";
     }
 
     @Override
@@ -40,5 +40,9 @@ public class Spirit extends NPC {
         map.put("STAND_LEFT",  new Frame[] { standLeft  });
         map.put("idle",        new Frame[] { standRight }); // Added idle animation
         return map;
+    }
+    public String getEnemyType()
+    {
+        return enemyType;
     }
 }

@@ -219,7 +219,7 @@ public class NPC extends MapEntity {
                 public ArrayList<ScriptAction> loadScriptActions() {
                     ArrayList<ScriptAction> actions = new ArrayList<>();
                     actions.add(new LockPlayerScriptAction());
-                    actions.add(new TextboxScriptAction("You have been spotted!"));
+                    actions.add(new TextboxScriptAction(NPC.this.getEnemyType() + " has spotted you!"));
                     actions.add(new StartBattleScriptAction(NPC.this));
                     actions.add(new UnlockPlayerScriptAction());
                     return actions;
@@ -241,8 +241,13 @@ public class NPC extends MapEntity {
         this.autoBattleEnabled = autobattle;
     }
 
+    public String getEnemyType()
+    {
+        return "";
+    }
+
  @Override
-    public void draw(GraphicsHandler graphicsHandler) {
+ public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
 
         if (true) {
