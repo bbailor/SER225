@@ -26,13 +26,13 @@ public class BargainingBoss extends NPC {
     public HashMap<String, Frame[]> loadAnimations(GameObject.SpriteSheet spriteSheet) {
         Frame standRight = new FrameBuilder(spriteSheet.getSprite(0, 0), 9999)
                 .withScale(2)
-                .withBounds(19, 0, 65, 123)
+                .withBounds(19, 0, 85, 123)
                 .build();
 
         Frame standLeft = new FrameBuilder(spriteSheet.getSprite(0, 0), 9999)
                 .withScale(2)
                 .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                .withBounds(19, 0, 65, 123)
+                .withBounds(19, 0, 80, 123)
                 .build();
 
         HashMap<String, Frame[]> map = new HashMap<>();
