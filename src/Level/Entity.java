@@ -82,6 +82,7 @@ public class Entity {
 
     public double getAttack() {
         Weapon weapon = this.getCurrentWeapon();
+        System.out.println(getCurrentWeapon());
         if(Math.random() >= 0.90) {
             System.out.println("Critical Strike! Damage: " + this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5));
             return this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5);
@@ -92,6 +93,7 @@ public class Entity {
         }
     }
     public double getAttack(Entity entity) {
+        Weapon weapon = this.getCurrentWeapon();
         return this.getAttack() + this.getCurrentWeapon().bonusDamage(entity);
     }
 
