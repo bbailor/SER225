@@ -4,6 +4,7 @@ import EnhancedMapTiles.CollectableItem;
 import EnhancedMapTiles.PushableRock;
 import Level.*;
 import NPCs.ArmoredSkeleton;
+import NPCs.BargainingBoss;
 import NPCs.DenialBoss;
 import NPCs.DepressionBoss;
 import NPCs.AngerBoss;
@@ -13,6 +14,7 @@ import NPCs.Wizard;
 import Scripts.SimpleTextScript;
 import Scripts.MapOneDenial.DenialBossScript;
 import Scripts.MapOneDenial.DenialEnemyScript;
+import Scripts.MapThreeBargaining.BargainingBossScript;
 import Scripts.MapFourDepression.DepressionBossScript;
 import Scripts.MapTwoAnger.AngerBossScript;
 import Scripts.TestMap.*;
@@ -71,7 +73,12 @@ public class TestMap extends Map {
         questSkeleton.setExistenceFlag("wizardSaved"); 
         questSkeleton.setCurrentAnimationName("STAND_RIGHT");
         npcs.add(questSkeleton);
+       BargainingBoss b = new BargainingBoss(103, getMapTile(10, 10).getLocation().subtractY(16).subtractX(6));
+        b.setInteractScript(new BargainingBossScript());
+        b.setCurrentAnimationName("STAND_RIGHT");
+        npcs.add(b);
         
+    
 
         DepressionBoss dp = new DepressionBoss(102, getMapTile(17, 20).getLocation().subtractY(16).subtractX(4));
         dp.setInteractScript(new DepressionBossScript());
