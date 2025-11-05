@@ -12,8 +12,12 @@ import java.awt.event.MouseMotionListener;
  */
  //Used the keyboard class as an outline.
 public class Mouse {
-    private static boolean clickDown = false;
-    private static boolean clickUp = true;
+    private static boolean leftClickDown = false;
+    private static boolean leftClickUp = true;
+    private static boolean rightClickDown = false;
+    private static boolean rightClickUp = true;
+    private static boolean middleClickDown = false;
+    private static boolean middleClickUp = true;
 
     //Uses points to track the location of the mouse and its clicks/releases
     private static Point currentPosition = new Point(0, 0);
@@ -26,15 +30,47 @@ public class Mouse {
     private static final MouseListener mouseListener = new MouseListener() {
         @Override
         public void mousePressed(MouseEvent e){
-            clickDown = true;
-            clickUp = false;
+            switch (e.getButton()) {
+                case MouseEvent.BUTTON1: {
+                    leftClickDown = true;
+                    leftClickUp = false;
+                    break;
+                }
+                case MouseEvent.BUTTON2: {
+                    middleClickDown = true;
+                    middleClickUp = false;
+                    break;
+                }
+                case MouseEvent.BUTTON3: {
+                    rightClickDown = true;
+                    rightClickUp = false;
+                    break;
+                }
+            }
+            // leftClickDown = true;
+            // leftClickUp = false;
 
             lastPressedPosition = e.getPoint();
         }
         @Override
         public void mouseReleased(MouseEvent e){ 
-            clickDown = false;
-            clickUp = true;
+            switch (e.getButton()) {
+                case MouseEvent.BUTTON1: {
+                    leftClickDown = false;
+                    leftClickUp = true;
+                    break;
+                }
+                case MouseEvent.BUTTON2: {
+                    middleClickDown = false;
+                    middleClickUp = true;
+                    break;
+                }
+                case MouseEvent.BUTTON3: {
+                    rightClickDown = false;
+                    rightClickUp = true;
+                    break;
+                }
+            }
 
             lastReleasedPosition = e.getPoint();
         }
@@ -58,12 +94,28 @@ public class Mouse {
     };
 
     //Allows for dragging items to be implemented
-    public static boolean isClickDown() {
-    return clickDown;
+    public static boolean isLeftClickDown() {
+        return leftClickDown;
     }
 
-    public static boolean isClickUp() {
-        return clickUp;
+    public static boolean isLeftClickUp() {
+        return leftClickUp;
+    }
+
+    public static boolean isRightClickDown() {
+        return rightClickDown;
+    }
+
+    public static boolean isRightClickUp() {
+        return rightClickUp;
+    }
+
+    public static boolean isMiddleClickDown() {
+        return middleClickDown;
+    }
+
+    public static boolean isMiddleClickUp() {
+        return middleClickUp;
     }
 
     //Setters and getters.

@@ -33,7 +33,7 @@ public abstract class Globals {
     /** Base select color for ui's */
     public static final Color SELECT_COLOR = TailwindColorScheme.sky400;
     /** UI interact cooldowns */
-    public static final int KEYBOARD_CD = 12;
+    public static final int KEYBOARD_CD = 10;
     /** The Gson serializer */
     public static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(Item.class, new ItemSerializer())

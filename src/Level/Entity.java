@@ -17,7 +17,7 @@ public class Entity {
     @Expose protected double resistance = 0;
     @Expose protected double tempResistance = 0;
     @Expose protected Weapon currentWeapon = Item.ItemList.fist;
-    @Expose protected Inventory inventory = new Inventory(9);
+    @Expose protected Inventory inventory = new Inventory(90);
     protected boolean isEnemy;
     protected java.util.Map<String, Frame[]> animations = new HashMap<>(); 
 
@@ -84,14 +84,27 @@ public class Entity {
     }
 
     public double getAttack() {
-        return this.baseAttack + this.currentWeapon.baseDamage;
+        if(Math.random() >= 0.90){
+            System.out.println("Critical Strike! Damage: " + this.baseAttack + this.currentWeapon.baseDamage + (this.currentWeapon.baseDamage * 0.5));
+            return this.baseAttack + this.currentWeapon.baseDamage + (this.currentWeapon.baseDamage * 0.5);
+        }
+        else{
+            System.out.println("Damage: " + this.baseAttack + this.currentWeapon.baseDamage);
+            return this.baseAttack + this.currentWeapon.baseDamage;
+        }
     }
     public double getAttack(Entity entity) {
         return this.getAttack() + this.currentWeapon.bonusDamage(entity);
     }
 
     public double getSkillAttack() {
+        if (Math.random() >= 0.90){
+            System.out.println("Critical Strike! Damage: " + this.baseAttack + this.currentWeapon.getWeaponSkillDamage() + (0.5 * this.currentWeapon.getWeaponSkillDamage()));
+            return this.baseAttack + this.currentWeapon.getWeaponSkillDamage() + (0.5 * this.currentWeapon.getWeaponSkillDamage());
+        }
+        else{
         return this.baseAttack + this.currentWeapon.getWeaponSkillDamage();
+        }
     }
 
     public double getSkillAttack(Entity entity) {

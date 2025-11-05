@@ -50,13 +50,13 @@ public class ControlsScreen extends Screen {
             keyLocker.unlockKey(Key.SPACE);
         }
 
-        if(Mouse.isClickUp())
+        if(Mouse.isLeftClickUp())
         {
             mouseLocker.unlockMouse();
         }
 
         // if space is pressed or mouse is clicked, go back to main menu
-        if ((!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) || ((!mouseLocker.isMouseLocked() && Mouse.isClickDown()))) {
+        if ((!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) || ((!mouseLocker.isMouseLocked() && Mouse.isLeftClickDown()))) {
             screenCoordinator.setGameState(GameState.MENU);
         }
     }

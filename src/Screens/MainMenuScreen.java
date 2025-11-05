@@ -128,7 +128,7 @@ public class MainMenuScreen extends Screen {
             currentMenuItemHovered = 2;
         }
 
-        if (!mouseLocker.isMouseLocked() && Mouse.isClickDown())
+        if (!mouseLocker.isMouseLocked() && Mouse.isLeftClickDown())
         {
             mouseLocker.lockMouse();
             Point clickPos = Mouse.getLastPressedPosition();
@@ -142,7 +142,7 @@ public class MainMenuScreen extends Screen {
             }
         }
 
-        if(Mouse.isClickUp())
+        if(Mouse.isLeftClickUp())
         {
             mouseLocker.unlockMouse();
         }

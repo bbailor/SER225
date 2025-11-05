@@ -1,25 +1,60 @@
 package Screens;
 
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.jetbrains.annotations.Nullable;
 
 import Engine.Config;
 import Engine.GraphicsHandler;
+import Engine.Inventory;
 import Engine.Screen;
-import GameObject.Rectangle;
-import Screens.submenus.MenuSelector;
+import Engine.Mouse;
+import Level.Entity;
+import Level.Item;
+import Level.ItemStack;
+import Screens.submenus.InventorySubmenu;
+import Screens.submenus.SaveSubmenu;
+import Screens.submenus.SelectionSubmenu;
+import Utils.Globals;
 import Utils.Menu;
 import Utils.MenuListener;
+import Utils.Resources;
+import Utils.SaveData;
 import Utils.TailwindColorScheme;
 
 // This is the class for the main menu screen
-public class MenuScreen extends Screen implements Menu {
+public class MenuScreen extends Screen implements Menu, MenuListener {
 
-    public Map<String, MenuListener> listeners = new HashMap<>();
-    public MenuSelector selector = new MenuSelector((int) (Config.GAME_WINDOW_WIDTH * .3f), (int) (Config.GAME_WINDOW_HEIGHT * .7f));
-    public Rectangle menuStart = new Rectangle((int) (Config.GAME_WINDOW_WIDTH * .3f), 0, 0, 0);
-    public Rectangle menuInfo = new Rectangle((int) (Config.GAME_WINDOW_WIDTH * .3f), 0, 0, 0);
+    protected List<String> selections;
+    protected String status = "";
+    protected SelectionSubmenu selector;
+    @Nullable protected String selectedAction;
+    protected Map<String, Menu> actions = new HashMap<>();
+    protected Map<String, MenuListener> listeners = new HashMap<>();
+    protected Rectangle selectorRec = new Rectangle(
+        2,
+        (int) (Config.GAME_WINDOW_HEIGHT * .25f)-6,
+        (int) (Config.GAME_WINDOW_WIDTH * .3f),
+        (int) (Config.GAME_WINDOW_HEIGHT * .7f)
+    );
+    protected Rectangle menuStart = new Rectangle(
+        this.selectorRec.width,
+        2,
+        Config.GAME_WINDOW_WIDTH - (int) (Config.GAME_WINDOW_WIDTH * .3f) - 9,
+        (int)(Config.GAME_WINDOW_HEIGHT * .8f)
+    );
+    protected Rectangle menuInfo = new Rectangle(
+        this.menuStart.x,
+        Config.GAME_WINDOW_HEIGHT - (Config.GAME_WINDOW_HEIGHT - this.menuStart.height) + 2,
+        this.menuStart.width,
+        (Config.GAME_WINDOW_HEIGHT - this.menuStart.height) - 39 // why 39???
+    );
+    public static final String MENU_LISTENER_NAME = "MenuScreen";
 
     @Override
     public void draw(GraphicsHandler handler, int x, int y) {
@@ -33,7 +68,7 @@ public class MenuScreen extends Screen implements Menu {
 
     @Override
     public void open() {
-        
+        this.selectedAction = null;
     }
 
     @Override
@@ -41,37 +76,116 @@ public class MenuScreen extends Screen implements Menu {
         
     }
 
+    public void setInventory(Inventory inv) {
+        ((InventorySubmenu) this.actions.get("Inventory")).setInventory(inv);
+    }
+
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        this.menuStart = new Rectangle(
-            (Config.GAME_WINDOW_WIDTH * .3f) + 2,
-            2,
-            Config.GAME_WINDOW_WIDTH - (int) (Config.GAME_WINDOW_WIDTH * .3f) - 9,
-            (int)(Config.GAME_WINDOW_HEIGHT * .8f)
-        );
-        this.menuInfo = new Rectangle(
-            this.menuStart.getX(),
-            Config.GAME_WINDOW_HEIGHT - (Config.GAME_WINDOW_HEIGHT - this.menuStart.getHeight()) + 2,
-            this.menuStart.getWidth(),
-            (Config.GAME_WINDOW_HEIGHT - this.menuStart.getHeight()) - 39 // why 39???
-        );
-        
+        float nmt_size = 24f;
         
         // Background
         graphicsHandler.drawFilledRectangle(2, 0, Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT, TailwindColorScheme.slate800);
         
         // Preview + Selector
-        graphicsHandler.drawFilledRectangleWithBorder(2, 2, (int) (Config.GAME_WINDOW_WIDTH * .3f), (int) (Config.GAME_WINDOW_HEIGHT * .25f)-7, TailwindColorScheme.zinc500, TailwindColorScheme.slate400, 5);
-        this.selector.draw(graphicsHandler, 2, (int) (Config.GAME_WINDOW_HEIGHT * .25f)-6);
+        graphicsHandler.drawFilledRectangleWithBorder(2, 2, (int) (Config.GAME_WINDOW_WIDTH * .3f), (int) (Config.GAME_WINDOW_HEIGHT * .25f)-7, TailwindColorScheme.zinc500, TailwindColorScheme.slate700, 5);
+        this.selector.draw(graphicsHandler, (int) this.selectorRec.getX(), (int) this.selectorRec.getY());
 
-        graphicsHandler.drawFilledRectangleWithBorder(this.menuStart, TailwindColorScheme.slate600, TailwindColorScheme.slate400, 5);
-        graphicsHandler.drawFilledRectangleWithBorder(this.menuInfo, TailwindColorScheme.zinc500, TailwindColorScheme.slate400, 5);
         // this.selector.draw(graphicsHandler, 0, (int) (Config.GAME_WINDOW_HEIGHT * .24f));
+        
+        // Menu
+        graphicsHandler.drawFilledRectangleWithBorder(this.menuStart, TailwindColorScheme.slate400, TailwindColorScheme.slate700, 5);
+        if (this.selectedAction == null) {
+            String no_menu_text = "No Menu Selected";
+            graphicsHandler.drawString(no_menu_text, (int) (this.menuStart.getX() + (this.menuStart.getWidth() - (no_menu_text.length() * nmt_size))/2), (int) (this.menuStart.getY() + (this.menuStart.getWidth() - nmt_size)/2), Resources.press_start.deriveFont(nmt_size), TailwindColorScheme.white);
+        } else {
+            this.actions.get(this.selectedAction).draw(graphicsHandler, (int) (this.menuStart.getX() + 3), (int) (this.menuStart.getY() + 3));
+        }
+
+        // Menu Info
+        graphicsHandler.drawFilledRectangleWithBorder(this.menuInfo, TailwindColorScheme.zinc500, TailwindColorScheme.slate700, 5);
+        var statusSplit = this.status.split("\n");
+        for (int i = 0; i < statusSplit.length; i++) {
+            var _status = statusSplit[i];
+            graphicsHandler.drawString(_status, (int)this.menuInfo.getX() + 5, (int)this.menuInfo.getY() + 5 + 14 + i*14, Resources.press_start.deriveFont(12f), TailwindColorScheme.white);
+        }
     }
 
     @Override
     public void update() {
-        
+        if (this.selectedAction == null || this.selectorRec.contains(Mouse.getCurrentPosition())) {
+            this.selector.update();
+        } else {
+            this.actions.get(this.selectedAction).update();
+        }
+    }
+
+    @Override
+    public void onMenuClose() {
+        this.selectedAction = null;
+        this.status = "";
+    }
+
+    @Override
+    public void onEvent(String eventName, Object... args) {
+        switch (eventName) {
+            case SelectionSubmenu.SUBMENU_SELECTION_EVENT: {
+                String action = (String) args[0];
+                switch (action) {
+                    case "Resume": {
+                        this.close();
+                        break;
+                    }
+                    case "Quit": {
+                        System.exit(0);
+                        break;
+                    }
+                    default: {
+                        if (this.actions.containsKey(action)) {
+                            this.selectedAction = action;
+                            this.actions.get(action).open();
+                            break;
+                        }
+                        System.out.printf("Running %s.%n", action);
+                        break;
+                    }
+                }
+                break;
+            }
+            case STATUS_EVENT: {
+                this.status = (String) args[0];
+                break;
+            }
+            default: {
+                // Pass to playlevelscreen
+                this.sendEvent(eventName, args);
+            }
+        }
+    }
+
+    public MenuScreen() {
+        this.actions.put("Save/Load", new SaveSubmenu(this.menuStart.width - 5, this.menuStart.height - 4));
+        this.actions.put("Inventory", new InventorySubmenu(new Inventory(90) {
+            {
+                this.addStack(new ItemStack(Item.ItemList.apple, 5));
+            }
+        }, new Entity())
+            .setColumns(((this.menuStart.width) / InventorySubmenu.INV_SLOT_WIDTH) - 1)
+        );
+        this.selections = new ArrayList<>(this.actions.keySet()) {
+            {
+                add(0, "Resume");
+                // TODO: Switch control screen and (todo) quest screen to the actions above
+                add("Controls");
+                add("Quests");
+                add("Quit");
+            }
+        };
+        this.selector = new SelectionSubmenu(this.selectorRec.width, this.selectorRec.height, this.selections);
+        this.selector.addistener(MENU_LISTENER_NAME, this);
+        for (Menu menu : this.actions.values()) {
+            menu.addistener(MENU_LISTENER_NAME, this);
+        }
     }
     
 }
