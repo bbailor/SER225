@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Map4Tileset extends Tileset {
 
     public Map4Tileset() {
-        super(ImageLoader.load("DepressionTileset.png"), 50, 50, 1);
+        super(ImageLoader.load("DepressionTileset.png"), 50, 50, 3);
     }
 
     @Override
