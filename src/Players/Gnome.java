@@ -13,10 +13,10 @@ import Level.Player;
 // basically just sets some values for physics and then defines animations
 public class Gnome extends Player {
 
-    private static int boundY = 21;
+    private static int boundY = 40;
     private static int boundX = 4;
     private static int boundWidth = 23;
-    private static int boundHeight = 37;
+    private static int boundHeight = 10;
 
 
     public Gnome(float x, float y) {
