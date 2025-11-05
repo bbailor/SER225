@@ -2,7 +2,8 @@ package Maps;
 import EnhancedMapTiles.PushableRock;
 import Level.*;
 import Tilesets.Map3Tileset;
-
+import NPCs.BargainingBoss;
+import Scripts.MapThreeBargaining.BargainingBossScript;
 import java.util.ArrayList;
 
 // Represents a test map to be used in a level
@@ -23,7 +24,12 @@ public class BargainingMap extends Map {
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
-
+        
+        //Bargaining boss
+        BargainingBoss b = new BargainingBoss(103, getMapTile(10, 10).getLocation().subtractY(16).subtractX(6));
+        b.setInteractScript(new BargainingBossScript());
+        b.setCurrentAnimationName("STAND_RIGHT");
+        npcs.add(b);
         return npcs;
     }
 
