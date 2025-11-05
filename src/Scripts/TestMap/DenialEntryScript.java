@@ -4,6 +4,7 @@ import Level.GameListener;
 
 import Level.Script;
 import Level.ScriptState;
+import Maps.BargainingMap;
 import Maps.MapOneDenial;
 import ScriptActions.ChangeFlagScriptAction;
 import ScriptActions.ConditionalScriptAction;

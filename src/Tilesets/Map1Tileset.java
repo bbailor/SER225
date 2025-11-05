@@ -21,7 +21,7 @@ public class Map1Tileset extends Tileset {
 
     public Map1Tileset() {
 
-        super(ImageLoader.load("map_one_tileset.png"),16, 16, 3);
+        super(ImageLoader.load("map_one_tileset.png"),16, 16, 2);
     }
         @Override
         public ArrayList<MapTileBuilder> defineTiles() {
