@@ -6,7 +6,12 @@ import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Utils.Direction;
 import Utils.Point;
+import ScriptActions.LockPlayerScriptAction;
+import ScriptActions.ScriptAction;
 import ScriptActions.StartBattleScriptAction;
+import ScriptActions.TextboxScriptAction;
+import ScriptActions.UnlockPlayerScriptAction;
+import Scripts.SimpleTextScript;
 
 import java.awt.Color;
 import java.awt.color.*;
@@ -183,15 +188,20 @@ public class NPC extends MapEntity {
     protected void performAction(Player player) {
         // Only check if auto-battle is enabled and battle hasn't been triggered yet
         if (autoBattleEnabled && !battleTriggered) {
-            Point playerTile = toTileCoords(player.getLocation());
+            Point playerTile1 = toTileCoords(player.getLocation().add(new Point(32, 32)));
+            Point playerTile2 = toTileCoords(player.getLocation().add(new Point(32, 64)));
+            Point playerTile3 = toTileCoords(player.getLocation().add(new Point(32, 96)));
 
-            // Check each tile in the NPC's vision
+            Point[] playerVisionTiles = {playerTile1, playerTile2, playerTile3};
+
+            // Check each tile in the NPC's vision and player vision
             for (Point tile : getVisionTiles()) {
-                if (toTileCoords(tile).equals(playerTile)) {
-                    battleTriggered = true;
-                    System.out.println("Player spotted at: " + playerTile + " by " + this.getClass().getSimpleName());
-                    initiateBattle();
-                    break;
+                for (Point pTile : playerVisionTiles) {
+                    if (toTileCoords(tile).equals(pTile)) {
+                        battleTriggered = true;
+                        initiateBattle();
+                        break;
+                    }
                 }
             }
         }
@@ -202,19 +212,33 @@ public class NPC extends MapEntity {
      * This uses the map's listener system to notify PlayLevelScreen
      */
     public void initiateBattle() {
-        // Create the battle script action
-        StartBattleScriptAction battleAction = new StartBattleScriptAction(this);
-        
-        // Set up the action with map's listeners if map is available
         if (map != null) {
-            battleAction.setListeners(map.getListeners());
+            // Create a custom script that shows text then starts battle
+            Script battleScript = new Script() {
+                @Override
+                public ArrayList<ScriptAction> loadScriptActions() {
+                    ArrayList<ScriptAction> actions = new ArrayList<>();
+                    actions.add(new LockPlayerScriptAction());
+                    actions.add(new TextboxScriptAction("You have been spotted!"));
+                    actions.add(new StartBattleScriptAction(NPC.this));
+                    actions.add(new UnlockPlayerScriptAction());
+                    return actions;
+                }
+            };
+            
+            battleScript.setMap(map);
+            battleScript.setPlayer(map.getPlayer());
+            map.setActiveScript(battleScript);
         }
-        
-        battleAction.execute();
     }
 
     private Point toTileCoords(Point p) {
         return new Point((int)(p.x / 32) * 32, (int)(p.y / 32) * 32);
+    }
+
+    public void setAutoBatlte(boolean autobattle)
+    {
+        this.autoBattleEnabled = autobattle;
     }
 
  @Override
@@ -232,11 +256,19 @@ public class NPC extends MapEntity {
         }
 
         if (map != null && map.getPlayer() != null) {
-            Point playerTile = toTileCoords(map.getPlayer().getLocation());
-            int playerScreenX = Math.round(playerTile.x - map.getCamera().getX());
-            int playerScreenY = Math.round(playerTile.y - map.getCamera().getY());
-            Rectangle playerBox = new Rectangle(playerScreenX, playerScreenY, 32, 32);
-            graphicsHandler.drawRectangle(playerBox, Color.BLUE);
+            Point playerTile1 = toTileCoords(map.getPlayer().getLocation()).add(new Point(32, 32));
+            Point playerTile2 = toTileCoords(map.getPlayer().getLocation()).add(new Point(32, 64));
+            Point[] playerTiles = {playerTile1, playerTile2};
+
+            for(Point tile: playerTiles)
+            {
+                int playerScreenX = Math.round(tile.x - map.getCamera().getX());
+                int playerScreenY = Math.round(tile.y - map.getCamera().getY());
+                Rectangle playerBox = new Rectangle(playerScreenX, playerScreenY, 32, 32);
+                graphicsHandler.drawRectangle(playerBox, Color.BLUE);
+            }
+
+
         }
     }
 } 

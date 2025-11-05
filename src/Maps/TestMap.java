@@ -72,6 +72,7 @@ public class TestMap extends Map {
         // Will appear when wizardQuestStarted is true AND wizardSaved is false
         questSkeleton.setExistenceFlag("wizardSaved"); 
         questSkeleton.setCurrentAnimationName("STAND_RIGHT");
+        questSkeleton.setAutoBatlte(false);
         npcs.add(questSkeleton);
        BargainingBoss b = new BargainingBoss(103, getMapTile(10, 10).getLocation().subtractY(16).subtractX(6));
         b.setInteractScript(new BargainingBossScript());

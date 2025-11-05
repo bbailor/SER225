@@ -18,6 +18,7 @@ public class AngerBoss extends NPC {
             new SpriteSheet(ImageLoader.load("Bosses/AngerBoss.png"), 120, 120),
             "STAND_RIGHT"
         );
+        autoBattleEnabled = false;
     }
     
 

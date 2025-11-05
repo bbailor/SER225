@@ -18,6 +18,7 @@ public class BargainingBoss extends NPC {
             new SpriteSheet(ImageLoader.load("Bosses/BargainingBoss.png"), 128, 128),
             "STAND_RIGHT"
         );
+        autoBattleEnabled = false;
     }
     
 

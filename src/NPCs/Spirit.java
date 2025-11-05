@@ -10,6 +10,7 @@ import Utils.Point;
 import java.util.HashMap;
 
 public class Spirit extends NPC {
+    protected String enemyType;
     public Spirit(int id, Point location) {
         super(
             id,
@@ -18,6 +19,7 @@ public class Spirit extends NPC {
             new SpriteSheet(ImageLoader.load("Enemies/spirit.png"), 32, 32),
             "STAND_RIGHT"
         );
+        enemyType = "Spirit";
     }
 
     @Override
