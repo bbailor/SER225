@@ -10,9 +10,10 @@ import NPCs.Wizard;
 import Scripts.SimpleTextScript;
 import Scripts.MapOneDenial.DenialBossScript;
 import Scripts.MapOneDenial.DenialEnemyScript;
+import Scripts.TestMap.DenialEntryScript;
 import Scripts.TestMap.WizardScript;
 import Tilesets.Map1Tileset;
-
+import Scripts.MapOneDenial.AngerEntryScript;
 import java.util.ArrayList;
 
 // Represents a test map to be used in a level
@@ -88,7 +89,6 @@ public class MapOneDenial extends Map {
 
     @Override
     public void loadScripts() {
-       
-       
+       getMapTile(11, 13).setInteractScript(new AngerEntryScript());
     }
 }

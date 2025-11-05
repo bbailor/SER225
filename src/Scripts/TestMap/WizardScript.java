@@ -73,7 +73,7 @@ public class WizardScript extends Script {
                     @Override
                     public ScriptState execute() {
                         // Move wizard to top right
-                        Point newLocation = map.getMapTile(19, 0).getLocation();
+                        Point newLocation = map.getMapTile(1, 2).getLocation();
                         entity.setLocation(newLocation.x, newLocation.y);
                         return ScriptState.COMPLETED;
                     }

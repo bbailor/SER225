@@ -1,11 +1,11 @@
-package Scripts.TestMap;
+package Scripts.MapOneDenial;
 
 import Level.GameListener;
 
 import Level.Script;
 import Level.ScriptState;
-import Maps.BargainingMap;
 import Maps.MapOneDenial;
+import Maps.AngerMap;
 import ScriptActions.ChangeFlagScriptAction;
 import ScriptActions.ConditionalScriptAction;
 import ScriptActions.ConditionalScriptActionGroup;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 // script for talking to tree with hole in it
 // checkout the documentation website for a detailed guide on how this script works
-public class DenialEntryScript extends Script {
+public class AngerEntryScript extends Script {
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -28,13 +28,13 @@ public class DenialEntryScript extends Script {
         
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("hasTalkedToWizard", true));
-                addRequirement(new FlagRequirement("hasEnteredDenial", false));
+                // addRequirement(new FlagRequirement("hasDefeatedDenial", true));
+                addRequirement(new FlagRequirement("hasEnteredAnger", false));
                 addRequirement(new CustomRequirement() {
 
                     @Override
                     public boolean isRequirementMet() {
-                        // ensures player is directly underneath tree trunk tile
+                        // ensures player is directly underneath tile
                         // this prevents the script from working if the player tries to interact with it from the side
 
                         // if player is not below tree trunk tile, player location is not valid and this conditional script will not be reached
@@ -48,8 +48,9 @@ public class DenialEntryScript extends Script {
                 });
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Gnomeo: Juliet isn't dead, she's just beyond this door.");
-                    addText("Gnomeo: I- I wouldn't know what to do if I failed...\nNO!! I can't fail now.");
+                    addText("Gnomeo: They think they can stop me??");
+                    addText("Gnomeo: I WILL RAIN HELL ON THEM!!");
+                    addText("Gnomeo: They will feel my wrath...");
                 }});
 
                 addScriptAction(new ChangeFlagScriptAction("hasEnteredDenial", true));
@@ -59,7 +60,7 @@ public class DenialEntryScript extends Script {
                      @Override
                      public ScriptState execute() {
                          for (GameListener listener: listeners) {
-                             listener.switchMap(new MapOneDenial());
+                             listener.switchMap(new AngerMap());
                              
                          }
                          return ScriptState.COMPLETED;
