@@ -450,7 +450,7 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile65Tile = new MapTileBuilder(tile65Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile65Tile);
 
-                 Frame tile66Frame = new FrameBuilder(getSubImage(6,6)).withBounds(0,0,40,37).withScale(tileScale).build();
+                 Frame tile66Frame = new FrameBuilder(getSubImage(6,6)).withBounds(0,0,30,30).withScale(tileScale).build();
                 MapTileBuilder tile66Tile = new MapTileBuilder(tile66Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile66Tile);
 
@@ -462,32 +462,32 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile68Tile = new MapTileBuilder(tile68Frame);
                 mapTiles.add(tile68Tile);
 
-                 Frame tile69Frame = new FrameBuilder(getSubImage(6,9)).withScale(tileScale).build();
-                MapTileBuilder tile69Tile = new MapTileBuilder(tile69Frame);
+                 Frame tile69Frame = new FrameBuilder(getSubImage(6,9)).withBounds(0,0,40,30).withScale(tileScale).build();
+                MapTileBuilder tile69Tile = new MapTileBuilder(tile69Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile69Tile);
 
-                 Frame tile610Frame = new FrameBuilder(getSubImage(6,10)).withScale(tileScale).build();
-                MapTileBuilder tile610Tile = new MapTileBuilder(tile610Frame);
+                 Frame tile610Frame = new FrameBuilder(getSubImage(6,10)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile610Tile = new MapTileBuilder(tile610Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile610Tile);
 
-                 Frame tile611Frame = new FrameBuilder(getSubImage(6,11)).withScale(tileScale).build();
-                MapTileBuilder tile611Tile = new MapTileBuilder(tile611Frame);
+                 Frame tile611Frame = new FrameBuilder(getSubImage(6,11)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile611Tile = new MapTileBuilder(tile611Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile611Tile);
 
-                 Frame tile612Frame = new FrameBuilder(getSubImage(6,12)).withScale(tileScale).build();
-                MapTileBuilder tile612Tile = new MapTileBuilder(tile612Frame);
+                 Frame tile612Frame = new FrameBuilder(getSubImage(6,12)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile612Tile = new MapTileBuilder(tile612Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile612Tile);
 
-                 Frame tile613Frame = new FrameBuilder(getSubImage(6,13)).withScale(tileScale).build();
-                MapTileBuilder tile613Tile = new MapTileBuilder(tile613Frame);
+                 Frame tile613Frame = new FrameBuilder(getSubImage(6,13)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile613Tile = new MapTileBuilder(tile613Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile613Tile);
 
-                 Frame tile614Frame = new FrameBuilder(getSubImage(6,14)).withScale(tileScale).build();
-                MapTileBuilder tile614Tile = new MapTileBuilder(tile614Frame);
+                 Frame tile614Frame = new FrameBuilder(getSubImage(6,14)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile614Tile = new MapTileBuilder(tile614Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile614Tile);
 
-                 Frame tile615Frame = new FrameBuilder(getSubImage(6,15)).withScale(tileScale).build();
-                MapTileBuilder tile615Tile = new MapTileBuilder(tile615Frame);
+                 Frame tile615Frame = new FrameBuilder(getSubImage(6,15)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile615Tile = new MapTileBuilder(tile615Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile615Tile);
 
             //row 7

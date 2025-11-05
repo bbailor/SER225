@@ -11,7 +11,7 @@ public class BargainingMap extends Map {
 
     public BargainingMap() {
         super("map3.txt", new Map3Tileset());
-        this.playerStartPosition = getMapTile(10, 10).getLocation();
+        this.playerStartPosition = getMapTile(1, 13).getLocation();
     }
 
     @Override
@@ -26,7 +26,7 @@ public class BargainingMap extends Map {
         ArrayList<NPC> npcs = new ArrayList<>();
         
         //Bargaining boss
-        BargainingBoss b = new BargainingBoss(103, getMapTile(10, 10).getLocation().subtractY(16).subtractX(6));
+        BargainingBoss b = new BargainingBoss(103, getMapTile(7, 7).getLocation().subtractY(16).subtractX(6));
         b.setInteractScript(new BargainingBossScript());
         b.setCurrentAnimationName("STAND_RIGHT");
         npcs.add(b);
