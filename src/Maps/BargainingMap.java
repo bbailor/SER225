@@ -11,7 +11,7 @@ public class BargainingMap extends Map {
 
     public BargainingMap() {
         super("map3.txt", new Map3Tileset());
-        this.playerStartPosition = getMapTile(0, 0).getLocation();
+        this.playerStartPosition = getMapTile(10, 10).getLocation();
     }
 
     @Override
