@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public interface Menu extends Drawable {
     
+    public static String STATUS_EVENT = "menu.status";
     Map<String, MenuListener> getListeners();
 
     default void addistener(String listenerName, MenuListener listener) {

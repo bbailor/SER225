@@ -51,9 +51,10 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
     @Expose protected Player player;
     protected PlayLevelScreenState playLevelScreenState;
     protected WinScreen winScreen;
-    protected InventorySubmenu inventoryScreen;
+    protected InventorySubmenu inventoryScreen; //FOR CHECK ONLY NOW
     protected LoseScreen loseScreen;
-    protected SaveSubmenu saveScreen;
+    // protected SaveSubmenu saveScreen;
+    protected MenuScreen menuScreen;
     @Expose protected FlagManager flagManager;
     protected BattleScreen battleScreen;
     protected int menuCloseCD = 0;
@@ -122,11 +123,15 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         winScreen = new WinScreen(this);
         this.loseScreen = new LoseScreen(this);
 
-        this.inventoryScreen = new InventorySubmenu(this.player.getEntity().getInventory(), this.player.getEntity());
-        this.inventoryScreen.addistener(LISTENER_NAME, this);
+        // this.inventoryScreen = new InventorySubmenu(this.player.getEntity().getInventory(), this.player.getEntity());
+        // this.inventoryScreen.addistener(LISTENER_NAME, this);
 
-        this.saveScreen = new SaveSubmenu(Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT);
-        this.saveScreen.addistener(LISTENER_NAME, this);
+        // this.saveScreen = new SaveSubmenu(Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT, true);
+        // this.saveScreen.addistener(LISTENER_NAME, this);
+
+        this.menuScreen = new MenuScreen();
+        this.menuScreen.setInventory(this.player.getEntity().getInventory());
+        this.menuScreen.addistener(LISTENER_NAME, this);
     }
 
     public void update() {
@@ -145,8 +150,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             case BATTLE:
                 this.battleScreen.update();
                 break;
-            case SAVE:
-                this.saveScreen.update();
+            case MENU:
+                this.menuScreen.update();
                 break;
             case LOST:
                 this.loseScreen.update();
@@ -161,15 +166,15 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             return;
         }
 
-        if (Keyboard.isKeyDown(Key.E) && menuCloseCD <= 0) {
-            this.inventoryScreen.initialize();
-            this.inventoryScreen.open();
-            this.playLevelScreenState = PlayLevelScreenState.INVENTORY;
-        }
+        // if (Keyboard.isKeyDown(Key.E) && menuCloseCD <= 0) {
+        //     // this.inventoryScreen.initialize();
+        //     this.inventoryScreen.open();
+        //     this.playLevelScreenState = PlayLevelScreenState.INVENTORY;
+        // }
 
-        if (Keyboard.isKeyDown(Key.L)) {
-            this.saveScreen.open();
-            this.playLevelScreenState = PlayLevelScreenState.SAVE;
+        if (Keyboard.isKeyDown(Key.ESC) && this.battleScreen == null) {
+            this.menuScreen.open();
+            this.playLevelScreenState = PlayLevelScreenState.MENU;
         }
     }
 
@@ -264,11 +269,11 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
                 break;
             case INVENTORY:
                 this.map.draw(this.player, graphicsHandler);
-                this.inventoryScreen.draw(graphicsHandler);
+                this.inventoryScreen.draw(graphicsHandler, (Config.GAME_WINDOW_WIDTH / 2) - ((InventorySubmenu.INV_SLOT_WIDTH * 9) / 2), (Config.GAME_WINDOW_HEIGHT - (InventorySubmenu.INV_SLOT_HEIGHT * 9)) / 2);
                 break;
-            case SAVE:
+            case MENU:
                 this.map.draw(graphicsHandler);
-                this.saveScreen.draw(graphicsHandler);
+                this.menuScreen.draw(graphicsHandler);
                 break;
             case BATTLE:
                 this.battleScreen.draw(graphicsHandler);
@@ -292,7 +297,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
     }
 
     private enum PlayLevelScreenState {
-        RUNNING, LEVEL_COMPLETED, INVENTORY, BATTLE, LOST, SAVE
+        RUNNING, LEVEL_COMPLETED, INVENTORY, BATTLE, LOST, MENU
     }
 
     @Override
@@ -310,11 +315,11 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
                 this.battleScreen = null;
                 break;
             }
-            case "save": {
+            case SaveSubmenu.SAVE_EVENT: {
                 Globals.saveToFile(new SaveData(this.map, this.player, this.flagManager), (int) args[0]);
                 break;
             }
-            case "load": {
+            case SaveSubmenu.LOAD_EVENT: {
                 this.loadSave(Globals.loadSave((int) args[0]));
                 break;
             }

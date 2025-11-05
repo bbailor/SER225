@@ -21,10 +21,11 @@ import Utils.TailwindColorScheme;
 
 public class SaveSubmenu extends Screen implements Menu {
     protected int width, height;
-    protected Map<String, MenuListener> listeners = new HashMap<>();
-    protected int page = 0;
     protected int maxSlotsX, maxSlotsY;
     protected SaveSlot[] slots;
+    protected boolean isStandalone;
+    protected Map<String, MenuListener> listeners = new HashMap<>();
+    protected int page = 0;
     protected int pressCD = 0;
     protected int hoveredID = 0;
     protected int selectedID = -1;
@@ -37,27 +38,32 @@ public class SaveSubmenu extends Screen implements Menu {
     protected int selectedElement = -1;
     protected Point lastMousePosition = new Point();
     
-    protected static int BARSIZE = 100;
+    public static final String SAVE_EVENT = "save.save";
+    public static final String LOAD_EVENT = "save.load";
+    protected static int BARSIZE = 75;
     protected static Color BUTTON_COLOR_BASE = TailwindColorScheme.slate700;
     protected static Color BUTTON_COLOR_HOVER = TailwindColorScheme.slate500;
     
     public SaveSubmenu(int width, int height) {
+        this(width, height, false);
+    }
+
+    public SaveSubmenu(int width, int height, boolean standalone) {
+        this.isStandalone = standalone;
         this.width = width;
         this.height = height;
-        this.maxSlotsX = (this.getDrawWidth() - 14) / SaveSlot.SAVE_SLOT_WIDTH;
-        this.maxSlotsY = (this.getDrawHeight() - 14 - BARSIZE) / SaveSlot.SAVE_SLOT_HEIGHT;
+        this.maxSlotsX = (this.getDrawWidth(standalone) - 14) / SaveSlot.SAVE_SLOT_WIDTH;
+        this.maxSlotsY = (this.getDrawHeight(standalone) - 14 - BARSIZE) / SaveSlot.SAVE_SLOT_HEIGHT;
         this.slots = new SaveSlot[maxSlotsX * maxSlotsY];
         this.saveBounds = new Rectangle[maxSlotsX * maxSlotsY];
         // slot.setSaveData(save);
         for (int y = 0; y < maxSlotsY; ++y) {
             for (int x = 0; x < maxSlotsX; ++x) { 
                 int i = x + y * maxSlotsX;
-                int slot_x = (this.width - this.getDrawWidth()) / 2;
-                int slot_y = (this.height - this.getDrawHeight()) / 3;
                 this.slots[i] = new SaveSlot(i);
                 this.saveBounds[i] = new Rectangle(
-                    (slot_x + 7 + (i%maxSlotsX) * (SaveSlot.SAVE_SLOT_WIDTH + 7)) + (this.getDrawWidth() - maxSlotsX * (SaveSlot.SAVE_SLOT_WIDTH + 7)) / 2,
-                    slot_y + (i/maxSlotsX) * (SaveSlot.SAVE_SLOT_HEIGHT + 7) + 20,
+                    (7 + (i%maxSlotsX) * (SaveSlot.SAVE_SLOT_WIDTH + 7)) + (this.getDrawWidth(standalone) - maxSlotsX * (SaveSlot.SAVE_SLOT_WIDTH + 7)) / 2,
+                     (i/maxSlotsX) * (SaveSlot.SAVE_SLOT_HEIGHT + 7) + 20,
                     SaveSlot.SAVE_SLOT_WIDTH,
                     SaveSlot.SAVE_SLOT_HEIGHT
                 );
@@ -99,7 +105,7 @@ public class SaveSubmenu extends Screen implements Menu {
         this.handleMousePress();
         this.handleKeyboardPresses();
 
-        if (this.pressCD > 0) {
+        if (this.pressCD != 0) {
             this.pressCD--;
         }
 
@@ -144,7 +150,8 @@ public class SaveSubmenu extends Screen implements Menu {
 
         boolean isHoveringSave = false;
         for (int i = 0; i < this.saveBounds.length; ++i) {
-            var rec = this.saveBounds[i];
+            var rec = new Rectangle(this.saveBounds[i]);
+            rec.translate(this.isStandalone ? standaloneX() : this.lastX, this.isStandalone ? standaloneY() : this.lastY);
             if (rec.contains(mousePos)) {
                 if (!mousePos.equals(this.lastMousePosition)) {
                     this.hoveredID = i;
@@ -163,7 +170,7 @@ public class SaveSubmenu extends Screen implements Menu {
             return;
         }
 
-        if (Mouse.isClickDown()) {
+        if (Mouse.isLeftClickDown()) {
             switch (this.selectedElement) {
                 case 0: {
                     this.page = this.page > 0 ? this.page - 1 : 0;
@@ -175,20 +182,20 @@ public class SaveSubmenu extends Screen implements Menu {
                 }
                 case 1: {
                     if (this.selectedID > -1) {
-                        this.sendEvent("save", this.selectedID + this.page * this.slots.length);
+                        this.sendEvent(SAVE_EVENT, this.selectedID + this.page * this.slots.length);
                         this.close();
                     }
                     break;
                 }
                 case 2: {
                     if (this.selectedID > -1 && this.slots[this.selectedID].getSaveData() != null) {
-                        this.sendEvent("load", this.selectedID + this.page * this.slots.length);
+                        this.sendEvent(LOAD_EVENT, this.selectedID + this.page * this.slots.length);
                         this.close();
                     }
                     break;
                 }
             }
-            this.pressCD = Globals.KEYBOARD_CD;
+            this.pressCD = Math.max(12, Globals.KEYBOARD_CD);
             if (isHoveringSave) {
                 this.selectedID = this.selectedID == this.hoveredID ? -1 : this.hoveredID;
             }
@@ -265,10 +272,10 @@ public class SaveSubmenu extends Screen implements Menu {
                 this.selectedElement = 1;
             } else {
                 if (this.selectedElement == 1) {
-                    this.sendEvent("save", this.selectedID + this.page * this.slots.length);
+                    this.sendEvent(SAVE_EVENT, this.selectedID + this.page * this.slots.length);
                     this.close();
                 } else if (this.slots[this.selectedID].getSaveData() != null) {
-                    this.sendEvent("load", this.selectedID + this.page * this.slots.length);
+                    this.sendEvent(LOAD_EVENT, this.selectedID + this.page * this.slots.length);
                     this.close();
                 }
             }
@@ -282,56 +289,70 @@ public class SaveSubmenu extends Screen implements Menu {
         }
     }
 
-    // SaveData save = new SaveData(new TestMap(), new Gnome(0, 0), null, null);
-    // SaveSlot slot = new SaveSlot(9999);
-
-    protected int getDrawWidth() {
-        return (int) (this.width - (this.width * .15f));
+    protected int getDrawWidth(boolean standalone) {
+        return (int) (this.width - (standalone ? (this.width * .15f) : 0));
     }
 
-    protected int getDrawHeight() {
-        return (int) (this.height - (this.height * .30f));
+    protected int getDrawHeight(boolean standalone) {
+        return (int) (this.height - (standalone ? (this.height * .30f) : 0));
+    }
+
+    protected int standaloneX() {
+        return ((this.width - this.getDrawWidth(true)) / 2);
+    }
+
+    protected int standaloneY() {
+        return ((this.height - this.getDrawHeight(true)) / 3);
     }
     
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        int x = (this.width - this.getDrawWidth()) / 2;
-        int y = (this.height - this.getDrawHeight()) / 3;
+        int x = (this.width - this.getDrawWidth(this.isStandalone)) / 2;
+        int y = (this.height - this.getDrawHeight(this.isStandalone)) / 3;
+        this.draw(graphicsHandler, x, y);
+    }
+
+    int lastX = -1;
+    int lastY = -1;
+    @Override
+    public void draw(GraphicsHandler handler, int x, int y) {
+        this.lastX = x;
+        this.lastY = y;
         int imageSize = 48;
         int buttonWidth = 120;
         int buttonHeight = 40;
         int buttonMargin = 7;
-        graphicsHandler.drawFilledRectangle(x, y, this.getDrawWidth(), this.getDrawHeight(), TailwindColorScheme.rose600);
+        handler.drawFilledRectangle(x, y, this.getDrawWidth(this.isStandalone), this.getDrawHeight(this.isStandalone), TailwindColorScheme.rose600);
         for (int i = 0; i < this.slots.length; ++i) {
             var slot = this.slots[i];
             var rec = this.saveBounds[i];
-            // slot.draw(graphicsHandler, (x + 7 + (i%maxSlotsX) * (SaveSlot.SAVE_SLOT_WIDTH + 7)) + (this.getDrawWidth() - maxSlotsX * (SaveSlot.SAVE_SLOT_WIDTH + 7)) / 2, y + (i/maxSlotsX) * (SaveSlot.SAVE_SLOT_HEIGHT + 7) + 20);
-            slot.draw(graphicsHandler, rec.x, rec.y);
+            // slot.draw(handler, (x + 7 + (i%maxSlotsX) * (SaveSlot.SAVE_SLOT_WIDTH + 7)) + (this.getDrawWidth() - maxSlotsX * (SaveSlot.SAVE_SLOT_WIDTH + 7)) / 2, y + (i/maxSlotsX) * (SaveSlot.SAVE_SLOT_HEIGHT + 7) + 20);
+            slot.draw(handler, x + rec.x, y + rec.y);
         }
         // TODO: move this to a one time/reposition on width-height change
         this.saveButtonBounds.setBounds(
-            x + (this.getDrawWidth() - buttonWidth*2) / 2 - buttonMargin,
-            this.getDrawHeight() - 07,
+            x + (this.getDrawWidth(this.isStandalone) - buttonWidth*2) / 2 - buttonMargin,
+            y + (this.saveBounds[this.saveBounds.length-1].y + this.saveBounds[this.saveBounds.length-1].height) + 20,
             buttonWidth,
             buttonHeight);
         this.loadButtonBounds.setBounds(
-            x + (this.getDrawWidth() - buttonWidth*2) / 2 + buttonMargin + buttonWidth,
-            this.getDrawHeight() - 07,
+            x + (this.getDrawWidth(this.isStandalone) - buttonWidth*2) / 2 + buttonMargin + buttonWidth,
+            this.saveButtonBounds.y,
             buttonWidth,
             buttonHeight);
         this.leftButtonBounds.setBounds(
-            x + (this.getDrawWidth() - imageSize)/2 - (buttonWidth + buttonMargin + 35),
-            this.getDrawHeight() - 10,
+            x + (this.getDrawWidth(this.isStandalone) - imageSize)/2 - (buttonWidth + buttonMargin + 35),
+            this.saveButtonBounds.y - 6,
             imageSize,
             imageSize
         );
         this.rightButtonBounds.setBounds(
-            x + (this.getDrawWidth() - imageSize)/2 + (buttonWidth + buttonMargin + 35),
-            this.getDrawHeight() - 10,
+            x + (this.getDrawWidth(this.isStandalone) - imageSize)/2 + (buttonWidth + buttonMargin + 35),
+            this.leftButtonBounds.y,
             imageSize,
             imageSize
         );
-        graphicsHandler.drawImage(
+        handler.drawImage(
             ImageLoader.load("left.png", new Color(0, true)),
             this.leftButtonBounds.x,
             this.leftButtonBounds.y,
@@ -339,19 +360,12 @@ public class SaveSubmenu extends Screen implements Menu {
             this.leftButtonBounds.height
         );
 
-        graphicsHandler.drawFilledRectangle(this.saveButtonBounds.x, this.saveButtonBounds.y, this.saveButtonBounds.width, this.saveButtonBounds.height, this.selectedElement == 1 ? BUTTON_COLOR_HOVER : BUTTON_COLOR_BASE);
-        graphicsHandler.drawString("Save", this.saveButtonBounds.x + (this.saveButtonBounds.width - 4 * 14)/2, this.saveButtonBounds.y + (this.saveButtonBounds.width - 14*3)/3, Resources.press_start.deriveFont(14f), TailwindColorScheme.white);
-        graphicsHandler.drawFilledRectangle(this.loadButtonBounds.x, this.loadButtonBounds.y, this.loadButtonBounds.width, this.loadButtonBounds.height, this.selectedElement == 2 ? BUTTON_COLOR_HOVER : BUTTON_COLOR_BASE);
-        graphicsHandler.drawString("Load", this.loadButtonBounds.x + (this.loadButtonBounds.width - 4 * 15)/2, this.loadButtonBounds.y + (this.loadButtonBounds.width - 14*3)/3, Resources.press_start.deriveFont(14f), TailwindColorScheme.white);
+        handler.drawFilledRectangle(this.saveButtonBounds.x, this.saveButtonBounds.y, this.saveButtonBounds.width, this.saveButtonBounds.height, this.selectedElement == 1 ? BUTTON_COLOR_HOVER : BUTTON_COLOR_BASE);
+        handler.drawString("Save", this.saveButtonBounds.x + (this.saveButtonBounds.width - 4 * 14)/2, this.saveButtonBounds.y + (this.saveButtonBounds.width - 14*3)/3, Resources.press_start.deriveFont(14f), TailwindColorScheme.white);
+        handler.drawFilledRectangle(this.loadButtonBounds.x, this.loadButtonBounds.y, this.loadButtonBounds.width, this.loadButtonBounds.height, this.selectedElement == 2 ? BUTTON_COLOR_HOVER : BUTTON_COLOR_BASE);
+        handler.drawString("Load", this.loadButtonBounds.x + (this.loadButtonBounds.width - 4 * 15)/2, this.loadButtonBounds.y + (this.loadButtonBounds.width - 14*3)/3, Resources.press_start.deriveFont(14f), TailwindColorScheme.white);
 
-        graphicsHandler.drawImage(ImageLoader.load("right.png", new Color(0, true)), this.rightButtonBounds.x, this.rightButtonBounds.y, this.rightButtonBounds.width, this.rightButtonBounds.height);
-        // slot.draw(graphicsHandler, x + 7, y);
-    }
-
-    @Override
-    public void draw(GraphicsHandler handler, int x, int y) {
-        // TODO Auto-generated method stub
-        
+        handler.drawImage(ImageLoader.load("right.png", new Color(0, true)), this.rightButtonBounds.x, this.rightButtonBounds.y, this.rightButtonBounds.width, this.rightButtonBounds.height);
     }
 
 }

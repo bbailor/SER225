@@ -17,7 +17,7 @@ public class Entity {
     @Expose protected double resistance = 0;
     @Expose protected double tempResistance = 0;
     @Expose protected Weapon currentWeapon = Item.ItemList.fist;
-    @Expose protected Inventory inventory = new Inventory(9);
+    @Expose protected Inventory inventory = new Inventory(90);
     protected boolean isEnemy;
     protected java.util.Map<String, Frame[]> animations = new HashMap<>(); 
 

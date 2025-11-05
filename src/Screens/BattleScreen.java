@@ -56,39 +56,34 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     private boolean isBossBattle = false;
     private PlayerProjectileAttackAnimation activePlayerAttackAnimation;
 
-    public static final String LISTENER_NAME = "battle_screen";
-    public static final String LOSE_EVENT_NAME = "player_lose";
-    public static final int BORDER_LINE_WIDTH = 5;
-    public static final int MARGIN = 5;
-    public static final int DEFAULT_SECTION_WIDTH = Config.GAME_WINDOW_WIDTH - ((BORDER_LINE_WIDTH + MARGIN) * 2);
-    public static final int BORDER_WIDTH = Config.GAME_WINDOW_WIDTH - (MARGIN);
-    public static final int BATTLE_HEIGHT = (int)(Config.GAME_WINDOW_HEIGHT * .5);
-    public static final int BATTLE_ACTIONS_HEIGHT = (int)(Config.GAME_WINDOW_HEIGHT * .3);
-    public static final int BATTLE_SELECTION_WIDTH = (int)(BORDER_WIDTH * .3);
-    protected static Rectangle statusLogRec = new Rectangle(
+    protected Rectangle STATUS_LOG_REC = new Rectangle(
         2,
         2,
-        BORDER_WIDTH,
+        Config.GAME_WINDOW_WIDTH - 5,
         (int)(Config.GAME_WINDOW_HEIGHT * .2)
     );
-    protected static Rectangle battleRec = new Rectangle(
+    protected Rectangle BATTLE_REC = new Rectangle(
         2,
-        statusLogRec.getHeight(),
-        BORDER_WIDTH,
-        BATTLE_HEIGHT
+        STATUS_LOG_REC.getHeight(),
+        Config.GAME_WINDOW_WIDTH - 5,
+        // BATTLE_HEIGHT
+        (int) ((Config.GAME_WINDOW_HEIGHT-STATUS_LOG_REC.getHeight())*.625f)
     );
-    protected static Rectangle selectorRec = new Rectangle(
+    protected Rectangle SELECTOR_REC = new Rectangle(
         2,
-        statusLogRec.getHeight() + battleRec.getHeight(),
-        BATTLE_SELECTION_WIDTH,
-        BATTLE_ACTIONS_HEIGHT
+        STATUS_LOG_REC.getHeight() + BATTLE_REC.getHeight(),
+        (int)((Config.GAME_WINDOW_WIDTH - 5) * .3),
+        (int) (Config.GAME_WINDOW_HEIGHT - (STATUS_LOG_REC.getHeight() + BATTLE_REC.getHeight()) - 38)
     );
-    protected static Rectangle battleActionRec = new Rectangle(
-        BATTLE_SELECTION_WIDTH + BORDER_LINE_WIDTH,
-        statusLogRec.getHeight() + BATTLE_HEIGHT + BORDER_LINE_WIDTH,
-        selectorRec.getWidth() - ((BORDER_LINE_WIDTH + MARGIN) * 2),
-        BATTLE_ACTIONS_HEIGHT  - ((BORDER_LINE_WIDTH + MARGIN) * 2)
+    protected Rectangle BATTLE_ACTION_REC = new Rectangle(
+        SELECTOR_REC.getWidth(),
+        SELECTOR_REC.getY(),
+        Config.GAME_WINDOW_WIDTH-SELECTOR_REC.getWidth() - 2,
+        SELECTOR_REC.getHeight()
     );
+
+    public static final String LISTENER_NAME = "battle_screen";
+    public static final String LOSE_EVENT_NAME = "player_lose";
     public static final float FONT_SIZE = 12f;
 
     // Main constructor with boss flag and enemy source
@@ -100,10 +95,10 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         this.isBossBattle = isBossBattle;
 
         var inv = new InventoryBattleMenu(
-            (int) battleActionRec.getX(),
-            (int) battleActionRec.getY(),
-            battleActionRec.getWidth(),
-            battleActionRec.getHeight(),
+            (int) BATTLE_ACTION_REC.getX(),
+            (int) BATTLE_ACTION_REC.getY(),
+            BATTLE_ACTION_REC.getWidth(),
+            BATTLE_ACTION_REC.getHeight(),
             this.inventory, player
         );
         this.actions.put("Inventory", inv);
@@ -118,8 +113,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         this.selector = new SelectionSubmenu(
             // BATTLE_SELECTION_WIDTH - ((BORDER_LINE_WIDTH) * 2),
             // BATTLE_ACTIONS_HEIGHT - ((BORDER_LINE_WIDTH*3 + MARGIN) * 2) - 1,
-            selectorRec.getWidth(),
-            selectorRec.getHeight(),
+            SELECTOR_REC.getWidth(),
+            SELECTOR_REC.getHeight(),
             actionList
         );
         this.selector.addistener(LISTENER_NAME, this);
@@ -202,39 +197,15 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     }
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
-        Rectangle statusLogRec = new Rectangle(
-            2,
-            2,
-            BORDER_WIDTH,
-            (int)(Config.GAME_WINDOW_HEIGHT * .2)
-        );
-        Rectangle battleRec = new Rectangle(
-            2,
-            statusLogRec.getHeight(),
-            BORDER_WIDTH,
-            BATTLE_HEIGHT
-        );
-        Rectangle selectorRec = new Rectangle(
-            2,
-            statusLogRec.getHeight() + battleRec.getHeight(),
-            BATTLE_SELECTION_WIDTH,
-            BATTLE_ACTIONS_HEIGHT
-        );
-        Rectangle battleActionRec = new Rectangle(
-            selectorRec.getWidth(),
-            statusLogRec.getHeight() + battleRec.getHeight(),
-            Config.GAME_WINDOW_WIDTH-selectorRec.getWidth(),
-            BATTLE_ACTIONS_HEIGHT
-        );
 
         graphicsHandler.drawFilledRectangle(0, 0, Config.GAME_WINDOW_WIDTH, Config.GAME_WINDOW_HEIGHT, TailwindColorScheme.black);
 
         // Status Log Section
         graphicsHandler.drawFilledRectangleWithBorder(
-            statusLogRec,
+            STATUS_LOG_REC,
             TailwindColorScheme.amber400,
             this.borderColor,
-            BORDER_LINE_WIDTH
+            5
         );
         // graphicsHandler.drawFilledRectangle(
         //     BORDER_LINE_WIDTH * 2,
@@ -255,8 +226,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
         graphicsHandler.drawStringWithOutline(
             String.format("Player Health: %.2f/%.2f", playerEntity.getHealth(), playerEntity.getMaxHealth()),
-            (int) (statusLogRec.getX() + FONT_SIZE) + 2,
-            (int) (statusLogRec.getY() + FONT_SIZE) + 7,
+            (int) (STATUS_LOG_REC.getX() + FONT_SIZE) + 2,
+            (int) (STATUS_LOG_REC.getY() + FONT_SIZE) + 7,
             Resources.press_start.deriveFont(FONT_SIZE),
             TailwindColorScheme.white,
             TailwindColorScheme.slate900,
@@ -264,8 +235,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         );
         graphicsHandler.drawStringWithOutline(
             String.format("Player Mana: %.2f/%.2f", playerEntity.getMana(), playerEntity.getMaxMana()),
-            (int) (statusLogRec.getX() + FONT_SIZE) + 2,
-            (int) (statusLogRec.getY() + FONT_SIZE * 2 + 4) + 7,
+            (int) (STATUS_LOG_REC.getX() + FONT_SIZE) + 2,
+            (int) (STATUS_LOG_REC.getY() + FONT_SIZE * 2 + 4) + 7,
             Resources.press_start.deriveFont(FONT_SIZE),
             TailwindColorScheme.white,
             TailwindColorScheme.slate900,
@@ -273,8 +244,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         );
         graphicsHandler.drawStringWithOutline(
             String.format("Enemy Health: %.2f/%.2f", this.entity.getHealth(), this.entity.getMaxHealth()),
-            (int) (statusLogRec.getX() + FONT_SIZE) + 2,
-            (int) (statusLogRec.getY() + FONT_SIZE * 3 + 8) + 7,
+            (int) (STATUS_LOG_REC.getX() + FONT_SIZE) + 2,
+            (int) (STATUS_LOG_REC.getY() + FONT_SIZE * 3 + 8) + 7,
             Resources.press_start.deriveFont(FONT_SIZE),
             TailwindColorScheme.white,
             TailwindColorScheme.slate900,
@@ -292,13 +263,13 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         //     this.borderColor,
         //     BORDER_LINE_WIDTH
         // );
-        this.selector.draw(graphicsHandler, (int) selectorRec.getX(), (int) selectorRec.getY());
+        this.selector.draw(graphicsHandler, (int) SELECTOR_REC.getX(), (int) SELECTOR_REC.getY());
 
         // Action Section
         graphicsHandler.drawRectangle(
-            battleActionRec,
+            BATTLE_ACTION_REC,
             this.borderColor,
-            BORDER_LINE_WIDTH
+            5
         );
         if (this.selectedAction != null) {
             this.actions.get(this.selectedAction).draw(graphicsHandler);
@@ -311,22 +282,23 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         //     BORDER_LINE_WIDTH
         // );
 
-        int entityPadding = DEFAULT_SECTION_WIDTH / 10;
+        int entityPadding = BATTLE_REC.getWidth() / 10;
         // int battleX0 = BORDER_LINE_WIDTH*2;
         // int battleY0 = BATTLE_LOG_HEIGHT + BORDER_LINE_WIDTH + MARGIN;
-        int battleX0 = (int) battleRec.getX();
-        int battleY0 = (int) battleRec.getY();
-        int battleHeight = BATTLE_HEIGHT - ((BORDER_LINE_WIDTH + MARGIN) * 2);
+        // int battleHeight = BATTLE_HEIGHT - ((BORDER_LINE_WIDTH + MARGIN) * 2);
+        int battleX0 = (int) BATTLE_REC.getX();
+        int battleY0 = (int) BATTLE_REC.getY();
+        int battleHeight = BATTLE_REC.getHeight();
 
         graphicsHandler.drawFilledRectangleWithBorder(
             // battleX0,
             // battleY0,
             // DEFAULT_SECTION_WIDTH,
             // battleHeight,
-            battleRec,
+            BATTLE_REC,
             TailwindColorScheme.cyan500,
             this.borderColor,
-            BORDER_LINE_WIDTH
+            5
         );
 
         var entityIdleAnimations = this.entity.getAnimations("idle");
@@ -363,7 +335,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             8,
             TailwindColorScheme.black,
             this.borderColor,
-            BORDER_LINE_WIDTH
+            5
         );
 
         graphicsHandler.drawFilledRectangle(
@@ -389,7 +361,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         // ENEMY SPRITE
   if (entityIdleAnimations == null) {
             graphicsHandler.drawFilledRectangle(
-                DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding),
+                BATTLE_REC.getWidth() - battleY0 - (placeholderWidth + entityPadding),
                 battleY0 + (battleHeight - placeholderHeight) / 2,
                 placeholderWidth,
                 placeholderHeight,
@@ -397,7 +369,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             );
         } else {
             float scale = entityIdleAnimations[0].getScale();
-            float enemyX = battleX0 + DEFAULT_SECTION_WIDTH * 0.85f
+            float enemyX = battleX0 + BATTLE_REC.getWidth() * 0.85f
                     - (entityIdleAnimations[0].getWidth() * scale) / 2f;
             float enemyY = battleY0 + (battleHeight - entityIdleAnimations[0].getHeight()) / 2f;
 
@@ -421,7 +393,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         // );
 
             float scale = entityIdleAnimations[0].getScale();
-            float enemyX = battleX0 + DEFAULT_SECTION_WIDTH * 0.85f
+            float enemyX = battleX0 + BATTLE_REC.getWidth() * 0.85f
                     - (entityIdleAnimations[0].getWidth() * scale) / 2f;
             float enemyY = battleY0 + (battleHeight - entityIdleAnimations[0].getHeight()) / 2f;
 
@@ -436,7 +408,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             8,
             TailwindColorScheme.black,
             this.borderColor,
-            BORDER_LINE_WIDTH
+            5
         );
 
         graphicsHandler.drawFilledRectangle(
@@ -491,7 +463,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 this.currentTurn = BattleTurn.Enemy;
                 break;
             }
-            case SelectionSubmenu.SUBMENU_SELECTION_NAME: {
+            case SelectionSubmenu.SUBMENU_SELECTION_EVENT: {
                 switch ((String) args[0]) {
                     case "Attack": {
                         onEvent("attack.basic_attack");
@@ -546,12 +518,12 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     
     private void startPlayerAttackAnimation() {
         // Calculate battle area positions
-        int entityPadding = DEFAULT_SECTION_WIDTH / 10;
+        int entityPadding = BATTLE_REC.getWidth() / 10;
         // int battleX0 = BORDER_LINE_WIDTH * 2;
         // int battleY0 = BATTLE_LOG_HEIGHT + BORDER_LINE_WIDTH + MARGIN;
-        int battleX0 = (int) battleRec.getX();
-        int battleY0 = (int) battleRec.getY();
-        int battleHeight = BATTLE_HEIGHT - ((BORDER_LINE_WIDTH + MARGIN) * 2);
+        int battleX0 = (int) BATTLE_REC.getX();
+        int battleY0 = (int) BATTLE_REC.getY();
+        int battleHeight = BATTLE_REC.getHeight();
 
         // Get enemy and player sprite positions
         var entityIdleAnimations = this.entity.getAnimations("idle");
@@ -562,7 +534,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         // Calculate enemy position (where animation starts)
         if (entityIdleAnimations != null) {
             float scale = entityIdleAnimations[0].getScale();
-            enemyX = battleX0 + DEFAULT_SECTION_WIDTH * 0.85f
+            enemyX = battleX0 + BATTLE_REC.getWidth() * 0.85f
                     - (entityIdleAnimations[0].getWidth() * scale) / 2f;
             if (isBossBattle) {
                 enemyX += 300f;
@@ -572,7 +544,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             // Fallback to placeholder position
             int placeholderHeight = battleHeight / 2;
             int placeholderWidth = placeholderHeight / 2;
-            enemyX = DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding);
+            enemyX = BATTLE_REC.getWidth() - battleY0 - (placeholderWidth + entityPadding);
             enemyY = battleY0 + (battleHeight - placeholderHeight) / 2;
         }
 
@@ -608,10 +580,10 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
     private void startEnemyAttackAnimation() {
         // Calculate battle area positions
-        int entityPadding = DEFAULT_SECTION_WIDTH / 10;
-        int battleX0 = (int) battleRec.getX();
-        int battleY0 = (int) battleRec.getY();
-        int battleHeight = BATTLE_HEIGHT - ((BORDER_LINE_WIDTH + MARGIN) * 2);
+        int entityPadding = BATTLE_REC.getWidth() / 10;
+        int battleX0 = (int) BATTLE_REC.getX();
+        int battleY0 = (int) BATTLE_REC.getY();
+        int battleHeight = BATTLE_REC.getHeight();
 
         // Get enemy and player sprite positions
         var entityIdleAnimations = this.entity.getAnimations("idle");
@@ -622,7 +594,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         // Calculate enemy position (where animation starts)
         if (entityIdleAnimations != null) {
             float scale = entityIdleAnimations[0].getScale();
-            enemyX = battleX0 + DEFAULT_SECTION_WIDTH * 0.85f
+            enemyX = battleX0 + BATTLE_REC.getWidth() * 0.85f
                     - (entityIdleAnimations[0].getWidth() * scale) / 2f;
             if (isBossBattle) {
                 enemyX += 300f;
@@ -632,7 +604,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             // Fallback to placeholder position
             int placeholderHeight = battleHeight / 2;
             int placeholderWidth = placeholderHeight / 2;
-            enemyX = DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding);
+            enemyX = BATTLE_REC.getWidth() - battleY0 - (placeholderWidth + entityPadding);
             enemyY = battleY0 + (battleHeight - placeholderHeight) / 2;
         }
 
