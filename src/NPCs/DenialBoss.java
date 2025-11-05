@@ -18,6 +18,8 @@ public class DenialBoss extends NPC {
             new SpriteSheet(ImageLoader.load("Bosses/DenialBoss.png"), 120, 120),
             "STAND_RIGHT"
         );
+        autoBattleEnabled = false;
+
     }
     
 

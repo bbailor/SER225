@@ -1,45 +1,41 @@
-package Scripts.TestMap;
-
-import java.util.ArrayList;
-
+package Scripts.MapThreeBargaining;
 import Level.Script;
 import ScriptActions.*;
+import java.util.ArrayList;
 
-// Script for the skeleton that traps the wizard
-public class WizardQuestSkeletonScript extends Script {
 
+public class BargainingBossScript extends Script {
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
-
         scriptActions.add(new LockPlayerScriptAction());
         scriptActions.add(new NPCFacePlayerScriptAction());
 
         scriptActions.add(new ConditionalScriptAction() {{
-
-            // Before wizard is saved - hostile skeleton
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("wizardSaved", false));
-                addRequirement(new FlagRequirement("wizardQuestStarted", true));
-
+                addRequirement(new FlagRequirement("hasTalkedToDenialBoss", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Skeleton: Hehehehe... the wizard is mine!");
-                    addText("Skeleton: And you'll be next, little gnome!");
-                    addText("Osiris: Gnomeo! Help!");
-                    addText("Osiris: This skeleton ambushed me!\nI can't fight it alone!");
+                    addText("Denial: What have we here... Gnomes are quite\na rare sight! ");
+                    addText("Gnomeo: You are no ordinary monster. Regardless,\nnothing will stop me from finding Juliet.");
+                    addText("Denial: You will fall by my hand, just as Juliet\nfell to my master.");
+                    addText("Gnomeo: Y- your master.? Death couldn't get her!");
+                    addText("Gnomeo: No... this is trickery! I made sure she\nwas safe!");
+                    addText("Gnomeo: You monsters speak only lies!");
+                    addText("Denial: Listen to you try to convince yourself!\nIt's unbecoming of a hero.");
+                    addText("Denial: Pathetic... It's a shame your journey must\nend here!");
+                    addText("Denial: You've been quite the entertainement.");
+                    
                 }});
+                addScriptAction(new ChangeFlagScriptAction("hasTalkedToDenialBoss", true));
+            }});
 
-                
-
-                // Prompt with Yes/No
+            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
+                addRequirement(new FlagRequirement("hasTalkedToDenialBoss", true));
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Start battle?", new String[] { "Yes", "No" });
                 }});
 
-                // Handle selection
                 addScriptAction(new ConditionalScriptAction() {{
-
-                    // Yes
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -48,14 +44,13 @@ public class WizardQuestSkeletonScript extends Script {
                                 return answer == 0;
                             }
                         });
-                        // IMPORTANT: pass the actual NPC tied to this script
                         addScriptAction(new TextboxScriptAction() {{
-                            addText("Gnomeo: Hold on, Osiris! I'm coming!");
+                            addText("Gnomeo: Juliet, wait for me...");
                         }});
-                        addScriptAction(new StartBattleScriptAction(WizardQuestSkeletonScript.this.entity));
+                       
+                        addScriptAction(new StartBattleScriptAction(BargainingBossScript.this.entity));
                     }});
 
-                    // No
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -64,25 +59,13 @@ public class WizardQuestSkeletonScript extends Script {
                                 return answer == 1;
                             }
                         });
-                        addScriptAction(new TextboxScriptAction("Monster: If you can't save him,\nhow do you expect to save your precious Juliet? "));
+                        addScriptAction(new TextboxScriptAction("Denial: Cowardice... Entirely expected."));
                     }});
                 }});
-
-                
-                
-                
-            }});
-
-            // This shouldn't normally trigger since skeleton disappears after battle
-            addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                addRequirement(new FlagRequirement("wizardSaved", true));
-                
-                addScriptAction(new TextboxScriptAction("*The skeleton has been defeated*"));
             }});
         }});
 
         scriptActions.add(new UnlockPlayerScriptAction());
-
         return scriptActions;
     }
 }

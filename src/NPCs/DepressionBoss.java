@@ -18,6 +18,8 @@ public class DepressionBoss extends NPC {
             new SpriteSheet(ImageLoader.load("Bosses/DepressionBoss.png"), 120, 120),
             "STAND_RIGHT"
         );
+        autoBattleEnabled = false;
+
     }
     
 

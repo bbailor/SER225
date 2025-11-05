@@ -23,6 +23,8 @@ public class Wizard extends NPC {
             new SpriteSheetHorizontal(ImageLoader.load("Wizard.png"), 32, 32),
             "STAND_RIGHT"
         );
+        
+        autoBattleEnabled = false;
     }
 
     @Override

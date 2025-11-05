@@ -6,7 +6,12 @@ import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Utils.Direction;
 import Utils.Point;
+import ScriptActions.LockPlayerScriptAction;
+import ScriptActions.ScriptAction;
 import ScriptActions.StartBattleScriptAction;
+import ScriptActions.TextboxScriptAction;
+import ScriptActions.UnlockPlayerScriptAction;
+import Scripts.SimpleTextScript;
 
 import java.awt.Color;
 import java.awt.color.*;
@@ -25,14 +30,16 @@ public class NPC extends MapEntity {
     //for enemy battle vision logic
     protected boolean autoBattleEnabled = true;
     protected Direction facingDirection = Direction.RIGHT;
-    protected int visionRange = 4;
+    protected int visionRange = 6;
     protected boolean battleTriggered;
+
+    protected List<Point> tiles;
 
     public NPC(int id, float x, float y, SpriteSheet spriteSheet, String startingAnimation) {
         super(x, y, spriteSheet, startingAnimation);
         this.id = id;
         getStartingDirection(this.getCurrentAnimationName());
-        //getVisionTiles();
+        getVisionTiles();
     }
 
     public NPC(int id, float x, float y, HashMap<String, Frame[]> animations, String startingAnimation) {
@@ -90,31 +97,31 @@ public class NPC extends MapEntity {
     /**
      * Get the tiles that this NPC can currently see based on facing direction
      */
-    // public List<Point> getVisionTiles() {
-    //     List<Point> tiles = new ArrayList<>();
+    public List<Point> getVisionTiles() {
+        tiles = new ArrayList<>();
         
-    //     Point currentPos = toTileCoords(getLocation());
+        Point currentPos = toTileCoords(getLocation());
 
-    //     for (int i = 1; i <= visionRange; i++) {
-    //         switch (facingDirection) {
-    //             case UP:
-    //                 tiles.add(new Point(currentPos.x, currentPos.y - i * 16));
-    //                 break;
-    //             case DOWN:
-    //                 tiles.add(new Point(currentPos.x, currentPos.y + i * 16));
-    //                 break;
-    //             case LEFT:
-    //                 tiles.add(new Point((currentPos.x - i * 16), currentPos.y + 0));
-    //                 break;
-    //             case RIGHT:
-    //                 tiles.add(new Point((currentPos.x + i * 16), currentPos.y + 0));
-    //                 break;
-    //             default:
-    //                 break;
-    //         }
-    //     }
-    //     return tiles;
-    // }
+        for (int i = 1; i <= visionRange; i++) {
+            switch (facingDirection) {
+                case UP:
+                    tiles.add(new Point(currentPos.x, currentPos.y - i * 32));
+                    break;
+                case DOWN:
+                    tiles.add(new Point(currentPos.x, currentPos.y + i * 32));
+                    break;
+                case LEFT:
+                    tiles.add(new Point(((currentPos.x - 8 + this.getBounds().getWidth() / 2) - i * 32) + this.getBounds().getWidth(), currentPos.y + 32));
+                    break;
+                case RIGHT:
+                    tiles.add(new Point(((currentPos.x + 8 + this.getBounds().getWidth() / 2) + i * 32), currentPos.y + 32));
+                    break;
+                default:
+                    break;
+            }
+        }
+        return tiles;
+    }
 
     public void stand(Direction direction) {
         if (direction == Direction.RIGHT) {
@@ -156,10 +163,10 @@ public class NPC extends MapEntity {
 
     public void update(Player player) {
         if (!isLocked) {
-            //this.performAction(player);
+            this.performAction(player);
         }
-        // getStartingDirection(this.currentAnimationName);
-        // getVisionTiles();
+        getStartingDirection(this.currentAnimationName);
+        getVisionTiles();
         super.update();
     }
 
@@ -175,20 +182,28 @@ public class NPC extends MapEntity {
     /**
      * Check if player is in vision range and trigger battle if enabled
      */
+    /**
+     * Check if player is in vision range and trigger battle if enabled
+     */
     protected void performAction(Player player) {
         // Only check if auto-battle is enabled and battle hasn't been triggered yet
         if (autoBattleEnabled && !battleTriggered) {
-            Point playerTile = toTileCoords(player.getLocation());
+            Point playerTile1 = toTileCoords(player.getLocation().add(new Point(32, 32)));
+            Point playerTile2 = toTileCoords(player.getLocation().add(new Point(32, 64)));
+            Point playerTile3 = toTileCoords(player.getLocation().add(new Point(32, 96)));
 
-            // Check each tile in the NPC's vision
-            // for (Point tile : getVisionTiles()) {
-            //     if (toTileCoords(tile).equals(playerTile)) {
-            //         battleTriggered = true;
-            //         System.out.println("Player spotted at: " + playerTile + " by " + this.getClass().getSimpleName());
-            //         initiateBattle();
-            //         break;
-            //     }
-            // }
+            Point[] playerVisionTiles = {playerTile1, playerTile2, playerTile3};
+
+            // Check each tile in the NPC's vision and player vision
+            for (Point tile : getVisionTiles()) {
+                for (Point pTile : playerVisionTiles) {
+                    if (toTileCoords(tile).equals(pTile)) {
+                        battleTriggered = true;
+                        initiateBattle();
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -197,34 +212,68 @@ public class NPC extends MapEntity {
      * This uses the map's listener system to notify PlayLevelScreen
      */
     public void initiateBattle() {
-        // Create the battle script action
-        StartBattleScriptAction battleAction = new StartBattleScriptAction(this);
-        
-        // Set up the action with map's listeners if map is available
         if (map != null) {
-            battleAction.setListeners(map.getListeners());
+            // Create a custom script that shows text then starts battle
+            Script battleScript = new Script() {
+                @Override
+                public ArrayList<ScriptAction> loadScriptActions() {
+                    ArrayList<ScriptAction> actions = new ArrayList<>();
+                    actions.add(new LockPlayerScriptAction());
+                    actions.add(new TextboxScriptAction(NPC.this.getEnemyType() + " has spotted you!"));
+                    actions.add(new StartBattleScriptAction(NPC.this));
+                    actions.add(new UnlockPlayerScriptAction());
+                    return actions;
+                }
+            };
+            
+            battleScript.setMap(map);
+            battleScript.setPlayer(map.getPlayer());
+            map.setActiveScript(battleScript);
         }
-        
-        battleAction.execute();
     }
 
     private Point toTileCoords(Point p) {
-        return new Point((int)(p.x / 16) * 16, (int)(p.y / 16) * 16);
+        return new Point((int)(p.x / 32) * 32, (int)(p.y / 32) * 32);
+    }
+
+    public void setAutoBatlte(boolean autobattle)
+    {
+        this.autoBattleEnabled = autobattle;
+    }
+
+    public String getEnemyType()
+    {
+        return "";
     }
 
  @Override
-    public void draw(GraphicsHandler graphicsHandler) {
+ public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
 
-        // Draw vision boxes if debug mode is enabled
-        // if (true) {
-        //     for (Point tile : getVisionTiles()) {
-        //         // Convert map coordinates to screen coordinates using the camera
-        //         int screenX = Math.round(tile.x - map.getCamera().getX());
-        //         int screenY = Math.round(tile.y - map.getCamera().getY());
-        //         Rectangle visionBox = new Rectangle(screenX, screenY, 16, 16);
-        //         graphicsHandler.drawRectangle(visionBox, Color.RED);
-        //     }
-        // }
+        if (true) {
+            for (Point tile : tiles) {
+                // Convert map coordinates to screen coordinates using the camera
+                int screenX = Math.round(tile.x - map.getCamera().getX());
+                int screenY = Math.round(tile.y - map.getCamera().getY());
+                Rectangle visionBox = new Rectangle(screenX, screenY, 32, 32);
+                graphicsHandler.drawRectangle(visionBox, Color.RED);
+            }
+        }
+
+        if (map != null && map.getPlayer() != null) {
+            Point playerTile1 = toTileCoords(map.getPlayer().getLocation()).add(new Point(32, 32));
+            Point playerTile2 = toTileCoords(map.getPlayer().getLocation()).add(new Point(32, 64));
+            Point[] playerTiles = {playerTile1, playerTile2};
+
+            for(Point tile: playerTiles)
+            {
+                int playerScreenX = Math.round(tile.x - map.getCamera().getX());
+                int playerScreenY = Math.round(tile.y - map.getCamera().getY());
+                Rectangle playerBox = new Rectangle(playerScreenX, playerScreenY, 32, 32);
+                graphicsHandler.drawRectangle(playerBox, Color.BLUE);
+            }
+
+
+        }
     }
-}
+} 

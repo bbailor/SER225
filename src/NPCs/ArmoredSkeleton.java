@@ -10,6 +10,7 @@ import Utils.Point;
 import java.util.HashMap;
 
 public class ArmoredSkeleton extends NPC {
+    protected String enemyType;
     public ArmoredSkeleton(int id, Point location) {
         super(
             id,
@@ -18,6 +19,7 @@ public class ArmoredSkeleton extends NPC {
             new SpriteSheet(ImageLoader.load("Enemies/armored_skeleton.png"), 32, 32),
             "STAND_RIGHT"
         );
+        enemyType = " An Armored Skeleton";
     }
 
     @Override
@@ -38,5 +40,10 @@ public class ArmoredSkeleton extends NPC {
         map.put("STAND_LEFT",  new Frame[] { standLeft  });
         map.put("idle",        new Frame[] { standRight }); // Added idle animation
         return map;
+    }
+
+    public String getEnemyType()
+    {
+        return enemyType;
     }
 }

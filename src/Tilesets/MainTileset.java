@@ -30,6 +30,15 @@ public class MainTileset extends Tileset {
 
         mapTiles.add(snowTile);
 
+        // path
+        Frame pathFrame = new FrameBuilder(getSubImage(5, 1))
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder pathTile = new MapTileBuilder(pathFrame);
+
+        mapTiles.add(pathTile);
+
         // sign
         Frame signFrame = new FrameBuilder(getSubImage(3, 0))
                 .withScale(tileScale)
@@ -40,6 +49,17 @@ public class MainTileset extends Tileset {
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(signTile);
+
+        // cold plant
+        Frame plantFrame = new FrameBuilder(getSubImage(2, 1))
+                .withScale(tileScale)
+                .withBounds(7, 7, 9, 9)
+                .build();
+
+        MapTileBuilder plantTile = new MapTileBuilder(plantFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(plantTile);
 
         // sand
         Frame sandFrame = new FrameBuilder(getSubImage(0, 1))
@@ -128,7 +148,6 @@ public class MainTileset extends Tileset {
 
         mapTiles.add(treeTopToLeftTile);
         
-        // tree top leaves
         Frame treeTopToRightFrame = new FrameBuilder(getSubImage(1, 1))
                 .withScale(tileScale)
                 .build();
@@ -141,18 +160,15 @@ public class MainTileset extends Tileset {
         
         // wilted purple flower
         Frame[] purpleFlowerFrames = new Frame[] {
-                new FrameBuilder(getSubImage(1, 2), 65)
+                new FrameBuilder(getSubImage(0, 2), 65)
                     .withScale(tileScale)
                     .build(),
-                new FrameBuilder(getSubImage(1, 3), 65)
+                new FrameBuilder(getSubImage(0, 3), 65)
                         .withScale(tileScale)
                         .build(),
-                new FrameBuilder(getSubImage(1, 2), 65)
+                new FrameBuilder(getSubImage(0, 4), 65)
                         .withScale(tileScale)
                         .build(),
-                new FrameBuilder(getSubImage(1, 4), 65)
-                        .withScale(tileScale)
-                        .build()
         };
 
         MapTileBuilder purpleFlowerTile = new MapTileBuilder(purpleFlowerFrames);
@@ -192,15 +208,25 @@ public class MainTileset extends Tileset {
 
         mapTiles.add(treeTrunkBottomTile);
 
-        // mushrooms
-        Frame mushroomFrame = new FrameBuilder(getSubImage(2, 1))
+        // stump
+        Frame stumpFrame = new FrameBuilder(getSubImage(1, 4))
                 .withScale(tileScale)
                 .build();
 
-        MapTileBuilder mushroomTile = new MapTileBuilder(mushroomFrame)
-                .withTileType(TileType.PASSABLE);
+        MapTileBuilder stumpTile = new MapTileBuilder(stumpFrame)
+                .withTileType(TileType.NOT_PASSABLE);
 
-        mapTiles.add(mushroomTile);
+        mapTiles.add(stumpTile);
+
+        // fallen log
+        Frame fallenLogFrame = new FrameBuilder(getSubImage(1, 3))
+                .withScale(tileScale)
+                .build();
+
+        MapTileBuilder fallenLogTile = new MapTileBuilder(fallenLogFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+
+        mapTiles.add(fallenLogTile);
 
 
         // grey rock
@@ -300,28 +326,10 @@ public class MainTileset extends Tileset {
 
         // top water
         Frame[] topWaterFrames = new Frame[] {
-            new FrameBuilder(getSubImage(5, 0), 65)
+            new FrameBuilder(getSubImage(5, 3), 200)
                     .withScale(tileScale)
                     .build(),
-            new FrameBuilder(getSubImage(5, 1), 65)
-                    .withScale(tileScale)
-                    .build(),
-            new FrameBuilder(getSubImage(5, 2), 65)
-                    .withScale(tileScale)
-                    .build(),
-            new FrameBuilder(getSubImage(5, 1), 65)
-                    .withScale(tileScale)
-                    .build(),
-            new FrameBuilder(getSubImage(5, 0), 65)
-                    .withScale(tileScale)
-                    .build(),
-            new FrameBuilder(getSubImage(5, 3), 65)
-                    .withScale(tileScale)
-                    .build(),
-            new FrameBuilder(getSubImage(5, 4), 65)
-                    .withScale(tileScale)
-                    .build(),
-            new FrameBuilder(getSubImage(5, 3), 65)
+            new FrameBuilder(getSubImage(5, 4), 200)
                     .withScale(tileScale)
                     .build()
         };
