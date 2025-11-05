@@ -492,16 +492,16 @@ public class Map3Tileset extends Tileset {
 
             //row 7
 
-                Frame tile70Frame = new FrameBuilder(getSubImage(7,0)).withScale(tileScale).build();
-                MapTileBuilder tile70Tile = new MapTileBuilder(tile70Frame);
+                Frame tile70Frame = new FrameBuilder(getSubImage(7,0)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile70Tile = new MapTileBuilder(tile70Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile70Tile);
 
-                Frame tile71Frame = new FrameBuilder(getSubImage(7,1)).withScale(tileScale).build();
-                MapTileBuilder tile71Tile = new MapTileBuilder(tile71Frame);
+                Frame tile71Frame = new FrameBuilder(getSubImage(7,1)).withBounds(0,0,25,37).withScale(tileScale).build();
+                MapTileBuilder tile71Tile = new MapTileBuilder(tile71Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile71Tile);
 
-                 Frame tile72Frame = new FrameBuilder(getSubImage(7,2)).withScale(tileScale).build();
-                MapTileBuilder tile72Tile = new MapTileBuilder(tile72Frame);
+                 Frame tile72Frame = new FrameBuilder(getSubImage(7,2)).withBounds(30,0,10,10).withScale(tileScale).build();
+                MapTileBuilder tile72Tile = new MapTileBuilder(tile72Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile72Tile);
 
                  Frame tile73Frame = new FrameBuilder(getSubImage(7,3)).withScale(tileScale).build();
@@ -540,11 +540,11 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile711Tile = new MapTileBuilder(tile711Frame);
                 mapTiles.add(tile711Tile);
 
-                 Frame tile712Frame = new FrameBuilder(getSubImage(7,12)).withScale(tileScale).build();
-                MapTileBuilder tile712Tile = new MapTileBuilder(tile712Frame);
+                 Frame tile712Frame = new FrameBuilder(getSubImage(7,12)).withBounds(35,0,5,10).withScale(tileScale).build();
+                MapTileBuilder tile712Tile = new MapTileBuilder(tile712Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile712Tile);
 
-                 Frame tile713Frame = new FrameBuilder(getSubImage(7,13)).withScale(tileScale).build();
+                 Frame tile713Frame = new FrameBuilder(getSubImage(7,13)).withBounds(0,0,3,10).withScale(tileScale).build();
                 MapTileBuilder tile713Tile = new MapTileBuilder(tile713Frame);
                 mapTiles.add(tile713Tile);
 
@@ -552,38 +552,38 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile714Tile = new MapTileBuilder(tile714Frame);
                 mapTiles.add(tile714Tile);
 
-                 Frame tile715Frame = new FrameBuilder(getSubImage(7,15)).withScale(tileScale).build();
-                MapTileBuilder tile715Tile = new MapTileBuilder(tile715Frame);
+                 Frame tile715Frame = new FrameBuilder(getSubImage(7,15)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile715Tile = new MapTileBuilder(tile715Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile715Tile);
 
             //row 8
 
-                Frame tile80Frame = new FrameBuilder(getSubImage(8,0)).withScale(tileScale).build();
-                MapTileBuilder tile80Tile = new MapTileBuilder(tile80Frame);
+                Frame tile80Frame = new FrameBuilder(getSubImage(8,0)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile80Tile = new MapTileBuilder(tile80Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile80Tile);
 
-                Frame tile81Frame = new FrameBuilder(getSubImage(8,1)).withScale(tileScale).build();
-                MapTileBuilder tile81Tile = new MapTileBuilder(tile81Frame);
+                Frame tile81Frame = new FrameBuilder(getSubImage(8,1)).withBounds(0,10,40,27).withScale(tileScale).build();
+                MapTileBuilder tile81Tile = new MapTileBuilder(tile81Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile81Tile);
 
-                 Frame tile82Frame = new FrameBuilder(getSubImage(8,2)).withScale(tileScale).build();
-                MapTileBuilder tile82Tile = new MapTileBuilder(tile82Frame);
+                 Frame tile82Frame = new FrameBuilder(getSubImage(8,2)).withBounds(0,0,25,37).withScale(tileScale).build();
+                MapTileBuilder tile82Tile = new MapTileBuilder(tile82Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile82Tile);
 
-                 Frame tile83Frame = new FrameBuilder(getSubImage(8,3)).withScale(tileScale).build();
-                MapTileBuilder tile83Tile = new MapTileBuilder(tile83Frame);
+                 Frame tile83Frame = new FrameBuilder(getSubImage(8,3)).withBounds(15,0,25,37).withScale(tileScale).build();
+                MapTileBuilder tile83Tile = new MapTileBuilder(tile83Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile83Tile);
 
-                 Frame tile84Frame = new FrameBuilder(getSubImage(8,4)).withScale(tileScale).build();
-                MapTileBuilder tile84Tile = new MapTileBuilder(tile84Frame);
+                 Frame tile84Frame = new FrameBuilder(getSubImage(8,4)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile84Tile = new MapTileBuilder(tile84Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile84Tile);
 
-                 Frame tile85Frame = new FrameBuilder(getSubImage(8,5)).withScale(tileScale).build();
-                MapTileBuilder tile85Tile = new MapTileBuilder(tile85Frame);
+                 Frame tile85Frame = new FrameBuilder(getSubImage(8,5)).withBounds(35,0,5,37).withScale(tileScale).build();
+                MapTileBuilder tile85Tile = new MapTileBuilder(tile85Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile85Tile);
 
-                 Frame tile86Frame = new FrameBuilder(getSubImage(8,6)).withScale(tileScale).build();
-                MapTileBuilder tile86Tile = new MapTileBuilder(tile86Frame);
+                 Frame tile86Frame = new FrameBuilder(getSubImage(8,6)).withBounds(0,0,20,37).withScale(tileScale).build();
+                MapTileBuilder tile86Tile = new MapTileBuilder(tile86Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile86Tile);
 
                  Frame tile87Frame = new FrameBuilder(getSubImage(8,7)).withScale(tileScale).build();
@@ -594,32 +594,32 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile88Tile = new MapTileBuilder(tile88Frame);
                 mapTiles.add(tile88Tile);
 
-                 Frame tile89Frame = new FrameBuilder(getSubImage(8,9)).withScale(tileScale).build();
-                MapTileBuilder tile89Tile = new MapTileBuilder(tile89Frame);
+                 Frame tile89Frame = new FrameBuilder(getSubImage(8,9)).withBounds(5,0,35,37).withScale(tileScale).build();
+                MapTileBuilder tile89Tile = new MapTileBuilder(tile89Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile89Tile);
 
-                 Frame tile810Frame = new FrameBuilder(getSubImage(8,10)).withScale(tileScale).build();
-                MapTileBuilder tile810Tile = new MapTileBuilder(tile810Frame);
+                 Frame tile810Frame = new FrameBuilder(getSubImage(8,10)).withBounds(35,0,5,37).withScale(tileScale).build();
+                MapTileBuilder tile810Tile = new MapTileBuilder(tile810Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile810Tile);
 
-                 Frame tile811Frame = new FrameBuilder(getSubImage(8,11)).withScale(tileScale).build();
-                MapTileBuilder tile811Tile = new MapTileBuilder(tile811Frame);
+                 Frame tile811Frame = new FrameBuilder(getSubImage(8,11)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile811Tile = new MapTileBuilder(tile811Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile811Tile);
 
-                 Frame tile812Frame = new FrameBuilder(getSubImage(8,12)).withScale(tileScale).build();
-                MapTileBuilder tile812Tile = new MapTileBuilder(tile812Frame);
+                 Frame tile812Frame = new FrameBuilder(getSubImage(8,12)).withBounds(0,0,10,37).withScale(tileScale).build();
+                MapTileBuilder tile812Tile = new MapTileBuilder(tile812Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile812Tile);
 
-                 Frame tile813Frame = new FrameBuilder(getSubImage(8,13)).withScale(tileScale).build();
-                MapTileBuilder tile813Tile = new MapTileBuilder(tile813Frame);
+                 Frame tile813Frame = new FrameBuilder(getSubImage(8,13)).withBounds(5,10,35,27).withScale(tileScale).build();
+                MapTileBuilder tile813Tile = new MapTileBuilder(tile813Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile813Tile);
 
-                 Frame tile814Frame = new FrameBuilder(getSubImage(8,14)).withScale(tileScale).build();
-                MapTileBuilder tile814Tile = new MapTileBuilder(tile814Frame);
+                 Frame tile814Frame = new FrameBuilder(getSubImage(8,14)).withBounds(0,10,40,27).withScale(tileScale).build();
+                MapTileBuilder tile814Tile = new MapTileBuilder(tile814Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile814Tile);
 
                  Frame tile815Frame = new FrameBuilder(getSubImage(8,15)).withScale(tileScale).build();
-                MapTileBuilder tile815Tile = new MapTileBuilder(tile815Frame);
+                MapTileBuilder tile815Tile = new MapTileBuilder(tile815Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile815Tile);
 
             //row 9
@@ -632,24 +632,24 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile91Tile = new MapTileBuilder(tile91Frame);
                 mapTiles.add(tile91Tile);
 
-                 Frame tile92Frame = new FrameBuilder(getSubImage(9,2)).withScale(tileScale).build();
-                MapTileBuilder tile92Tile = new MapTileBuilder(tile92Frame);
+                 Frame tile92Frame = new FrameBuilder(getSubImage(9,2)).withBounds(0,0,20,37).withScale(tileScale).build();
+                MapTileBuilder tile92Tile = new MapTileBuilder(tile92Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile92Tile);
 
-                 Frame tile93Frame = new FrameBuilder(getSubImage(9,3)).withScale(tileScale).build();
-                MapTileBuilder tile93Tile = new MapTileBuilder(tile93Frame);
+                 Frame tile93Frame = new FrameBuilder(getSubImage(9,3)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile93Tile = new MapTileBuilder(tile93Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile93Tile);
 
-                 Frame tile94Frame = new FrameBuilder(getSubImage(9,4)).withScale(tileScale).build();
-                MapTileBuilder tile94Tile = new MapTileBuilder(tile94Frame);
+                 Frame tile94Frame = new FrameBuilder(getSubImage(9,4)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile94Tile = new MapTileBuilder(tile94Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile94Tile);
 
-                 Frame tile95Frame = new FrameBuilder(getSubImage(9,5)).withScale(tileScale).build();
-                MapTileBuilder tile95Tile = new MapTileBuilder(tile95Frame);
+                 Frame tile95Frame = new FrameBuilder(getSubImage(9,5)).withBounds(0,0,10,37).withScale(tileScale).build();
+                MapTileBuilder tile95Tile = new MapTileBuilder(tile95Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile95Tile);
 
-                 Frame tile96Frame = new FrameBuilder(getSubImage(9,6)).withScale(tileScale).build();
-                MapTileBuilder tile96Tile = new MapTileBuilder(tile96Frame);
+                 Frame tile96Frame = new FrameBuilder(getSubImage(9,6)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile96Tile = new MapTileBuilder(tile96Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile96Tile);
 
                  Frame tile97Frame = new FrameBuilder(getSubImage(9,7)).withScale(tileScale).build();
@@ -660,24 +660,24 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile98Tile = new MapTileBuilder(tile98Frame);
                 mapTiles.add(tile98Tile);
 
-                 Frame tile99Frame = new FrameBuilder(getSubImage(9,9)).withScale(tileScale).build();
-                MapTileBuilder tile99Tile = new MapTileBuilder(tile99Frame);
+                 Frame tile99Frame = new FrameBuilder(getSubImage(9,9)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile99Tile = new MapTileBuilder(tile99Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile99Tile);
 
-                 Frame tile910Frame = new FrameBuilder(getSubImage(9,10)).withScale(tileScale).build();
+                 Frame tile910Frame = new FrameBuilder(getSubImage(9,10)).withBounds(20,0,20,37).withScale(tileScale).build();
                 MapTileBuilder tile910Tile = new MapTileBuilder(tile910Frame);
                 mapTiles.add(tile910Tile);
 
-                 Frame tile911Frame = new FrameBuilder(getSubImage(9,11)).withScale(tileScale).build();
-                MapTileBuilder tile911Tile = new MapTileBuilder(tile911Frame);
+                 Frame tile911Frame = new FrameBuilder(getSubImage(9,11)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile911Tile = new MapTileBuilder(tile911Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile911Tile);
 
-                 Frame tile912Frame = new FrameBuilder(getSubImage(9,12)).withScale(tileScale).build();
-                MapTileBuilder tile912Tile = new MapTileBuilder(tile912Frame);
+                 Frame tile912Frame = new FrameBuilder(getSubImage(9,12)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile912Tile = new MapTileBuilder(tile912Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile912Tile);
 
-                 Frame tile913Frame = new FrameBuilder(getSubImage(9,13)).withScale(tileScale).build();
-                MapTileBuilder tile913Tile = new MapTileBuilder(tile913Frame);
+                 Frame tile913Frame = new FrameBuilder(getSubImage(9,13)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile913Tile = new MapTileBuilder(tile913Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile913Tile);
 
                  Frame tile914Frame = new FrameBuilder(getSubImage(9,14)).withScale(tileScale).build();
@@ -698,36 +698,36 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile101Tile = new MapTileBuilder(tile101Frame);
                 mapTiles.add(tile101Tile);
 
-                 Frame tile102Frame = new FrameBuilder(getSubImage(10,2)).withScale(tileScale).build();
-                MapTileBuilder tile102Tile = new MapTileBuilder(tile102Frame);
+                 Frame tile102Frame = new FrameBuilder(getSubImage(10,2)).withBounds(0,0,20,37).withScale(tileScale).build();
+                MapTileBuilder tile102Tile = new MapTileBuilder(tile102Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile102Tile);
 
-                 Frame tile103Frame = new FrameBuilder(getSubImage(10,3)).withScale(tileScale).build();
-                MapTileBuilder tile103Tile = new MapTileBuilder(tile103Frame);
+                 Frame tile103Frame = new FrameBuilder(getSubImage(10,3)).withBounds(15,18,25,19).withScale(tileScale).build();
+                MapTileBuilder tile103Tile = new MapTileBuilder(tile103Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile103Tile);
 
-                 Frame tile104Frame = new FrameBuilder(getSubImage(10,4)).withScale(tileScale).build();
-                MapTileBuilder tile104Tile = new MapTileBuilder(tile104Frame);
+                 Frame tile104Frame = new FrameBuilder(getSubImage(10,4)).withBounds(0,18,40,19).withScale(tileScale).build();
+                MapTileBuilder tile104Tile = new MapTileBuilder(tile104Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile104Tile);
 
-                 Frame tile105Frame = new FrameBuilder(getSubImage(10,5)).withScale(tileScale).build();
-                MapTileBuilder tile105Tile = new MapTileBuilder(tile105Frame);
+                 Frame tile105Frame = new FrameBuilder(getSubImage(10,5)).withBounds(35,19,5,18).withScale(tileScale).build();
+                MapTileBuilder tile105Tile = new MapTileBuilder(tile105Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile105Tile);
 
-                 Frame tile106Frame = new FrameBuilder(getSubImage(10,6)).withScale(tileScale).build();
-                MapTileBuilder tile106Tile = new MapTileBuilder(tile106Frame);
+                 Frame tile106Frame = new FrameBuilder(getSubImage(10,6)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile106Tile = new MapTileBuilder(tile106Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile106Tile);
 
-                 Frame tile107Frame = new FrameBuilder(getSubImage(10,7)).withScale(tileScale).build();
-                MapTileBuilder tile107Tile = new MapTileBuilder(tile107Frame);
+                 Frame tile107Frame = new FrameBuilder(getSubImage(10,7)).withBounds(0,0,28,15).withScale(tileScale).build();
+                MapTileBuilder tile107Tile = new MapTileBuilder(tile107Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile107Tile);
 
-                 Frame tile108Frame = new FrameBuilder(getSubImage(10,8)).withScale(tileScale).build();
-                MapTileBuilder tile108Tile = new MapTileBuilder(tile108Frame);
+                 Frame tile108Frame = new FrameBuilder(getSubImage(10,8)).withBounds(5,0,35,15).withScale(tileScale).build();
+                MapTileBuilder tile108Tile = new MapTileBuilder(tile108Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile108Tile);
 
-                 Frame tile109Frame = new FrameBuilder(getSubImage(10,9)).withScale(tileScale).build();
-                MapTileBuilder tile109Tile = new MapTileBuilder(tile109Frame);
+                 Frame tile109Frame = new FrameBuilder(getSubImage(10,9)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile109Tile = new MapTileBuilder(tile109Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile109Tile);
 
                  Frame tile1010Frame = new FrameBuilder(getSubImage(10,10)).withScale(tileScale).build();
@@ -742,12 +742,12 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile1012Tile = new MapTileBuilder(tile1012Frame);
                 mapTiles.add(tile1012Tile);
 
-                 Frame tile1013Frame = new FrameBuilder(getSubImage(10,13)).withScale(tileScale).build();
-                MapTileBuilder tile1013Tile = new MapTileBuilder(tile1013Frame);
+                 Frame tile1013Frame = new FrameBuilder(getSubImage(10,13)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile1013Tile = new MapTileBuilder(tile1013Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1013Tile);
 
-                 Frame tile1014Frame = new FrameBuilder(getSubImage(10,14)).withScale(tileScale).build();
-                MapTileBuilder tile1014Tile = new MapTileBuilder(tile1014Frame);
+                 Frame tile1014Frame = new FrameBuilder(getSubImage(10,14)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile1014Tile = new MapTileBuilder(tile1014Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1014Tile);
 
                  Frame tile1015Frame = new FrameBuilder(getSubImage(10,15)).withScale(tileScale).build();
@@ -756,98 +756,98 @@ public class Map3Tileset extends Tileset {
 
             //row 11
 
-                Frame tile11_0Frame = new FrameBuilder(getSubImage(11,0)).withScale(tileScale).build();
-                MapTileBuilder tile11_0Tile = new MapTileBuilder(tile11_0Frame);
+                Frame tile11_0Frame = new FrameBuilder(getSubImage(11,0)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_0Tile = new MapTileBuilder(tile11_0Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_0Tile);
 
-                Frame tile11_1Frame = new FrameBuilder(getSubImage(11,1)).withScale(tileScale).build();
-                MapTileBuilder tile11_1Tile = new MapTileBuilder(tile11_1Frame);
+                Frame tile11_1Frame = new FrameBuilder(getSubImage(11,1)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_1Tile = new MapTileBuilder(tile11_1Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_1Tile);
 
-                 Frame tile11_2Frame = new FrameBuilder(getSubImage(11,2)).withScale(tileScale).build();
-                MapTileBuilder tile11_2Tile = new MapTileBuilder(tile11_2Frame);
+                 Frame tile11_2Frame = new FrameBuilder(getSubImage(11,2)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_2Tile = new MapTileBuilder(tile11_2Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_2Tile);
 
-                 Frame tile11_3Frame = new FrameBuilder(getSubImage(11,3)).withScale(tileScale).build();
-                MapTileBuilder tile11_3Tile = new MapTileBuilder(tile11_3Frame);
+                 Frame tile11_3Frame = new FrameBuilder(getSubImage(11,3)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_3Tile = new MapTileBuilder(tile11_3Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_3Tile);
 
-                 Frame tile11_4Frame = new FrameBuilder(getSubImage(11,4)).withScale(tileScale).build();
-                MapTileBuilder tile11_4Tile = new MapTileBuilder(tile11_4Frame);
+                 Frame tile11_4Frame = new FrameBuilder(getSubImage(11,4)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_4Tile = new MapTileBuilder(tile11_4Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_4Tile);
 
-                 Frame tile11_5Frame = new FrameBuilder(getSubImage(11,5)).withScale(tileScale).build();
-                MapTileBuilder tile11_5Tile = new MapTileBuilder(tile11_5Frame);
+                 Frame tile11_5Frame = new FrameBuilder(getSubImage(11,5)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_5Tile = new MapTileBuilder(tile11_5Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_5Tile);
 
-                 Frame tile11_6Frame = new FrameBuilder(getSubImage(11,6)).withScale(tileScale).build();
+                 Frame tile11_6Frame = new FrameBuilder(getSubImage(11,6)).withBounds(0,0,20,37).withScale(tileScale).build();
                 MapTileBuilder tile11_6Tile = new MapTileBuilder(tile11_6Frame);
                 mapTiles.add(tile11_6Tile);
 
-                 Frame tile11_7Frame = new FrameBuilder(getSubImage(11,7)).withScale(tileScale).build();
-                MapTileBuilder tile11_7Tile = new MapTileBuilder(tile11_7Frame);
+                 Frame tile11_7Frame = new FrameBuilder(getSubImage(11,7)).withBounds(0,0,25,37).withScale(tileScale).build();
+                MapTileBuilder tile11_7Tile = new MapTileBuilder(tile11_7Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_7Tile);
 
-                 Frame tile11_8Frame = new FrameBuilder(getSubImage(11,8)).withScale(tileScale).build();
-                MapTileBuilder tile11_8Tile = new MapTileBuilder(tile11_8Frame);
+                 Frame tile11_8Frame = new FrameBuilder(getSubImage(11,8)).withBounds(10,33,30,4).withScale(tileScale).build();
+                MapTileBuilder tile11_8Tile = new MapTileBuilder(tile11_8Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_8Tile);
 
-                 Frame tile11_9Frame = new FrameBuilder(getSubImage(11,9)).withScale(tileScale).build();
-                MapTileBuilder tile11_9Tile = new MapTileBuilder(tile11_9Frame);
+                 Frame tile11_9Frame = new FrameBuilder(getSubImage(11,9)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_9Tile = new MapTileBuilder(tile11_9Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_9Tile);
 
-                 Frame tile11_10Frame = new FrameBuilder(getSubImage(11,10)).withScale(tileScale).build();
-                MapTileBuilder tile11_10Tile = new MapTileBuilder(tile11_10Frame);
+                 Frame tile11_10Frame = new FrameBuilder(getSubImage(11,10)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_10Tile = new MapTileBuilder(tile11_10Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_10Tile);
 
-                 Frame tile11_11Frame = new FrameBuilder(getSubImage(11,11)).withScale(tileScale).build();
-                MapTileBuilder tile11_11Tile = new MapTileBuilder(tile11_11Frame);
+                 Frame tile11_11Frame = new FrameBuilder(getSubImage(11,11)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_11Tile = new MapTileBuilder(tile11_11Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_11Tile);
 
-                 Frame tile11_12Frame = new FrameBuilder(getSubImage(11,12)).withScale(tileScale).build();
-                MapTileBuilder tile11_12Tile = new MapTileBuilder(tile11_12Frame);
+                 Frame tile11_12Frame = new FrameBuilder(getSubImage(11,12)).withBounds(0,0,10,37).withScale(tileScale).build();
+                MapTileBuilder tile11_12Tile = new MapTileBuilder(tile11_12Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_12Tile);
 
-                 Frame tile11_13Frame = new FrameBuilder(getSubImage(11,13)).withScale(tileScale).build();
-                MapTileBuilder tile11_13Tile = new MapTileBuilder(tile11_13Frame);
+                 Frame tile11_13Frame = new FrameBuilder(getSubImage(11,13)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_13Tile = new MapTileBuilder(tile11_13Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_13Tile);
 
-                 Frame tile11_14Frame = new FrameBuilder(getSubImage(11,14)).withScale(tileScale).build();
-                MapTileBuilder tile11_14Tile = new MapTileBuilder(tile11_14Frame);
+                 Frame tile11_14Frame = new FrameBuilder(getSubImage(11,14)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_14Tile = new MapTileBuilder(tile11_14Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_14Tile);
 
-                 Frame tile11_15Frame = new FrameBuilder(getSubImage(11,15)).withScale(tileScale).build();
-                MapTileBuilder tile11_15Tile = new MapTileBuilder(tile11_15Frame);
+                 Frame tile11_15Frame = new FrameBuilder(getSubImage(11,15)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile11_15Tile = new MapTileBuilder(tile11_15Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile11_15Tile);
 
             //row 12
 
-                Frame tile120Frame = new FrameBuilder(getSubImage(12,0)).withScale(tileScale).build();
-                MapTileBuilder tile120Tile = new MapTileBuilder(tile120Frame);
+                Frame tile120Frame = new FrameBuilder(getSubImage(12,0)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile120Tile = new MapTileBuilder(tile120Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile120Tile);
 
-                Frame tile121Frame = new FrameBuilder(getSubImage(12,1)).withScale(tileScale).build();
-                MapTileBuilder tile121Tile = new MapTileBuilder(tile121Frame);
+                Frame tile121Frame = new FrameBuilder(getSubImage(12,1)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile121Tile = new MapTileBuilder(tile121Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile121Tile);
 
-                 Frame tile122Frame = new FrameBuilder(getSubImage(12,2)).withScale(tileScale).build();
-                MapTileBuilder tile122Tile = new MapTileBuilder(tile122Frame);
+                 Frame tile122Frame = new FrameBuilder(getSubImage(12,2)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile122Tile = new MapTileBuilder(tile122Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile122Tile);
 
-                 Frame tile123Frame = new FrameBuilder(getSubImage(12,3)).withScale(tileScale).build();
-                MapTileBuilder tile123Tile = new MapTileBuilder(tile123Frame);
+                 Frame tile123Frame = new FrameBuilder(getSubImage(12,3)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile123Tile = new MapTileBuilder(tile123Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile123Tile);
 
-                 Frame tile124Frame = new FrameBuilder(getSubImage(12,4)).withScale(tileScale).build();
-                MapTileBuilder tile124Tile = new MapTileBuilder(tile124Frame);
+                 Frame tile124Frame = new FrameBuilder(getSubImage(12,4)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile124Tile = new MapTileBuilder(tile124Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile124Tile);
 
-                 Frame tile125Frame = new FrameBuilder(getSubImage(12,5)).withScale(tileScale).build();
-                MapTileBuilder tile125Tile = new MapTileBuilder(tile125Frame);
+                 Frame tile125Frame = new FrameBuilder(getSubImage(12,5)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile125Tile = new MapTileBuilder(tile125Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile125Tile);
 
-                 Frame tile126Frame = new FrameBuilder(getSubImage(12,6)).withScale(tileScale).build();
-                MapTileBuilder tile126Tile = new MapTileBuilder(tile126Frame);
+                 Frame tile126Frame = new FrameBuilder(getSubImage(12,6)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile126Tile = new MapTileBuilder(tile126Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile126Tile);
 
                  Frame tile127Frame = new FrameBuilder(getSubImage(12,7)).withScale(tileScale).build();
@@ -858,62 +858,62 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile128Tile = new MapTileBuilder(tile128Frame);
                 mapTiles.add(tile128Tile);
 
-                 Frame tile129Frame = new FrameBuilder(getSubImage(12,9)).withScale(tileScale).build();
-                MapTileBuilder tile129Tile = new MapTileBuilder(tile129Frame);
+                 Frame tile129Frame = new FrameBuilder(getSubImage(12,9)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile129Tile = new MapTileBuilder(tile129Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile129Tile);
 
-                 Frame tile1210Frame = new FrameBuilder(getSubImage(12,10)).withScale(tileScale).build();
-                MapTileBuilder tile1210Tile = new MapTileBuilder(tile1210Frame);
+                 Frame tile1210Frame = new FrameBuilder(getSubImage(12,10)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile1210Tile = new MapTileBuilder(tile1210Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1210Tile);
 
-                 Frame tile1211Frame = new FrameBuilder(getSubImage(12,11)).withScale(tileScale).build();
-                MapTileBuilder tile1211Tile = new MapTileBuilder(tile1211Frame);
+                 Frame tile1211Frame = new FrameBuilder(getSubImage(12,11)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile1211Tile = new MapTileBuilder(tile1211Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1211Tile);
 
-                 Frame tile1212Frame = new FrameBuilder(getSubImage(12,12)).withScale(tileScale).build();
-                MapTileBuilder tile1212Tile = new MapTileBuilder(tile1212Frame);
+                 Frame tile1212Frame = new FrameBuilder(getSubImage(12,12)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile1212Tile = new MapTileBuilder(tile1212Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1212Tile);
 
-                 Frame tile1213Frame = new FrameBuilder(getSubImage(12,13)).withScale(tileScale).build();
-                MapTileBuilder tile1213Tile = new MapTileBuilder(tile1213Frame);
+                 Frame tile1213Frame = new FrameBuilder(getSubImage(12,13)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile1213Tile = new MapTileBuilder(tile1213Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1213Tile);
 
-                 Frame tile1214Frame = new FrameBuilder(getSubImage(12,14)).withScale(tileScale).build();
-                MapTileBuilder tile1214Tile = new MapTileBuilder(tile1214Frame);
+                 Frame tile1214Frame = new FrameBuilder(getSubImage(12,14)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile1214Tile = new MapTileBuilder(tile1214Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1214Tile);
 
-                 Frame tile1215Frame = new FrameBuilder(getSubImage(12,15)).withScale(tileScale).build();
-                MapTileBuilder tile1215Tile = new MapTileBuilder(tile1215Frame);
+                 Frame tile1215Frame = new FrameBuilder(getSubImage(12,15)).withBounds(0,0,40,18).withScale(tileScale).build();
+                MapTileBuilder tile1215Tile = new MapTileBuilder(tile1215Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1215Tile);
 
             //row 13
 
-                Frame tile130Frame = new FrameBuilder(getSubImage(13,0)).withScale(tileScale).build();
-                MapTileBuilder tile130Tile = new MapTileBuilder(tile130Frame);
+                Frame tile130Frame = new FrameBuilder(getSubImage(13,0)).withBounds(0,0,5,37).withScale(tileScale).build();
+                MapTileBuilder tile130Tile = new MapTileBuilder(tile130Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile130Tile);
 
-                Frame tile131Frame = new FrameBuilder(getSubImage(13,1)).withScale(tileScale).build();
+                Frame tile131Frame = new FrameBuilder(getSubImage(13,1)).withBounds(0,36,40,1).withScale(tileScale).build();
                 MapTileBuilder tile131Tile = new MapTileBuilder(tile131Frame);
                 mapTiles.add(tile131Tile);
 
-                 Frame tile132Frame = new FrameBuilder(getSubImage(13,2)).withScale(tileScale).build();
-                MapTileBuilder tile132Tile = new MapTileBuilder(tile132Frame);
+                 Frame tile132Frame = new FrameBuilder(getSubImage(13,2)).withBounds(7,18,33,19).withScale(tileScale).build();
+                MapTileBuilder tile132Tile = new MapTileBuilder(tile132Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile132Tile);
 
-                 Frame tile133Frame = new FrameBuilder(getSubImage(13,3)).withScale(tileScale).build();
-                MapTileBuilder tile133Tile = new MapTileBuilder(tile133Frame);
+                 Frame tile133Frame = new FrameBuilder(getSubImage(13,3)).withBounds(0,18,40,19).withScale(tileScale).build();
+                MapTileBuilder tile133Tile = new MapTileBuilder(tile133Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile133Tile);
 
-                 Frame tile134Frame = new FrameBuilder(getSubImage(13,4)).withScale(tileScale).build();
-                MapTileBuilder tile134Tile = new MapTileBuilder(tile134Frame);
+                 Frame tile134Frame = new FrameBuilder(getSubImage(13,4)).withBounds(0,18,40,19).withScale(tileScale).build();
+                MapTileBuilder tile134Tile = new MapTileBuilder(tile134Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile134Tile);
 
-                 Frame tile135Frame = new FrameBuilder(getSubImage(13,5)).withScale(tileScale).build();
-                MapTileBuilder tile135Tile = new MapTileBuilder(tile135Frame);
+                 Frame tile135Frame = new FrameBuilder(getSubImage(13,5)).withBounds(0,18,40,19).withScale(tileScale).build();
+                MapTileBuilder tile135Tile = new MapTileBuilder(tile135Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile135Tile);
 
-                 Frame tile136Frame = new FrameBuilder(getSubImage(13,6)).withScale(tileScale).build();
-                MapTileBuilder tile136Tile = new MapTileBuilder(tile136Frame);
+                 Frame tile136Frame = new FrameBuilder(getSubImage(13,6)).withBounds(0,18,20,19).withScale(tileScale).build();
+                MapTileBuilder tile136Tile = new MapTileBuilder(tile136Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile136Tile);
 
                  Frame tile137Frame = new FrameBuilder(getSubImage(13,7)).withScale(tileScale).build();
@@ -924,32 +924,32 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile138Tile = new MapTileBuilder(tile138Frame);
                 mapTiles.add(tile138Tile);
 
-                 Frame tile139Frame = new FrameBuilder(getSubImage(13,9)).withScale(tileScale).build();
-                MapTileBuilder tile139Tile = new MapTileBuilder(tile139Frame);
+                 Frame tile139Frame = new FrameBuilder(getSubImage(13,9)).withBounds(5,18,35,19).withScale(tileScale).build();
+                MapTileBuilder tile139Tile = new MapTileBuilder(tile139Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile139Tile);
 
-                 Frame tile1310Frame = new FrameBuilder(getSubImage(13,10)).withScale(tileScale).build();
-                MapTileBuilder tile1310Tile = new MapTileBuilder(tile1310Frame);
+                 Frame tile1310Frame = new FrameBuilder(getSubImage(13,10)).withBounds(0,18,40,19).withScale(tileScale).build();
+                MapTileBuilder tile1310Tile = new MapTileBuilder(tile1310Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1310Tile);
 
-                 Frame tile1311Frame = new FrameBuilder(getSubImage(13,11)).withScale(tileScale).build();
-                MapTileBuilder tile1311Tile = new MapTileBuilder(tile1311Frame);
+                 Frame tile1311Frame = new FrameBuilder(getSubImage(13,11)).withBounds(0,18,40,19).withScale(tileScale).build();
+                MapTileBuilder tile1311Tile = new MapTileBuilder(tile1311Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1311Tile);
 
-                 Frame tile1312Frame = new FrameBuilder(getSubImage(13,12)).withScale(tileScale).build();
-                MapTileBuilder tile1312Tile = new MapTileBuilder(tile1312Frame);
+                 Frame tile1312Frame = new FrameBuilder(getSubImage(13,12)).withBounds(0,18,40,19).withScale(tileScale).build();
+                MapTileBuilder tile1312Tile = new MapTileBuilder(tile1312Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1312Tile);
 
-                 Frame tile1313Frame = new FrameBuilder(getSubImage(13,13)).withScale(tileScale).build();
-                MapTileBuilder tile1313Tile = new MapTileBuilder(tile1313Frame);
+                 Frame tile1313Frame = new FrameBuilder(getSubImage(13,13)).withBounds(0,18,20,19).withScale(tileScale).build();
+                MapTileBuilder tile1313Tile = new MapTileBuilder(tile1313Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1313Tile);
 
-                 Frame tile1314Frame = new FrameBuilder(getSubImage(13,14)).withScale(tileScale).build();
-                MapTileBuilder tile1314Tile = new MapTileBuilder(tile1314Frame);
+                 Frame tile1314Frame = new FrameBuilder(getSubImage(13,14)).withBounds(0,36,40,1).withScale(tileScale).build();
+                MapTileBuilder tile1314Tile = new MapTileBuilder(tile1314Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1314Tile);
 
-                 Frame tile1315Frame = new FrameBuilder(getSubImage(13,15)).withScale(tileScale).build();
-                MapTileBuilder tile1315Tile = new MapTileBuilder(tile1315Frame);
+                 Frame tile1315Frame = new FrameBuilder(getSubImage(13,15)).withBounds(20,0,20,37).withScale(tileScale).build();
+                MapTileBuilder tile1315Tile = new MapTileBuilder(tile1315Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile1315Tile);
 
             //row 14
@@ -978,16 +978,16 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile145Tile = new MapTileBuilder(tile145Frame);
                 mapTiles.add(tile145Tile);
 
-                 Frame tile146Frame = new FrameBuilder(getSubImage(14,6)).withScale(tileScale).build();
-                MapTileBuilder tile146Tile = new MapTileBuilder(tile146Frame);
+                 Frame tile146Frame = new FrameBuilder(getSubImage(14,6)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile146Tile = new MapTileBuilder(tile146Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile146Tile);
 
                  Frame tile147Frame = new FrameBuilder(getSubImage(14,7)).withScale(tileScale).build();
                 MapTileBuilder tile147Tile = new MapTileBuilder(tile147Frame);
                 mapTiles.add(tile147Tile);
 
-                 Frame tile148Frame = new FrameBuilder(getSubImage(14,8)).withScale(tileScale).build();
-                MapTileBuilder tile148Tile = new MapTileBuilder(tile148Frame);
+                 Frame tile148Frame = new FrameBuilder(getSubImage(14,8)).withBounds(39,0,1,37).withScale(tileScale).build();
+                MapTileBuilder tile148Tile = new MapTileBuilder(tile148Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile148Tile);
 
                  Frame tile149Frame = new FrameBuilder(getSubImage(14,9)).withScale(tileScale).build();
@@ -1048,12 +1048,12 @@ public class Map3Tileset extends Tileset {
                 MapTileBuilder tile156Tile = new MapTileBuilder(tile156Frame);
                 mapTiles.add(tile156Tile);
 
-                 Frame tile157Frame = new FrameBuilder(getSubImage(15,7)).withScale(tileScale).build();
-                MapTileBuilder tile157Tile = new MapTileBuilder(tile157Frame);
+                 Frame tile157Frame = new FrameBuilder(getSubImage(15,7)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile157Tile = new MapTileBuilder(tile157Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile157Tile);
 
-                 Frame tile158Frame = new FrameBuilder(getSubImage(15,8)).withScale(tileScale).build();
-                MapTileBuilder tile158Tile = new MapTileBuilder(tile158Frame);
+                 Frame tile158Frame = new FrameBuilder(getSubImage(15,8)).withBounds(0,0,40,37).withScale(tileScale).build();
+                MapTileBuilder tile158Tile = new MapTileBuilder(tile158Frame).withTileType(TileType.NOT_PASSABLE);
                 mapTiles.add(tile158Tile);
 
                  Frame tile159Frame = new FrameBuilder(getSubImage(15,9)).withScale(tileScale).build();

@@ -26,7 +26,7 @@ public class BargainingMap extends Map {
         ArrayList<NPC> npcs = new ArrayList<>();
         
         //Bargaining boss
-        BargainingBoss b = new BargainingBoss(103, getMapTile(7, 7).getLocation().subtractY(16).subtractX(6));
+        BargainingBoss b = new BargainingBoss(103, getMapTile(6, 5).getLocation().subtractY(16).subtractX(6));
         b.setInteractScript(new BargainingBossScript());
         b.setCurrentAnimationName("STAND_RIGHT");
         npcs.add(b);
