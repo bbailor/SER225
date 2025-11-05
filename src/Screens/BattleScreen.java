@@ -352,9 +352,13 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             playerIdleAnimations[0].draw(graphicsHandler);
         }
 
+
+        int playerLocX = (int) (battleX0 + entityPadding + playerIdleAnimations[0].getWidth() * playerIdleAnimations[0].getScale());
+        int playerLocY = (int) (battleY0 + (battleHeight - playerIdleAnimations[0].getHeight()) / 2);
+      
         graphicsHandler.drawFilledRectangleWithBorder(
-            battleY0 + entityPadding - 9,
-            battleY0 + (battleHeight - placeholderHeight) / 2 + 12,
+            playerLocX,
+            playerLocY,
             70,
             8,
             TailwindColorScheme.black,
@@ -363,16 +367,16 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         );
 
         graphicsHandler.drawFilledRectangle(
-            battleY0 + entityPadding - 9 + 1,
-            battleY0 + (battleHeight - placeholderHeight) / 2 + 12 + 1,
+            playerLocX + 1,
+            playerLocY + 1,
             70 - 2,
             8 - 2,
             TailwindColorScheme.red500
         );
 
         graphicsHandler.drawFilledRectangle(
-            battleY0 + entityPadding - 9 + 1,
-            battleY0 + (battleHeight - placeholderHeight) / 2 + 12 + 1,
+            playerLocX + 1,
+            playerLocY + 1,
             (int)(68 * ((playerEntity.getHealth()) / playerEntity.getMaxHealth())),
             8 - 2,
             TailwindColorScheme.lime500
@@ -381,8 +385,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
         //System.out.println(            (int)((playerEntity.getHealth() / (battleY0 + (battleHeight - placeholderHeight) / 2 + 12 + 1)) * (battleY0 + (battleHeight - placeholderHeight)) / 2 + 12 + 1));
 
+        
         // ENEMY SPRITE
-        if (entityIdleAnimations == null) {
+  if (entityIdleAnimations == null) {
             graphicsHandler.drawFilledRectangle(
                 DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding),
                 battleY0 + (battleHeight - placeholderHeight) / 2,
@@ -405,9 +410,28 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             entityIdleAnimations[0].draw(graphicsHandler);
         }
         
+        // graphicsHandler.drawFilledRectangleWithBorder(
+        //     DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding),
+        //     battleY0 + (battleHeight - placeholderHeight) / 2,
+        //     70,
+        //     8,
+        //     TailwindColorScheme.black,
+        //     this.borderColor,
+        //     BORDER_LINE_WIDTH
+        // );
+
+            float scale = entityIdleAnimations[0].getScale();
+            float enemyX = battleX0 + DEFAULT_SECTION_WIDTH * 0.85f
+                    - (entityIdleAnimations[0].getWidth() * scale) / 2f;
+            float enemyY = battleY0 + (battleHeight - entityIdleAnimations[0].getHeight()) / 2f;
+
+            if (isBossBattle) {
+                enemyX += 300f;
+            }
+        
         graphicsHandler.drawFilledRectangleWithBorder(
-            DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding),
-            battleY0 + (battleHeight - placeholderHeight) / 2,
+            (int)enemyX + entityIdleAnimations[0].getWidth() / 2 - 35,
+            (int)enemyY - 6,
             70,
             8,
             TailwindColorScheme.black,
@@ -416,17 +440,17 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         );
 
         graphicsHandler.drawFilledRectangle(
-            DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding) + 1,
-            battleY0 + (battleHeight - placeholderHeight) / 2 + 1,
+            (int)enemyX + entityIdleAnimations[0].getWidth() / 2 + 1 - 35,
+            (int)enemyY - 5,
             70 - 2,
             8 - 2,
             TailwindColorScheme.red500
         );
 
         graphicsHandler.drawFilledRectangle(
-            DEFAULT_SECTION_WIDTH - battleY0 - (placeholderWidth + entityPadding) + 1,
-            battleY0 + (battleHeight - placeholderHeight) / 2 + 1,
-            (int)(68 * ((playerEntity.getHealth()) / playerEntity.getMaxHealth())),
+            (int)enemyX + entityIdleAnimations[0].getWidth() / 2 + 1 - 35,
+            (int)enemyY - 5,
+            (int)(68 * ((this.entity.getHealth()) / this.entity.getMaxHealth())),
             8 - 2,
             TailwindColorScheme.lime500
         );
