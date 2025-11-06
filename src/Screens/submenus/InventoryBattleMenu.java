@@ -68,7 +68,7 @@ public class InventoryBattleMenu extends BattleSubmenu {
 
         var stack = this.inventory.getStack(this.selectedID);
         // TODO: Maybe implement targetting
-        if ((Keyboard.isKeyDown(Key.ENTER) || Keyboard.isKeyDown(Key.U)) && stack.getItem().canUse(stack, this.player.getEntity())) {
+        if ((Keyboard.isKeyDown(Key.ENTER) || Keyboard.isKeyDown(Key.U)) && stack != null && stack.getItem().canUse(stack, this.player.getEntity())) {
             stack.use(this.player.getEntity());
             this.close();
             this.sendEvent("inventory.use");
