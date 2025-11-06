@@ -80,15 +80,21 @@ public class PushableRock extends EnhancedMapTile {
     protected GameObject loadBottomLayer(SpriteSheet spriteSheet) {
 
         Frame[] frames = new Frame[] {
-            new FrameBuilder(spriteSheet.getSubImage(0, 0), 10)
+            new FrameBuilder(spriteSheet.getSubImage(0, 0), 20)
                 .withScale(3)
                 .build(),
-            new FrameBuilder(spriteSheet.getSubImage(0, 1), 10)
+            new FrameBuilder(spriteSheet.getSubImage(0, 1), 20)
                 .withScale(3)
                 .build(),
-            new FrameBuilder(spriteSheet.getSubImage(0, 2), 10)
+            new FrameBuilder(spriteSheet.getSubImage(0, 2), 20)
                 .withScale(3)
                 .build(),
+            new FrameBuilder(spriteSheet.getSubImage(0, 1), 20)
+                .withScale(3)
+                .build(),
+            new FrameBuilder(spriteSheet.getSubImage(0, 0), 20)
+                .withScale(3)
+                .build()                
         };
 
         return new GameObject(x, y, frames);

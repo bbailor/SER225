@@ -256,7 +256,6 @@ private ArrayList<CollectableItem> loadCollectableItems() {
         }
 
         // player is drawn to screen
-        player.draw(graphicsHandler);
 
         for (CollectableItem collectableItem : activeCollectableItems) {
             if (containsDraw(collectableItem)) {
@@ -270,6 +269,9 @@ private ArrayList<CollectableItem> loadCollectableItems() {
         for (NPC npc : drawNpcsAfterPlayer) {
             npc.draw(graphicsHandler);
         }
+
+        player.draw(graphicsHandler);
+
 
         // Uncomment this to see triggers drawn on screen
         // helps for placing them in the correct spot/debugging
