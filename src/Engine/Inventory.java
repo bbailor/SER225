@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import Level.ItemStack;
+import Level.Item.ItemList;
 
 public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
     
@@ -89,7 +90,8 @@ public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
 
     public Inventory(int size) {
         this.items = new LinkedHashMap<>();
-        for (int i = 0; i < size; ++i) {
+        this.equipped_items.put(NamedSlot.Weapon, new ItemStack(ItemList.fist));
+        for (int i = 0; i < size - NamedSlot.values().length; ++i) {
             this.items.put(i, null);
         }
     }

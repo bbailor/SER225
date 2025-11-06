@@ -66,9 +66,10 @@ public class InventoryBattleMenu extends BattleSubmenu {
             this.pressCD = Globals.KEYBOARD_CD;
         }
 
+        var stack = this.inventory.getStack(this.selectedID);
         // TODO: Maybe implement targetting
-        if (Keyboard.isKeyDown(Key.ENTER)) {
-            this.inventory.getStack(this.selectedID).use(this.player.getEntity());
+        if ((Keyboard.isKeyDown(Key.ENTER) || Keyboard.isKeyDown(Key.U)) && stack != null && stack.getItem().canUse(stack, this.player.getEntity())) {
+            stack.use(this.player.getEntity());
             this.close();
             this.sendEvent("inventory.use");
         }
@@ -76,8 +77,6 @@ public class InventoryBattleMenu extends BattleSubmenu {
         if (Keyboard.isKeyDown(Key.ESC)) {
             this.close();
         }
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     public int getPrevID(int current) {

@@ -87,7 +87,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         this.flagManager = data.flagManager;
         this.switchMap(data.map);
         this.player.setLocation(data.playerPos.x, data.playerPos.y);
-        this.inventoryScreen.setInventory(this.player.getEntity().getInventory());
+        this.menuScreen.setInventory(this.player.getEntity().getInventory());
+        this.menuScreen.setFlagManager(this.flagManager);
     }
 
     public void initialize() {
@@ -111,7 +112,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("wizardSaved", false);
         flagManager.addFlag("wizardRewardGiven", false);
         flagManager.addFlag("hasEnteredAnger", false);
-        flagManager.addFlag("hasDefeatedDenial", true);
+        flagManager.addFlag("hasDefeatedDenial", false);
         
         
         // setup player
@@ -134,6 +135,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         this.menuScreen = new MenuScreen();
         this.menuScreen.setInventory(this.player.getEntity().getInventory());
+        this.menuScreen.setFlagManager(this.flagManager);
         this.menuScreen.addistener(LISTENER_NAME, this);
     }
 

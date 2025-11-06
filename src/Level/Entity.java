@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.google.gson.annotations.Expose;
 
 import Engine.Inventory;
+import Engine.Inventory.NamedSlot;
 import GameObject.Frame;
 
 public class Entity {
@@ -16,7 +17,7 @@ public class Entity {
     @Expose protected double baseAttack = 1;
     @Expose protected double resistance = 0;
     @Expose protected double tempResistance = 0;
-    @Expose protected Weapon currentWeapon = Item.ItemList.fist;
+    // @Expose protected Weapon currentWeapon = Item.ItemList.fist;
     @Expose protected Inventory inventory = new Inventory(90);
     protected boolean isEnemy;
     protected java.util.Map<String, Frame[]> animations = new HashMap<>(); 
@@ -58,11 +59,7 @@ public class Entity {
     }
 
     public Weapon getCurrentWeapon() {
-        return this.currentWeapon;
-    }
-
-    public void setCurrentWeapon(Weapon current_weapon) {
-        this.currentWeapon = current_weapon;
+        return (Weapon) this.inventory.getStack(NamedSlot.Weapon).getItem();
     }
 
     public double heal(double amount) {
@@ -84,31 +81,35 @@ public class Entity {
     }
 
     public double getAttack() {
-        if(Math.random() >= 0.90){
-            System.out.println("Critical Strike! Damage: " + this.baseAttack + this.currentWeapon.baseDamage + (this.currentWeapon.baseDamage * 0.5));
-            return this.baseAttack + this.currentWeapon.baseDamage + (this.currentWeapon.baseDamage * 0.5);
+        Weapon weapon = this.getCurrentWeapon();
+        System.out.println(getCurrentWeapon());
+        if(Math.random() >= 0.90) {
+            System.out.println("Critical Strike! Damage: " + this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5));
+            return this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5);
         }
         else{
-            System.out.println("Damage: " + this.baseAttack + this.currentWeapon.baseDamage);
-            return this.baseAttack + this.currentWeapon.baseDamage;
+            System.out.println("Damage: " + this.baseAttack + weapon.baseDamage);
+            return this.baseAttack + weapon.baseDamage;
         }
     }
     public double getAttack(Entity entity) {
-        return this.getAttack() + this.currentWeapon.bonusDamage(entity);
+        Weapon weapon = this.getCurrentWeapon();
+        return this.getAttack() + this.getCurrentWeapon().bonusDamage(entity);
     }
 
     public double getSkillAttack() {
-        if (Math.random() >= 0.90){
-            System.out.println("Critical Strike! Damage: " + this.baseAttack + this.currentWeapon.getWeaponSkillDamage() + (0.5 * this.currentWeapon.getWeaponSkillDamage()));
-            return this.baseAttack + this.currentWeapon.getWeaponSkillDamage() + (0.5 * this.currentWeapon.getWeaponSkillDamage());
+        Weapon weapon = this.getCurrentWeapon();
+        if (Math.random() >= 0.90) {
+            System.out.println("Critical Strike! Damage: " + this.baseAttack + weapon.getWeaponSkillDamage() + (0.5 * weapon.getWeaponSkillDamage()));
+            return this.baseAttack + weapon.getWeaponSkillDamage() + (0.5 * weapon.getWeaponSkillDamage());
         }
         else{
-        return this.baseAttack + this.currentWeapon.getWeaponSkillDamage();
+        return this.baseAttack + weapon.getWeaponSkillDamage();
         }
     }
 
     public double getSkillAttack(Entity entity) {
-        return this.getSkillAttack() + this.currentWeapon.bonusDamage(entity);
+        return this.getSkillAttack() + this.getCurrentWeapon().bonusDamage(entity);
     }
 
     public double handleDamage(Entity from, boolean fromSkill) {
@@ -116,7 +117,7 @@ public class Entity {
         this.tempResistance = 0;
         if (fromSkill) {
             double remainingHealth = this.health -= Math.max(from.getSkillAttack(this) - totalResistance, 0);
-            from.mana -= this.currentWeapon.getWeaponSkillCost();
+            from.mana -= this.getCurrentWeapon().getWeaponSkillCost();
             return remainingHealth;
         }
         return this.health -= Math.max(from.getAttack(this) - totalResistance, 0);

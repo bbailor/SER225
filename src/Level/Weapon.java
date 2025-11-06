@@ -1,5 +1,6 @@
 package Level;
 
+import Engine.Inventory.NamedSlot;
 
 /**
  * Definition of a weapon type
@@ -58,10 +59,18 @@ public class Weapon extends Item {
         return this.weaponSkillCost;
     }
 
+    
+
+    @Override
+    public boolean canUse(ItemStack stack, Entity targetedEntity) {
+        return true;
+    }
+
+    @Override
     public void use(ItemStack stack, Entity targetedEntity) {
         System.out.println("Use from weapon class" + this);
-
-        targetedEntity.setCurrentWeapon(this);
+        targetedEntity.getInventory().setStack(NamedSlot.Weapon, stack.copy());
+        stack.removeItem();
     }
     
 }
