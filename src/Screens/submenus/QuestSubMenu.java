@@ -67,7 +67,7 @@ public class QuestSubMenu implements Menu {
             "hasTalkedToDenialBoss",
             "Quest: Defeat the Denial Boss",
             "hasDefeatedDenial",
-            "Battle the boss in the Denial area"
+            "Battle the boss."
         ));
 
         questEntries.add(new QuestEntry(
