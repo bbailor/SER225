@@ -12,6 +12,7 @@ import com.google.gson.annotations.Expose;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import Level.Item;
 import Level.ItemStack;
 import Level.Item.ItemList;
 
@@ -26,6 +27,9 @@ public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
 
     @Nullable
     public ItemStack getStack(int slot_id) {
+        if (slot_id >= this.getSize()) {
+            return this.getStack(NamedSlot.values()[slot_id - this.getSize()]);
+        }
         try {
             if (this.items.get(slot_id) != null && this.items.get(slot_id).getCount() == 0) {
                 this.items.put(slot_id, null);
@@ -38,6 +42,9 @@ public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
 
     @Nullable
     public ItemStack setStack(int slot_id, @Nullable ItemStack item) {
+        if (slot_id >= this.getSize()) {
+            return this.setStack(NamedSlot.values()[slot_id - this.getSize()], item);
+        }
         var old_item = this.items.get(slot_id);
         this.items.put(slot_id, item);
         return old_item;
@@ -46,8 +53,12 @@ public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
     @Nullable
     public ItemStack setStack(NamedSlot slot, @Nullable ItemStack item) {
         var old_item = this.equipped_items.get(slot);
+        if (slot == NamedSlot.Weapon && item == null) {
+            this.equipped_items.put(NamedSlot.Weapon, new ItemStack(Item.ItemList.fist));
+            return old_item;
+        }
         this.equipped_items.put(slot, item);
-        return old_item;
+        return old_item != null && old_item.getItem().equals(Item.ItemList.fist) ? null : old_item;
     }
 
     @SuppressWarnings("null")
@@ -77,6 +88,10 @@ public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
 
     public int getSize() {
         return this.items.size();
+    }
+
+    public int getEquippedSize() {
+        return NamedSlot.values().length;
     }
 
     public Map<Integer, ItemStack> getItems() {

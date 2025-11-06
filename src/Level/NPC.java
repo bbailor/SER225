@@ -202,9 +202,6 @@ public class NPC extends MapEntity {
     /**
      * Check if player is in vision range and trigger battle if enabled
      */
-    /**
-     * Check if player is in vision range and trigger battle if enabled
-     */
     protected void performAction(Player player) {
         // Only check if auto-battle is enabled and battle hasn't been triggered yet
         if (autoBattleEnabled && !battleTriggered) {

@@ -14,6 +14,7 @@ import Engine.Key;
 import Engine.Keyboard;
 import Engine.Mouse;
 import Engine.Screen;
+import Engine.Inventory.NamedSlot;
 import Level.Entity;
 import Level.Item;
 import Screens.components.ItemSlot;
@@ -30,8 +31,7 @@ public class InventorySubmenu implements Menu {
     protected int lastY;
     protected Entity openingEntity;
     protected Inventory inventory;
-    protected Item usedItem;
-    protected int useCount = 0;
+    protected int msgDelayCount = 0;
     protected int currentSlot = 0;
     protected ItemSlot[] slots;
     protected int columns = 9;
@@ -43,7 +43,7 @@ public class InventorySubmenu implements Menu {
     public static final int INV_SLOT_WIDTH = 50;
     public static final int INV_SLOT_HEIGHT = 50;
     public static final Color BASE_COLOR = TailwindColorScheme.slate700;
-    protected static int DEFAULT_USE_COUNT = 50;
+    protected static int DEFAULT_DELAY_COUNT = 75;
 
     public InventorySubmenu setColumns(int length) {
         this.columns = length;
@@ -71,8 +71,12 @@ public class InventorySubmenu implements Menu {
     @Override
     public void open() {
         this.openPressCD = 12;
-        this.slots = new ItemSlot[this.inventory.getSize()];
+        this.slots = new ItemSlot[this.inventory.getSize() + this.inventory.getEquippedSize()];
         Arrays.setAll(this.slots, i -> new ItemSlot(i, inventory, INV_SLOT_WIDTH, INV_SLOT_HEIGHT));
+        for (int i = this.inventory.getSize(); i < this.slots.length; ++i) {
+            this.slots[i].setEquipSlot(true);
+            this.slots[i].setEquipName(NamedSlot.values()[i - this.inventory.getSize()].toString());
+        }
         this.slots[0].setBorderColor(Globals.HOVER_COLOR);
         this.hoveredID = 0;
         this.selectedID = -1;
@@ -96,14 +100,14 @@ public class InventorySubmenu implements Menu {
         if (selectedID != -1) {
             this.slots[this.selectedID].setBorderColor(Globals.SELECT_COLOR);
         }
+        if (this.msgDelayCount != 0) {
+            --this.msgDelayCount;
+            return;
+        }
         this.sendEvent(STATUS_EVENT, getStatusMessage());
     }
 
     public String getStatusMessage() {
-        if (this.useCount != 0) {
-            --this.useCount;
-            return String.format("%s used", this.usedItem.getName());
-        }
         
         if (this.selectedID != -1) {
             return "Click or Press L-Click to move";
@@ -128,6 +132,11 @@ public class InventorySubmenu implements Menu {
                 this.selectedID = this.hoveredID;
                 return;
             }
+            if (this.hoveredID >= this.inventory.getSize()) {
+                this.msgDelayCount = DEFAULT_DELAY_COUNT;
+                this.sendEvent(STATUS_EVENT, "You cannot move items into equippment slots");
+                return;
+            }
             var temp_item = this.inventory.getStack(this.hoveredID);
             this.inventory.setStack(this.hoveredID, this.inventory.getStack(this.selectedID));
             this.inventory.setStack(this.selectedID, temp_item);
@@ -137,6 +146,11 @@ public class InventorySubmenu implements Menu {
         var hoveredStack = this.inventory.getStack(this.hoveredID);
         if (Keyboard.isKeyDown(Key.R) && hoveredStack != null) {
             this.pressCD = Globals.KEYBOARD_CD;
+            if (this.hoveredID >= this.inventory.getSize()) {
+                this.msgDelayCount = DEFAULT_DELAY_COUNT;
+                this.sendEvent(STATUS_EVENT, "You cannot delete equipped items this way");
+                return;
+            }
             hoveredStack.removeItem();
             if (hoveredStack.getCount() == 0) {
                 this.inventory.setStack(this.hoveredID, null);
@@ -149,9 +163,13 @@ public class InventorySubmenu implements Menu {
 
         if (Keyboard.isKeyDown(Key.U) && hoveredStack != null && hoveredStack.getItem().canUse(hoveredStack, this.openingEntity)) {
             this.pressCD = Globals.KEYBOARD_CD;
-            // this.sendEvent("inventory.use", hoveredStack.getItem());
-            this.useCount = DEFAULT_USE_COUNT;
-            this.usedItem = hoveredStack.getItem();
+            if (this.hoveredID >= this.inventory.getSize()) {
+                this.msgDelayCount = DEFAULT_DELAY_COUNT;
+                this.sendEvent(STATUS_EVENT, "You cannot reuse equipped items");
+                return;
+            }
+            this.msgDelayCount = DEFAULT_DELAY_COUNT;
+            this.sendEvent(STATUS_EVENT, String.format("%s used", hoveredStack.getItem().getName()));
             hoveredStack.use(this.openingEntity);
             if (hoveredStack.getCount() == 0) {
                 this.inventory.setStack(this.hoveredID, null);
@@ -187,6 +205,11 @@ public class InventorySubmenu implements Menu {
                 this.selectedID = this.hoveredID;
                 return;
             }
+            if (this.hoveredID >= this.inventory.getSize()) {
+                this.msgDelayCount = DEFAULT_DELAY_COUNT;
+                this.sendEvent(STATUS_EVENT, "You cannot move items into equippment slots");
+                return;
+            }
             var temp_item = this.inventory.getStack(this.hoveredID);
             this.inventory.setStack(this.hoveredID, this.inventory.getStack(this.selectedID));
             this.inventory.setStack(this.selectedID, temp_item);
@@ -195,13 +218,23 @@ public class InventorySubmenu implements Menu {
         }
         if (Mouse.isRightClickDown() && hoveredStack != null && hoveredStack.getItem().canUse(hoveredStack, this.openingEntity)) {
             this.pressCD = Math.max(12, Globals.KEYBOARD_CD);
+            if (this.hoveredID >= this.inventory.getSize()) {
+                this.msgDelayCount = DEFAULT_DELAY_COUNT;
+                this.sendEvent(STATUS_EVENT, "You cannot reuse equipped items");
+                return;
+            }
             // this.sendEvent("inventory.use", hoveredStack.getItem());
-            this.useCount = DEFAULT_USE_COUNT;
-            this.usedItem = hoveredStack.getItem();
+            this.msgDelayCount = DEFAULT_DELAY_COUNT;
+            this.sendEvent(STATUS_EVENT, String.format("%s used", hoveredStack.getItem().getName()));
             hoveredStack.use(this.openingEntity);
         }
         if (Mouse.isMiddleClickDown() && hoveredStack != null) {
             this.pressCD = Math.max(12, Globals.KEYBOARD_CD);
+            if (this.hoveredID >= this.inventory.getSize()) {
+                this.msgDelayCount = DEFAULT_DELAY_COUNT;
+                this.sendEvent(STATUS_EVENT, "You cannot delete equipped items this way");
+                return;
+            }
             hoveredStack.removeItem();
         }
         if (hoveredStack != null && hoveredStack.getCount() == 0) {
@@ -241,7 +274,7 @@ public class InventorySubmenu implements Menu {
     public void draw(GraphicsHandler handler, int x, int y) {
         this.lastX = x;
         this.lastY = y;
-        for (int i = 0; i < inventory.getSize(); ++i) {
+        for (int i = 0; i < this.slots.length; ++i) {
             Slot slot = this.slots[i];
             // slot.draw(graphicsHandler, x + ((i%this.length) * INV_SLOT_WIDTH) + (x * 5), y + ((i/this.height) * INV_SLOT_HEIGHT) + (y * 5));
             slot.draw(handler, x + ((i%this.columns) * INV_SLOT_WIDTH) + ((i%this.columns) * 5), y + ((i/this.columns) * INV_SLOT_HEIGHT) + ((i/this.columns) * 5));

@@ -4,6 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 import Engine.GraphicsHandler;
 import Engine.Inventory;
+import Engine.Inventory.NamedSlot;
+import Level.ItemStack;
 import Utils.Resources;
 import Utils.TailwindColorScheme;
 
@@ -11,9 +13,11 @@ public class ItemSlot extends Slot {
 
     protected Inventory inventory;
     protected int index;
+    protected String equipName;
     protected int frameCount = 0;
     protected int lastDelay = 0;
     protected int currentFrame = 0;
+    protected boolean isEquipSlot = false;
 
     public ItemSlot(int index, Inventory inventory, int width, int height) {
         super(width, height);
@@ -34,10 +38,25 @@ public class ItemSlot extends Slot {
         return this.index;
     }
 
+    public void setEquipSlot(boolean equipSlot) {
+        this.isEquipSlot = equipSlot;
+    }
+
+    public void setEquipName(String name) {
+        this.equipName = name;
+    }
+
     @Override
     public void draw(GraphicsHandler handler, int x, int y) {
         super.draw(handler, x, y);
-        var stack = this.inventory.getStack(this.index);
+        ItemStack stack;
+        if (this.isEquipSlot) {
+            handler.drawStringWithOutline(this.equipName, x + 2 + 2, x + 12 + 2, Resources.press_start.deriveFont(12f), TailwindColorScheme.white, TailwindColorScheme.slate900, 3);
+            handler.drawStringWithOutline("E", x + (this.width - 14)/2, y + (this.height)/2, Resources.press_start.deriveFont(12f), TailwindColorScheme.white, TailwindColorScheme.slate900, 3);
+            stack = this.inventory.getStack(NamedSlot.values()[this.index - this.inventory.getSize()]);
+        } else {
+            stack = this.inventory.getStack(this.index);
+        }
         if (stack == null) {
             return;
         }
