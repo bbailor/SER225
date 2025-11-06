@@ -32,7 +32,7 @@ public class WizardScript extends Script {
                     addText("Gnomeo: I must save her, she is my world!\nI cannot lose her!");
                     addText("Osiris: *sighs* If you are going.. then at least\ntake your mother's Knife of Life.");
                 }});
-               addScriptAction(new BargainingBossAnimationScriptAction());
+               
                 // Knife drops mid-dialogue
                 addScriptAction(new ScriptAction() {
                     @Override
