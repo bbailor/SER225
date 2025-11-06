@@ -3,6 +3,7 @@ package Scripts.TestMap;
 import java.util.ArrayList;
 
 import Level.Script;
+import Level.TextboxItem;
 import ScriptActions.*;
 
 // Script for the skeleton that traps the wizard
@@ -11,7 +12,14 @@ public class WizardQuestSkeletonScript extends Script {
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
         ArrayList<ScriptAction> scriptActions = new ArrayList<>();
-
+        ArrayList<String> yesNoOptions = new ArrayList<>();
+                yesNoOptions.add("Yes");
+                yesNoOptions.add("No");
+                TextboxItem battlePrompt = new TextboxItem(
+                    "Start battle?", 
+                    yesNoOptions, 
+                    true  // Use SMALL box
+                );
         scriptActions.add(new LockPlayerScriptAction());
         scriptActions.add(new NPCFacePlayerScriptAction());
 
@@ -29,11 +37,10 @@ public class WizardQuestSkeletonScript extends Script {
                     addText("Osiris: This skeleton ambushed me!\nI can't fight it alone!");
                 }});
 
-                
-
                 // Prompt with Yes/No
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Start battle?", new String[] { "Yes", "No" });
+                    addText(battlePrompt);
+                    // addText("Start battle?", new String[] { "Yes", "No" });
                 }});
 
                 // Handle selection

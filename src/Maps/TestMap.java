@@ -22,6 +22,7 @@ import Tilesets.CommonTileset;
 import java.util.ArrayList;
 import NPCs.DenialBoss;
 import Scripts.MapOneDenial.AngerEntryScript;
+import Scripts.MapTwoAnger.BargainingEntryScript;
 
 // Represents a test map to be used in a level
 public class TestMap extends Map {
@@ -147,6 +148,7 @@ public class TestMap extends Map {
         getMapTile(3, 3).setInteractScript(new SimpleTextScript("Storage Shack"));
         getMapTile(7, 22).setInteractScript(new SimpleTextScript("Isis x Osiris <3 <3 <3"));
         //getMapTile(21, 6).setInteractScript(new DenialEntryScript());
-        getMapTile(21, 6).setInteractScript(new AngerEntryScript());
+        //getMapTile(21, 6).setInteractScript(new AngerEntryScript());
+        getMapTile(21, 6).setInteractScript(new BargainingEntryScript());
     }
 }
