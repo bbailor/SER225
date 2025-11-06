@@ -15,7 +15,7 @@ public class AngerBossScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToAngerBoss", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("[INSERT DEPRESSION DIALOGUE HERE]");
+                    addText("[INSERT ANGER DIALOGUE HERE]");
                     
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToAngerBoss", true));
