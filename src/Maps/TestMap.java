@@ -76,42 +76,42 @@ public class TestMap extends Map {
         questSkeleton.setCurrentAnimationName("STAND_RIGHT");
         questSkeleton.setAutoBatlte(false);
         npcs.add(questSkeleton);
-        BargainingBoss b = new BargainingBoss(103, getMapTile(10, 10).getLocation().subtractY(16).subtractX(6));
-        b.setInteractScript(new BargainingBossScript());
-        b.setCurrentAnimationName("STAND_RIGHT");
-        npcs.add(b);
+        // BargainingBoss b = new BargainingBoss(103, getMapTile(10, 10).getLocation().subtractY(16).subtractX(6));
+        // b.setInteractScript(new BargainingBossScript());
+        // b.setCurrentAnimationName("STAND_RIGHT");
+        // npcs.add(b);
         
     
 
-        DepressionBoss dp = new DepressionBoss(102, getMapTile(17, 20).getLocation().subtractY(16).subtractX(4));
-        dp.setInteractScript(new DepressionBossScript());
-        dp.setCurrentAnimationName("STAND_RIGHT");
-        npcs.add(dp);
+        // DepressionBoss dp = new DepressionBoss(102, getMapTile(17, 20).getLocation().subtractY(16).subtractX(4));
+        // dp.setInteractScript(new DepressionBossScript());
+        // dp.setCurrentAnimationName("STAND_RIGHT");
+        // npcs.add(dp);
 
-        AngerBoss ab = new AngerBoss(102, getMapTile(15, 10).getLocation().subtractY(16).subtractX(4));
-        ab.setInteractScript(new AngerBossScript());
-        ab.setCurrentAnimationName("STAND_RIGHT");
-        npcs.add(ab);
+        // AngerBoss ab = new AngerBoss(102, getMapTile(15, 10).getLocation().subtractY(16).subtractX(4));
+        // ab.setInteractScript(new AngerBossScript());
+        // ab.setCurrentAnimationName("STAND_RIGHT");
+        // npcs.add(ab);
         
-        Skeleton s  = new Skeleton(100, getMapTile(9, 22).getLocation().subtractY(16).subtractX(6));
-        s.setInteractScript(new DenialEnemyScript());
-        s.setCurrentAnimationName("STAND_RIGHT");
-        npcs.add(s); 
+        // Skeleton s  = new Skeleton(100, getMapTile(9, 22).getLocation().subtractY(16).subtractX(6));
+        // s.setInteractScript(new DenialEnemyScript());
+        // s.setCurrentAnimationName("STAND_RIGHT");
+        // npcs.add(s); 
 
-        Spirit sp   = new Spirit(101, getMapTile(9, 14).getLocation().subtractY(16).subtractX(10));
-        sp.setInteractScript(new DenialEnemyScript());
-        sp.setCurrentAnimationName("STAND_LEFT");
-        npcs.add(sp);
+        // Spirit sp   = new Spirit(101, getMapTile(9, 14).getLocation().subtractY(16).subtractX(10));
+        // sp.setInteractScript(new DenialEnemyScript());
+        // sp.setCurrentAnimationName("STAND_LEFT");
+        // npcs.add(sp);
 
-        ArmoredSkeleton as = new ArmoredSkeleton(102, getMapTile(8, 15).getLocation().subtractY(16).subtractX(4));
-        as.setInteractScript(new DenialEnemyScript());
-        as.setCurrentAnimationName("STAND_LEFT");
-        npcs.add(as);
+        // ArmoredSkeleton as = new ArmoredSkeleton(102, getMapTile(8, 15).getLocation().subtractY(16).subtractX(4));
+        // as.setInteractScript(new DenialEnemyScript());
+        // as.setCurrentAnimationName("STAND_LEFT");
+        // npcs.add(as);
 
-        DenialBoss db = new DenialBoss(102, getMapTile(7, 13).getLocation().subtractY(16).subtractX(4));
-        db.setInteractScript(new DenialBossScript());
-        db.setCurrentAnimationName("STAND_LEFT");
-        npcs.add(db);
+        // DenialBoss db = new DenialBoss(102, getMapTile(7, 13).getLocation().subtractY(16).subtractX(4));
+        // db.setInteractScript(new DenialBossScript());
+        // db.setCurrentAnimationName("STAND_LEFT");
+        // npcs.add(db);
 
         return npcs;
     }
@@ -147,8 +147,8 @@ public class TestMap extends Map {
     public void loadScripts() {
         getMapTile(3, 3).setInteractScript(new SimpleTextScript("Storage Shack"));
         getMapTile(7, 22).setInteractScript(new SimpleTextScript("Isis x Osiris <3 <3 <3"));
-        //getMapTile(21, 6).setInteractScript(new DenialEntryScript());
+        getMapTile(21, 6).setInteractScript(new DenialEntryScript());
         //getMapTile(21, 6).setInteractScript(new AngerEntryScript());
-        getMapTile(21, 6).setInteractScript(new BargainingEntryScript());
+        //getMapTile(21, 6).setInteractScript(new BargainingEntryScript());
     }
 }
