@@ -8,6 +8,8 @@ import NPCs.Skeleton;
 import NPCs.Spirit;
 import NPCs.Wizard;
 import Scripts.SimpleTextScript;
+import Scripts.MapTwoAnger.BargainingEntryScript;
+import Scripts.MapOneDenial.AngerEntryScript;
 import Scripts.MapOneDenial.DenialBossScript;
 import Scripts.MapOneDenial.DenialEnemyScript;
 import Scripts.TestMap.WizardScript;
@@ -20,7 +22,7 @@ public class AngerMap extends Map {
 
     public AngerMap() {
     super("anger_map.txt", new Map2Tileset());
-    this.playerStartPosition = new Point(2, 2); // or whatever coordinates you want
+    this.playerStartPosition = getMapTile(2, 18).getLocation();
 }
 
     @Override
@@ -34,6 +36,10 @@ public class AngerMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
+        Spirit sp   = new Spirit(101, getMapTile(17, 15).getLocation());
+        sp.setInteractScript(new DenialEnemyScript());
+        sp.setCurrentAnimationName("STAND_LEFT");
+        npcs.add(sp);
 
         // // enemies near player, all share DenialEnemyScript (spread out a bit)
         // Skeleton s  = new Skeleton(100, getMapTile(10, 8).getLocation().subtractY(16).subtractX(6));
@@ -84,7 +90,6 @@ public class AngerMap extends Map {
 
     @Override
     public void loadScripts() {
-       
-       
+       getMapTile(17, 15).setInteractScript(new BargainingEntryScript());
     }
 }

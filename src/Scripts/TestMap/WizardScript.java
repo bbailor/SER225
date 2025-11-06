@@ -37,7 +37,7 @@ public class WizardScript extends Script {
                 addScriptAction(new ScriptAction() {
                     @Override
                     public ScriptState execute() {
-                        Point location = map.getMapTile(10, 18).getLocation();
+                        Point location = map.getMapTile(4, 23).getLocation();
                         CollectableItem knifeOfLife = new CollectableItem(location.x, location.y, Item.ItemList.knife_of_life);
                         map.addCollectableItem(knifeOfLife);
                         return ScriptState.COMPLETED;

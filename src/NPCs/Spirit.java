@@ -19,6 +19,15 @@ public class Spirit extends NPC {
             new SpriteSheet(ImageLoader.load("Enemies/spirit.png"), 32, 32),
             "STAND_RIGHT"
         );
+
+        // Configure stats
+        this.entity.setMaxHealth(7);
+        this.entity.setBaseAttack(0);
+        
+        // Add attacks
+        this.addAttack("LaunchOrb", 60, "SpiritAttack", 3.5);
+        this.addAttack("Explosion", 8, "DenialBossAttack", 8.0);
+
         enemyType = "A Spirit";
     }
 

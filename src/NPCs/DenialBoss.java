@@ -18,8 +18,15 @@ public class DenialBoss extends NPC {
             new SpriteSheet(ImageLoader.load("Bosses/DenialBoss.png"), 120, 120),
             "STAND_RIGHT"
         );
-        autoBattleEnabled = false;
 
+        this.entity.setMaxHealth(25);
+        this.entity.setBaseAttack(0);
+        
+        this.entity.addAttack("Explosion", 50, "DenialBossAttack", 4.0);
+        this.entity.addAttack("DenialBossSpecial", 5, "DenialBossAttack", 10.0);
+        this.entity.addAttack("DenialBossHeavy", 10, "DenialBossAttack", 7.0);
+        
+        autoBattleEnabled = false;
     }
     
 

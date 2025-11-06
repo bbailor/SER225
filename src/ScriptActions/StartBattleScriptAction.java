@@ -21,6 +21,9 @@ public class StartBattleScriptAction extends ScriptAction {
 
     @Override
     public ScriptState execute() {
+
+
+
         if (enemy == null) {
             System.out.println("[ERROR] StartBattleScriptAction enemy is NULL!");
             return ScriptState.COMPLETED;

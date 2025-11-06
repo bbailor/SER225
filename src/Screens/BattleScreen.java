@@ -52,6 +52,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     protected EnemyProjectileAttackAnimation activeAttackAnimation = null;
     protected boolean enemyTurnStarted = false;
     protected String currentEnemyType = null; // For debugging
+    protected Entity.EnemyAttack currentEnemyAttack = null;
 
     // New field to track if this battle involves the boss
     private boolean isBossBattle = false;
@@ -581,6 +582,17 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     }
 
     private void startEnemyAttackAnimation() {
+
+        currentEnemyAttack = this.entity.selectAttack();
+
+        // If no attacks set up, use default
+        if (currentEnemyAttack == null) {
+            this.player.getEntity().handleDamage(this.entity, false);
+            this.currentTurn = BattleTurn.Player;
+            enemyTurnStarted = false; 
+            return;
+        }
+
         // Calculate battle area positions
         int entityPadding = BATTLE_REC.getWidth() / 10;
         int battleX0 = (int) BATTLE_REC.getX();
@@ -621,29 +633,29 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             playerY = battleY0 + (battleHeight - placeholderHeight) / 2;
         }
 
-        String enemyType = getEnemyType();
-        currentEnemyType = enemyType;
+        currentEnemyAttack = this.entity.selectAttack(); // Select attack first!
+        
 
         try {
-            String attackFileName = "Enemies/" + enemyType + "Attack.png";
+            String attackFileName = "Enemies/" + currentEnemyAttack.animationType + ".png";
             SpriteSheet attackSheet = null;
-            switch (enemyType) {
+            switch (currentEnemyAttack.animationType) {
                 case "ArmoredSkeleton": {
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 63, 63);
                     break;
                 }
-                case "DenialBoss":{
+                case "DenialBossAttack":{
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 255, 255);
                     break;
                 }
                 default: {
-                    attackSheet= new SpriteSheet(ImageLoader.load(attackFileName), 24, 24);
+                    attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 24, 24);
                 }
             }
-            activeAttackAnimation = createAttackAnimation(enemyType, attackSheet, enemyX, enemyY, playerX, playerY);
+            activeAttackAnimation = createAttackAnimation(currentEnemyAttack.attackName, attackSheet, enemyX, enemyY, playerX, playerY);
 
         } catch (Exception e) {
-            System.err.println("Failed to load " + enemyType + " attack animation: " + e.getMessage());
+            System.err.println("Failed to load " + currentEnemyAttack.animationType + ": " + e.getMessage());
             this.player.getEntity().handleDamage(this.entity, false);
             this.currentTurn = BattleTurn.Player;
             enemyTurnStarted = false;
@@ -673,22 +685,36 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
      * Creates the appropriate attack animation instance based on enemy type
      * Add new cases here when you create new enemy attack animations
      */
-    protected EnemyProjectileAttackAnimation createAttackAnimation(String enemyType, SpriteSheet sheet, 
-                                                   float startX, float startY, float targetX, float targetY) {
-        switch (enemyType) {
-            case "Skeleton":
-                return new SkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
-            case "Spirit":
-                return new SpiritAttack(sheet, startX, startY, targetX, targetY, 45);
-            case "ArmoredSkeleton":
-                return new ArmoredSkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
-            case "DenialBoss":
-                return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 48);
-            default:
-                System.err.println("Unknown enemy type: " + enemyType + ", using Skeleton attack");
-                return new SkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
-        }
+    protected EnemyProjectileAttackAnimation createAttackAnimation(String attackName, SpriteSheet sheet, 
+                                               float startX, float startY, float targetX, float targetY) {
+    switch (attackName) {
+        // Basic enemy attacks
+        case "Slash":
+            return new ArmoredSkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
+
+        case "BoneThrow":
+            return new SkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
+
+        case "LaunchOrb":
+            return new SpiritAttack(sheet, startX, startY, targetX, targetY, 45);
+            
+        // Denial Boss attacks
+        case "Explosion":
+            return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 48);
+        case "DenialBossSpecial":
+            return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 36); // Faster animation
+        case "DenialBossHeavy":
+            return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 60); // Slower, heavier
+            
+        // Add your new attack types here as you create them
+        // case "YourNewAttack":
+        //     return new YourNewAttackAnimation(sheet, startX, startY, targetX, targetY, speed);
+            
+        default:
+            System.err.println("Unknown attack name: " + attackName + ", using default Skeleton attack");
+            return new SkeletonAttack(sheet, startX, startY, targetX, targetY, 45);
     }
+}
 
     protected PlayerProjectileAttackAnimation createPlayerAttackAnimation(String weapon, SpriteSheet sheet, 
                                                    float startX, float startY, float targetX, float targetY) {

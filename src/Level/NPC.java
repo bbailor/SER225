@@ -26,6 +26,7 @@ import com.google.gson.annotations.Expose;
 public class NPC extends MapEntity {
     @Expose protected int id = 0;
     @Expose protected boolean isLocked = false;
+    @Expose protected Entity entity;
 
     //for enemy battle vision logic
     protected boolean autoBattleEnabled = true;
@@ -39,6 +40,13 @@ public class NPC extends MapEntity {
         super(x, y, spriteSheet, startingAnimation);
         this.id = id;
         getStartingDirection(this.getCurrentAnimationName());
+
+        // FIX: Initialize entity with default values
+        this.entity = new Entity(10, 30, true); 
+           
+        // Copy animations from NPC to Entity so they show in battle
+        this.entity.getAllAnimations().putAll(this.animations);
+
         getVisionTiles();
     }
 
@@ -60,6 +68,18 @@ public class NPC extends MapEntity {
     public NPC(int id, float x, float y) {
         super(x, y);
         this.id = id;
+    }
+
+    public Entity getEntity() {
+        return this.entity;
+    }
+    
+    protected void addAttack(String attackName, int weight, String animationType, double damage) {
+        this.entity.addAttack(attackName, weight, animationType, damage);
+    }
+    
+    protected void initializeEntity() {
+        // Subclasses override this to customize HP, mana, attacks, etc.
     }
 
     public int getId() { return id; }

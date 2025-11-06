@@ -19,6 +19,15 @@ public class ArmoredSkeleton extends NPC {
             new SpriteSheet(ImageLoader.load("Enemies/armored_skeleton.png"), 32, 32),
             "STAND_RIGHT"
         );
+
+        // Configure stats
+        this.entity.setMaxHealth(20);
+        this.entity.setBaseAttack(0);
+        
+        // Add attacks
+        this.addAttack("BoneThrow", 20, "SkeletonAttack", 3.0);
+        this.addAttack("Slash", 60, "ArmoredSkeletonAttack", 2.5);
+
         enemyType = " An Armored Skeleton";
     }
 

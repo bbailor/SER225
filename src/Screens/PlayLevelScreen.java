@@ -116,6 +116,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("hasDefeatedDenial", false);
         flagManager.addFlag("hasEnteredDepression",false);
         flagManager.addFlag("hasTalkedToBargainingBoss", false);
+        flagManager.addFlag("hasEnteredBargaining", false);
+        flagManager.addFlag("hasDefeatedAnger", false);
         
         
         // setup player
@@ -190,79 +192,22 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
      * Creates an Entity with a single "idle" frame that matches the interacted NPC's sprite.
      * This is used when the "start_battle" event is triggered (Yes pressed).
      */
-    private Entity buildEnemyEntityFor(MapEntity me) {
-        String path = null;
-        int spriteW = 32;
-        int spriteH = 32;
-        int scale   = 3;
-
-        int enemyHealth = 10;   // default health
-        int enemyAttack = 2;    // default attack
-
-        if (me instanceof Skeleton) {
-            path = "Enemies/skeleton.png";
-        } else if (me instanceof Spirit) {
-            path = "Enemies/spirit.png";
-        } else if (me instanceof ArmoredSkeleton) {
-            path = "Enemies/armored_skeleton.png";
-            enemyHealth = 15;  // Armored Skeleton HP
-        } else if (me instanceof DenialBoss) {
-            path = "Bosses/DenialBoss.png";
-            spriteW = 120;
-            spriteH = 120;
-            enemyHealth = 50;  // Boss HP
-        } else if (me instanceof DepressionBoss) {
-            path = "Bosses/DepressionBoss.png";
-            spriteW = 120;
-            spriteH = 120;
-            enemyHealth = 65;  // Depression Boss HP
-        } else if (me instanceof AngerBoss) {
-            path = "Bosses/AngerBoss.png";
-            spriteW = 120;
-            spriteH = 120;
-            enemyHealth = 55;  // Depression Boss HP
-        } else if (me instanceof BargainingBoss) {
-            path = "Bosses/BargainingBoss.png";
-            spriteW = 120;
-            spriteH = 120;
-            enemyHealth = 70;  // Depression Boss HP
+    private Entity getEnemyEntity(MapEntity me) {
+        // If it's an NPC, use its configured entity
+        if (me instanceof NPC) {
+            NPC npc = (NPC) me;
+            Entity entity = npc.getEntity();
             
-        
-        } else if (me instanceof NPC) {
-            // generic NPC fallback
-            return new Entity() {
-                {
-                    maxHealth = health = 10;
-                    baseAttack = 2;
-                }
-            };
-        } else {
-            // non-NPC fallback
-            return new Entity() {
-                {
-                    maxHealth = health = 10;
-                    baseAttack = 2;
-                }
-            };
-        }
-
-        final String finalPath = path;
-        final int w = spriteW, h = spriteH, sc = scale;
-        final int fHealth = enemyHealth;
-        final int fAttack = enemyAttack;
-
-        return new Entity() {
-            {
-                maxHealth = health = fHealth;
-                baseAttack = fAttack;
-
-                SpriteSheet ss = new SpriteSheet(ImageLoader.load(finalPath), w, h);
-                Frame idle = new FrameBuilder(ss.getSprite(0, 0), 9999)
-                        .withScale(sc)
-                        .build();
-                this.animations.put("idle", new Frame[] { idle });
+            // Make sure animations are copied
+            if (entity != null && entity.getAllAnimations().isEmpty()) {
+                entity.getAllAnimations().putAll(npc.getEntity().getAllAnimations());
             }
-        };
+            
+            return entity;
+        }
+        
+        // Fallback for non-NPC enemies (should never happen)
+        return new Entity(10, 30, true);
     }
 
     @Override
@@ -346,12 +291,17 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         // Start battle event
         if (eventName.equals("start_battle") && args.length > 0 && args[0] instanceof MapEntity me) {
-            // Debugging messsage
-            // System.out.println("[PlayLevelScreen] start_battle received with: " + me.getClass().getSimpleName());
-            Entity enemy = buildEnemyEntityFor(me);
+            // Use the NPC's entity instead of building a new one
+            Entity enemy = getEnemyEntity(me);
 
             boolean isBossBattle = me.getClass().getSimpleName().contains("Boss");
-            this.battleScreen = new BattleScreen(this.player.getEntity().getInventory(), this.player, enemy, me, isBossBattle);
+            this.battleScreen = new BattleScreen(
+                this.player.getEntity().getInventory(), 
+                this.player, 
+                enemy,  // Use the entity from NPC
+                me,     // Pass the NPC object
+                isBossBattle
+            );
             this.battleScreen.open();
             this.battleScreen.addistener(LISTENER_NAME, this);
             this.playLevelScreenState = PlayLevelScreenState.BATTLE;

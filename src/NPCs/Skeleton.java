@@ -19,6 +19,14 @@ public class Skeleton extends NPC {
             new SpriteSheet(ImageLoader.load("Enemies/skeleton.png"), 32, 32),
             "STAND_RIGHT"
         );
+
+        // Configure skeleton stats
+        this.entity.setMaxHealth(10);
+        this.entity.setBaseAttack(0);
+        
+        this.addAttack("BoneThrow", 60, "SkeletonAttack", 3.0);
+        this.addAttack("Slash", 20, "ArmoredSkeletonAttack", 4.5);
+
         enemyType = "A Skeleton";
     }
 
