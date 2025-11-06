@@ -15,9 +15,11 @@ import Engine.Inventory;
 import Engine.Screen;
 import Engine.Mouse;
 import Level.Entity;
+import Level.FlagManager;
 import Level.Item;
 import Level.ItemStack;
 import Screens.submenus.InventorySubmenu;
+import Screens.submenus.QuestSubMenu;
 import Screens.submenus.SaveSubmenu;
 import Screens.submenus.SelectionSubmenu;
 import Utils.Globals;
@@ -78,6 +80,12 @@ public class MenuScreen extends Screen implements Menu, MenuListener {
 
     public void setInventory(Inventory inv) {
         ((InventorySubmenu) this.actions.get("Inventory")).setInventory(inv);
+    }
+
+    public void setFlagManager(FlagManager flagManager) {
+        if (this.actions.get("Quests") != null) {
+            ((QuestSubMenu) this.actions.get("Quests")).setFlagManager(flagManager);
+        }
     }
 
     @Override
@@ -172,10 +180,11 @@ public class MenuScreen extends Screen implements Menu, MenuListener {
         }, new Entity())
             .setColumns(((this.menuStart.width) / InventorySubmenu.INV_SLOT_WIDTH) - 1)
         );
+        this.actions.put("Quests", new QuestSubMenu());
         this.selections = new ArrayList<>(this.actions.keySet()) {
             {
                 add(0, "Resume");
-                // TODO: Switch control screen and (todo) quest screen to the actions above
+                // TODO: Switch control screen to the actions above
                 add("Controls");
                 add("Quests");
                 add("Quit");
