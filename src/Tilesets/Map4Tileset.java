@@ -33,10 +33,10 @@ public class Map4Tileset extends Tileset {
 
         //Small water animation (6,2) → (0,3) → (1,3) → (2,3)
         Frame[] waterFrames = new Frame[] {
-            new FrameBuilder(getSubImage(6, 2), 100).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(0, 3), 100).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(1, 3), 100).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(2, 3), 100).withScale(tileScale).build()
+            new FrameBuilder(getSubImage(6, 2), 50).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(0, 3), 50).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(1, 3), 50).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(2, 3), 50).withScale(tileScale).build()
         };
         mapTiles.add(
             new MapTileBuilder(grassBase)
@@ -109,10 +109,10 @@ public class Map4Tileset extends Tileset {
 
         // Large pool top (3,4) → (4,4) → (5,4) → (6,4)
         Frame[] largePoolTopFrames = new Frame[] {
-            new FrameBuilder(getSubImage(3, 4), 120).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(4, 4), 120).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(5, 4), 120).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(6, 4), 120).withScale(tileScale).build()
+            new FrameBuilder(getSubImage(3, 4), 60).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(4, 4), 60).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(5, 4), 60).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(6, 4), 60).withScale(tileScale).build()
         };
         mapTiles.add(
             new MapTileBuilder(grassBase)
@@ -122,10 +122,10 @@ public class Map4Tileset extends Tileset {
 
         //Large pool bottom (3,5) → (4,5) → (5,5) → (6,5)
         Frame[] largePoolBottomFrames = new Frame[] {
-            new FrameBuilder(getSubImage(3, 5), 120).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(4, 5), 120).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(5, 5), 120).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(6, 5), 120).withScale(tileScale).build()
+            new FrameBuilder(getSubImage(3, 5), 60).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(4, 5), 60).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(5, 5), 60).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(6, 5), 60).withScale(tileScale).build()
         };
         mapTiles.add(
             new MapTileBuilder(grassBase)
