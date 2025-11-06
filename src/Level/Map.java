@@ -12,6 +12,7 @@ import Engine.GraphicsHandler;
 import Engine.ScreenManager;
 import EnhancedMapTiles.CollectableItem;
 import GameObject.Rectangle;
+import Level.OverworldAnimations.OverworldAttackAnimation;
 import Utils.Direction;
 import Utils.Point;
 
@@ -62,6 +63,7 @@ public class Map {
     protected ArrayList<NPC> npcs;
     protected ArrayList<Trigger> triggers;
     protected ArrayList<CollectableItem> collectableItems;
+    protected ArrayList<OverworldAttackAnimation> overworldAnimations;
 
     // current script that is being executed (if any)
     protected Script activeScript;
@@ -106,6 +108,7 @@ public class Map {
         this.npcs = new ArrayList<>();
         this.triggers = new ArrayList<>();
         this.collectableItems = new ArrayList<>();
+        this.overworldAnimations = new ArrayList<>();
     }
 
     private Map() {}
@@ -115,6 +118,7 @@ public class Map {
     // and instantiates a Camera
     public void setupMap() {
         animatedMapTiles = new ArrayList<>();
+        overworldAnimations = new ArrayList<>();
 
         loadMapFile();
 
@@ -591,6 +595,16 @@ public void entityInteract(Player player) {
         if (textbox.isActive()) {
             textbox.update();
         }
+
+        // Update overworld animations
+        java.util.Iterator<OverworldAttackAnimation> it = overworldAnimations.iterator();
+        while (it.hasNext()) {
+            OverworldAttackAnimation anim = it.next();
+            anim.update();
+            if (anim.isComplete()) {
+                it.remove();
+            }
+        }
     }
 
 
@@ -669,6 +683,12 @@ public void entityInteract(Player player) {
 
     public void draw(Player player, GraphicsHandler graphicsHandler) {
         camera.draw(player, graphicsHandler);
+
+        // Draw overworld animations on top of everything
+        for (OverworldAttackAnimation anim : overworldAnimations) {
+            anim.draw(graphicsHandler);
+        }
+
         if (textbox.isActive()) {
             textbox.draw(graphicsHandler);
         }
@@ -691,6 +711,15 @@ public void entityInteract(Player player) {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    /**
+     * Add an overworld attack animation to be displayed on the map
+     * @param animation The animation to display
+     */
+    public void addOverworldAnimation(OverworldAttackAnimation animation) {
+        animation.setMap(this);
+        overworldAnimations.add(animation);
     }
 
     public void addListener(GameListener listener) {

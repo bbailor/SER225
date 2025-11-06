@@ -250,30 +250,32 @@ public class NPC extends MapEntity {
  public void draw(GraphicsHandler graphicsHandler) {
         super.draw(graphicsHandler);
 
-        if (true) {
-            for (Point tile : tiles) {
-                // Convert map coordinates to screen coordinates using the camera
-                int screenX = Math.round(tile.x - map.getCamera().getX());
-                int screenY = Math.round(tile.y - map.getCamera().getY());
-                Rectangle visionBox = new Rectangle(screenX, screenY, 32, 32);
-                graphicsHandler.drawRectangle(visionBox, Color.RED);
-            }
-        }
+        //debug
+        // if (true) {
+        //     for (Point tile : tiles) {
+        //         // Convert map coordinates to screen coordinates using the camera
+        //         int screenX = Math.round(tile.x - map.getCamera().getX());
+        //         int screenY = Math.round(tile.y - map.getCamera().getY());
+        //         Rectangle visionBox = new Rectangle(screenX, screenY, 32, 32);
+        //         graphicsHandler.drawRectangle(visionBox, Color.RED);
+        //     }
+        
 
-        if (map != null && map.getPlayer() != null) {
-            Point playerTile1 = toTileCoords(map.getPlayer().getLocation()).add(new Point(32, 32));
-            Point playerTile2 = toTileCoords(map.getPlayer().getLocation()).add(new Point(32, 64));
-            Point[] playerTiles = {playerTile1, playerTile2};
+        //     if (map != null && map.getPlayer() != null) {
+        //         Point playerTile1 = toTileCoords(map.getPlayer().getLocation()).add(new Point(32, 32));
+        //         Point playerTile2 = toTileCoords(map.getPlayer().getLocation()).add(new Point(32, 64));
+        //         Point[] playerTiles = {playerTile1, playerTile2};
 
-            for(Point tile: playerTiles)
-            {
-                int playerScreenX = Math.round(tile.x - map.getCamera().getX());
-                int playerScreenY = Math.round(tile.y - map.getCamera().getY());
-                Rectangle playerBox = new Rectangle(playerScreenX, playerScreenY, 32, 32);
-                graphicsHandler.drawRectangle(playerBox, Color.BLUE);
-            }
+        //         for(Point tile: playerTiles)
+        //         {
+        //             int playerScreenX = Math.round(tile.x - map.getCamera().getX());
+        //             int playerScreenY = Math.round(tile.y - map.getCamera().getY());
+        //             Rectangle playerBox = new Rectangle(playerScreenX, playerScreenY, 32, 32);
+        //             graphicsHandler.drawRectangle(playerBox, Color.BLUE);
+        //         }
 
 
-        }
+        //     }
+        // }
     }
 } 
