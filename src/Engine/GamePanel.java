@@ -55,7 +55,7 @@ public class GamePanel extends JPanel {
 		// this game loop code will run in a separate thread from the rest of the program
 		// will continually update the game's logic and repaint the game's graphics
 		GameLoop gameLoop = new GameLoop(this);
-		gameLoopProcess = new Thread(gameLoop.getGameLoopProcess());
+		gameLoopProcess = new Thread(gameLoop.getGameLoopProcess(), "Render Thread");
 	}
 
 	// this is called later after instantiation, and will initialize screenManager

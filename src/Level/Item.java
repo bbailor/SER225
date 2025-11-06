@@ -99,7 +99,9 @@ public class Item {
 
     @Override
     public boolean equals(Object obj) {
-        // TODO Auto-generated method stub
+        if (obj instanceof Item item) {
+            return this.id == item.id;
+        }
         return super.equals(obj);
     }
 
