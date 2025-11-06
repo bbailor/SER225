@@ -6,6 +6,9 @@ import Game.ScreenCoordinator;
 import Level.Map;
 import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
+import Utils.Resources;
+import Utils.TailwindColorScheme;
+
 import java.awt.*;
 
 // This class is for the Controls screen
@@ -28,16 +31,6 @@ public class ControlsScreen extends Screen {
         // setup graphics on screen (background map, spritefont text)
         background = new TitleScreenMap();
         background.setAdjustCamera(false);
-        ControlsLabel = new SpriteFont("Controls", 15, 7, "Times New Roman", 30, Color.black);
-        MoveLabel = new SpriteFont("To move, use the arrow keys.", 150, 191, "Times New Roman", 20, Color.black);
-        InteractLabel = new SpriteFont("To interact with characters and objects, or to skip text, use the space bar.", 150, 221, "Times New Roman", 20, Color.black);
-        returnInstructionsLabel = new SpriteFont("Click anywhere or press SPACE to return to menu.", 20, 532, "Times New Roman", 30, Color.black);
-        inventoryLabel = new SpriteFont("Press \"E\" to open your inventory", 150, 251, "Times New Roman", 20, Color.black);
-        inventoryLabel2 = new SpriteFont("To move items in the inventory, press \"SPACE\" OR \"ENTER\"", 150, 281, "Times New Roman", 20, Color.black);
-        inventoryLabel3 = new SpriteFont("To use items in the inventory, press \"U\"", 150, 311, "Times New Roman", 20, Color.black);
-        inventoryLabel4 = new SpriteFont("To remove 1 item in the inventory, press \"DEL\"", 150, 341, "Times New Roman", 20, Color.black);
-        inventoryLabel5 = new SpriteFont("To remove all items in the slot, press \"BACKSPACE\"", 150, 371, "Times New Roman", 20, Color.black);
-        inventoryLabel6 = new SpriteFont("Use \"ESC\" or \"E\" to close your inventory", 150, 401, "Times New Roman", 20, Color.black);
 
         keyLocker.lockKey(Key.SPACE);
         mouseLocker.lockMouse();
@@ -63,15 +56,30 @@ public class ControlsScreen extends Screen {
 
     public void draw(GraphicsHandler graphicsHandler) {
         background.draw(graphicsHandler);
-        ControlsLabel.draw(graphicsHandler);
-        MoveLabel.draw(graphicsHandler);
-        InteractLabel.draw(graphicsHandler);
-        inventoryLabel.draw(graphicsHandler);
-        inventoryLabel2.draw(graphicsHandler);
-        inventoryLabel3.draw(graphicsHandler);
-        inventoryLabel4.draw(graphicsHandler);
-        inventoryLabel5.draw(graphicsHandler);
-        inventoryLabel6.draw(graphicsHandler);
-        returnInstructionsLabel.draw(graphicsHandler);
+        graphicsHandler.drawFilledRectangleWithBorder(1, 1, 786, 568, new Color(200, 200, 200, 225), Color.black, 3);
+
+        //CONTROLS
+        graphicsHandler.drawStringWithOutline("CONTROLS", 335, 50, Resources.press_start.deriveFont(22f), Color.RED, Color.black, 5);
+        graphicsHandler.drawStringWithOutline("Click anywhere or press space to exit.", 30, 550, Resources.press_start.deriveFont(14f), Color.RED, Color.black, 2);
+
+
+        //MOVEMENT
+        graphicsHandler.drawStringWithOutline("MOVEMENT + INTERACTIONS", 30, 90, Resources.press_start.deriveFont(12f), Color.RED, Color.black, 3);
+        graphicsHandler.drawStringWithOutline("- Use WASD to move. Press SPACE to pick up items.", 30, 120, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("- Use SPACE to interact with NPCs and skip dialouge.", 30, 150, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
+
+        //MENU SCREEN
+        graphicsHandler.drawStringWithOutline("SCREENS", 30, 200, Resources.press_start.deriveFont(12f), Color.RED, Color.black, 3);
+        graphicsHandler.drawStringWithOutline("- Press ESC to open the menu.", 30, 230, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("- Interact with menus using the mouse, or use", 30, 260, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("the arrow keys along with ENTER/SPACE and ESC.", 30, 290, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("- In the inventory, use U to use items, and BACKSPACE to remove items.", 30, 320, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
+
+        //SAVING
+        graphicsHandler.drawStringWithOutline("SAVING", 30, 370, Resources.press_start.deriveFont(12f), Color.RED, Color.black, 3);
+        graphicsHandler.drawStringWithOutline("- Use the SAVE tab in the menu to save your progress.", 30, 400, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("- To load saved progress, click on the saved file in the save menu.", 30, 430, Resources.press_start.deriveFont(11.2f), Color.white, Color.black, 2);
+
+       //add mroe controls if needed
     }
 }
