@@ -12,7 +12,7 @@ public class DepressionMap extends Map {
     public DepressionMap() {
         super("depression_map.txt", new Map4Tileset());
 
-        // ✅ Spawn the player safely at map tile (3, 4)
+
         // Adjust X,Y below if you want a different spot
         this.playerStartPosition = getMapTile(33, 4).getLocation();
     }
@@ -22,7 +22,7 @@ public class DepressionMap extends Map {
         return new ArrayList<>();
     }
 
-    // Add boss to map
+
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
@@ -32,6 +32,8 @@ public class DepressionMap extends Map {
         db.setInteractScript(new DepressionBossScript());
         db.setCurrentAnimationName("STAND_RIGHT");
         npcs.add(db);
+
+        //add enemy npcs?
 
         return npcs;
     }

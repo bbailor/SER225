@@ -44,12 +44,12 @@ public class Map4Tileset extends Tileset {
                 .withTileType(TileType.NOT_PASSABLE)
         );
 
-        // Define solid (collision) tiles
+        // Solid (collision) tiles
         int[][] solidTiles = {
             {6,0}, {1,1}, {2,1}, {3,1}, {4,1},
             {3,4}, {3,5}, {4,4}, {4,5},
             {5,4}, {5,5}, {6,4}, {6,5},
-            {0,4}, {1,4}, {2,4}, 
+            {0,4}, {1,4}, {2,4},
             {3,3}, {4,3}, {5,3}, {6,3}
         };
 
@@ -58,7 +58,19 @@ public class Map4Tileset extends Tileset {
             solidSet.add(s[0] + "," + s[1]);
         }
 
-        //Generate regular tiles (this part stays identical)
+        // Tiles that should render ABOVE the player (top layer)
+        int[][] topLayerTiles = {
+            {5,1}, {6,1},
+            {0,2}, {1,2}, {2,2}, {3,2}, {4,2}, {5,2},
+            {3,3}, {4,3}, {5,3}, {6,3}
+        };
+
+        Set<String> topLayerSet = new HashSet<>();
+        for (int[] t : topLayerTiles) {
+            topLayerSet.add(t[0] + "," + t[1]);
+        }
+
+        // Generate all remaining tiles
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < columns; x++) {
                 boolean isGrassFrame = (x == 0 && y == 0) || (x == 1 && y == 0);
@@ -74,11 +86,20 @@ public class Map4Tileset extends Tileset {
                             ? TileType.NOT_PASSABLE
                             : TileType.PASSABLE;
 
-                    mapTiles.add(
-                        new MapTileBuilder(grassBase)
-                            .withTopLayer(tileFrame)
-                            .withTileType(type)
-                    );
+                    // Place on top or bottom layer
+                    if (topLayerSet.contains(x + "," + y)) {
+                        mapTiles.add(
+                            new MapTileBuilder(grassBase)
+                                .withTopLayer(tileFrame)
+                                .withTileType(type)
+                        );
+                    } else {
+                        mapTiles.add(
+                            new MapTileBuilder(grassBase)
+                                .withBottomLayer(tileFrame)
+                                .withTileType(type)
+                        );
+                    }
 
                 } catch (Exception e) {
                     System.out.println("Skipped invalid tile (" + x + "," + y + ")");
@@ -86,8 +107,7 @@ public class Map4Tileset extends Tileset {
             }
         }
 
-        //add the large pool animations at the end
-        //Large pool top (3,4) → (4,4) → (5,4) → (6,4)
+        // Large pool top (3,4) → (4,4) → (5,4) → (6,4)
         Frame[] largePoolTopFrames = new Frame[] {
             new FrameBuilder(getSubImage(3, 4), 120).withScale(tileScale).build(),
             new FrameBuilder(getSubImage(4, 4), 120).withScale(tileScale).build(),
