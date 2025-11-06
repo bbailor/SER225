@@ -88,7 +88,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         this.flagManager = data.flagManager;
         this.switchMap(data.map);
         this.player.setLocation(data.playerPos.x, data.playerPos.y);
-        this.menuScreen.setInventory(this.player.getEntity().getInventory());
+        this.menuScreen.setPlayer(this.player);
         this.menuScreen.setFlagManager(this.flagManager);
     }
 
@@ -139,7 +139,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         // this.saveScreen.addistener(LISTENER_NAME, this);
 
         this.menuScreen = new MenuScreen();
-        this.menuScreen.setInventory(this.player.getEntity().getInventory());
+        this.menuScreen.setPlayer(this.player);
         this.menuScreen.setFlagManager(this.flagManager);
         this.menuScreen.addistener(LISTENER_NAME, this);
     }
@@ -170,8 +170,10 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         GlobalKeyboardHandler.runHandlers(this.screenCoordinator);
 
-        --menuCloseCD;
-        if (this.pressCD >= 0) {
+        if (this.menuCloseCD > 0) {
+            --this.menuCloseCD;
+        }
+        if (this.pressCD > 0) {
             this.pressCD--;
             return;
         }
@@ -182,7 +184,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         //     this.playLevelScreenState = PlayLevelScreenState.INVENTORY;
         // }
 
-        if (Keyboard.isKeyDown(Key.ESC) && this.battleScreen == null) {
+        if (Keyboard.isKeyDown(Key.ESC) && this.battleScreen == null && this.menuCloseCD == 0) {
             this.menuScreen.open();
             this.playLevelScreenState = PlayLevelScreenState.MENU;
         }
@@ -262,7 +264,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
     public void onMenuClose() {
         this.playLevelScreenState = PlayLevelScreenState.RUNNING;
         this.battleScreen = null;
-        menuCloseCD = 12;
+        this.menuCloseCD = 12;
     }
 
     @Override

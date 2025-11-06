@@ -12,12 +12,15 @@ import org.jetbrains.annotations.Nullable;
 import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.Inventory;
+import Engine.Key;
+import Engine.Keyboard;
 import Engine.Screen;
 import Engine.Mouse;
 import Level.Entity;
 import Level.FlagManager;
 import Level.Item;
 import Level.ItemStack;
+import Level.Player;
 import Screens.submenus.InventorySubmenu;
 import Screens.submenus.QuestSubMenu;
 import Screens.submenus.SaveSubmenu;
@@ -33,9 +36,11 @@ import Utils.TailwindColorScheme;
 public class MenuScreen extends Screen implements Menu, MenuListener {
 
     protected List<String> selections;
-    protected String status = "";
     protected SelectionSubmenu selector;
     @Nullable protected String selectedAction;
+    protected Player player;
+    protected String status = "";
+    protected int openMenuCD = 0;
     protected Map<String, Menu> actions = new HashMap<>();
     protected Map<String, MenuListener> listeners = new HashMap<>();
     protected Rectangle selectorRec = new Rectangle(
@@ -71,6 +76,7 @@ public class MenuScreen extends Screen implements Menu, MenuListener {
     @Override
     public void open() {
         this.selectedAction = null;
+        this.openMenuCD = Globals.KEYBOARD_CD;
     }
 
     @Override
@@ -78,8 +84,9 @@ public class MenuScreen extends Screen implements Menu, MenuListener {
         
     }
 
-    public void setInventory(Inventory inv) {
-        ((InventorySubmenu) this.actions.get("Inventory")).setInventory(inv);
+    public void setPlayer(Player player) {
+        var inv = ((InventorySubmenu) this.actions.get("Inventory"));
+        inv.setEntity(player.getEntity());
     }
 
     public void setFlagManager(FlagManager flagManager) {
@@ -121,8 +128,14 @@ public class MenuScreen extends Screen implements Menu, MenuListener {
 
     @Override
     public void update() {
+        if (this.openMenuCD > 0) {
+            --this.openMenuCD;
+        }
         if (this.selectedAction == null || this.selectorRec.contains(Mouse.getCurrentPosition())) {
             this.selector.update();
+            if (Keyboard.isKeyDown(Key.ESC) && this.openMenuCD == 0) {
+                this.close();
+            }
         } else {
             this.actions.get(this.selectedAction).update();
         }

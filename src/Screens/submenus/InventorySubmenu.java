@@ -58,6 +58,11 @@ public class InventorySubmenu implements Menu {
         this.inventory = inventory;
     }
 
+    public void setEntity(Entity entity) {
+        this.openingEntity = entity;
+        this.setInventory(entity.getInventory());
+    }
+
     @Override
     public Map<String, MenuListener> getListeners() {
         return this.listeners;
