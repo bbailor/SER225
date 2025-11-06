@@ -47,10 +47,10 @@ public class WizardScript extends Script {
                 addScriptAction(new TextboxScriptAction() {{
                     addScriptAction(new WaitScriptAction(30));
                     addText("(Hint: Use [SPACE] to pick up items)");
-                    addText("(Hint: Use [E] to open your inventory)");
-                    addText("Osiris: What you seek is not here.\nPerhaps in the forest?");
+                    addText("(Hint: Use [ESC] to open your inventory)");
+                    addText("Osiris: What you seek is not here.\nFollow the path to start your journey.");
                     addText("Osiris: Oh, and Gnomeo... I've been having\ntrouble with skeletons lately.");
-                    addText("Osiris: If you see any, be careful.\nThey've been more aggressive than usual.");
+                    addText("Osiris: If you see any, come and let me know.\nThey've been more aggressive than usual.");
                 }});
 
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToWizard", true));
