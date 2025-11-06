@@ -7,61 +7,111 @@ import GameObject.Frame;
 import Level.TileType;
 import Level.Tileset;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Map4Tileset extends Tileset {
 
     public Map4Tileset() {
-        super(ImageLoader.load("DepressionTileset.png"), 50, 50, 3);
+        super(ImageLoader.load("DepressionTileset.png"), 50, 50, 2);
     }
 
     @Override
     public ArrayList<MapTileBuilder> defineTiles() {
         ArrayList<MapTileBuilder> mapTiles = new ArrayList<>();
 
-        int columns = 7; // confirmed correct
+        int columns = 7;
         int rows = 6;
 
-        // 🌿 Animated grass (base)
+        //Grass base (0,0) <-> (1,0)
         Frame[] grassFrames = new Frame[] {
-            new FrameBuilder(getSubImage(0, 0), 150).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(1, 0), 150).withScale(tileScale).build()
+            new FrameBuilder(getSubImage(0, 0), 25).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(1, 0), 25).withScale(tileScale).build()
         };
-        MapTileBuilder grassTile = new MapTileBuilder(grassFrames);
-        mapTiles.add(grassTile);
-
+        mapTiles.add(new MapTileBuilder(grassFrames));
         Frame grassBase = grassFrames[0];
 
-        // 💧 Animated water (solid)
+        //Small water animation (6,2) → (0,3) → (1,3) → (2,3)
         Frame[] waterFrames = new Frame[] {
-            new FrameBuilder(getSubImage(2, 0), 300).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(3, 0), 300).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(4, 0), 300).withScale(tileScale).build(),
-            new FrameBuilder(getSubImage(5, 0), 300).withScale(tileScale).build()
+            new FrameBuilder(getSubImage(6, 2), 100).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(0, 3), 100).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(1, 3), 100).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(2, 3), 100).withScale(tileScale).build()
         };
-        mapTiles.add(new MapTileBuilder(waterFrames).withTileType(TileType.NOT_PASSABLE));
+        mapTiles.add(
+            new MapTileBuilder(grassBase)
+                .withTopLayer(waterFrames)
+                .withTileType(TileType.NOT_PASSABLE)
+        );
 
-        // 🧩 Now automatically make every other tile appear over grass
+        // Define solid (collision) tiles
+        int[][] solidTiles = {
+            {6,0}, {1,1}, {2,1}, {3,1}, {4,1},
+            {3,4}, {3,5}, {4,4}, {4,5},
+            {5,4}, {5,5}, {6,4}, {6,5},
+            {0,4}, {1,4}, {2,4}, 
+            {3,3}, {4,3}, {5,3}, {6,3}
+        };
+
+        Set<String> solidSet = new HashSet<>();
+        for (int[] s : solidTiles) {
+            solidSet.add(s[0] + "," + s[1]);
+        }
+
+        //Generate regular tiles (this part stays identical)
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < columns; x++) {
-                // Skip grass and water tiles
-                if (y == 0 && x <= 5) continue;
+                boolean isGrassFrame = (x == 0 && y == 0) || (x == 1 && y == 0);
+                boolean isWaterFrame = (x == 6 && y == 2) || (x <= 2 && y == 3);
+                if (isGrassFrame || isWaterFrame) continue;
 
                 try {
                     Frame tileFrame = new FrameBuilder(getSubImage(x, y))
-                        .withScale(tileScale)
-                        .build();
+                            .withScale(tileScale)
+                            .build();
 
-                    // Make the tile appear over grass
-                    MapTileBuilder layeredTile = new MapTileBuilder(grassBase)
-                        .withTopLayer(tileFrame)
-                        .withTileType(TileType.PASSABLE);
+                    TileType type = solidSet.contains(x + "," + y)
+                            ? TileType.NOT_PASSABLE
+                            : TileType.PASSABLE;
 
-                    mapTiles.add(layeredTile);
+                    mapTiles.add(
+                        new MapTileBuilder(grassBase)
+                            .withTopLayer(tileFrame)
+                            .withTileType(type)
+                    );
+
                 } catch (Exception e) {
-                    System.out.println("Skipped invalid tile (" + x + ", " + y + ")");
+                    System.out.println("Skipped invalid tile (" + x + "," + y + ")");
                 }
             }
         }
+
+        //add the large pool animations at the end
+        //Large pool top (3,4) → (4,4) → (5,4) → (6,4)
+        Frame[] largePoolTopFrames = new Frame[] {
+            new FrameBuilder(getSubImage(3, 4), 120).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(4, 4), 120).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(5, 4), 120).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(6, 4), 120).withScale(tileScale).build()
+        };
+        mapTiles.add(
+            new MapTileBuilder(grassBase)
+                .withTopLayer(largePoolTopFrames)
+                .withTileType(TileType.NOT_PASSABLE)
+        );
+
+        //Large pool bottom (3,5) → (4,5) → (5,5) → (6,5)
+        Frame[] largePoolBottomFrames = new Frame[] {
+            new FrameBuilder(getSubImage(3, 5), 120).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(4, 5), 120).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(5, 5), 120).withScale(tileScale).build(),
+            new FrameBuilder(getSubImage(6, 5), 120).withScale(tileScale).build()
+        };
+        mapTiles.add(
+            new MapTileBuilder(grassBase)
+                .withTopLayer(largePoolBottomFrames)
+                .withTileType(TileType.NOT_PASSABLE)
+        );
 
         System.out.println("Depression tileset loaded successfully. Total tiles: " + mapTiles.size());
         return mapTiles;

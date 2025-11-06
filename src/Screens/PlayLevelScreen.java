@@ -37,6 +37,7 @@ import NPCs.Skeleton;
 import NPCs.Spirit;
 import NPCs.AngerBoss;
 import NPCs.ArmoredSkeleton;
+import NPCs.BargainingBoss;
 import NPCs.DenialBoss;
 import NPCs.DepressionBoss;
 import Utils.Direction;
@@ -113,6 +114,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("wizardRewardGiven", false);
         flagManager.addFlag("hasEnteredAnger", false);
         flagManager.addFlag("hasDefeatedDenial", false);
+        flagManager.addFlag("hasEnteredDepression",false);
+        flagManager.addFlag("hasTalkedToBargainingBoss", false);
         
         
         // setup player
@@ -212,12 +215,17 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
             path = "Bosses/DepressionBoss.png";
             spriteW = 120;
             spriteH = 120;
-            enemyHealth = 75;  // Depression Boss HP
+            enemyHealth = 65;  // Depression Boss HP
         } else if (me instanceof AngerBoss) {
             path = "Bosses/AngerBoss.png";
             spriteW = 120;
             spriteH = 120;
-            enemyHealth = 65;  // Depression Boss HP
+            enemyHealth = 55;  // Depression Boss HP
+        } else if (me instanceof BargainingBoss) {
+            path = "Bosses/BargainingBoss.png";
+            spriteW = 120;
+            spriteH = 120;
+            enemyHealth = 70;  // Depression Boss HP
             
         
         } else if (me instanceof NPC) {
