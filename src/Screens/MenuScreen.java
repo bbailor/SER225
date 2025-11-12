@@ -21,6 +21,7 @@ import Level.FlagManager;
 import Level.Item;
 import Level.ItemStack;
 import Level.Player;
+import Screens.submenus.ControlsSubMenu;
 import Screens.submenus.InventorySubmenu;
 import Screens.submenus.QuestSubMenu;
 import Screens.submenus.SaveSubmenu;
@@ -194,12 +195,11 @@ public class MenuScreen extends Screen implements Menu, MenuListener {
             .setColumns(((this.menuStart.width) / InventorySubmenu.INV_SLOT_WIDTH) - 1)
         );
         this.actions.put("Quests", new QuestSubMenu());
+        this.actions.put("Controls", new ControlsSubMenu());
         this.selections = new ArrayList<>(this.actions.keySet()) {
             {
                 add(0, "Resume");
                 // TODO: Switch control screen to the actions above
-                add("Controls");
-                add("Quests");
                 add("Quit");
             }
         };

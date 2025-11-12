@@ -21,6 +21,7 @@ public class ControlsScreen extends Screen {
     protected SpriteFont MoveLabel, InteractLabel;
     protected SpriteFont returnInstructionsLabel;
     protected SpriteFont inventoryLabel, inventoryLabel2, inventoryLabel3, inventoryLabel4, inventoryLabel5, inventoryLabel6;
+    protected String gameState;
 
     public ControlsScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
