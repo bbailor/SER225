@@ -21,6 +21,7 @@ import FightAnimations.KnifeOfLifeAttack;
 import FightAnimations.PlayerProjectileAttackAnimation;
 import FightAnimations.SkeletonAttack;
 import FightAnimations.SpiritAttack;
+import FightAnimations.AngerSpiritAttack;
 import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
@@ -697,7 +698,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
         case "LaunchOrb":
             return new SpiritAttack(sheet, startX, startY, targetX, targetY, 45);
-            
+        case "FireOrb":
+            return new AngerSpiritAttack(sheet, startX, startY, targetX, targetY, 45);
+
         // Denial Boss attacks
         case "Explosion":
             return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 48);

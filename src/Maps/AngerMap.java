@@ -7,6 +7,7 @@ import NPCs.DenialBoss;
 import NPCs.Skeleton;
 import NPCs.Spirit;
 import NPCs.Wizard;
+import NPCs.AngerSpirit;
 import Scripts.SimpleTextScript;
 import Scripts.MapTwoAnger.BargainingEntryScript;
 import Scripts.MapOneDenial.AngerEntryScript;
@@ -36,10 +37,10 @@ public class AngerMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        Spirit sp   = new Spirit(101, getMapTile(17, 15).getLocation());
-        sp.setInteractScript(new DenialEnemyScript());
-        sp.setCurrentAnimationName("STAND_LEFT");
-        npcs.add(sp);
+        AngerSpirit an   = new AngerSpirit(101, getMapTile(17, 15).getLocation());
+        an.setInteractScript(new DenialEnemyScript());
+        an.setCurrentAnimationName("STAND_LEFT");
+        npcs.add(an);
 
         // // enemies near player, all share DenialEnemyScript (spread out a bit)
         // Skeleton s  = new Skeleton(100, getMapTile(10, 8).getLocation().subtractY(16).subtractX(6));
