@@ -1,0 +1,297 @@
+package Utils;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.Mixer;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+public class SoundThreads {
+    public static final Settings settings = new Settings();
+    protected static int _id = 0;
+    protected int id;
+    Map<Integer, Track> tracks;
+    protected Mixer sound_device;
+    
+    public SoundThreads() {
+        this(AudioSystem.getMixer(null));
+    }
+        
+    public SoundThreads(Mixer mixer) {
+        this.tracks = new HashMap<>();
+        this.sound_device = mixer;
+        this.id = ++_id;
+        try {
+            this.sound_device.open();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void play(Type type, int track_number, File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        if (this.tracks.containsKey(track_number)) {
+            this.tracks.get(track_number).setSound(file, type);
+        } else {
+            this.tracks.put(track_number, new Track(file, type, this.id));
+        }
+    }
+
+    public void play(int track_number, File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        this.play(Type.Music, track_number, file);
+    }
+
+    public Track getTrack(int track_number) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+        if (!this.tracks.containsKey(track_number)) {
+            var track = new Track(this.id);
+            this.tracks.put(track_number, track);
+            return track;
+        }
+        return this.tracks.get(track_number);
+    }
+
+    public class Track implements AutoCloseable {
+        protected final State state;
+        protected ReentrantLock state_lock = new ReentrantLock();
+        protected AudioFormat format;
+        protected final SourceDataLine line;
+        protected final Thread thread;
+        // would need to be a byte array or list, rather not
+        // protected static final Map<File, AudioInputStream> cache = new HashMap<>();
+
+        // sets or calculates loop point based off of byte position
+        public void setLoopPoint(float start, float end, boolean bySecond) {
+            if (start > end && end != -1) {
+                throw new RuntimeException("start > end");
+            }
+            this.state_lock.lock();
+            this.state.loop_point_start = (int) start;
+            this.state.loop_point_end = (int) end;
+            // gemma gave me this calculation (second to frame time)
+            if (bySecond) {
+                this.state.loop_point_start = (int) (this.state.loop_point_start * this.format.getFrameRate() * this.format.getFrameSize());
+                this.state.loop_point_end = end == - 1 ? -1 : (int) (this.state.loop_point_end * this.format.getFrameRate() * this.format.getFrameSize());
+            }
+            this.state.loop_data = new ArrayList<>();
+            this.state_lock.unlock();
+        }
+
+        // clear the loop data
+        public void clearLoop() {
+            this.state_lock.lock();
+            this.state.loop_point_start = 0;
+            this.state.loop_point_end = -1;
+            this.state.loop_data = null;
+            this.state_lock.unlock();
+        }
+        
+        //sets the sound file and volume type
+        protected void setSound(File file, Type type) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+            this.state_lock.lock();
+            if (type != null) {
+                state.type = type;
+            }
+            if (this.line != null && this.line.isOpen()) {
+                this.line.close();
+            }
+            // close system resources
+            if (this.state.stream != null) {
+                this.state.stream.close();
+            }
+            this.clearLoop();
+            this.state.position = 0;
+            // open the new file
+            if (file != null) {
+                this.state.stream = AudioSystem.getAudioInputStream(file);
+            } else {
+                this.state.stream = new AudioInputStream(new InputStream() {
+                    @Override
+                    public int read() throws IOException {
+                        return 0;
+                    }
+                    @Override
+                    public int available() throws IOException {
+                        return 0;
+                    }
+                }, new AudioFormat(48000, 16, 1, true, false), 0);
+            }
+            // this.state.stream.mark(Integer.MAX_VALUE);
+            this.format = state.stream.getFormat();
+            if (this.line != null) {
+                // restart with any new format
+                this.line.open(format);
+                this.line.start();
+            }
+            this.state_lock.unlock();
+        }
+        
+        // set sound while keeping the same type
+        public void setSound(File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+            this.setSound(file, null);
+        }
+
+        protected FloatControl getGainControl() { // Gain float controller for the line
+            return (FloatControl) this.line.getControl(FloatControl.Type.MASTER_GAIN);
+        }
+
+        protected void updateGain(Type type) {
+            var gain = this.getGainControl();
+            // un-normalization -> min - normalized_value * (max - min) according to gemmma3
+            var value = (gain.getMinimum()) + (settings.volumes.getOrDefault(type, 1f) * settings.master_volume) * -(gain.getMinimum());
+            gain.setValue(value);
+        }
+
+        private class runner implements Runnable {
+
+            @Override
+            public void run() {
+                var bytes = new byte[Track.this.state.play_buf_size]; // buffer
+                int loop_index = 0;
+                boolean in_loop = false;
+                try {
+                    while (Track.this.state.running) {
+                        Track.this.state_lock.lock();
+                        Track.this.updateGain(Track.this.state.type); // set any vol changes
+                        if (Track.this.state.stream.available() <= 0 && !in_loop) {
+                            Track.this.state_lock.unlock();
+                            continue;
+                        }
+                        if (in_loop) {
+                            if (Track.this.state.loop_data == null) {
+                                in_loop = false;
+                                Track.this.state_lock.unlock();
+                                continue;
+                            }
+                            // end buf pos
+                            var len = Math.min(loop_index + Track.this.state.play_buf_size, Track.this.state.loop_data.size());
+                            for (int i = loop_index; i < len; ++i) {
+                                bytes[i - loop_index] = Track.this.state.loop_data.get(i);
+                            }
+                            Track.this.line.write(bytes, 0, len - loop_index);
+                            loop_index = len;
+                            Track.this.state.position = Track.this.state.loop_point_start + loop_index;
+                            if (len >= Track.this.state.loop_data.size()) {
+                                loop_index = 0;
+                            }
+                            Track.this.state_lock.unlock();
+                            continue;
+                        }
+                        if (Track.this.state.paused) {
+                            Track.this.state_lock.unlock();
+                            continue;
+                        }
+                        
+                        var actual_read = Track.this.state.stream.readNBytes(bytes, 0, Track.this.state.play_buf_size);
+                        Track.this.state.position += actual_read;
+                        Track.this.line.write(bytes, 0, actual_read);
+                        if (Track.this.state.loop_data != null) {
+                            int possible_start = (Track.this.state.position - Track.this.state.loop_point_start);
+                            if (Track.this.state.position >= Track.this.state.loop_point_start) {
+                                int added = 0;
+                                for (; added < actual_read - (possible_start < Track.this.state.play_buf_size ? possible_start : 0); ++added) {
+                                    // this.state.loop_data[added+loop_index] = bytes[added + (possible_start < this.state.play_buf_size ? possible_start : 0)];
+                                    Track.this.state.loop_data.add(bytes[added + (possible_start < Track.this.state.play_buf_size ? possible_start : 0)]);
+                                    if (Track.this.state.loop_data.size() == Track.this.state.loop_point_end - Track.this.state.loop_point_start && Track.this.state.loop_point_end != -1) {
+                                        break;
+                                    }
+                                }
+                                // loop_index += added;
+                            }
+                            if (Track.this.state.stream.available() <= 0 || (Track.this.state.loop_data.size() >= (Track.this.state.loop_point_end - Track.this.state.loop_point_start) && Track.this.state.loop_point_end != -1)) {
+                                in_loop = true;
+                                loop_index = 0;
+                            }
+                        }
+                        Track.this.state_lock.unlock();
+                    }
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        public Track(File file, Type type, int thread_id) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+            this.state_lock.lock();
+            this.state = new State();
+            this.setSound(file, type);
+            this.line = (SourceDataLine) SoundThreads.this.sound_device.getLine(new DataLine.Info(SourceDataLine.class, format));
+            this.line.open(format);
+            this.updateGain(type);
+            this.line.start();
+            this.thread = new Thread(new runner(), "Sound Threads " + id + " Track - " + thread_id);
+            this.thread.start();
+            this.state_lock.unlock();
+        }
+
+        public Track(int thread_id) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+            this(null, Type.Music, thread_id);
+        }
+
+        public Track(File file) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+            this(file, Type.Music, 0);
+        }
+
+        public Track(File file, int thread_id) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+            this(file, Type.Music, thread_id);
+        }
+
+        public Track(Type type) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+            this(null, type, 0);
+        }
+
+        public Track(Type type, int thread_id) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+            this(null, type, thread_id);
+        }
+
+        @Override
+        public void close() throws Exception {
+            this.state_lock.lock();
+            this.state.running = false;
+            this.state.stream.close();
+            this.clearLoop();
+            this.line.close();
+            this.state.stream.close();
+            this.state_lock.unlock();
+        }
+
+        public static class State {
+            public boolean running = true;
+            public boolean paused = false;
+            public int position = 0;
+            protected int loop_point_start = 0;
+            protected int loop_point_end = -1;
+            protected List<Byte> loop_data = null;
+            protected AudioInputStream stream;
+            protected Type type;
+            protected int play_buf_size = 4096;
+        }
+    }
+
+    public enum Type {
+        SFX,
+        Ambience,
+        Music
+    }
+
+    public static class Settings {
+        public Map<Type, Float> volumes = new EnumMap<>(Type.class);
+        public float master_volume = 1;
+        private Settings() {}
+
+    }
+}
