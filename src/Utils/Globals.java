@@ -26,6 +26,7 @@ import Utils.Serializers.ScriptSerializer;
 
 public abstract class Globals {
     
+    public static final SoundThreads SOUND_SYSTEM = new SoundThreads();
     /** Base hover color for ui's */
     public static final Color HOVER_COLOR = TailwindColorScheme.amber600;
     /** Base unfocused hover color for ui's */
