@@ -74,7 +74,7 @@ public class TestMap extends Map {
         // Will appear when wizardQuestStarted is true AND wizardSaved is false
         questSkeleton.setExistenceFlag("wizardSaved"); 
         questSkeleton.setCurrentAnimationName("STAND_RIGHT");
-        questSkeleton.setAutoBatlte(false);
+        questSkeleton.setAutoBattle(false);
         npcs.add(questSkeleton);
         // BargainingBoss b = new BargainingBoss(103, getMapTile(10, 10).getLocation().subtractY(16).subtractX(6));
         // b.setInteractScript(new BargainingBossScript());
@@ -138,7 +138,7 @@ public class TestMap extends Map {
         collectables.add(new CollectableItem(getMapTile(4, 3).getLocation(), Item.ItemList.cherry));
         collectables.add(new CollectableItem(getMapTile(2, 9).getLocation(), Item.ItemList.cherry));
 
-        // collectables.add(new CollectableItem(getMapTile(10, 24).getLocation(), Item.ItemList.cat));
+        //collectables.add(new CollectableItem(getMapTile(10, 24).getLocation(), Item.ItemList.cloakOfConcealment));
         // collectables.add(new CollectableItem(getMapTile(16, 20).getLocation(), Item.ItemList.cat));
         return collectables;
     }

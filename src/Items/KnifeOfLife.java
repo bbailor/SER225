@@ -10,9 +10,8 @@ import Level.Weapon;
 public class KnifeOfLife extends Weapon {
 
     public KnifeOfLife() {
-        //this.animations.put('battle...')
-        //add battle animation battlescreen
-        super("knifeoflife", "Knife of Life", "desc", 2.5);
+
+        super("knifeoflife", "Knife of Life", "Trusty knife, gifted to you by Osirus.", 2.5);
 
         addAnimation("default", new FrameBuilder[] {
             new FrameBuilder(ImageLoader.load("weapons/knifeOfLife.png"))

@@ -11,6 +11,7 @@ import Builders.FrameBuilder;
 import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
+import Items.CloakOfConcealment;
 import Items.KnifeOfLife;
 
 /**
@@ -144,6 +145,9 @@ public class Item {
                 addAnimation("default", frames);
             }
         };
+
+        public static Item cloakOfConcealment = new CloakOfConcealment();
+        
 
         public static Item cherry = new Item("cherry", "Cherry", "A tasty cherry", 20) {
             @Override
