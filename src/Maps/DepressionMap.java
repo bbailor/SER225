@@ -2,6 +2,7 @@ package Maps;
 
 import Level.*;
 import NPCs.*;
+import Scripts.MapFiveAcceptance.AcceptanceEntryScript;
 import Scripts.MapFourDepression.*;
 import Tilesets.Map4Tileset;
 import Utils.Point;
@@ -45,6 +46,7 @@ public class DepressionMap extends Map {
 
     @Override
     public void loadScripts() {
-        // No global scripts yet
+        getMapTile(2, 6).setInteractScript(new AcceptanceEntryScript());
+        getMapTile(1, 6).setInteractScript(new AcceptanceEntryScript());
     }
 }

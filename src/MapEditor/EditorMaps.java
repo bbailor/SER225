@@ -3,6 +3,7 @@ package MapEditor;
 import Level.Map;
 import Maps.MapOneDenial;
 import Maps.TestMap;
+import Maps.AcceptanceMap;
 import Maps.AngerMap;
 import Maps.DepressionMap;
 import Maps.BargainingMap;
@@ -19,6 +20,7 @@ public class EditorMaps {
             add("Anger");
             add("Depression");
             add("Bargaining");
+            add("Acceptance");
         }};
     }
 
@@ -39,6 +41,8 @@ public class EditorMaps {
                 return new DepressionMap();
             case "Bargaining":
                 return new BargainingMap();
+            case "Acceptance":
+                return new AcceptanceMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }
