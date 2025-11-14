@@ -117,7 +117,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("wizardSaved", false);
         flagManager.addFlag("wizardRewardGiven", false);
         flagManager.addFlag("hasEnteredAnger", false);
-        flagManager.addFlag("hasDefeatedDenial", false);
+        flagManager.addFlag("hasDefeatedDenial", false); 
+        flagManager.addFlag("hasEnteredAcceptance", false);
         flagManager.addFlag("hasEnteredDepression",false);
         flagManager.addFlag("hasEnteredBargaining", false);
         flagManager.addFlag("hasDefeatedAnger", false);

@@ -27,7 +27,6 @@ public class AcceptanceEntryScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
 
                 addRequirement(new FlagRequirement("hasEnteredAcceptance", false));
-                addRequirement(new FlagRequirement("hasEnteredDepression", true));
                 addRequirement(new FlagRequirement("hasTalkedToDepressionBoss", true));
 
                 // Dialogue
@@ -37,7 +36,7 @@ public class AcceptanceEntryScript extends Script {
                     addText("Gnomeo: I wish things were different.");
                 }});
 
-                // Mark that Acceptance has been entered
+                
                 addScriptAction(new ChangeFlagScriptAction("hasEnteredAcceptance", true));
 
                 // Switch maps
