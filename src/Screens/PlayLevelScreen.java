@@ -29,6 +29,7 @@ import Level.NPC;
 import Level.Player;
 import Level.Weapon;
 import Maps.TestMap;
+import Maps.BargainingMap;
 import Players.Gnome;
 import Screens.submenus.InventorySubmenu;
 import Screens.submenus.SaveSubmenu;
@@ -116,7 +117,6 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("hasDefeatedDenial", false);
         flagManager.addFlag("hasEnteredDepression",false);
         flagManager.addFlag("hasEnteredBargaining", false);
-        flagManager.addFlag("hasEnteredAcceptance", false);
         flagManager.addFlag("hasDefeatedAnger", false);
         flagManager.addFlag("hasTalkedToBargainingBoss", false);
         flagManager.addFlag("hasDefeatedBargaining", false);
@@ -131,7 +131,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         playLevelScreenState = PlayLevelScreenState.RUNNING;
 
         // load map
-        this.switchMap(new TestMap());
+        // this.switchMap(new TestMap());
+        this.switchMap(new BargainingMap());
 
         winScreen = new WinScreen(this);
         this.loseScreen = new LoseScreen(this);

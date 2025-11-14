@@ -3,8 +3,11 @@ package Scripts.MapThreeBargaining;
 import Level.Script;
 import Level.ScriptState;
 import Level.TextboxItem;
+import Level.WispyChainBuilder;
 import ScriptActions.*;
 import java.util.ArrayList;
+import NPCs.Wispy;
+import Utils.Point;
 
 /**
  * Bargaining Boss - A dialogue-based battle where your choices determine survival
@@ -306,7 +309,20 @@ public class BargainingBossScript extends Script {
                                 addScriptAction(new ScriptAction() {
                                     @Override
                                     public ScriptState execute() {
+                                        // Remove the boss
                                         entity.setMapEntityStatus(Level.MapEntityStatus.REMOVED);
+                                        
+                                        // Get the map tile locations for the wispies
+                                        WispyChainBuilder builder = new WispyChainBuilder(500);
+                                        Wispy firstWispy = builder
+                                            .addPoint(map.getMapTile(9, 7).getLocation())   // First wispy
+                                            .addPoint(map.getMapTile(11, 7).getLocation().addY(16))  // Second wispy
+                                            .addPoint(map.getMapTile(13, 7).getLocation().addY(64))  // Third wispy
+                                            .addPoint(map.getMapTile(14, 7).getLocation().addX(70).subtractY(32)) // Fourth wispy
+                                            .build();
+
+                                        map.addNPC(firstWispy);
+                                       
                                         return ScriptState.COMPLETED;
                                     }
                                 });
