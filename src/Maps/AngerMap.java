@@ -3,12 +3,14 @@ package Maps;
 import EnhancedMapTiles.PushableRock;
 import Level.*;
 import NPCs.ArmoredSkeleton;
+import NPCs.AngerBoss;
 import NPCs.DenialBoss;
 import NPCs.Skeleton;
 import NPCs.Spirit;
 import NPCs.Wizard;
 import NPCs.AngerSpirit;
 import Scripts.SimpleTextScript;
+import Scripts.MapTwoAnger.AngerBossScript;
 import Scripts.MapTwoAnger.BargainingEntryScript;
 import Scripts.MapOneDenial.AngerEntryScript;
 import Scripts.MapOneDenial.DenialBossScript;
@@ -37,10 +39,10 @@ public class AngerMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        AngerSpirit an   = new AngerSpirit(101, getMapTile(17, 15).getLocation());
-        an.setInteractScript(new DenialEnemyScript());
-        an.setCurrentAnimationName("STAND_LEFT");
-        npcs.add(an);
+        // AngerSpirit an   = new AngerSpirit(101, getMapTile(17, 15).getLocation());
+        // an.setInteractScript(new DenialEnemyScript());
+        // an.setCurrentAnimationName("STAND_LEFT");
+        // npcs.add(an);
 
         // // enemies near player, all share DenialEnemyScript (spread out a bit)
         // Skeleton s  = new Skeleton(100, getMapTile(10, 8).getLocation().subtractY(16).subtractX(6));
@@ -72,11 +74,11 @@ public class AngerMap extends Map {
         // // enemies near player, all share DenialEnemyScript (spread out a bit)
 
         //  // adding boss into game (fingers crossed)
-        // DenialBoss db = new DenialBoss(102, getMapTile(2, 8).getLocation().subtractY(16).subtractX(4));
-        // db.setInteractScript(new DenialBossScript());
-        // // player start is to the LEFT of (22,19) -> face LEFT
-        // db.setCurrentAnimationName("STAND_LEFT");
-        // npcs.add(db);
+        AngerBoss ab = new AngerBoss(102, getMapTile(17, 17).getLocation());
+        ab.setInteractScript(new AngerBossScript());
+        // player start is to the LEFT of (22,19) -> face LEFT
+        ab.setCurrentAnimationName("STAND_LEFT");
+        npcs.add(ab);
 
 
         return npcs;

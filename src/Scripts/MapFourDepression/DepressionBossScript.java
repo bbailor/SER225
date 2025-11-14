@@ -1,7 +1,12 @@
 package Scripts.MapFourDepression;
 
 import Level.Script;
+import Level.ScriptState;
+import Level.WispyChainBuilder;
+import NPCs.Wispy;
 import ScriptActions.*;
+import Utils.Point;
+
 import java.util.ArrayList;
 
 public class DepressionBossScript extends Script {
@@ -41,6 +46,22 @@ public class DepressionBossScript extends Script {
                         }});
                        
                         addScriptAction(new StartBattleScriptAction(DepressionBossScript.this.entity));
+
+                        addScriptAction(new ChangeFlagScriptAction("hasDefeatedDepression", true));
+                                
+                        // Spawn the wispy guide
+                        addScriptAction(new ScriptAction() {
+                            @Override
+                            public ScriptState execute() {
+                                
+                                Point wispyLocation = map.getMapTile(2, 5).getLocation().subtractX(32).addY(32);
+                                Wispy wispy = new Wispy(600, wispyLocation.x, wispyLocation.y);
+                                
+                                map.addNPC(wispy);
+                                
+                                return ScriptState.COMPLETED;
+                            }
+                        });
                     }});
 
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{

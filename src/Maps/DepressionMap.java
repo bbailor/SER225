@@ -15,7 +15,8 @@ public class DepressionMap extends Map {
 
 
         // Adjust X,Y below if you want a different spot
-        this.playerStartPosition = getMapTile(33, 4).getLocation();
+        // this.playerStartPosition = getMapTile(33, 4).getLocation();
+        this.playerStartPosition = getMapTile(2, 5).getLocation();
     }
 
     @Override
@@ -41,12 +42,13 @@ public class DepressionMap extends Map {
 
     @Override
     public ArrayList<Trigger> loadTriggers() {
-        return new ArrayList<>();
+        ArrayList<Trigger> triggers = new ArrayList<>();
+        return triggers;
     }
 
     @Override
     public void loadScripts() {
-        getMapTile(2, 6).setInteractScript(new AcceptanceEntryScript());
-        getMapTile(1, 6).setInteractScript(new AcceptanceEntryScript());
+        getMapTile(2, 5).setInteractScript(new AcceptanceEntryScript());
+        getMapTile(1, 5).setInteractScript(new AcceptanceEntryScript());
     }
 }

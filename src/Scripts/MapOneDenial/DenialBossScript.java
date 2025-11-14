@@ -1,7 +1,12 @@
 package Scripts.MapOneDenial;
 
 import Level.Script;
+import Level.ScriptState;
+import Level.WispyChainBuilder;
+import NPCs.Wispy;
 import ScriptActions.*;
+import Utils.Point;
+
 import java.util.ArrayList;
 
 public class DenialBossScript extends Script {
@@ -49,6 +54,28 @@ public class DenialBossScript extends Script {
                         }});
                        
                         addScriptAction(new StartBattleScriptAction(DenialBossScript.this.entity));
+
+                        addScriptAction(new ChangeFlagScriptAction("hasDefeatedDenial", true));
+                                
+                        // Spawn the wispy guide
+                        addScriptAction(new ScriptAction() {
+                            @Override
+                            public ScriptState execute() {
+                                
+                                // Get the map tile locations for the wispies
+                                        WispyChainBuilder builder = new WispyChainBuilder(500);
+                                        Wispy firstWispy = builder
+                                            .addPoint(map.getMapTile(6, 15).getLocation())
+                                            .addPoint(map.getMapTile(7, 18).getLocation())
+                                            .addPoint(map.getMapTile(11, 16).getLocation())
+                                            .addPoint(map.getMapTile(11, 14).getLocation()) 
+                                            .build();
+                                
+                                map.addNPC(firstWispy);
+                                
+                                return ScriptState.COMPLETED;
+                            }
+                        });
                     }});
 
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
