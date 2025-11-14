@@ -214,7 +214,7 @@ public class NPC extends MapEntity {
             // Check each tile in the NPC's vision and player vision
             for (Point tile : getVisionTiles()) {
                 for (Point pTile : playerVisionTiles) {
-                    if (toTileCoords(tile).equals(pTile)) {
+                    if (toTileCoords(tile).equals(pTile) && (!player.getEntity().getHidden())) {
                         battleTriggered = true;
                         initiateBattle();
                         break;
@@ -253,7 +253,7 @@ public class NPC extends MapEntity {
         return new Point((int)(p.x / 32) * 32, (int)(p.y / 32) * 32);
     }
 
-    public void setAutoBatlte(boolean autobattle)
+    public void setAutoBattle(boolean autobattle)
     {
         this.autoBattleEnabled = autobattle;
     }

@@ -3,9 +3,11 @@ package Level;
 import com.google.gson.annotations.Expose;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
@@ -47,6 +49,9 @@ public class Player extends GameObject {
     @Expose protected Key INTERACT_KEY = Key.SPACE;
 
     protected boolean isLocked = false;
+    protected boolean hidden = false;
+
+    protected int steps;
 
     public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) {
         super(spriteSheet, x, y, startingAnimationName);
@@ -173,6 +178,17 @@ public class Player extends GameObject {
         if (Keyboard.isKeyUp(MOVE_LEFT_KEY) && Keyboard.isKeyUp(MOVE_RIGHT_KEY) && Keyboard.isKeyUp(MOVE_UP_KEY) && Keyboard.isKeyUp(MOVE_DOWN_KEY)) {
             playerState = PlayerState.STANDING;
         }
+
+        if(!this.getEntity().getHidden()) {
+            steps = 0;
+        }
+        else{
+            steps++;
+        }
+
+        if(steps > 200) {
+            this.entity.setHidden(false);
+        }
     }
 
     protected void updateLockedKeys() {
@@ -282,6 +298,16 @@ public class Player extends GameObject {
         }
     }
 
+    public void setHidden(boolean hidden)
+    {
+        this.hidden = hidden;
+    }
+
+    public boolean getHidden()
+    {
+        return this.hidden;
+    }
+
     // Uncomment this to have game draw player's bounds to make it easier to visualize
     
     public void draw(GraphicsHandler graphicsHandler) {
@@ -293,12 +319,27 @@ public class Player extends GameObject {
         // var health_rec = new Rectangle(mana_rec.getX(), mana_rec.getY() - 17, bar_length, 10);
         graphicsHandler.drawFilledRectangle(health_rec, TailwindColorScheme.black);
         graphicsHandler.drawFilledRectangle(
-            (int)health_rec.getX(),
-            (int)health_rec.getY(),
-            (int) (health_rec.getWidth() * (this.entity.getHealth() / this.entity.getMaxHealth())),
-            health_rec.getHeight(),
+            (int)health_rec.getX() + 2,
+            (int)health_rec.getY() + 2,
+            (int) (health_rec.getWidth() * (this.entity.getHealth() / this.entity.getMaxHealth())) - 4,
+            health_rec.getHeight() - 4,
             TailwindColorScheme.lime500
         );
+
+        if(this.getEntity().getHidden()) {
+            var hidden_rec = new Rectangle(this.getCalibratedXLocation() - 7, this.getCalibratedYLocation() - 10, bar_length, 10);
+            var cloak_rec = new Rectangle(this.getCalibratedXLocation() - 28, this.getCalibratedYLocation() - 16, 20, 20);
+            graphicsHandler.drawFilledRectangle(hidden_rec, TailwindColorScheme.black);
+            graphicsHandler.drawFilledRectangle(
+            (int)hidden_rec.getX() + 2,
+            (int)hidden_rec.getY() + 2,
+            (int) ((75 - (hidden_rec.getWidth() * ((float)(steps) / 200f))) - 4),
+            hidden_rec.getHeight() - 4,
+            TailwindColorScheme.blue300
+            );
+
+            graphicsHandler.drawImage(ImageLoader.load("item_imgs/cloakOfConcealment.png"), cloak_rec);
+        }
         //gitdrawBounds(graphicsHandler, new Color(255, 0, 0, 100));
     }
     

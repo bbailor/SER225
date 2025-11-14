@@ -10,6 +10,7 @@ import com.google.gson.annotations.Expose;
 import Engine.Inventory;
 import Engine.Inventory.NamedSlot;
 import GameObject.Frame;
+import Utils.Point;
 
 public class Entity {
     
@@ -28,6 +29,8 @@ public class Entity {
     // Lines 29-77 for enemy multiple attacks system
     protected List<EnemyAttack> availableAttacks = new ArrayList<>();
     protected Random random = new Random();
+
+    protected boolean hidden = false;
 
     public static class EnemyAttack {
         public String attackName;
@@ -239,6 +242,15 @@ public class Entity {
         return this.inventory;
     }
 
+    public void setHidden(boolean h)
+    {
+        hidden = h;
+    }
+
+    public boolean getHidden()
+    {
+        return hidden;
+    }
     public Entity() {}
 
     public Entity(double maxHealth, double maxMana) {
