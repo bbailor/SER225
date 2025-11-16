@@ -35,7 +35,10 @@ public class DepressionMap extends Map {
         db.setCurrentAnimationName("STAND_RIGHT");
         npcs.add(db);
 
-        
+        // Place Greyscale Gnome at tile (29, 7) for side quest
+        GnomeGreyscale greyscaleGnome = new GnomeGreyscale(202, getMapTile(29, 7).getLocation());
+        greyscaleGnome.setInteractScript(new DepressionQuestScript());
+        npcs.add(greyscaleGnome);
 
         return npcs;
     }
@@ -48,6 +51,8 @@ public class DepressionMap extends Map {
 
     @Override
     public void loadScripts() {
+        getMapTile(2, 6).setInteractScript(new AcceptanceEntryScript());
+        getMapTile(1, 6).setInteractScript(new AcceptanceEntryScript());
         getMapTile(2, 6).setInteractScript(new AcceptanceEntryScript());
         getMapTile(1, 6).setInteractScript(new AcceptanceEntryScript());
     }

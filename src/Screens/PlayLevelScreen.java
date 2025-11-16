@@ -129,6 +129,14 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("bargaining_round2", false);
         flagManager.addFlag("bargaining_round3", false);
         
+        // Depression side quest flags
+        flagManager.addFlag("hasMetGreyscaleGnome", false);
+        flagManager.addFlag("greyscaleGnomeFollowing", false);
+        flagManager.addFlag("greyscaleReachedTreeline", false);
+        flagManager.addFlag("greyscaleGnomeLeft", false);
+        flagManager.addFlag("greyscaleQuestDeclined", false);
+
+        
         // setup player
         player = new Gnome(0, 0);
         // player.getEntity().getInventory().setStack(4, new ItemStack(Item.ItemList.test_item, 3));
@@ -136,8 +144,8 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         playLevelScreenState = PlayLevelScreenState.RUNNING;
 
         // load map
-        this.switchMap(new TestMap());
-        // this.switchMap(new DepressionMap());
+        // this.switchMap(new TestMap());
+        this.switchMap(new DepressionMap());
 
         winScreen = new WinScreen(this);
         this.loseScreen = new LoseScreen(this);
