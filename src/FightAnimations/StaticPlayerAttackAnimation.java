@@ -3,14 +3,6 @@ package FightAnimations;
 import GameObject.AnimatedSprite;
 import GameObject.SpriteSheet;
 
-/**
- * Base class for player attack animations that stay in one position
- * (like area effects, lightning strikes, etc.)
- * 
- * Subclasses can either:
- * 1. Use AnimatedSprite's frame delay system (set delays in FrameBuilder)
- * 2. Manually control frames via updateFrame() method
- */
 public abstract class StaticPlayerAttackAnimation extends AnimatedSprite {
     
     protected float posX, posY;
