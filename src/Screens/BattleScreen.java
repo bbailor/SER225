@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.random.RandomGenerator;
-
 import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
@@ -22,15 +21,17 @@ import FightAnimations.PlayerProjectileAttackAnimation;
 import FightAnimations.SkeletonAttack;
 import FightAnimations.SpiritAttack;
 import FightAnimations.AngerSpiritAttack;
+import FightAnimations.TlalocsStormAttack;
+import FightAnimations.StaticPlayerAttackAnimation;
 import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Level.Entity;
 import Level.Player;
+import Level.Weapon;
 import Screens.submenus.BattleSubmenu;
 import Screens.submenus.InventoryBattleMenu;
 import Screens.submenus.SelectionSubmenu;
-import ScriptActions.ChangeFlagScriptAction;
 import Utils.Globals;
 import Utils.Menu;
 import Utils.MenuListener;
@@ -57,7 +58,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
     // New field to track if this battle involves the boss
     private boolean isBossBattle = false;
-    private PlayerProjectileAttackAnimation activePlayerAttackAnimation;
+    protected Object activePlayerAttackAnimation;
 
     protected Rectangle STATUS_LOG_REC = new Rectangle(
         2,
@@ -147,7 +148,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     @Override
     public void update() {
         if (this.entity.getHealth() <= 0) {
-    
+
             // Notify PlayLevelScreen that this enemy was defeated
             this.sendEvent("enemy_defeated", this.enemySource);
             this.close();
@@ -161,13 +162,23 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         
         // Handle active PLAYER attack animation
         if (activePlayerAttackAnimation != null) {
-            activePlayerAttackAnimation.update();
-            if (activePlayerAttackAnimation.isComplete()) {
-                // Apply damage when player animation completes
-                this.entity.handleDamage(this.player.getEntity(), false);
-                activePlayerAttackAnimation = null;
-                // Switch to enemy turn after damage is dealt
-                this.currentTurn = BattleTurn.Enemy;
+            // Check if it's a projectile or static animation and handle appropriately
+            if (activePlayerAttackAnimation instanceof PlayerProjectileAttackAnimation) {
+                PlayerProjectileAttackAnimation projectile = (PlayerProjectileAttackAnimation) activePlayerAttackAnimation;
+                projectile.update();
+                if (projectile.isComplete()) {
+                    this.entity.handleDamage(this.player.getEntity(), false);
+                    activePlayerAttackAnimation = null;
+                    this.currentTurn = BattleTurn.Enemy;
+                }
+            } else if (activePlayerAttackAnimation instanceof StaticPlayerAttackAnimation) {
+                StaticPlayerAttackAnimation staticAnim = (StaticPlayerAttackAnimation) activePlayerAttackAnimation;
+                staticAnim.update();
+                if (staticAnim.isComplete()) {
+                    this.entity.handleDamage(this.player.getEntity(), false);
+                    activePlayerAttackAnimation = null;
+                    this.currentTurn = BattleTurn.Enemy;
+                }
             }
             return; // Don't process other updates while animating
         }
@@ -199,6 +210,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             this.player.getEntity().kill();
         }
     }
+
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
 
@@ -436,7 +448,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             activeAttackAnimation.draw(graphicsHandler);
         }
         if (activePlayerAttackAnimation != null) {
-            activePlayerAttackAnimation.draw(graphicsHandler);
+            if (activePlayerAttackAnimation instanceof PlayerProjectileAttackAnimation) {
+                ((PlayerProjectileAttackAnimation) activePlayerAttackAnimation).draw(graphicsHandler);
+            } else if (activePlayerAttackAnimation instanceof StaticPlayerAttackAnimation) {
+                ((StaticPlayerAttackAnimation) activePlayerAttackAnimation).draw(graphicsHandler);
+            }
         }
                 
         if (activeAttackAnimation != null) {
@@ -523,8 +539,6 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     private void startPlayerAttackAnimation() {
         // Calculate battle area positions
         int entityPadding = BATTLE_REC.getWidth() / 10;
-        // int battleX0 = BORDER_LINE_WIDTH * 2;
-        // int battleY0 = BATTLE_LOG_HEIGHT + BORDER_LINE_WIDTH + MARGIN;
         int battleX0 = (int) BATTLE_REC.getX();
         int battleY0 = (int) BATTLE_REC.getY();
         int battleHeight = BATTLE_REC.getHeight();
@@ -535,7 +549,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
         float enemyX, enemyY, playerX, playerY;
 
-        // Calculate enemy position (where animation starts)
+        // Calculate enemy position (where animation appears/ends)
         if (entityIdleAnimations != null) {
             float scale = entityIdleAnimations[0].getScale();
             enemyX = battleX0 + BATTLE_REC.getWidth() * 0.85f
@@ -552,7 +566,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             enemyY = battleY0 + (battleHeight - placeholderHeight) / 2;
         }
 
-        // Calculate player position (where animation ends)
+        // Calculate player position (where animation starts for projectiles)
         if (playerIdleAnimations != null) {
             playerX = battleX0 + entityPadding + playerIdleAnimations[0].getWidth() * playerIdleAnimations[0].getScale();
             playerY = battleY0 + (battleHeight - playerIdleAnimations[0].getHeight()) / 2;
@@ -563,22 +577,34 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             playerY = battleY0 + (battleHeight - placeholderHeight) / 2;
         }
 
-
-        //modular in the future
-        String weapon = "KnifeOfLife";
+        // Get equipped weapon and determine animation
+        Weapon weapon = this.player.getEntity().getCurrentWeapon();
+        String weaponAnimName = weapon.getAttackAnimationName();
 
         try {
-            String attackFileName = "weapons//" + weapon + "Attack.png";
+            String attackFileName = "weapons//" + weaponAnimName + "Attack.png";
             SpriteSheet attackSheet = null;
-            attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 32, 32);
             
-            activePlayerAttackAnimation = createPlayerAttackAnimation(weapon, attackSheet, enemyX, enemyY, playerX, playerY);
+            // Load sprite sheet with appropriate dimensions based on weapon
+            switch (weaponAnimName) {
+                case "TlalocsStorm":
+                    attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 60, 200);
+                    break;
+                case "KnifeOfLife":
+                    attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 32, 32);
+                    break;
+                default:
+                    attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 32, 32);
+            }
+            
+            activePlayerAttackAnimation = createPlayerAttackAnimation(weaponAnimName, attackSheet, enemyX, enemyY, playerX, playerY);
 
         } catch (Exception e) {
-            System.err.println("Failed to load " + weapon + " attack animation: " + e.getMessage());
-            this.player.getEntity().handleDamage(this.entity, false);
-            this.currentTurn = BattleTurn.Player;
-            enemyTurnStarted = false;
+            System.err.println("Failed to load " + weaponAnimName + " attack animation: " + e.getMessage());
+            e.printStackTrace();
+            // Fallback: apply damage immediately
+            this.entity.handleDamage(this.player.getEntity(), false);
+            this.currentTurn = BattleTurn.Enemy;
         }
     }
 
@@ -719,14 +745,29 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     }
 }
 
-    protected PlayerProjectileAttackAnimation createPlayerAttackAnimation(String weapon, SpriteSheet sheet, 
-                                                   float startX, float startY, float targetX, float targetY) {
+    protected Object createPlayerAttackAnimation(String weapon, SpriteSheet sheet, 
+                                               float enemyX, float enemyY, float playerX, float playerY) {
         switch (weapon) {
             case "KnifeOfLife":
-                return new KnifeOfLifeAttack(sheet, startX, startY, targetX, targetY, 100);
+                // Projectile: travels from player to enemy
+                return new KnifeOfLifeAttack(sheet, enemyX, enemyY, playerX, playerY, 100);
+            
+            case "TlalocsStorm":
+                // Static: appears at enemy position
+                return new TlalocsStormAttack(sheet, enemyX, enemyY);
+            
+            // Add more weapons here as you create them
+            // Projectile example:
+            // case "Arrow":
+            //     return new ArrowAttack(sheet, enemyX, enemyY, playerX, playerY, duration);
+            // 
+            // Static example:
+            // case "Earthquake":
+            //     return new EarthquakeAttack(sheet, enemyX, enemyY);
+            
             default:
-                System.err.println("Unknown enemy type: " + weapon + ", using Skeleton attack");
-                return new KnifeOfLifeAttack(sheet, startX, startY, targetX, targetY, 120);
+                System.err.println("Unknown weapon type: " + weapon + ", using KnifeOfLife attack");
+                return new KnifeOfLifeAttack(sheet, enemyX, enemyY, playerX, playerY, 100);
         }
     }
 

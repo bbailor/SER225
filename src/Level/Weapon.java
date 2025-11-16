@@ -59,7 +59,9 @@ public class Weapon extends Item {
         return this.weaponSkillCost;
     }
 
-    
+    public String getAttackAnimationName() {
+        return "KnifeOfLife"; // Default animation
+    }
 
     @Override
     public boolean canUse(ItemStack stack, Entity targetedEntity) {

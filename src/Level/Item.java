@@ -13,6 +13,7 @@ import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Items.CloakOfConcealment;
 import Items.KnifeOfLife;
+import Items.TlalocsStorm;
 
 /**
  * Definition for an item type
@@ -217,6 +218,8 @@ public class Item {
         };
 
         public static Weapon knife_of_life = new KnifeOfLife();
+
+        public static Weapon tlalocs_storm = new TlalocsStorm();
 
         public static Item getFromID(String id) {
             return IDMap.get(id);

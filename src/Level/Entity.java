@@ -10,7 +10,6 @@ import com.google.gson.annotations.Expose;
 import Engine.Inventory;
 import Engine.Inventory.NamedSlot;
 import GameObject.Frame;
-import Utils.Point;
 
 public class Entity {
     

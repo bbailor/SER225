@@ -5,8 +5,9 @@ import NPCs.*;
 import Scripts.MapFiveAcceptance.AcceptanceEntryScript;
 import Scripts.MapFourDepression.*;
 import Tilesets.Map4Tileset;
-import Utils.Point;
 import java.util.ArrayList;
+
+import EnhancedMapTiles.CollectableItem;
 
 public class DepressionMap extends Map {
 
@@ -15,7 +16,8 @@ public class DepressionMap extends Map {
 
 
         // Adjust X,Y below if you want a different spot
-        this.playerStartPosition = getMapTile(33, 4).getLocation();
+        // this.playerStartPosition = getMapTile(33, 4).getLocation();
+        this.playerStartPosition = getMapTile(4, 5).getLocation();
 
     }
 
@@ -24,6 +26,13 @@ public class DepressionMap extends Map {
         return new ArrayList<>();
     }
 
+    @Override
+    protected ArrayList<CollectableItem> loadCollectableItems() {
+        ArrayList<CollectableItem> collectables = new ArrayList<>();
+        collectables.add(new CollectableItem(getMapTile(5, 5).getLocation(), Item.ItemList.tlalocs_storm));
+        
+        return collectables;
+    }
 
     @Override
     public ArrayList<NPC> loadNPCs() {

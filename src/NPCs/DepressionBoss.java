@@ -18,8 +18,15 @@ public class DepressionBoss extends NPC {
             new SpriteSheet(ImageLoader.load("Bosses/DepressionBoss.png"), 120, 120),
             "STAND_RIGHT"
         );
-        autoBattleEnabled = false;
 
+        this.entity.setMaxHealth(50);
+        this.entity.setBaseAttack(0);
+        
+        this.entity.addAttack("DepressionBossAttack", 50, "DepressionBossAttack", 1.0);
+        this.entity.addAttack("DepressionBossSpecial", 0, "DepressionBossAttack", 10.0);
+        this.entity.addAttack("DepressionBossHeavy", 0, "DepressionBossAttack", 7.0);
+        
+        autoBattleEnabled = false;
     }
     
 
