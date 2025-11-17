@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Map2Tileset extends Tileset {
 
     public Map2Tileset() {
-        super(ImageLoader.load("AngerTileset.png"), 32, 32, 3);
+        super(ImageLoader.load("AngerTileset.png"), 32, 32, 2);
     }
 
     @Override
@@ -51,45 +51,32 @@ public class Map2Tileset extends Tileset {
         // Fat pillar
         Frame pillarFrame = new FrameBuilder(getSubImage(1, 5))
                 .withScale(tileScale)
+                .withBounds(3, 8, 26, 24)
                 .build();
 
-        MapTileBuilder pillarTile = new MapTileBuilder(baseFrame)
-                .withTopLayer(pillarFrame)
+        MapTileBuilder pillarTile = new MapTileBuilder(pillarFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(pillarTile);
 
-        Frame pillarTopFrame = new FrameBuilder(getSubImage(0, 5))
-                .withScale(tileScale)
-                .withBounds(8, 32, 18, 13)
-                .build();
-
-        MapTileBuilder pillarTopTile = new MapTileBuilder(baseFrame)
-                .withTopLayer(pillarTopFrame)
-                .withTileType(TileType.PASSABLE);
-
-        mapTiles.add(pillarTopTile);
-
         // Skinny dark pillar
         Frame rightDarkPillarFrame = new FrameBuilder(getSubImage(4, 2))
                 .withScale(tileScale)
-                .withBounds(8, 32, 21, 30)
+                .withBounds(5, 6, 21, 26)
                 .build();
 
-        MapTileBuilder rightDarkPillarTile = new MapTileBuilder(baseFrame)
-                .withTopLayer(rightDarkPillarFrame)
+        MapTileBuilder rightDarkPillarTile = new MapTileBuilder(rightDarkPillarFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(rightDarkPillarTile);
 
         Frame leftDarkPillarFrame = new FrameBuilder(getSubImage(4, 2))
                 .withScale(tileScale)
-                .withBounds(8, 32, 21, 30)
+                .withBounds(5, 6, 21, 26)
                 .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                 .build();
 
-        MapTileBuilder leftDarkPillarTile = new MapTileBuilder(baseFrame)
-                .withTopLayer(leftDarkPillarFrame)
+        MapTileBuilder leftDarkPillarTile = new MapTileBuilder(leftDarkPillarFrame)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(leftDarkPillarTile);
@@ -147,7 +134,6 @@ public class Map2Tileset extends Tileset {
         };
 
         MapTileBuilder leftRiverTile = new MapTileBuilder(leftRiverFrames)
-                .withTopLayer(leftRiverFrames)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(leftRiverTile);
@@ -197,29 +183,93 @@ public class Map2Tileset extends Tileset {
         };
 
         MapTileBuilder rightRiverTile = new MapTileBuilder(rightRiverFrames)
-                .withTopLayer(rightRiverFrames)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(rightRiverTile);
 
         // bridge over river
-        Frame rightBridgeFrame = new FrameBuilder(getSubImage(3, 1))
-                .withScale(tileScale)
-                .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                .build();
+        Frame[] rightBridgeFrames = new Frame[] {
+                new FrameBuilder(getSubImage(5, 0), 65)
+                    .withScale(tileScale)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .build(),
+                new FrameBuilder(getSubImage(5, 1), 65)
+                    .withScale(tileScale)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .build(),
+                new FrameBuilder(getSubImage(5, 2), 65)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(5, 3), 65)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(5, 4), 65)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(6, 0), 65)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(6, 1), 65)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(6, 2), 65)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(6, 3), 65)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(6, 4), 65)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .withScale(tileScale)
+                    .build(),
+        };
 
-        MapTileBuilder rightBridgeTile = new MapTileBuilder(rightRiverFrames)
-                .withTopLayer(rightBridgeFrame)
+        MapTileBuilder rightBridgeTile = new MapTileBuilder(rightBridgeFrames)
                 .withTileType(TileType.PASSABLE);
 
         mapTiles.add(rightBridgeTile);
 
-        Frame leftBridgeFrame = new FrameBuilder(getSubImage(3, 1))
-                .withScale(tileScale)
-                .build();
+        Frame[] leftBridgeFrames = new Frame[] {
+                new FrameBuilder(getSubImage(5, 0), 65)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(5, 1), 65)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(5, 2), 65)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(5, 3), 65)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(5, 4), 65)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(6, 0), 65)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(6, 1), 65)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(6, 2), 65)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(6, 3), 65)
+                    .withScale(tileScale)
+                    .build(),
+                new FrameBuilder(getSubImage(6, 4), 65)
+                    .withScale(tileScale)
+                    .build(),
+        };
 
-        MapTileBuilder leftBridgeTile = new MapTileBuilder(leftRiverFrames)
-                .withTopLayer(leftBridgeFrame)
+        MapTileBuilder leftBridgeTile = new MapTileBuilder(leftBridgeFrames)
                 .withTileType(TileType.PASSABLE);
 
         mapTiles.add(leftBridgeTile);
@@ -334,48 +384,65 @@ public class Map2Tileset extends Tileset {
         Frame[] fireFrames = new Frame[] {
                 new FrameBuilder(getSubImage(0, 0), 65)
                     .withScale(tileScale)
-                    .withBounds(0, 32, 32, 25)
+                    .withBounds(0, 12, 32, 20)
                     .build(),
                 new FrameBuilder(getSubImage(0, 1), 65)
                     .withScale(tileScale)
-                    .withBounds(0, 32, 32, 25)
+                    .withBounds(0, 12, 32, 20)
                     .build(),
                 new FrameBuilder(getSubImage(0, 2), 65)
                     .withScale(tileScale)
-                    .withBounds(0, 32, 32, 25)
+                    .withBounds(0, 12, 32, 20)
                     .build(),
         };
 
-        MapTileBuilder fireTile = new MapTileBuilder(baseFrame)
-                .withTopLayer(fireFrames)
+        MapTileBuilder fireTile = new MapTileBuilder(fireFrames)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(fireTile);
 
         // Extra fire tiles
-        MapTileBuilder fireLeftRiverEdgeTile = new MapTileBuilder(rightEdgeBaseFrame)
-                .withTopLayer(fireFrames)
+        Frame[] fireLeftEdgeFrames = new Frame[] {
+                new FrameBuilder(getSubImage(0, 5), 65)
+                    .withScale(tileScale)
+                    .withBounds(0, 12, 32, 20)
+                    .build(),
+                new FrameBuilder(getSubImage(3, 1), 65)
+                    .withScale(tileScale)
+                    .withBounds(0, 12, 32, 20)
+                    .build(),
+                new FrameBuilder(getSubImage(5, 5), 65)
+                    .withScale(tileScale)
+                    .withBounds(0, 12, 32, 20)
+                    .build(),
+        };
+        MapTileBuilder fireLeftRiverEdgeTile = new MapTileBuilder(fireLeftEdgeFrames)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(fireLeftRiverEdgeTile);
 
-        MapTileBuilder fireRightRiverEdgeTile = new MapTileBuilder(leftEdgeBaseFrame)
-                .withTopLayer(fireFrames)
+        Frame[] fireRightEdgeFrames = new Frame[] {
+                new FrameBuilder(getSubImage(0, 5), 65)
+                    .withScale(tileScale)
+                    .withBounds(0, 12, 32, 20)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .build(),
+                new FrameBuilder(getSubImage(3, 1), 65)
+                    .withScale(tileScale)
+                    .withBounds(0, 12, 32, 20)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .build(),
+                new FrameBuilder(getSubImage(5, 5), 65)
+                    .withScale(tileScale)
+                    .withBounds(0, 12, 32, 20)
+                    .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                    .build(),
+        };
+        MapTileBuilder fireRightRiverEdgeTile = new MapTileBuilder(fireRightEdgeFrames)
                 .withTileType(TileType.NOT_PASSABLE);
 
         mapTiles.add(fireRightRiverEdgeTile);
 
-        MapTileBuilder fireLeftBottomCaveTile = new MapTileBuilder(leftBottomCaveFrame)
-                .withTopLayer(fireFrames)
-                .withTileType(TileType.NOT_PASSABLE);
-
-        mapTiles.add(fireLeftBottomCaveTile);
-
-        MapTileBuilder fireRightBottomCaveTile = new MapTileBuilder(rightBottomCaveFrame)
-                .withTopLayer(fireFrames)
-                .withTileType(TileType.NOT_PASSABLE);
-
-        mapTiles.add(fireRightBottomCaveTile);
 
         return mapTiles;
     }

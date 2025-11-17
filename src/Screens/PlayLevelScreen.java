@@ -32,6 +32,7 @@ import Maps.TestMap;
 import Maps.BargainingMap;
 import Maps.AngerMap;
 import Maps.DepressionMap;
+import Maps.AcceptanceMap;
 import Maps.MapOneDenial;
 import Players.Gnome;
 import Screens.submenus.InventorySubmenu;
@@ -157,7 +158,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         // load map
         // this.switchMap(new TestMap());
-        this.switchMap(new DepressionMap());
+        this.switchMap(new AngerMap());
 
         winScreen = new WinScreen(this);
         this.loseScreen = new LoseScreen(this);

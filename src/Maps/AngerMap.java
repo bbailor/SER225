@@ -74,7 +74,7 @@ public class AngerMap extends Map {
         // // enemies near player, all share DenialEnemyScript (spread out a bit)
 
         //  // adding boss into game (fingers crossed)
-        AngerBoss ab = new AngerBoss(102, getMapTile(17, 17).getLocation());
+        AngerBoss ab = new AngerBoss(102, getMapTile(16, 16).getLocation());
         ab.setInteractScript(new AngerBossScript());
         // player start is to the LEFT of (22,19) -> face LEFT
         ab.setCurrentAnimationName("STAND_LEFT");
@@ -93,6 +93,6 @@ public class AngerMap extends Map {
 
     @Override
     public void loadScripts() {
-       getMapTile(17, 15).setInteractScript(new BargainingEntryScript());
+       getMapTile(16, 16).setInteractScript(new BargainingEntryScript());
     }
 }
