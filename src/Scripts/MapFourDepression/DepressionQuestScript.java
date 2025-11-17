@@ -9,6 +9,7 @@ import Utils.Direction;
 import Utils.Point;
 import Utils.Visibility;
 import java.util.ArrayList;
+import EnhancedMapTiles.CollectableItem;
 
 // Script for the Greyscale Gnome side quest in Depression Map
 public class DepressionQuestScript extends Script {
@@ -111,17 +112,13 @@ public class DepressionQuestScript extends Script {
                     @Override
                     public ScriptState execute() {
                         // Get gnome's current position
-                        System.out.println("getting gnome position");
                         Point gnomePos = entity.getLocation();
-                        System.out.println("Gnome position: " + gnomePos);
                         int gnomeTileX = (int)(gnomePos.x / 100); // Calculate tile X coordinate (50 pixels per tile, scaled by 2)
-                        System.out.println("Gnome tile X: " + gnomeTileX);
                         
                         // Store the target tile X coordinate for later restoration
                         exitTileX = gnomeTileX;
                         
                         Point targetLocation = map.getMapTile(exitTileX, 0).getLocation();
-                        System.out.println("Target treeline tile location: " + targetLocation);
                         
                         // Change the treeline tile to grass temporarily
                         Frame[] grassFrames = new Frame[] {
@@ -168,6 +165,22 @@ public class DepressionQuestScript extends Script {
 
                 addScriptAction(new ChangeFlagScriptAction("greyscaleGnomeLeft", true));
                 addScriptAction(new ChangeFlagScriptAction("greyscaleGnomeFollowing", false));
+
+                // Drop weapon reward
+                addScriptAction(new ScriptAction() {
+                    @Override
+                    public ScriptState execute() {
+                        Point location = entity.getLocation();
+                        // Adjust the weapon type as needed (using knife_of_life as example)
+                        CollectableItem reward = new CollectableItem(
+                            location.x, 
+                            location.y + 100,  // Slightly below gnome's position
+                            Item.ItemList.tlalocs_storm  // Replace with your actual weapon
+                        );
+                        map.addCollectableItem(reward);
+                        return ScriptState.COMPLETED;
+                    }
+                });
             }});
 
             // If quest was declined

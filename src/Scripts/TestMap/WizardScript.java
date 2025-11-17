@@ -30,22 +30,8 @@ public class WizardScript extends Script {
                     addText("Gnomeo: To save Juliet!! She has been\ncaptured by evil forces!");
                     addText("Osiris: But Gnomeo, Juliet is-");
                     addText("Gnomeo: I must save her, she is my world!\nI cannot lose her!");
-                    addText("Osiris: *sighs* If you are going.. then at least\ntake your mother's Knife of Life.");
-                }});
-               
-                // Knife drops mid-dialogue
-                addScriptAction(new ScriptAction() {
-                    @Override
-                    public ScriptState execute() {
-                        Point location = map.getMapTile(4, 23).getLocation();
-                        CollectableItem knifeOfLife = new CollectableItem(location.x, location.y, Item.ItemList.knife_of_life);
-                        map.addCollectableItem(knifeOfLife);
-                        return ScriptState.COMPLETED;
-                    }
-                });
-
-                addScriptAction(new TextboxScriptAction() {{
-                    addScriptAction(new WaitScriptAction(30));
+                    addText("Osiris: *sighs* If you are going.. then make\nsure you collect enough food!");
+                    addText("Osiris: They will sustain you on your journey.");
                     addText("(Hint: Use [SPACE] to pick up items)");
                     addText("(Hint: Use [ESC] to open your inventory)");
                     addText("Osiris: What you seek is not here.\nFollow the path to start your journey.");
@@ -81,23 +67,8 @@ public class WizardScript extends Script {
 
                 addScriptAction(new ChangeFlagScriptAction("wizardQuestStarted", true));
             }});
-
-            // THIRD INTERACTION - Wizard is trapped, spawn skeleton battle
-            // addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-            //     addRequirement(new FlagRequirement("wizardQuestStarted", true));
-            //     addRequirement(new FlagRequirement("wizardSaved", false));
-
-                // addScriptAction(new TextboxScriptAction() {{
-                //     addText("Osiris: Gnomeo! Help!");
-                //     addText("Osiris: This skeleton ambushed me!\nI can't fight it alone!");
-                //     addText("Gnomeo: Hold on, Osiris! I'm coming!");
-                // }});
-
-                // Trigger battle with skeleton
-                // addScriptAction(new StartBattleScriptAction());
-
-                // addScriptAction(new ChangeFlagScriptAction("wizardSaved", true));
-            // }});
+            
+            // THIRD INTERACTION - Wizard ambushed by skeleton
 
             // FOURTH INTERACTION - After saving wizard, give reward
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
@@ -107,7 +78,8 @@ public class WizardScript extends Script {
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Osiris: Thank you, Gnomeo! You saved my life!");
                     addText("Osiris: I was foolish to investigate alone.");
-                    addText("Osiris: Please, take this weapon as thanks.\nIt's enchanted with ancient magic.");
+                    addText("Osiris: That was a close one! You mustn't be\ncaught off guard again. No more fistfights!");
+                    addText("Osiris: Please, take this weapon as thanks.\nFrom your mother... It's enchanted with ancient magic.");
                 }});
 
                 // Drop weapon reward
@@ -115,11 +87,10 @@ public class WizardScript extends Script {
                     @Override
                     public ScriptState execute() {
                         Point location = entity.getLocation();
-                        // Adjust the weapon type as needed (using knife_of_life as example)
                         CollectableItem reward = new CollectableItem(
                             location.x + 100, 
                             location.y + 100, 
-                            Item.ItemList.knife_of_life  // Replace with your actual weapon
+                            Item.ItemList.knife_of_life 
                         );
                         map.addCollectableItem(reward);
                         return ScriptState.COMPLETED;
