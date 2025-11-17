@@ -16,7 +16,7 @@ public class AcceptanceMap extends Map {
     public AcceptanceMap() {
         super("acceptance_map.txt", new Map5Tileset());
 
-        // Player spawn — adjust if needed
+        //spawn point
         this.playerStartPosition = getMapTile(2, 5).getLocation();
     }
 
@@ -43,7 +43,6 @@ public class AcceptanceMap extends Map {
 
     @Override
     public ArrayList<Trigger> loadTriggers() {
-        // none needed here. Gravestone uses an interact script, not a trigger.
         return new ArrayList<>();
     }
 
@@ -53,17 +52,16 @@ public class AcceptanceMap extends Map {
 
         // -----------------------------------------------------------
         // GRAVESTONE INTERACTION SCRIPT
-        // Tile is at map tile (32,5)
+        // Tile is at (32,5)
         // -----------------------------------------------------------
         MapTile gravestone = getMapTile(32, 5);
 
         if (gravestone != null) {
             GravestoneScript script = new GravestoneScript();
 
-            // attach script
             gravestone.setInteractScript(script);
 
-            // ⭐ REQUIRED: manually initialize script so it works
+            //manually initialize script so it works
             script.setMap(this);
             script.setPlayer(this.player);
             script.setListeners(this.listeners);

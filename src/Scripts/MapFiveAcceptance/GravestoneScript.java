@@ -8,10 +8,10 @@ import Level.Script;
 import Level.ScriptState;
 import ScriptActions.*;
 import Utils.Point;
-
+    
 public class GravestoneScript extends Script {
 
-    // ----- CHECK IF PLAYER HAS FLOWERS -----
+    // CHECK IF PLAYER HAS FLOWERS
     private boolean playerHasFlowers() {
         var inv = player.getEntity().getInventory();
         for (int i = 0; i < inv.getSize(); i++) {
@@ -23,7 +23,7 @@ public class GravestoneScript extends Script {
         return false;
     }
 
-    // ----- REMOVE ONE FLOWER -----
+    // REMOVE FLOWER from INVENTORY 
     private void removeOneFlower() {
         var inv = player.getEntity().getInventory();
         for (int i = 0; i < inv.getSize(); i++) {
@@ -101,7 +101,7 @@ public class GravestoneScript extends Script {
         }});
 
         // ------------------------------------------------------------
-        // ACCEPT ROUTE — AFTER placing flowers (FINAL DIALOGUE → WIN)
+        // ACCEPT ROUTE —placing flowers (FINAL DIALOGUE → WIN)
         // ------------------------------------------------------------
         actions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
@@ -113,7 +113,7 @@ public class GravestoneScript extends Script {
                     addText("Her grave adorned with flowers,a final gift from\nher lover");
                 }});
 
-                // → WIN SCREEN
+                // WIN SCREEN
                 addScriptAction(new ScriptAction() {
                     @Override
                     public ScriptState execute() {
@@ -127,7 +127,7 @@ public class GravestoneScript extends Script {
         }});
 
         // ------------------------------------------------------------
-        // ACCEPT ROUTE — NO FLOWERS IN INVENTORY
+        // ACCEPT ROUTE — NO FLOWERS 
         // ------------------------------------------------------------
         actions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{

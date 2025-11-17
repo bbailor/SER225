@@ -18,9 +18,8 @@ public class JulietScript extends Script {
 
         scriptActions.add(new ConditionalScriptAction() {{
 
-            //
+    
             // 1 — FIRST TIME MEETING JULIET
-            //
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasMetJuliet", false));
 
@@ -33,16 +32,13 @@ public class JulietScript extends Script {
                 addScriptAction(new ChangeFlagScriptAction("hasMetJuliet", true));
             }});
 
-            //
             // 2 — MAIN CONVERSATION (ONLY ONCE)
-            //
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasMetJuliet", true));
                 addRequirement(new FlagRequirement("JulietResolved", false));
 
-                //
-                // CHOICE 1 — FLAVOR ONLY
-                //
+                
+                // CHOICE 1 — unimportant
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Gnomeo: What is this? How can this be?");
 
@@ -55,7 +51,7 @@ public class JulietScript extends Script {
 
                 addScriptAction(new ConditionalScriptAction() {{
 
-                    // Juliet?
+                    // Juliet? option
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -72,7 +68,7 @@ public class JulietScript extends Script {
                         }});
                     }});
 
-                    // A trick?
+                    // A trick? option
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -91,9 +87,8 @@ public class JulietScript extends Script {
                     }});
                 }});
 
-                //
-                // CHOICE 2
-                //
+            
+                // CHOICE 2 - also unimportant
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Gnomeo: What are you saying?");
                     addText("Juliet: The pain in your heart ties me to this place.\nYou must let me go.");
@@ -107,7 +102,7 @@ public class JulietScript extends Script {
 
                 addScriptAction(new ConditionalScriptAction() {{
 
-                    // Accept-leaning
+                    // Acceptance-leaning
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -125,7 +120,7 @@ public class JulietScript extends Script {
                         }});
                     }});
 
-                    // Reject-leaning
+                    // Rejection-leaning
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -144,9 +139,8 @@ public class JulietScript extends Script {
                     }});
                 }});
 
-                //
-                // CHOICE 3 — THE FINAL DECISION
-                //
+                
+                // CHOICE 3 — THE FINAL DECISION - important
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Gnomeo: This isn't fair...");
                     addText("Juliet: I know, my love.\nBut we are at the end of our story.");
@@ -160,9 +154,8 @@ public class JulietScript extends Script {
 
                 addScriptAction(new ConditionalScriptAction() {{
 
-                    //
+                    
                     // ACCEPT ENDING — DESPAWN AT THE END
-                    //
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
@@ -195,9 +188,8 @@ public class JulietScript extends Script {
                         });
                     }});
 
-                    //
+                    
                     // REJECT ENDING — DESPAWN AT THE END
-                    //
                     addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                         addRequirement(new CustomRequirement() {
                             @Override
