@@ -173,6 +173,28 @@ public class Item {
             }
         };
 
+
+        //flowers
+        public static Item flowers = new Item("flowers", "Flowers", "A bunch of flowers", 20) {
+
+            {
+                var worldSheet = new SpriteSheet(ImageLoader.load("item_imgs/Flowers.png"), 32, 32);
+                FrameBuilder[] worldFrames = new FrameBuilder[] {
+                    new FrameBuilder(worldSheet.getSprite(0, 0))
+                        .withScale(1.6f)
+                };
+                addAnimation("world", worldFrames);
+                FrameBuilder[] inventoryFrames = new FrameBuilder[] {
+                    new FrameBuilder(worldSheet.getSprite(0, 0))
+                };
+                addAnimation("inventory", inventoryFrames);
+            }
+        };
+
+
+
+
+
         /* public static Item test_item = new Item("test_item", "Test Item", "A test item", 5) {
             @Override
             public boolean canUse(ItemStack stack, Entity targetedEntity) {

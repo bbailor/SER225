@@ -136,6 +136,18 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("greyscaleGnomeLeft", false);
         flagManager.addFlag("greyscaleQuestDeclined", false);
 
+        // Acceptance flags
+        flagManager.addFlag("hasMetJuliet", false);
+        flagManager.addFlag("JulietResolved", false);
+        flagManager.addFlag("JulietAccept", false);
+        flagManager.addFlag("JulietReject", false);
+        flagManager.addFlag("osirisGone", false);
+        flagManager.addFlag("JulietFlowersSpawned", false);
+        flagManager.addFlag("JulietFlowersPlacedAtGrave", false);
+
+
+        
+
         
         // setup player
         player = new Gnome(0, 0);

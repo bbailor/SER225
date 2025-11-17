@@ -2,9 +2,12 @@ package Maps;
 
 import Level.*;
 import NPCs.*;
-import Scripts.MapFiveAcceptance.AcceptanceEntryScript;
-import Tilesets.Map5Tileset;   // ← We will create this next (copy of Map4Tileset + gravestone)
+import Scripts.MapFiveAcceptance.GravestoneScript;
+import Scripts.MapFiveAcceptance.JulietScript;
+import Scripts.MapFiveAcceptance.OsirisScript;
+import Tilesets.Map5Tileset;
 import Utils.Point;
+import EnhancedMapTiles.CollectableItem;
 
 import java.util.ArrayList;
 
@@ -13,8 +16,8 @@ public class AcceptanceMap extends Map {
     public AcceptanceMap() {
         super("acceptance_map.txt", new Map5Tileset());
 
-        // Place player somewhere safe — change this freely later
-        this.playerStartPosition = getMapTile(2, 4).getLocation();
+        // Player spawn — adjust if needed
+        this.playerStartPosition = getMapTile(2, 5).getLocation();
     }
 
     @Override
@@ -26,28 +29,72 @@ public class AcceptanceMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        // OPTIONAL: If acceptance has a special NPC, add it here
-        // Example:
-        // AcceptanceBoss boss = new AcceptanceBoss(100, getMapTile(10, 5).getLocation());
-        // boss.setInteractScript(new AcceptanceBossScript());
-        // boss.setCurrentAnimationName("STAND_RIGHT");
-        // npcs.add(boss);
+        Juliet juliet = new Juliet(1, getMapTile(24, 1).getLocation());
+        juliet.setInteractScript(new JulietScript());
+        juliet.setCurrentAnimationName("STAND_RIGHT");
+        npcs.add(juliet);
+
+        Wizard osiris = new Wizard(4, getMapTile(30, 5).getLocation());
+        osiris.setInteractScript(new OsirisScript());
+        npcs.add(osiris);
 
         return npcs;
     }
 
     @Override
     public ArrayList<Trigger> loadTriggers() {
-        ArrayList<Trigger> triggers = new ArrayList<>();
-
-        // EXAMPLE: If you want interacting with the grave to leave the map:
-        // triggers.add(new Trigger(gravestoneX, gravestoneY, new AcceptanceExitScript()));
-
-        return triggers;
+        // none needed here. Gravestone uses an interact script, not a trigger.
+        return new ArrayList<>();
     }
 
     @Override
     public void loadScripts() {
-        // Nothing needed unless special scripts run on map load
+        super.loadScripts();
+
+        // -----------------------------------------------------------
+        // GRAVESTONE INTERACTION SCRIPT
+        // Tile is at map tile (32,5)
+        // -----------------------------------------------------------
+        MapTile gravestone = getMapTile(32, 5);
+
+        if (gravestone != null) {
+            GravestoneScript script = new GravestoneScript();
+
+            // attach script
+            gravestone.setInteractScript(script);
+
+            // ⭐ REQUIRED: manually initialize script so it works
+            script.setMap(this);
+            script.setPlayer(this.player);
+            script.setListeners(this.listeners);
+            script.initialize();
+        }
+    }
+
+    // -----------------------------------------------------------
+    //  Juliet Acceptance → Spawn flowers ONCE
+    // -----------------------------------------------------------
+    @Override
+    public void update(Player player) {
+        super.update(player);
+
+        FlagManager flags = this.getFlagManager();
+        if (flags != null
+                && flags.isFlagSet("JulietAccept")
+                && !flags.isFlagSet("JulietFlowersSpawned")) {
+
+            // Juliet originally stood at tile (11,1)
+            Point pos = getMapTile(24, 1).getLocation();
+
+            CollectableItem flowers = new CollectableItem(
+                    pos.x + 25,
+                    pos.y + 40,
+                    Item.ItemList.flowers
+            );
+
+            this.addCollectableItem(flowers);
+
+            flags.setFlag("JulietFlowersSpawned");
+        }
     }
 }
