@@ -21,7 +21,14 @@ public class DepressionBossScript extends Script {
                 addRequirement(new FlagRequirement("hasTalkedToDepressionBoss", false));
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Depression: At long last... The Hero.");
-                    addText("Depression: At long last... The Hero.");
+                    addText("Depression: You look tired.. why not rest..\ntake a break from your journey?");
+                    addText("Gnomeo: You mean.. give up?");                    
+                    addText("Depression: You don't have to keep going...\nI know a place where you can stay forever.");
+                    addText("Gnomeo: No.. no, this is a trick! I won't fall for it.");             
+                    addText("Depression: Oh, but you already have.");             
+                    addText("Depression: I know everything about you..\nyour hopes, your dreams, your fears.");             
+                    addText("Depression: That girl you came for?\nIt's. Too. LATE!");             
+                    addText("Gnomeo: N..no.. I can still save her! I won't let you win!");
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToDepressionBoss", true));
             }});
@@ -42,7 +49,7 @@ public class DepressionBossScript extends Script {
                             }
                         });
                         addScriptAction(new TextboxScriptAction() {{
-                            addText("[INSERT TEXT HERE]"); //what u say after hitting start battle 'yes'
+                            addText("Depression: Let's see if you can overcome your despair."); //what u say after hitting start battle 'yes'
                         }});
                        
                         addScriptAction(new StartBattleScriptAction(DepressionBossScript.this.entity));
