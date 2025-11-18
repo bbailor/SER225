@@ -20,8 +20,8 @@ public class DepressionBossScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToDepressionBoss", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("[INSERT DEPRESSION DIALOGUE HERE]");
-                    
+                    addText("Depression: At long last... The Hero.");
+                    addText("Depression: At long last... The Hero.");
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToDepressionBoss", true));
             }});
@@ -54,10 +54,17 @@ public class DepressionBossScript extends Script {
                             @Override
                             public ScriptState execute() {
                                 
-                                Point wispyLocation = map.getMapTile(2, 5).getLocation().subtractX(32).addY(32);
-                                Wispy wispy = new Wispy(600, wispyLocation.x, wispyLocation.y);
-                                
-                                map.addNPC(wispy);
+                                // Get the map tile locations for the wispies
+                                WispyChainBuilder builder = new WispyChainBuilder(700);
+                                Wispy firstWispy = builder
+                                    .addPoint(map.getMapTile(2, 5).getLocation().subtractX(32).addY(32))   // First wispy
+                                    .addPoint(map.getMapTile(3, 6).getLocation())  // Second wispy
+                                    .addPoint(map.getMapTile(2, 7).getLocation().subtractX(32).addY(32))  // Third wispy
+                                    .addPoint(map.getMapTile(0, 6).getLocation().addX(20))  // Fourth wispy
+                                    .addPoint(map.getMapTile(1, 5).getLocation().addX(32).addY(32))  // Fifth wispy
+                                    .build();
+
+                                map.addNPC(firstWispy);
                                 
                                 return ScriptState.COMPLETED;
                             }
@@ -72,7 +79,7 @@ public class DepressionBossScript extends Script {
                                 return answer == 1;
                             }
                         });
-                        addScriptAction(new TextboxScriptAction("Depression: Cowardice... Entirely expected."));
+                        addScriptAction(new TextboxScriptAction("Depression: Sad... You really are a pity."));
                     }});
                 }});
             }});
