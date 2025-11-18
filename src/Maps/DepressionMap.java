@@ -4,6 +4,7 @@ import Level.*;
 import NPCs.*;
 import Scripts.MapFiveAcceptance.AcceptanceEntryScript;
 import Scripts.MapFourDepression.*;
+import Scripts.MapThreeBargaining.BargainingScript;
 import Tilesets.Map4Tileset;
 import java.util.ArrayList;
 
@@ -53,6 +54,7 @@ public class DepressionMap extends Map {
     @Override
     public ArrayList<Trigger> loadTriggers() {
         ArrayList<Trigger> triggers = new ArrayList<>();
+        triggers.add(new Trigger(2500, 300, 1000, 1000, new DepressionScript(), "hasStartedDepression"));
         return triggers;
     }
 

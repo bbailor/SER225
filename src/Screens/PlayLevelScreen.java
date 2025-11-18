@@ -118,12 +118,17 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("wizardSaved", false);
         flagManager.addFlag("wizardRewardGiven", false);
         flagManager.addFlag("hasEnteredAnger", false);
+        
+        flagManager.addFlag("hasStartedAnger", false);
+        flagManager.addFlag("hasMadeWrongTurn", false);
         flagManager.addFlag("hasDefeatedDenial", false); 
         flagManager.addFlag("hasEnteredAcceptance", false);
         flagManager.addFlag("hasEnteredDepression",false);
-        flagManager.addFlag("hasEnteredBargaining", false);
+        flagManager.addFlag("hasStartedDepression", false);
+        flagManager.addFlag("hasStartedBargaining", false);
         flagManager.addFlag("hasDefeatedAnger", false);
         flagManager.addFlag("hasTalkedToBargainingBoss", false);
+        flagManager.addFlag("hasStartedBargaining", false);
         flagManager.addFlag("hasDefeatedBargaining", false);
         flagManager.addFlag("hasDefeatedDepression", false);
         flagManager.addFlag("bargaining_round1", false);
@@ -158,7 +163,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         // load map
         // this.switchMap(new TestMap());
-        this.switchMap(new AngerMap());
+        this.switchMap(new BargainingMap());
 
         winScreen = new WinScreen(this);
         this.loseScreen = new LoseScreen(this);

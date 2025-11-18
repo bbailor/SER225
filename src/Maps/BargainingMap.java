@@ -5,6 +5,7 @@ import Tilesets.Map3Tileset;
 import NPCs.BargainingBoss;
 import Scripts.MapFourDepression.DepressionEntryScript;
 import Scripts.MapThreeBargaining.BargainingBossScript;
+import Scripts.MapThreeBargaining.BargainingScript;
 import Scripts.MapTwoAnger.BargainingEntryScript;
 
 import java.util.ArrayList;
@@ -41,13 +42,12 @@ public class BargainingMap extends Map {
     @Override
     public ArrayList<Trigger> loadTriggers() {
         ArrayList<Trigger> triggers = new ArrayList<>();
-        
+        triggers.add(new Trigger(0, 1000, 1000, 1000, new BargainingScript(), "hasStartedBargaining"));
         return triggers;
     }
 
     @Override
     public void loadScripts() {
        getMapTile(14, 6).setInteractScript(new DepressionEntryScript());
-       
     }
 }

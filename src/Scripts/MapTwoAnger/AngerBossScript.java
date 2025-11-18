@@ -2,6 +2,7 @@ package Scripts.MapTwoAnger;
 
 import Level.Script;
 import Level.ScriptState;
+import Level.WispyChainBuilder;
 import NPCs.Wispy;
 import ScriptActions.*;
 import Utils.Point;
@@ -19,7 +20,17 @@ public class AngerBossScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("hasTalkedToAngerBoss", false));
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("[INSERT ANGER DIALOGUE HERE]");
+                    addText("*A villainous laugh echoes*");
+                    addText("Anger: So... this is the one I have heard\nso much about.");
+                    addText("Gnomeo: Cease your mockery! I have business\nbeyond the likes of you!");
+                    addText("Anger: Disappointing. I expected more.");
+                    addText("Gnomeo: YOU'LL REGRET IGNORING ME!");
+                    addText("Anger: Still, I suppose you did make it\npast Denial...");
+                    addText("Gnomeo: ...");
+                    addText("Anger: Ah.. you're ready to talk now?");
+                    addText("Gnomeo: I will not talk to the likes of you!");
+                    addText("Anger: Then we will fight like true\nwarriors! I am so glad we agree.");
+                    
                     
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToAngerBoss", true));
@@ -41,7 +52,7 @@ public class AngerBossScript extends Script {
                             }
                         });
                         addScriptAction(new TextboxScriptAction() {{
-                            addText("[INSERT TEXT HERE]"); //what u say after hitting start battle 'yes'
+                            addText("Anger: This is going to be fun...\nMay the leveler head prevail!"); //what u say after hitting start battle 'yes'
                         }});
                        
                         addScriptAction(new StartBattleScriptAction(AngerBossScript.this.entity));
@@ -55,12 +66,14 @@ public class AngerBossScript extends Script {
                                 // Remove the boss from map
                                 entity.setMapEntityStatus(Level.MapEntityStatus.REMOVED);
                                 
-                                // Spawn single wispy at tile (17, 15) with Y offset
-                                Point wispyLocation = map.getMapTile(17, 16).getLocation();
-                                Wispy wispy = new Wispy(600, wispyLocation.x, wispyLocation.y);
-                                
-                                map.addNPC(wispy);
-                                
+                                // Get the map tile locations for the wispies
+                                WispyChainBuilder builder = new WispyChainBuilder(600);
+                                Wispy firstWispy = builder
+                                    .addPoint(map.getMapTile(16, 18).getLocation())   // First wispy
+                                    .addPoint(map.getMapTile(16, 16).getLocation())  // Second wispy
+                                    .build();
+
+                                map.addNPC(firstWispy);
                                 return ScriptState.COMPLETED;
                             }
                         });
@@ -74,7 +87,7 @@ public class AngerBossScript extends Script {
                                 return answer == 1;
                             }
                         });
-                        addScriptAction(new TextboxScriptAction("Anger: Cowardice... Entirely expected."));
+                        addScriptAction(new TextboxScriptAction("Anger: You shy away from my challenge??\nYou must learn to place your anger appropriately!"));
                     }});
                 }});
             }});

@@ -28,24 +28,9 @@ public class BargainingEntryScript extends Script {
         
         scriptActions.add(new ConditionalScriptAction() {{
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
-                // addRequirement(new FlagRequirement("hasDefeatedAnger", true));
+                addRequirement(new FlagRequirement("hasDefeatedAnger", true));
                 addRequirement(new FlagRequirement("hasEnteredBargaining", false));
-                addRequirement(new CustomRequirement() {
-
-                    @Override
-                    public boolean isRequirementMet() {
-                        // ensures player is directly underneath tile
-                        // this prevents the script from working if the player tries to interact with it from the side
-
-                        // if player is not below tree trunk tile, player location is not valid and this conditional script will not be reached
-                        if (player.getBounds().getY1() <= entity.getBounds().getY2()) {
-                            return false;
-                        }
-
-                        // if code gets here, it means player is below tree trunk tile and player location is valid, so this conditional script will continue
-                        return true;
-                    }
-                });
+                
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Gnomeo: I need her back, how can I continue?");

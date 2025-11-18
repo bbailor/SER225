@@ -1,23 +1,17 @@
 package Maps;
 
-import EnhancedMapTiles.PushableRock;
 import Level.*;
 import NPCs.ArmoredSkeleton;
 import NPCs.AngerBoss;
-import NPCs.DenialBoss;
 import NPCs.Skeleton;
 import NPCs.Spirit;
-import NPCs.Wizard;
 import NPCs.AngerSpirit;
-import Scripts.SimpleTextScript;
 import Scripts.MapTwoAnger.AngerBossScript;
 import Scripts.MapTwoAnger.BargainingEntryScript;
-import Scripts.MapOneDenial.AngerEntryScript;
-import Scripts.MapOneDenial.DenialBossScript;
+import Scripts.MapTwoAnger.MazeScript;
 import Scripts.MapOneDenial.DenialEnemyScript;
-import Scripts.TestMap.WizardScript;
+import Scripts.MapTwoAnger.AngerScript;
 import Tilesets.Map2Tileset;
-import Utils.Point;
 import java.util.ArrayList;
 
 // Represents a test map to be used in a level
@@ -88,11 +82,21 @@ public class AngerMap extends Map {
     public ArrayList<Trigger> loadTriggers() {
         ArrayList<Trigger> triggers = new ArrayList<>();
         
+        triggers.add(new Trigger(0, 1000, 250, 250, new AngerScript(), "hasEnteredAnger"));
+        
         return triggers;
     }
 
     @Override
     public void loadScripts() {
-       getMapTile(16, 16).setInteractScript(new BargainingEntryScript());
+       getMapTile(16, 15).setInteractScript(new BargainingEntryScript());
+
+       getMapTile(8, 18).setInteractScript(new MazeScript());
+       getMapTile(9, 18).setInteractScript(new MazeScript());
+
+       getMapTile(2, 3).setInteractScript(new MazeScript());
+       getMapTile(3, 3).setInteractScript(new MazeScript());
+
+       getMapTile(17, 13).setInteractScript(new MazeScript());
     }
 }
