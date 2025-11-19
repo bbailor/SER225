@@ -1,11 +1,16 @@
 package Screens;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.random.RandomGenerator;
+
+import javax.sound.sampled.LineUnavailableException;
+import Utils.Globals;
 import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
@@ -23,10 +28,13 @@ import FightAnimations.SkeletonAttack;
 import FightAnimations.SpiritAttack;
 import FightAnimations.AngerSpiritAttack;
 import FightAnimations.TlalocsStormAttack;
+import FightAnimations.SwordOfRageAttack;
 import FightAnimations.StaticPlayerAttackAnimation;
+import FightAnimations.SwordOfRageAttack;
 import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
+import Items.SwordOfRage;
 import Level.Entity;
 import Level.Player;
 import Level.Weapon;
@@ -38,6 +46,9 @@ import Utils.Menu;
 import Utils.MenuListener;
 import Utils.Resources;
 import Utils.TailwindColorScheme;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import Utils.SoundThreads.Type;
 
 public class BattleScreen extends Screen implements Menu, MenuListener {
 
@@ -99,6 +110,13 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         this.enemySource = enemySource;
         this.isBossBattle = isBossBattle;
 
+        try{
+            Globals.SOUND_SYSTEM.play(Type.Music, 0, new File("Resources/Sounds/Music/danceOfKnights8bit.wav"));
+            Globals.SOUND_SYSTEM.getTrack(0).setLoopPoint(0, -1, true);
+        } catch(IOException | UnsupportedAudioFileException | LineUnavailableException e){
+            e.printStackTrace();
+        }
+
         var inv = new InventoryBattleMenu(
             (int) BATTLE_ACTION_REC.getX(),
             (int) BATTLE_ACTION_REC.getY(),
@@ -126,6 +144,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         this.selector.open();
 
         this.history = new ArrayList<>();
+
+        
     }
 
     // Old constructor for backward compatibility
@@ -535,6 +555,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     public void onMenuClose() {
         this.selectedAction = null;
         this.selector.setHoverColor(Globals.HOVER_COLOR);
+    
+
     }
     
     private void startPlayerAttackAnimation() {
@@ -762,6 +784,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             case "DenialsStaff":
                 return new DenialsStaffAttack(sheet, enemyX, enemyY);
 
+            case "SwordOfRage":
+                return new SwordOfRageAttack(sheet, enemyX, enemyY, playerX, playerY, 45);
             // Add more weapons here as you create them
             // Projectile example:
             // case "Arrow":
@@ -775,6 +799,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 System.err.println("Unknown weapon type: " + weapon + ", using KnifeOfLife attack");
                 return new KnifeOfLifeAttack(sheet, enemyX, enemyY, playerX, playerY, 100);
         }
+    }
+
+    @Override
+    public void close() {
+        Menu.super.close();
     }
 
     public enum BattleTurn {
