@@ -3,7 +3,10 @@ package Scripts.MapFiveAcceptance;
 import Level.Script;
 import Level.ScriptState;
 import ScriptActions.*;
+import Utils.Globals;
+import Utils.SoundThreads.Type;
 import Level.MapEntityStatus;
+import java.io.File;
 import java.util.ArrayList;
 
 public class OsirisScript extends Script {
@@ -36,6 +39,12 @@ public class OsirisScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("JulietAccept", true));
                 addRequirement(new FlagRequirement("osirisGone", false));
+                try {
+                    Globals.SOUND_SYSTEM.play(Type.Music, Globals.STORY_TRACK, new File("Resources/Sounds/Music/happyEndingSong"));
+                    Globals.SOUND_SYSTEM.getTrack(Globals.STORY_TRACK).setLoopPoint(0, -1, true);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Osiris: You’ve finally chosen to let her rest...");

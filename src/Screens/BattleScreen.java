@@ -111,8 +111,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         this.isBossBattle = isBossBattle;
 
         try{
-            Globals.SOUND_SYSTEM.play(Type.Music, 0, new File("Resources/Sounds/Music/danceOfKnights8bit.wav"));
-            Globals.SOUND_SYSTEM.getTrack(0).setLoopPoint(0, -1, true);
+            Globals.SOUND_SYSTEM.play(Type.Music, Globals.BATTLE_TRACK_NUMBER, new File("Resources/Sounds/Music/danceOfKnights8bit.wav"));
+            Globals.SOUND_SYSTEM.getTrack(Globals.BATTLE_TRACK_NUMBER).setLoopPoint(0, -1, true);
         } catch(IOException | UnsupportedAudioFileException | LineUnavailableException e){
             e.printStackTrace();
         }
