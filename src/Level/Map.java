@@ -5,14 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ScreenManager;
 import EnhancedMapTiles.CollectableItem;
+import FightAnimations.StaticEnemyAttackAnimation;
 import GameObject.Rectangle;
-import Level.OverworldAnimations.OverworldAttackAnimation;
 import Utils.Direction;
 import Utils.Point;
 
@@ -63,7 +64,7 @@ public class Map {
     protected ArrayList<NPC> npcs;
     protected ArrayList<Trigger> triggers;
     protected ArrayList<CollectableItem> collectableItems;
-    protected ArrayList<OverworldAttackAnimation> overworldAnimations;
+    protected ArrayList<StaticEnemyAttackAnimation> overworldAnimations;
 
     // current script that is being executed (if any)
     protected Script activeScript;
@@ -97,6 +98,7 @@ public class Map {
         this.xMidPoint = ScreenManager.getScreenWidth() / 2;
         this.yMidPoint = (ScreenManager.getScreenHeight() / 2);
         this.playerStartPosition = new Point(0, 0);
+        this.overworldAnimations = new ArrayList<>();
     }
 
     // For serializtion without reading a file twice
@@ -596,15 +598,7 @@ public void entityInteract(Player player) {
             textbox.update();
         }
 
-        // Update overworld animations
-        java.util.Iterator<OverworldAttackAnimation> it = overworldAnimations.iterator();
-        while (it.hasNext()) {
-            OverworldAttackAnimation anim = it.next();
-            anim.update();
-            if (anim.isComplete()) {
-                it.remove();
-            }
-        }
+        updateOverworldAnimations();
     }
 
 
@@ -679,15 +673,13 @@ public void entityInteract(Player player) {
 
     public void draw(GraphicsHandler graphicsHandler) {
         camera.draw(graphicsHandler);
+        drawOverworldAnimations(graphicsHandler);
     }
 
     public void draw(Player player, GraphicsHandler graphicsHandler) {
         camera.draw(player, graphicsHandler);
 
-        // Draw overworld animations on top of everything
-        for (OverworldAttackAnimation anim : overworldAnimations) {
-            anim.draw(graphicsHandler);
-        }
+        drawOverworldAnimations(graphicsHandler);
 
         if (textbox.isActive()) {
             textbox.draw(graphicsHandler);
@@ -717,9 +709,41 @@ public void entityInteract(Player player) {
      * Add an overworld attack animation to be displayed on the map
      * @param animation The animation to display
      */
-    public void addOverworldAnimation(OverworldAttackAnimation animation) {
+    public void addOverworldAnimation(StaticEnemyAttackAnimation animation) {
         animation.setMap(this);
         overworldAnimations.add(animation);
+    }
+
+    /**
+     * Update all active animations (call this in your map's update method)
+     */
+    public void updateOverworldAnimations() {
+        Iterator<StaticEnemyAttackAnimation> iterator = overworldAnimations.iterator();
+        while (iterator.hasNext()) {
+            StaticEnemyAttackAnimation animation = iterator.next();
+            animation.update();
+            
+            // Remove completed animations
+            if (animation.isComplete()) {
+                iterator.remove();
+            }
+        }
+    }
+
+    /**
+     * Draw all active animations
+     */
+    public void drawOverworldAnimations(GraphicsHandler graphicsHandler) {
+        for (StaticEnemyAttackAnimation animation : overworldAnimations) {
+            animation.draw(graphicsHandler);
+        }
+    }
+
+    /**
+     * Clear all active animations
+     */
+    public void clearOverworldAnimations() {
+        overworldAnimations.clear();
     }
 
     public void addListener(GameListener listener) {

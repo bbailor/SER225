@@ -150,10 +150,6 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         flagManager.addFlag("osirisGone", false);
         flagManager.addFlag("JulietFlowersSpawned", false);
         flagManager.addFlag("JulietFlowersPlacedAtGrave", false);
-
-
-        
-
         
         // setup player
         player = new Gnome(0, 0);
@@ -162,8 +158,13 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         playLevelScreenState = PlayLevelScreenState.RUNNING;
 
         // load map
+<<<<<<< HEAD
         this.switchMap(new TestMap());
         // this.switchMap(new DepressionMap());
+=======
+        // this.switchMap(new TestMap());
+        this.switchMap(new BargainingMap());
+>>>>>>> 8e86b053f0550121e6eca317ff47303d485221ac
 
         winScreen = new WinScreen(this);
         this.loseScreen = new LoseScreen(this);

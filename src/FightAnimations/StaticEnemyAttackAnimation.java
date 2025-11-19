@@ -3,44 +3,41 @@ package FightAnimations;
 import Engine.GraphicsHandler;
 import GameObject.AnimatedSprite;
 import GameObject.SpriteSheet;
+import Level.Map;
 
-/**
- * Base class for all attack animations in battle
- * Handles movement from start position to target position
- */
 public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
     
-    protected float startX, startY;
-    protected float targetX, targetY;
+    protected float posX, posY;
     protected boolean isComplete;
     protected int totalFrames;
-    protected int currentTravelFrame;
+    protected int frameCounter;
+    protected Map map;
     
     /**
-     * Creates an attack animation
+     * Creates a static attack animation
      * @param spriteSheet The sprite sheet containing attack frames
-     * @param startX Starting X position (typically enemy position)
-     * @param startY Starting Y position
-     * @param targetX Target X position (typically player position)
-     * @param targetY Target Y position
-     * @param duration Number of game frames the animation should take to travel
+     * @param posX X position where animation plays
+     * @param posY Y position where animation plays
+     * @param duration Number of game frames the animation should last (or high value if using AnimatedSprite delays)
      * @param startingAnimationName The animation to play (e.g., "ATTACK")
      */
-    public StaticEnemyAttackAnimation(SpriteSheet spriteSheet, float startX, float startY, 
-                          float targetX, float targetY, int duration, String startingAnimationName) {
-        super(spriteSheet, startX, startY, startingAnimationName);
-        this.startX = startY;
-        this.startY = startX;
-        this.targetX = targetX;
-        this.targetY = targetY;
+    public StaticEnemyAttackAnimation(SpriteSheet spriteSheet, float posX, float posY, 
+                          int duration, String startingAnimationName) {
+        super(spriteSheet, posX, posY, startingAnimationName);
+        this.posX = posX;
+        this.posY = posY;
         this.totalFrames = duration;
-        this.currentTravelFrame = 0;
+        this.frameCounter = 0;
         this.isComplete = false;
     }
-    
+   
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
     @Override
     public void update() {
-        // Update the animation frames
+        // Call parent to handle AnimatedSprite frame animation
         super.update();
         
         if (isComplete) {
@@ -55,35 +52,28 @@ public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
             return;
         }
         
-        // Calculate progress (0.0 to 1.0)
-        currentTravelFrame++;
-        float progress = Math.min(1.0f, (float)currentTravelFrame / totalFrames);
+        frameCounter++;
         
-        // Allow subclasses to customize movement
-        updatePosition(progress);
+        // Let subclass handle frame progression (if needed)
+        updateFrame(frameCounter);
         
-        // Check if animation reached target
-        if (progress >= 1.0f) {
+        // Check if animation is complete
+        if (frameCounter >= totalFrames) {
             isComplete = true;
             onComplete();
         }
     }
     
     /**
-     * Update the position based on progress
-     * Override this for custom movement patterns (arc, zigzag, etc.)
-     * @param progress Value from 0.0 to 1.0 representing completion
+     * Update the animation frame based on current frame count
+     * Override this to implement custom frame sequences
+     * @param frame Current frame number
      */
-    protected void updatePosition(float progress) {
-        // Default: linear interpolation
-        float newX = startX + (targetX - startX) * progress;
-        float newY = startY + (targetY - startY) * progress;
-        setLocation(newX, newY);
-    }
+    protected abstract void updateFrame(int frame);
     
     /**
      * Called when animation completes
-     * Override to add custom behavior (e.g., explosion effect, sound)
+     * Override to add custom behavior (e.g., sound effects)
      */
     protected void onComplete() {
         // Default: do nothing
@@ -93,14 +83,12 @@ public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
         return isComplete;
     }
     
-    public void reset(float newStartX, float newStartY, float newTargetX, float newTargetY) {
-        this.startX = newStartX;
-        this.startY = newStartY;
-        this.targetX = newTargetX;
-        this.targetY = newTargetY;
-        this.currentTravelFrame = 0;
+    public void reset(float newPosX, float newPosY) {
+        this.posX = newPosX;
+        this.posY = newPosY;
+        this.frameCounter = 0;
         this.isComplete = false;
-        setLocation(startX, startY);
+        setLocation(posX, posY);
         setCurrentAnimationFrameIndex(0);
     }
     
@@ -112,16 +100,38 @@ public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
     }
     
     /**
-     * Get current frame in travel animation
+     * Get current frame count in animation
      */
-    public int getCurrentTravelFrame() {
-        return currentTravelFrame;
+    public int getCurrentFrameCount() {
+        return frameCounter;
+    }
+
+    @Override
+    public void draw(GraphicsHandler graphicsHandler) {
+        if (!isComplete) {
+            if (map != null) {
+                // Draw with camera adjustment (for overworld animations)
+                float drawX = x - map.getCamera().getX();
+                float drawY = y - map.getCamera().getY();
+
+                graphicsHandler.drawImage(
+                    currentFrame.getImage(),
+                    Math.round(drawX),
+                    Math.round(drawY),
+                    currentFrame.getWidth(),
+                    currentFrame.getHeight()
+                );
+            } else {
+                // Draw without camera adjustment (for battle animations)
+                super.draw(graphicsHandler);
+            }
+        }
     }
     
     /**
      * Get progress as percentage (0.0 to 1.0)
      */
     public float getProgress() {
-        return Math.min(1.0f, (float)currentTravelFrame / totalFrames);
+        return Math.min(1.0f, (float)frameCounter / totalFrames);
     }
 }

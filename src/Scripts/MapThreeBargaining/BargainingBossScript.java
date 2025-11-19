@@ -4,8 +4,12 @@ import Level.Script;
 import Level.ScriptState;
 import Level.TextboxItem;
 import Level.WispyChainBuilder;
+import FightAnimations.BargainingBossOverworldAnimation;
+import GameObject.SpriteSheet;
 import ScriptActions.*;
 import java.util.ArrayList;
+
+import Engine.ImageLoader;
 import NPCs.Wispy;
 import Utils.Point;
 
@@ -345,13 +349,22 @@ public class BargainingBossScript extends Script {
                                     addText("Bargaining: You are not ready.");
                                     addText("Bargaining: Your words betray your weakness.");
                                     addText("Bargaining: Return when you understand\nwhat it truly means to fight for love.");
-                                    addText("*The weight of your choices crushes you*");
                                 }});
                                 
                                 addScriptAction(new ScriptAction() {
                                     @Override
                                     public ScriptState execute() {
                                         player.getEntity().kill();
+
+                                        SpriteSheet sheet = new SpriteSheet(ImageLoader.load("Enemies/BargainingBossSmite.png"), 60, 200);
+                                        BargainingBossOverworldAnimation anim = new BargainingBossOverworldAnimation(
+                                            sheet,
+                                            player.getX(),
+                                            player.getY()
+                                        );
+
+                                        map.addOverworldAnimation(anim);
+
                                         return ScriptState.COMPLETED;
                                     }
                                 });

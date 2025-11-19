@@ -31,9 +31,9 @@ public class AcceptanceEntryScript extends Script {
 
                 // Dialogue
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Gnomeo: This is it...");
-                    addText("Gnomeo: The final step.");
+                    addText("Gnomeo: This is it... The final step.");
                     addText("Gnomeo: I wish things were different.");
+                    addText("Gnomeo: I can't go home now..\nNot when I'm so close to saving Juliet.");
                 }});
 
                 

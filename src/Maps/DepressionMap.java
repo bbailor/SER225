@@ -4,7 +4,6 @@ import Level.*;
 import NPCs.*;
 import Scripts.MapFiveAcceptance.AcceptanceEntryScript;
 import Scripts.MapFourDepression.*;
-import Scripts.MapThreeBargaining.BargainingScript;
 import Tilesets.Map4Tileset;
 import java.util.ArrayList;
 

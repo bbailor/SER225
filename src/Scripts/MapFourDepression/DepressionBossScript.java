@@ -28,7 +28,7 @@ public class DepressionBossScript extends Script {
                     addText("Depression: Oh, but you already have.");             
                     addText("Depression: I know everything about you..\nyour hopes, your dreams, your fears.");             
                     addText("Depression: That girl you came for?\nIt's. Too. LATE!");             
-                    addText("Gnomeo: N..no.. I can still save her! I won't let you win!");
+                    addText("Gnomeo: N..no.. I can still save her!\nI won't let you win!");
                 }});
                 addScriptAction(new ChangeFlagScriptAction("hasTalkedToDepressionBoss", true));
             }});
@@ -49,7 +49,7 @@ public class DepressionBossScript extends Script {
                             }
                         });
                         addScriptAction(new TextboxScriptAction() {{
-                            addText("Depression: Let's see if you can overcome your despair."); //what u say after hitting start battle 'yes'
+                            addText("Depression: Let's see if you can overcome\nyour despair."); //what u say after hitting start battle 'yes'
                         }});
                        
                         addScriptAction(new StartBattleScriptAction(DepressionBossScript.this.entity));

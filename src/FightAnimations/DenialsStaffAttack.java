@@ -8,26 +8,82 @@ import GameObject.SpriteSheet;
 
 public class DenialsStaffAttack extends StaticPlayerAttackAnimation {
     
-    private int animationFrameCount = 1;
+    private int animationFrameCount = 22;
 
     public DenialsStaffAttack(SpriteSheet spriteSheet, float posX, float posY) {
-        super(spriteSheet, posX - 256, posY, 999, "ATTACK");
+        super(spriteSheet, posX - 270, posY, 999, "ATTACK");
     }
 
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
-            
             put("ATTACK", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 6)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 6)
+                new FrameBuilder(spriteSheet.getSprite(1, 0), 5)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 6)
+                new FrameBuilder(spriteSheet.getSprite(2, 0), 4)
                         .withScale(2)
                         .build(),
+                new FrameBuilder(spriteSheet.getSprite(3, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(4, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(5, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(6, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(7, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(8, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(9, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(10, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(11, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(12, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(13, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(14, 0), 3)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(15, 0), 4)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(16, 0), 5)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(17, 0), 6)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(18, 0), 7)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(19, 0), 8)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(20, 0), 8)
+                        .withScale(2)
+                        .build(),
+                new FrameBuilder(spriteSheet.getSprite(21, 0), 8)
+                        .withScale(2)
+                        .build()
             });
         }};
     }

@@ -1,5 +1,6 @@
 package Scripts.MapOneDenial;
 
+import Level.Item;
 import Level.Script;
 import Level.ScriptState;
 import Level.WispyChainBuilder;
@@ -8,6 +9,8 @@ import ScriptActions.*;
 import Utils.Point;
 
 import java.util.ArrayList;
+
+import EnhancedMapTiles.CollectableItem;
 
 public class DenialBossScript extends Script {
     @Override
@@ -56,6 +59,20 @@ public class DenialBossScript extends Script {
                         addScriptAction(new StartBattleScriptAction(DenialBossScript.this.entity));
 
                         addScriptAction(new ChangeFlagScriptAction("hasDefeatedDenial", true));
+
+                        // Drop weapon reward
+                        addScriptAction(new ScriptAction() {
+                            @Override
+                            public ScriptState execute() {
+                                CollectableItem reward = new CollectableItem(
+                                    map.getMapTile(5, 12).getLocation().x, 
+                                    map.getMapTile(5, 12).getLocation().y,
+                                    Item.ItemList.denials_staff
+                                );
+                                map.addCollectableItem(reward);
+                                return ScriptState.COMPLETED;
+                            }
+                        });
                                 
                         // Spawn the wispy guide
                         addScriptAction(new ScriptAction() {

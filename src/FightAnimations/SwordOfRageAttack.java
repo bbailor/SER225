@@ -9,7 +9,7 @@ import java.util.HashMap;
 /**
  * Spirit attack animation that moves from enemy to player
  */
-public class SwordOfRageAttack extends EnemyProjectileAttackAnimation {
+public class SwordOfRageAttack extends PlayerProjectileAttackAnimation {
     
     private static final int FRAMES_UNTIL_STOP = 5;
     private float stoppedX, stoppedY;

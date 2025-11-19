@@ -18,6 +18,12 @@ public class AngerBoss extends NPC {
             new SpriteSheet(ImageLoader.load("Bosses/AngerBoss.png"), 120, 120),
             "STAND_RIGHT"
         );
+
+        this.entity.setMaxHealth(25);
+        this.entity.setBaseAttack(0);
+        
+        this.entity.addAttack("AngerBossAttack", 50, "AngerBossAttack", 5);
+        this.entity.addAttack("Explosion", 10, "DenialBossAttack", 7.0);
         autoBattleEnabled = false;
     }
     
