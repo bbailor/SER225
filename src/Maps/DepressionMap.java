@@ -16,8 +16,8 @@ public class DepressionMap extends Map {
 
 
         // Adjust X,Y below if you want a different spot
-        this.playerStartPosition = getMapTile(33, 4).getLocation();
-        // this.playerStartPosition = getMapTile(4, 5).getLocation();
+        // this.playerStartPosition = getMapTile(33, 4).getLocation();
+        this.playerStartPosition = getMapTile(4, 5).getLocation();
 
     }
 
@@ -29,6 +29,7 @@ public class DepressionMap extends Map {
     @Override
     protected ArrayList<CollectableItem> loadCollectableItems() {
         ArrayList<CollectableItem> collectables = new ArrayList<>();
+        collectables.add(new CollectableItem(getMapTile(4, 5).getLocation(), Item.ItemList.sword_of_rage));
         return collectables;
     }
 

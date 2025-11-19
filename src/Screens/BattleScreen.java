@@ -26,6 +26,7 @@ import FightAnimations.KnifeOfLifeAttack;
 import FightAnimations.PlayerProjectileAttackAnimation;
 import FightAnimations.SkeletonAttack;
 import FightAnimations.SpiritAttack;
+import FightAnimations.AngerBossAttack;
 import FightAnimations.AngerSpiritAttack;
 import FightAnimations.TlalocsStormAttack;
 import FightAnimations.SwordOfRageAttack;
@@ -722,6 +723,10 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 60, 200);
                     break;
                 }
+                case "AngerBossAttack":{
+                    attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 48, 64);
+                    break;
+                }
                 default: {
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 24, 24);
                 }
@@ -784,6 +789,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         
         case "DepressionBossAttack":
             return new DepressionBossAttack(sheet, targetX, targetY);
+
+        case "AngerBossAttack":
+            return new AngerBossAttack(sheet, targetX, targetY);
             
         default:
             System.err.println("Unknown attack name: " + attackName + ", using default Skeleton attack");
@@ -802,7 +810,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 // Static: appears at enemy position
                 return new TlalocsStormAttack(sheet, enemyX, enemyY);
             case "SwordOfRage":
-                return new SwordOfRageAttack(sheet, enemyX, enemyY, playerX, playerY, 45);
+                return new SwordOfRageAttack(sheet, enemyX, enemyY, playerX, playerY, 60);
             // Add more weapons here as you create them
             // Projectile example:
             // case "Arrow":
