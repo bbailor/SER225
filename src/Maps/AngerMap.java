@@ -14,6 +14,8 @@ import Scripts.MapTwoAnger.AngerScript;
 import Tilesets.Map2Tileset;
 import java.util.ArrayList;
 
+import EnhancedMapTiles.CollectableItem;
+
 // Represents a test map to be used in a level
 public class AngerMap extends Map {
 
@@ -68,7 +70,7 @@ public class AngerMap extends Map {
         // // enemies near player, all share DenialEnemyScript (spread out a bit)
 
         //  // adding boss into game (fingers crossed)
-        AngerBoss ab = new AngerBoss(102, getMapTile(16, 16).getLocation());
+        AngerBoss ab = new AngerBoss(102, getMapTile(15, 15).getLocation());
         ab.setInteractScript(new AngerBossScript());
         // player start is to the LEFT of (22,19) -> face LEFT
         ab.setCurrentAnimationName("STAND_LEFT");
@@ -87,6 +89,15 @@ public class AngerMap extends Map {
         return triggers;
     }
 
+    @Override
+    protected ArrayList<CollectableItem> loadCollectableItems() {
+        ArrayList<CollectableItem> collectables = new ArrayList<>();
+        collectables.add(new CollectableItem(getMapTile(2, 2).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(15, 2).getLocation(), Item.ItemList.apple));
+        
+        return collectables;
+    }
+    
     @Override
     public void loadScripts() {
        getMapTile(16, 15).setInteractScript(new BargainingEntryScript());

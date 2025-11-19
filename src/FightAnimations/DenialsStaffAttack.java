@@ -11,7 +11,8 @@ public class DenialsStaffAttack extends StaticPlayerAttackAnimation {
     private int animationFrameCount = 22;
 
     public DenialsStaffAttack(SpriteSheet spriteSheet, float posX, float posY) {
-        super(spriteSheet, posX - 270, posY, 999, "ATTACK");
+        super(spriteSheet, 270, 225, 999, "ATTACK");
+        //System.out.println((posX - 270 + ", " + posY));
     }
 
     @Override
@@ -81,7 +82,7 @@ public class DenialsStaffAttack extends StaticPlayerAttackAnimation {
                 new FrameBuilder(spriteSheet.getSprite(20, 0), 8)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(21, 0), 8)
+                new FrameBuilder(spriteSheet.getSprite(21, 0), 16)
                         .withScale(2)
                         .build()
             });

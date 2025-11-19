@@ -1,4 +1,5 @@
 package Maps;
+import EnhancedMapTiles.CollectableItem;
 import EnhancedMapTiles.PushableRock;
 import Level.*;
 import Tilesets.Map3Tileset;
@@ -15,8 +16,8 @@ public class BargainingMap extends Map {
 
     public BargainingMap() {
         super("map3.txt", new Map3Tileset());
-        // this.playerStartPosition = getMapTile(1, 13).getLocation();
-        this.playerStartPosition = getMapTile(9, 8).getLocation();
+        this.playerStartPosition = getMapTile(1, 13).getLocation();
+        // this.playerStartPosition = getMapTile(9, 8).getLocation();
     }
 
     @Override
@@ -24,6 +25,15 @@ public class BargainingMap extends Map {
         ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
 
         return enhancedMapTiles;
+    }
+
+    @Override
+    protected ArrayList<CollectableItem> loadCollectableItems() {
+        ArrayList<CollectableItem> collectables = new ArrayList<>();
+        collectables.add(new CollectableItem(getMapTile(8, 10).getLocation().subtractX(40), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(10, 12).getLocation().addX(30).addY(72), Item.ItemList.apple));
+        
+        return collectables;
     }
 
     @Override

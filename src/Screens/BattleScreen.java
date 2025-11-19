@@ -41,6 +41,7 @@ import Items.SwordOfRage;
 import Level.Entity;
 import Level.Player;
 import Level.Weapon;
+import NPCs.AngerBoss;
 import Screens.submenus.BattleSubmenu;
 import Screens.submenus.InventoryBattleMenu;
 import Screens.submenus.SelectionSubmenu;
@@ -729,6 +730,10 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 }
                 case "AngerBossAttack":{
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 48, 64);
+                    break;
+                }
+                case "BargainingBossAttack":{
+                    attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 255, 255);
                     break;
                 }
                 default: {

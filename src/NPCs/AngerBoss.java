@@ -23,7 +23,7 @@ public class AngerBoss extends NPC {
         this.entity.setBaseAttack(0);
         
         this.entity.addAttack("AngerBossAttack", 50, "AngerBossAttack", 5);
-        this.entity.addAttack("Explosion", 10, "DenialBossAttack", 7.0);
+        this.entity.addAttack("Explosion", 100, "BargainingBossAttack", 7.0);
         autoBattleEnabled = false;
     }
     
