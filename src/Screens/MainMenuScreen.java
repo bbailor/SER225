@@ -6,6 +6,9 @@ import Game.ScreenCoordinator;
 import Level.Map;
 import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
+import Utils.Resources;
+import Utils.TailwindColorScheme;
+
 import java.awt.*;
 
 // This is the class for the main menu screen
@@ -19,12 +22,28 @@ public class MainMenuScreen extends Screen {
     protected Map background;
     protected int keyPressTimer;
     protected int pointerLocationX, pointerLocationY;
-    //protected int cursorLocationX, cursorLocationY;
     protected KeyLocker keyLocker = new KeyLocker();
     protected MouseLocker mouseLocker = new MouseLocker();
 
-    
-    
+    private final int baseX = 100;
+    private final int baseY = 260;
+    private final int itemSpacing = 100;
+    private final int hoverShiftX = 30;
+
+    private float playX, playY;
+    private float creditsX, creditsY;
+    private float controlsX, controlsY;
+
+    private float playTargetX, playTargetY;
+    private float creditsTargetX, creditsTargetY;
+    private float controlsTargetX, controlsTargetY;
+
+    private float pointerX, pointerY;
+    private float pointerTargetX, pointerTargetY;
+
+    private Color playGameColor;
+    private Color creditsColor;
+    private Color controlsColor;
 
     public MainMenuScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -32,28 +51,41 @@ public class MainMenuScreen extends Screen {
 
     @Override
     public void initialize() {
-        playGame = new SpriteFont("PLAY GAME", 200, 123, "Arial", 30, new Color(49, 207, 240));
+        playGame = new SpriteFont("PLAY GAME", baseX, baseY, "Arial", 30, new Color(49, 207, 240));
         playGame.setOutlineColor(Color.black);
         playGame.setOutlineThickness(3);
-        credits = new SpriteFont("CREDITS", 200, 223, "Arial", 30, new Color(49, 207, 240));
+
+        credits = new SpriteFont("CREDITS", baseX, baseY + itemSpacing, "Arial", 30, new Color(49, 207, 240));
         credits.setOutlineColor(Color.black);
         credits.setOutlineThickness(3);
-        controls = new SpriteFont("CONTROLS", 200, 323, "Arial", 30, new Color(49, 207, 240));
+
+        controls = new SpriteFont("CONTROLS", baseX, baseY + itemSpacing * 2, "Arial", 30, new Color(49, 207, 240));
         controls.setOutlineColor(Color.black);
         controls.setOutlineThickness(3);
+
         background = new TitleScreenMap();
         background.setAdjustCamera(false);
         keyPressTimer = 0;
         menuItemSelected = -1;
         keyLocker.lockKey(Key.SPACE);
         mouseLocker.lockMouse();
+
+        playX = baseX;
+        playY = baseY;
+
+        creditsX = baseX;
+        creditsY = baseY + itemSpacing;
+        controlsX = baseX;
+        controlsY = baseY + itemSpacing * 2;
+
+        pointerX = baseX - 30;
+        pointerY = baseY + 7;
     }
 
     public void update() {
-        // update background map (to play tile animations)
         background.update(null);
 
-        // if down or up is pressed, change menu item "hovered" over (blue square in front of text will move along with currentMenuItemHovered changing)
+        // keyboard up/down selection
         if (Keyboard.isKeyDown(Key.DOWN) && keyPressTimer == 0) {
             keyPressTimer = 14;
             currentMenuItemHovered++;
@@ -66,36 +98,58 @@ public class MainMenuScreen extends Screen {
             }
         }
 
-        // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
         if (currentMenuItemHovered > 2) {
             currentMenuItemHovered = 0;
         } else if (currentMenuItemHovered < 0) {
             currentMenuItemHovered = 2;
         }
 
-        // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
         if (currentMenuItemHovered == 0) {
-            playGame.setColor(new Color(255, 215, 0));
-            credits.setColor(new Color(49, 207, 240));
-            controls.setColor(new Color(49, 207, 240));
-            pointerLocationX = 170;
-            pointerLocationY = 130;
+            playGameColor = TailwindColorScheme.blue300;
+            creditsColor = Color.white;
+            controlsColor = Color.white;
         } else if (currentMenuItemHovered == 1) {
-            playGame.setColor(new Color(49, 207, 240));
-            credits.setColor(new Color(255, 215, 0));
-            controls.setColor(new Color(49, 207, 240));
-            pointerLocationX = 170;
-            pointerLocationY = 230;
-        }
-        else if (currentMenuItemHovered == 2) {
-            playGame.setColor(new Color(49, 207, 240));
-            credits.setColor(new Color(49, 207, 240));
-            controls.setColor(new Color(255, 215, 0));
-            pointerLocationX = 170;
-            pointerLocationY = 330;
+            playGameColor = Color.white;
+            creditsColor = TailwindColorScheme.blue300;
+            controlsColor = Color.white;
+        } else {
+            playGameColor = Color.white;
+            creditsColor = Color.white;
+            controlsColor = TailwindColorScheme.blue300;
         }
 
-        // if space is pressed on menu item, change to appropriate screen based on which menu item was chosen
+        // compute targets based on which item is hovered
+        playTargetX = baseX + (currentMenuItemHovered == 0 ? -hoverShiftX : 0);
+        playTargetY = baseY;
+
+        creditsTargetX = baseX + (currentMenuItemHovered == 1 ? -hoverShiftX : 0);
+        creditsTargetY = baseY + itemSpacing;
+
+        controlsTargetX = baseX + (currentMenuItemHovered == 2 ? -hoverShiftX : 0);
+        controlsTargetY = baseY + itemSpacing * 2;
+
+        pointerTargetX = (currentMenuItemHovered == 0 ? playTargetX : (currentMenuItemHovered == 1 ? creditsTargetX : controlsTargetX)) - 30;
+        pointerTargetY = (currentMenuItemHovered == 0 ? playTargetY : (currentMenuItemHovered == 1 ? creditsTargetY : controlsTargetY)) + 7;
+
+        // Lerp movement
+        final float lerp = 0.2f;
+        playX = lerp(playX, playTargetX, lerp);
+        playY = lerp(playY, playTargetY, lerp);
+
+        creditsX = lerp(creditsX, creditsTargetX, lerp);
+        creditsY = lerp(creditsY, creditsTargetY, lerp);
+
+        controlsX = lerp(controlsX, controlsTargetX, lerp);
+        controlsY = lerp(controlsY, controlsTargetY, lerp);
+
+        pointerX = lerp(pointerX, pointerTargetX, lerp);
+        pointerY = lerp(pointerY, pointerTargetY, lerp);
+
+        playGame.setPosition(Math.round(playX), Math.round(playY));
+        credits.setPosition(Math.round(creditsX), Math.round(creditsY));
+        controls.setPosition(Math.round(controlsX), Math.round(controlsY));
+
+        // Space key selection
         if (Keyboard.isKeyUp(Key.SPACE)) {
             keyLocker.unlockKey(Key.SPACE);
         }
@@ -105,31 +159,23 @@ public class MainMenuScreen extends Screen {
                 screenCoordinator.setGameState(GameState.LEVEL);
             } else if (menuItemSelected == 1) {
                 screenCoordinator.setGameState(GameState.CREDITS);
-            }
-            else if (menuItemSelected == 2)
-            {
+            } else if (menuItemSelected == 2) {
                 screenCoordinator.setGameState(GameState.CONTROLS);
             }
         }
 
-        //Mouse Function
-
-        Rectangle playGameBounds = new Rectangle(195, 100, 200, 90);
-        Rectangle creditsBounds  = new Rectangle(195, 190, 200, 90);
-        Rectangle controlsBounds = new Rectangle(195, 280, 200, 90);
+        // Mouse bounds match animated positions
+        Rectangle playGameBounds = new Rectangle(Math.round(playX - 5), Math.round(playY - 25), 220, 90);
+        Rectangle creditsBounds  = new Rectangle(Math.round(creditsX - 5), Math.round(creditsY - 25), 220, 90);
+        Rectangle controlsBounds = new Rectangle(Math.round(controlsX - 5), Math.round(controlsY - 25), 220, 90);
 
         Point mousePos = Mouse.getCurrentPosition();
 
-        if (playGameBounds.contains(mousePos)) {
-            currentMenuItemHovered = 0;
-        } else if (creditsBounds.contains(mousePos)) {
-            currentMenuItemHovered = 1;
-        } else if (controlsBounds.contains(mousePos)) {
-            currentMenuItemHovered = 2;
-        }
+        if (playGameBounds.contains(mousePos)) currentMenuItemHovered = 0;
+        else if (creditsBounds.contains(mousePos)) currentMenuItemHovered = 1;
+        else if (controlsBounds.contains(mousePos)) currentMenuItemHovered = 2;
 
-        if (!mouseLocker.isMouseLocked() && Mouse.isLeftClickDown())
-        {
+        if (!mouseLocker.isMouseLocked() && Mouse.isLeftClickDown()) {
             mouseLocker.lockMouse();
             Point clickPos = Mouse.getLastPressedPosition();
 
@@ -142,17 +188,73 @@ public class MainMenuScreen extends Screen {
             }
         }
 
-        if(Mouse.isLeftClickUp())
-        {
-            mouseLocker.unlockMouse();
-        }
+        if (Mouse.isLeftClickUp()) mouseLocker.unlockMouse();
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
         background.draw(graphicsHandler);
-        playGame.draw(graphicsHandler);
-        credits.draw(graphicsHandler);
-        controls.draw(graphicsHandler);
-        graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
+
+        // Backing rectangles
+        graphicsHandler.drawFilledRectangleWithBorder(Math.round(playX - 5), Math.round(playY), 190, 40, TailwindColorScheme.black, Color.black, 2);
+        graphicsHandler.drawFilledRectangleWithBorder(Math.round(creditsX - 5), Math.round(creditsY), 150, 40, TailwindColorScheme.black, Color.black, 2);
+        graphicsHandler.drawFilledRectangleWithBorder(Math.round(controlsX - 5), Math.round(controlsY), 175, 40, TailwindColorScheme.black, Color.black, 2);
+
+        graphicsHandler.drawStringWithOutline(
+                playGame.getText(),
+                Math.round(playX),
+                Math.round(playY + 32),
+                Resources.press_start.deriveFont(20f),
+                Color.black,
+                playGameColor,
+                2
+        );
+
+        graphicsHandler.drawStringWithOutline(
+                credits.getText(),
+                Math.round(creditsX),
+                Math.round(creditsY + 32),
+                Resources.press_start.deriveFont(20f),
+                Color.black,
+                creditsColor,
+                2
+        );
+
+        graphicsHandler.drawStringWithOutline(
+                controls.getText(),
+                Math.round(controlsX),
+                Math.round(controlsY + 32),
+                Resources.press_start.deriveFont(20f),
+                Color.black,
+                controlsColor,
+                2
+        );
+
+        // Title
+        graphicsHandler.drawFilledRectangleWithBorder(22, 10, 740, 60, TailwindColorScheme.black, Color.black, 3);
+        graphicsHandler.drawStringWithOutline(
+                "Requiem for a Gnome",
+                30,
+                62,
+                Resources.press_start.deriveFont(38f),
+                TailwindColorScheme.black,
+                TailwindColorScheme.blue300,
+                6
+        );
+
+        // Pointer
+        graphicsHandler.drawFilledRectangleWithBorder(
+                Math.round(pointerX),
+                Math.round(pointerY),
+                20,
+                20,
+                new Color(49, 207, 240),
+                Color.black,
+                2
+        );
+    }
+
+    // small helper lerp
+    private float lerp(float a, float b, float t) {
+        return a + (b - a) * t;
     }
 }
