@@ -20,11 +20,8 @@ import Engine.Keyboard;
 import Engine.Screen;
 import FightAnimations.ArmoredSkeletonAttack;
 import FightAnimations.DenialBossAttack;
-<<<<<<< HEAD
 import FightAnimations.DenialsStaffAttack;
-=======
 import FightAnimations.DepressionBossAttack;
->>>>>>> 8e86b053f0550121e6eca317ff47303d485221ac
 import FightAnimations.EnemyProjectileAttackAnimation;
 import FightAnimations.KnifeOfLifeAttack;
 import FightAnimations.PlayerProjectileAttackAnimation;
