@@ -111,6 +111,12 @@ public class SpriteFont {
 		y -= dy;
 	}
 
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
+
 	private int getAscent(Graphics2D graphics) {
 		FontMetrics fm = graphics.getFontMetrics(font);
 		return fm.getAscent();
