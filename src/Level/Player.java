@@ -186,7 +186,7 @@ public class Player extends GameObject {
             steps++;
         }
 
-        if(steps > 200) {
+        if(steps > 400) {
             this.entity.setHidden(false);
         }
     }

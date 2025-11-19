@@ -138,7 +138,7 @@ public class TestMap extends Map {
         collectables.add(new CollectableItem(getMapTile(4, 3).getLocation(), Item.ItemList.cherry));
         collectables.add(new CollectableItem(getMapTile(2, 9).getLocation(), Item.ItemList.cherry));
 
-        // wcollectables.add(new CollectableItem(getMapTile(16, 20).getLocation(), Item.ItemList.denials_staff));
+        collectables.add(new CollectableItem(getMapTile(16, 20).getLocation(), Item.ItemList.denials_staff));
         return collectables;
     }
 
