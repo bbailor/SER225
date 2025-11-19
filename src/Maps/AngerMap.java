@@ -19,8 +19,7 @@ public class AngerMap extends Map {
 
     public AngerMap() {
     super("anger_map.txt", new Map2Tileset());
-    // this.playerStartPosition = getMapTile(2, 18).getLocation();
-    this.playerStartPosition = getMapTile(15, 18).getLocation();
+    this.playerStartPosition = getMapTile(2, 18).getLocation();
 }
 
     @Override
