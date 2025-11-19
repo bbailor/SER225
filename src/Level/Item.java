@@ -13,6 +13,7 @@ import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Items.CloakOfConcealment;
 import Items.KnifeOfLife;
+import Items.SwordOfRage;
 import Items.TlalocsStorm;
 
 /**
@@ -242,6 +243,8 @@ public class Item {
         public static Weapon knife_of_life = new KnifeOfLife();
 
         public static Weapon tlalocs_storm = new TlalocsStorm();
+
+         public static Weapon sword_of_rage = new SwordOfRage();
 
         public static Item getFromID(String id) {
             return IDMap.get(id);

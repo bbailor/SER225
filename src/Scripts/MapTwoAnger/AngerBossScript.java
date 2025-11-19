@@ -1,5 +1,6 @@
 package Scripts.MapTwoAnger;
 
+import Level.Item;
 import Level.Script;
 import Level.ScriptState;
 import Level.WispyChainBuilder;
@@ -8,6 +9,8 @@ import ScriptActions.*;
 import Utils.Point;
 
 import java.util.ArrayList;
+
+import EnhancedMapTiles.CollectableItem;
 
 public class AngerBossScript extends Script {
     @Override
@@ -58,6 +61,20 @@ public class AngerBossScript extends Script {
                         addScriptAction(new StartBattleScriptAction(AngerBossScript.this.entity));
 
                         addScriptAction(new ChangeFlagScriptAction("hasDefeatedAnger", true));
+                         // Drop weapon reward
+                        addScriptAction(new ScriptAction() {
+                            @Override
+                            public ScriptState execute() {
+                                Point location = entity.getLocation();
+                                CollectableItem reward = new CollectableItem(
+                                    location.x + 100, 
+                                    location.y + 100, 
+                                    Item.ItemList.sword_of_rage 
+                                );
+                                map.addCollectableItem(reward);
+                                return ScriptState.COMPLETED;
+                            }
+                        });
                                 
                         // Spawn the wispy guide
                         addScriptAction(new ScriptAction() {
