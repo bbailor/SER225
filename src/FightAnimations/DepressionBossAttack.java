@@ -5,12 +5,12 @@ import Builders.FrameBuilder;
 import GameObject.Frame;
 import java.util.HashMap;
 
-public class TlalocsStormAttack extends StaticPlayerAttackAnimation {
+public class DepressionBossAttack extends StaticEnemyAttackAnimation {
     
-    private int animationFrameCount = 18; // Total number of sprite frames in the animation
+    private int animationFrameCount = 13; // Total number of sprite frames in the animation
 
-    public TlalocsStormAttack(SpriteSheet spriteSheet, float posX, float posY) {
-        super(spriteSheet, posX + 80, posY - 100, 999, "ATTACK");
+    public DepressionBossAttack(SpriteSheet spriteSheet, float posX, float posY) {
+        super(spriteSheet, posX, posY - 200, 999, "ATTACK");
     }
     
     @Override
@@ -19,62 +19,44 @@ public class TlalocsStormAttack extends StaticPlayerAttackAnimation {
             
             put("ATTACK", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 2), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 3), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(1, 0), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(1, 1), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(1, 2), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(1, 3), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(2, 0), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(2, 1), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(2, 2), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(2, 3), 6)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 12)
-                        .withScale(2)
+                        .withScale(1.5f)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 0), 4)
-                        .withScale(2)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 1), 4)
-                        .withScale(2)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 2), 4)
-                        .withScale(2)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 3), 4)
-                        .withScale(2)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(3, 2), 4)
-                        .withScale(2)
-                        .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
-                        .withScale(2)
-                        .build()
             });
         }};
     }

@@ -20,6 +20,7 @@ import Engine.Keyboard;
 import Engine.Screen;
 import FightAnimations.ArmoredSkeletonAttack;
 import FightAnimations.DenialBossAttack;
+import FightAnimations.DepressionBossAttack;
 import FightAnimations.EnemyProjectileAttackAnimation;
 import FightAnimations.KnifeOfLifeAttack;
 import FightAnimations.PlayerProjectileAttackAnimation;
@@ -29,6 +30,7 @@ import FightAnimations.AngerSpiritAttack;
 import FightAnimations.TlalocsStormAttack;
 import FightAnimations.SwordOfRageAttack;
 import FightAnimations.StaticPlayerAttackAnimation;
+import FightAnimations.StaticEnemyAttackAnimation;
 import FightAnimations.SwordOfRageAttack;
 import GameObject.ImageEffect;
 import GameObject.Rectangle;
@@ -62,7 +64,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     protected Map<String, BattleSubmenu> actions = new HashMap<>();
     protected Map<String, MenuListener> listeners = new HashMap<>();
     protected Color borderColor = TailwindColorScheme.slate700;
-    protected EnemyProjectileAttackAnimation activeAttackAnimation = null;
+    protected Object activeEnemyAttackAnimation = null;
     protected boolean enemyTurnStarted = false;
     protected String currentEnemyType = null; // For debugging
     protected Entity.EnemyAttack currentEnemyAttack = null;
@@ -204,17 +206,29 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         }
         
         // Handle active ENEMY attack animation
-        if (activeAttackAnimation != null) {
-            activeAttackAnimation.update();
-            if (activeAttackAnimation.isComplete()) {
-                this.player.getEntity().handleDamage(this.entity, false);
-                activeAttackAnimation = null;
-                enemyTurnStarted = false;
-                this.currentTurn = BattleTurn.Player;
+        if (activeEnemyAttackAnimation != null) {
+            // Check if it's a projectile or static animation and handle appropriately
+            if (activeEnemyAttackAnimation instanceof EnemyProjectileAttackAnimation) {
+                EnemyProjectileAttackAnimation projectile = (EnemyProjectileAttackAnimation) activeEnemyAttackAnimation;
+                projectile.update();
+                if (projectile.isComplete()) {
+                    this.player.getEntity().handleDamage(this.entity, false);
+                    activeEnemyAttackAnimation = null;
+                    enemyTurnStarted = false;
+                    this.currentTurn = BattleTurn.Player;
+                }
+        } else if (activeEnemyAttackAnimation instanceof StaticEnemyAttackAnimation) {
+                StaticEnemyAttackAnimation staticAnim = (StaticEnemyAttackAnimation) activeEnemyAttackAnimation;
+                staticAnim.update();
+                if (staticAnim.isComplete()) {
+                    this.player.getEntity().handleDamage(this.entity, false);
+                    activeEnemyAttackAnimation = null;
+                    enemyTurnStarted = false;
+                    this.currentTurn = BattleTurn.Player;
+                }
             }
-            return;
+            return; // Don't process other updates while animating
         }
-        
         if (this.currentTurn == BattleTurn.Enemy && !enemyTurnStarted) {
             enemyTurnStarted = true;
             startEnemyAttackAnimation();
@@ -464,8 +478,12 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         );
         
         // Draw active attack animation if present
-        if (activeAttackAnimation != null) {
-            activeAttackAnimation.draw(graphicsHandler);
+        if (activeEnemyAttackAnimation != null) {
+            if (activeEnemyAttackAnimation instanceof EnemyProjectileAttackAnimation) {
+                ((EnemyProjectileAttackAnimation) activeEnemyAttackAnimation).draw(graphicsHandler);
+            } else if (activeEnemyAttackAnimation instanceof StaticEnemyAttackAnimation) {
+                ((StaticEnemyAttackAnimation) activeEnemyAttackAnimation).draw(graphicsHandler);
+            }
         }
         if (activePlayerAttackAnimation != null) {
             if (activePlayerAttackAnimation instanceof PlayerProjectileAttackAnimation) {
@@ -474,9 +492,12 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 ((StaticPlayerAttackAnimation) activePlayerAttackAnimation).draw(graphicsHandler);
             }
         }
-                
-        if (activeAttackAnimation != null) {
-            activeAttackAnimation.draw(graphicsHandler);
+        if (activeEnemyAttackAnimation != null) {
+            if (activeEnemyAttackAnimation instanceof EnemyProjectileAttackAnimation) {
+                ((EnemyProjectileAttackAnimation) activeEnemyAttackAnimation).draw(graphicsHandler);
+            } else if (activeEnemyAttackAnimation instanceof StaticEnemyAttackAnimation) {
+                ((StaticEnemyAttackAnimation) activeEnemyAttackAnimation).draw(graphicsHandler);
+            }
         }
     }
 
@@ -697,11 +718,15 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 255, 255);
                     break;
                 }
+                case "DepressionBossAttack":{
+                    attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 60, 200);
+                    break;
+                }
                 default: {
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 24, 24);
                 }
             }
-            activeAttackAnimation = createAttackAnimation(currentEnemyAttack.attackName, attackSheet, enemyX, enemyY, playerX, playerY);
+            activeEnemyAttackAnimation = createEnemyAttackAnimation(currentEnemyAttack.attackName, attackSheet, enemyX, enemyY, playerX, playerY);
 
         } catch (Exception e) {
             System.err.println("Failed to load " + currentEnemyAttack.animationType + ": " + e.getMessage());
@@ -734,7 +759,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
      * Creates the appropriate attack animation instance based on enemy type
      * Add new cases here when you create new enemy attack animations
      */
-    protected EnemyProjectileAttackAnimation createAttackAnimation(String attackName, SpriteSheet sheet, 
+    protected Object createEnemyAttackAnimation(String attackName, SpriteSheet sheet, 
                                                float startX, float startY, float targetX, float targetY) {
     switch (attackName) {
         // Basic enemy attacks
@@ -756,10 +781,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 36); // Faster animation
         case "DenialBossHeavy":
             return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 60); // Slower, heavier
-            
-        // Add your new attack types here as you create them
-        // case "YourNewAttack":
-        //     return new YourNewAttackAnimation(sheet, startX, startY, targetX, targetY, speed);
+        
+        case "DepressionBossAttack":
+            return new DepressionBossAttack(sheet, targetX, targetY);
             
         default:
             System.err.println("Unknown attack name: " + attackName + ", using default Skeleton attack");

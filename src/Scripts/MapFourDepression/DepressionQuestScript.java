@@ -174,7 +174,7 @@ public class DepressionQuestScript extends Script {
                         // Adjust the weapon type as needed (using knife_of_life as example)
                         CollectableItem reward = new CollectableItem(
                             location.x, 
-                            location.y + 100,  // Slightly below gnome's position
+                            location.y + 200,  // Slightly below gnome's position
                             Item.ItemList.tlalocs_storm  // Replace with your actual weapon
                         );
                         map.addCollectableItem(reward);
