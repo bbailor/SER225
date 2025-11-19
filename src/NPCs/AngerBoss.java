@@ -31,12 +31,12 @@ public class AngerBoss extends NPC {
     @Override
     public HashMap<String, Frame[]> loadAnimations(GameObject.SpriteSheet spriteSheet) {
         Frame standRight = new FrameBuilder(spriteSheet.getSprite(0, 0), 9999)
-                .withScale(2.3f)
+                .withScale(3f)
                 .withBounds(30, 25, 70, 80)
                 .build();
 
         Frame standLeft = new FrameBuilder(spriteSheet.getSprite(0, 0), 9999)
-                .withScale(2.3f)
+                .withScale(3f)
                 .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                 .withBounds(30, 25, 70, 80)
                 .build();
