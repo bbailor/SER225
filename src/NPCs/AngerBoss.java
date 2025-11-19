@@ -23,7 +23,7 @@ public class AngerBoss extends NPC {
         this.entity.setBaseAttack(0);
         
         this.entity.addAttack("AngerBossAttack", 50, "AngerBossAttack", 5);
-        this.entity.addAttack("Explosion", 10, "DenialBossAttack", 7.0);
+        this.entity.addAttack("Explosion", 100, "BargainingBossAttack", 7.0);
         autoBattleEnabled = false;
     }
     
@@ -31,12 +31,12 @@ public class AngerBoss extends NPC {
     @Override
     public HashMap<String, Frame[]> loadAnimations(GameObject.SpriteSheet spriteSheet) {
         Frame standRight = new FrameBuilder(spriteSheet.getSprite(0, 0), 9999)
-                .withScale(2.3f)
+                .withScale(2.6f)
                 .withBounds(30, 25, 70, 80)
                 .build();
 
         Frame standLeft = new FrameBuilder(spriteSheet.getSprite(0, 0), 9999)
-                .withScale(2.3f)
+                .withScale(2.6f)
                 .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                 .withBounds(30, 25, 70, 80)
                 .build();
