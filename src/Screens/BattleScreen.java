@@ -27,10 +27,13 @@ import FightAnimations.SkeletonAttack;
 import FightAnimations.SpiritAttack;
 import FightAnimations.AngerSpiritAttack;
 import FightAnimations.TlalocsStormAttack;
+import FightAnimations.SwordOfRageAttack;
 import FightAnimations.StaticPlayerAttackAnimation;
+import FightAnimations.SwordOfRageAttack;
 import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
+import Items.SwordOfRage;
 import Level.Entity;
 import Level.Player;
 import Level.Weapon;
@@ -551,6 +554,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     public void onMenuClose() {
         this.selectedAction = null;
         this.selector.setHoverColor(Globals.HOVER_COLOR);
+    
+
     }
     
     private void startPlayerAttackAnimation() {
@@ -772,7 +777,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             case "TlalocsStorm":
                 // Static: appears at enemy position
                 return new TlalocsStormAttack(sheet, enemyX, enemyY);
-            
+            case "SwordOfRage":
+                return new SwordOfRageAttack(sheet, enemyX, enemyY, playerX, playerY, 45);
             // Add more weapons here as you create them
             // Projectile example:
             // case "Arrow":
@@ -786,6 +792,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 System.err.println("Unknown weapon type: " + weapon + ", using KnifeOfLife attack");
                 return new KnifeOfLifeAttack(sheet, enemyX, enemyY, playerX, playerY, 100);
         }
+    }
+
+    @Override
+    public void close() {
+        Menu.super.close();
     }
 
     public enum BattleTurn {
