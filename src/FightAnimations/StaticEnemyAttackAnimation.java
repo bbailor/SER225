@@ -1,14 +1,17 @@
 package FightAnimations;
 
+import Engine.GraphicsHandler;
 import GameObject.AnimatedSprite;
 import GameObject.SpriteSheet;
+import Level.Map;
 
 public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
     
     protected float posX, posY;
     protected boolean isComplete;
     protected int totalFrames;
-    protected int currentFrame;
+    protected int frameCounter;
+    protected Map map;
     
     /**
      * Creates a static attack animation
@@ -24,10 +27,14 @@ public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
         this.posX = posX;
         this.posY = posY;
         this.totalFrames = duration;
-        this.currentFrame = 0;
+        this.frameCounter = 0;
         this.isComplete = false;
     }
-    
+   
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
     @Override
     public void update() {
         // Call parent to handle AnimatedSprite frame animation
@@ -45,13 +52,13 @@ public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
             return;
         }
         
-        currentFrame++;
+        frameCounter++;
         
         // Let subclass handle frame progression (if needed)
-        updateFrame(currentFrame);
+        updateFrame(frameCounter);
         
         // Check if animation is complete
-        if (currentFrame >= totalFrames) {
+        if (frameCounter >= totalFrames) {
             isComplete = true;
             onComplete();
         }
@@ -79,7 +86,7 @@ public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
     public void reset(float newPosX, float newPosY) {
         this.posX = newPosX;
         this.posY = newPosY;
-        this.currentFrame = 0;
+        this.frameCounter = 0;
         this.isComplete = false;
         setLocation(posX, posY);
         setCurrentAnimationFrameIndex(0);
@@ -96,13 +103,35 @@ public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
      * Get current frame count in animation
      */
     public int getCurrentFrameCount() {
-        return currentFrame;
+        return frameCounter;
+    }
+
+    @Override
+    public void draw(GraphicsHandler graphicsHandler) {
+        if (!isComplete) {
+            if (map != null) {
+                // Draw with camera adjustment (for overworld animations)
+                float drawX = x - map.getCamera().getX();
+                float drawY = y - map.getCamera().getY();
+
+                graphicsHandler.drawImage(
+                    currentFrame.getImage(),
+                    Math.round(drawX),
+                    Math.round(drawY),
+                    currentFrame.getWidth(),
+                    currentFrame.getHeight()
+                );
+            } else {
+                // Draw without camera adjustment (for battle animations)
+                super.draw(graphicsHandler);
+            }
+        }
     }
     
     /**
      * Get progress as percentage (0.0 to 1.0)
      */
     public float getProgress() {
-        return Math.min(1.0f, (float)currentFrame / totalFrames);
+        return Math.min(1.0f, (float)frameCounter / totalFrames);
     }
 }
