@@ -15,6 +15,7 @@ import Engine.Keyboard;
 import Engine.Screen;
 import FightAnimations.ArmoredSkeletonAttack;
 import FightAnimations.DenialBossAttack;
+import FightAnimations.DenialsStaffAttack;
 import FightAnimations.EnemyProjectileAttackAnimation;
 import FightAnimations.KnifeOfLifeAttack;
 import FightAnimations.PlayerProjectileAttackAnimation;
@@ -593,6 +594,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 case "KnifeOfLife":
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 32, 32);
                     break;
+                case "DenialsStaff":
+                    attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 160, 32);
+                    break;
                 default:
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 32, 32);
             }
@@ -755,7 +759,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             case "TlalocsStorm":
                 // Static: appears at enemy position
                 return new TlalocsStormAttack(sheet, enemyX, enemyY);
-            
+            case "DenialsStaff":
+                return new DenialsStaffAttack(sheet, enemyX, enemyY);
+
             // Add more weapons here as you create them
             // Projectile example:
             // case "Arrow":

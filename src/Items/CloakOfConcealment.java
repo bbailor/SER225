@@ -10,7 +10,7 @@ import Level.Player;
 
 public class CloakOfConcealment extends Item {
     public CloakOfConcealment(){
-        super("Cloak of Concealment", "Cloak of Concealment", "A magical cloak that allows you to hide from enemies for 20 ", 1);
+        super("Cloak of Concealment", "Cloak of Concealment", "A magical cloak that allows you to hide from enemies for 20 steps.", 1);
    
             addAnimation("default", new FrameBuilder[] {
             new FrameBuilder(ImageLoader.load("item_imgs/cloakOfConcealment.png"))
