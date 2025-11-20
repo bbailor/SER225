@@ -161,26 +161,6 @@ public class QuestSubMenu implements Menu {
             "wizardRewardGiven",
             "Talk to the wizard again. \n Perhaps he has something for you?"
         ));
-
-        questEntries.add(new QuestEntry(
-            "wizardRewardGiven",
-            "Wizard Quest Complete! \n Perhaps there is something amiss in the woods?",
-            null
-        ));
-
-        // NPC Interactions
-        questEntries.add(new QuestEntry(
-            "hasTalkedToWizard",
-            "Met the Wizard",
-            null
-        ));
-
-
-        questEntries.add(new QuestEntry(
-            "hasTalkedToDenialEnemy",
-            "Encountered a Denial Enemy",
-            null
-        ));
     }
 
     @Override
