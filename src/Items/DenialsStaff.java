@@ -9,7 +9,7 @@ public class DenialsStaff extends Weapon {
 
     public DenialsStaff() {
 
-        super("denialsstaff", "Denial's Staff", "A powerfull staff made from spare wood and Denial's flame.", 1.0);
+        super("denialsstaff", "Denial's Staff", "A powerfull staff made from spare wood and Denial's flame.", 4.5);
 
         addAnimation("default", new FrameBuilder[] {
             new FrameBuilder(ImageLoader.load("weapons/DenialsStaff.png"))
