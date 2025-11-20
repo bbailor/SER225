@@ -73,10 +73,16 @@ public class MapOneDenial extends Map {
         spp.setCurrentAnimationName("STAND_RIGHT");
         npcs.add(spp);
 
-        ArmoredSkeleton asss = new ArmoredSkeleton(102, getMapTile(23, 5).getLocation().subtractY(16).subtractX(4));
+        ArmoredSkeleton asss = new ArmoredSkeleton(102, getMapTile(25, 6).getLocation().subtractY(16).subtractX(4));
         asss.setInteractScript(new DenialEnemyScript());
         asss.setCurrentAnimationName("STAND_LEFT");
         npcs.add(asss);
+
+        ArmoredSkeleton assss = new ArmoredSkeleton(102, getMapTile(18, 6).getLocation().subtractY(16).subtractX(4));
+        assss.setInteractScript(new DenialEnemyScript());
+        assss.setCurrentAnimationName("STAND_RIGHT");
+        npcs.add(assss);
+
 
         // enemies near player, all share DenialEnemyScript (spread out a bit)
 

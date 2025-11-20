@@ -333,7 +333,7 @@ public class Player extends GameObject {
             graphicsHandler.drawFilledRectangle(
             (int)hidden_rec.getX() + 2,
             (int)hidden_rec.getY() + 2,
-            (int) ((75 - (hidden_rec.getWidth() * ((float)(steps) / 200f))) - 4),
+            (int) ((75 - (hidden_rec.getWidth() * ((float)(steps) / 400f))) - 4),
             hidden_rec.getHeight() - 4,
             TailwindColorScheme.blue300
             );
