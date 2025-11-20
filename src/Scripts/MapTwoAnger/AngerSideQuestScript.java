@@ -25,7 +25,7 @@ public class AngerSideQuestScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup(){{
                 addRequirement(new FlagRequirement("hasTalkedToUnderworldSpirit", false));
                 addScriptAction(new TextboxScriptAction(){{
-                    addText("Grettings, traveller from anothe realm.");
+                    addText("Grettings, traveller from another realm.");
                     addText("I know not what got you here,\n but you must leave this place.");
                     addText("Here, take this stone. \nI know not what it does, but it is of no use to me.");
                 }});
