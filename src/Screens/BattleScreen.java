@@ -202,7 +202,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                     //lifesteal effect for Knife of Life
                     if(this.player.getEntity().getCurrentWeapon() instanceof KnifeOfLife)
                     {
-                        this.player.getEntity().heal(2);
+                        this.player.getEntity().heal((int)(Math.random() * 2) + 0.5d);
                     } 
                     else if (this.player.getEntity().getCurrentWeapon() instanceof DenialsStaff)
                     {
