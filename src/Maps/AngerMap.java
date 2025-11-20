@@ -83,6 +83,7 @@ public class AngerMap extends Map {
         underworldSpirit us = new underworldSpirit(103, getMapTile(17, 7).getLocation());
         us.setInteractScript(new AngerSideQuestScript());
         us.setCurrentAnimationName("STAND_LEFT");
+        us.setAutoBattle(false);
         npcs.add(us);
 
         return npcs;
