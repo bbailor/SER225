@@ -166,7 +166,9 @@ public class Entity {
     public double getAttack() {
         Weapon weapon = this.getCurrentWeapon();
         System.out.println(getCurrentWeapon());
-        if(Math.random() >= 0.90) {
+        // Base crit chance is 10% (0.10), multiplied by weapon's crit multiplier
+        double critThreshold = 1.0 - (0.10 * weapon.getCriticalChanceMultiplier());
+        if(Math.random() >= critThreshold) {
             System.out.println("Critical Strike! Damage: " + (this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5)));
             return this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5);
         }
@@ -188,11 +190,13 @@ public class Entity {
             return getEnemyAttackDamage();
         }
     }
-    
+
     // Player damage uses weapon
     Weapon weapon = this.getCurrentWeapon();
     System.out.println(getCurrentWeapon());
-    if (Math.random() >= 0.90) {
+    // Base crit chance is 10% (0.10), multiplied by weapon's crit multiplier
+    double critThreshold = 1.0 - (0.10 * weapon.getCriticalChanceMultiplier());
+    if (Math.random() >= critThreshold) {
         System.out.println("Critical Strike! Damage: " + this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5));
         return this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5);
     } else {
@@ -203,9 +207,11 @@ public class Entity {
 
     public double getSkillAttack() {
         Weapon weapon = this.getCurrentWeapon();
-        if (Math.random() >= 0.90) {
+        // Base crit chance is 10% (0.10), multiplied by weapon's crit multiplier
+        double critThreshold = 1.0 - (0.10 * weapon.getCriticalChanceMultiplier());
+        if (Math.random() >= critThreshold) {
             System.out.println("Critical Strike! Damage: " + this.baseAttack + weapon.getWeaponSkillDamage() + (0.5 * weapon.getWeaponSkillDamage()));
-            
+
             return this.baseAttack + weapon.getWeaponSkillDamage() + (0.5 * weapon.getWeaponSkillDamage());
         }
         else{

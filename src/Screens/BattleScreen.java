@@ -832,7 +832,12 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         case "DenialBossHeavy":
             return new DenialBossAttack(sheet, startX, startY, targetX, targetY, 60); // Slower, heavier
         
+        // Depression Boss attacks
         case "DepressionBossAttack":
+            return new DepressionBossAttack(sheet, targetX, targetY);
+        case "DepressionBossSpecial":
+            return new DepressionBossAttack(sheet, targetX, targetY);
+        case "DepressionBossHeavy":
             return new DepressionBossAttack(sheet, targetX, targetY);
 
         case "AngerBossAttack":
