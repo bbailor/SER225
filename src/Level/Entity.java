@@ -26,7 +26,7 @@ public class Entity {
     @Expose protected double baseAttack = 1;
     @Expose protected double resistance = 0;
     @Expose protected double tempResistance = 0;
-    // @Expose protected Weapon currentWeapon = Item.ItemList.fist;
+    //@Expose protected Weapon currentWeapon = Item.ItemList.fist;
     @Expose protected Inventory inventory = new Inventory(90);
     protected boolean isEnemy;
     protected java.util.Map<String, Frame[]> animations = new HashMap<>(); 
@@ -272,5 +272,10 @@ public class Entity {
     public Entity(double maxHealth, double maxMana, double resistance) {
         this(maxHealth, maxMana);
         this.resistance = resistance;
+    }
+
+    public void setHealth(double d) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setHealth'");
     }
 }

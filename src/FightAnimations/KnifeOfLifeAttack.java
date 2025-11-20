@@ -52,6 +52,8 @@ public class KnifeOfLifeAttack extends PlayerProjectileAttackAnimation {
         }
     }
 
+
+
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{

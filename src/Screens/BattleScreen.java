@@ -24,6 +24,7 @@ import FightAnimations.DenialsStaffAttack;
 import FightAnimations.DepressionBossAttack;
 import FightAnimations.EnemyProjectileAttackAnimation;
 import FightAnimations.KnifeOfLifeAttack;
+import FightAnimations.PlayerFistAttack;
 import FightAnimations.PlayerProjectileAttackAnimation;
 import FightAnimations.SkeletonAttack;
 import FightAnimations.SpiritAttack;
@@ -37,6 +38,8 @@ import FightAnimations.powerStoneAttack;
 import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
+import Items.DenialsStaff;
+import Items.KnifeOfLife;
 import Items.SwordOfRage;
 import Level.Entity;
 import Level.Item;
@@ -195,6 +198,17 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 if (projectile.isComplete()) {
                     this.entity.handleDamage(this.player.getEntity(), false);
                     activePlayerAttackAnimation = null;
+
+                    //lifesteal effect for Knife of Life
+                    if(this.player.getEntity().getCurrentWeapon() instanceof KnifeOfLife)
+                    {
+                        this.player.getEntity().heal(2);
+                    } 
+                    else if (this.player.getEntity().getCurrentWeapon() instanceof DenialsStaff)
+                    {
+                        //implement
+                    }
+
                     this.currentTurn = BattleTurn.Enemy;
                 }
             } else if (activePlayerAttackAnimation instanceof StaticPlayerAttackAnimation) {
@@ -648,6 +662,10 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             
             // Load sprite sheet with appropriate dimensions based on weapon
             switch (weaponAnimName) {
+                case "fist":
+                    System.out.println("using fist");
+                    attackSheet = new SpriteSheet(ImageLoader.load("Enemies//ArmoredSkeletonAttack.png"), 63, 63);
+                    break;
                 case "TlalocsStorm":
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 60, 200);
                     break;
@@ -829,6 +847,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     protected Object createPlayerAttackAnimation(String weapon, SpriteSheet sheet, 
                                                float enemyX, float enemyY, float playerX, float playerY) {
         switch (weapon) {
+            case "fist":
+                return new PlayerFistAttack(sheet, playerX, playerY, enemyX, enemyY, 50);
+
             case "KnifeOfLife":
                 // Projectile: travels from player to enemy
                 return new KnifeOfLifeAttack(sheet, enemyX, enemyY, playerX, playerY, 100);

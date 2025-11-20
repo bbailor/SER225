@@ -19,4 +19,9 @@ public class KnifeOfLife extends Weapon {
                 .withBounds(8, 0, 16, 32)
         });
     }
+
+    @Override
+    public String getAttackAnimationName() {
+        return "KnifeOfLife";
+    }
 }
