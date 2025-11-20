@@ -1,8 +1,15 @@
 package FightAnimations;
 
-import Engine.GraphicsHandler;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import GameObject.AnimatedSprite;
 import GameObject.SpriteSheet;
+import Utils.Globals;
+import Utils.Resources;
+import Utils.SoundThreads.Type;
 
 /**
  * Base class for player attack animations in battle
@@ -23,7 +30,7 @@ public abstract class PlayerProjectileAttackAnimation extends AnimatedSprite {
      * @param startY Starting Y position
      * @param targetX Target X position (typically player position)
      * @param targetY Target Y position
-     * @param duration Number of game frames the animation should take to travel
+     * @param duration  Number of game frames the animation should take to travel
      * @param startingAnimationName The animation to play (e.g., "ATTACK")
      */
     public PlayerProjectileAttackAnimation(SpriteSheet spriteSheet, float startX, float startY, 
@@ -86,6 +93,7 @@ public abstract class PlayerProjectileAttackAnimation extends AnimatedSprite {
      * Override to add custom behavior (e.g., explosion effect, sound)
      */
     protected void onComplete() {
+        Globals.SOUND_SYSTEM.play(Type.SFX, Globals.EFFECTS_SOUNDS, Resources.ATTACK_SFX);
         // Default: do nothing
     }
     

@@ -46,13 +46,14 @@ public class ItemSlot extends Slot {
         this.equipName = name;
     }
 
+    String last_id;
     @Override
     public void draw(GraphicsHandler handler, int x, int y) {
         super.draw(handler, x, y);
         ItemStack stack;
         if (this.isEquipSlot) {
-            handler.drawStringWithOutline(this.equipName, x + 2 + 2, x + 12 + 2, Resources.press_start.deriveFont(12f), TailwindColorScheme.white, TailwindColorScheme.slate900, 3);
-            handler.drawStringWithOutline("E", x + (this.width - 14)/2, y + (this.height)/2, Resources.press_start.deriveFont(12f), TailwindColorScheme.white, TailwindColorScheme.slate900, 3);
+            handler.drawStringWithOutline(this.equipName, x + 2 + 2, x + 12 + 2, Resources.PRESS_START.deriveFont(12f), TailwindColorScheme.white, TailwindColorScheme.slate900, 3);
+            handler.drawStringWithOutline("E", x + (this.width - 14)/2, y + (this.height)/2, Resources.PRESS_START.deriveFont(12f), TailwindColorScheme.white, TailwindColorScheme.slate900, 3);
             stack = this.inventory.getStack(NamedSlot.values()[this.index - this.inventory.getSize()]);
         } else {
             stack = this.inventory.getStack(this.index);
@@ -60,12 +61,18 @@ public class ItemSlot extends Slot {
         if (stack == null) {
             return;
         }
+        if (!stack.getItem().id.equals(last_id)) {
+            this.last_id = stack.getItem().id;
+            this.currentFrame = 0;
+            this.frameCount = 0;
+            
+        }
         this.frameCount++;
         var frames = stack.getItem().getFrames("inventory");
         if (frames != null) {
             var item_width = (int) Math.floor(this.width * .95f);
             var item_height = (int) Math.floor(this.height * .95f);
-            if (frames[currentFrame].getDelay() == this.frameCount) {
+            if (this.frameCount % (Math.max(frames[currentFrame].getDelay(), 1)) == 0) {
                 this.currentFrame = (this.currentFrame + 1) % frames.length;
             } 
             handler.drawImage(frames[this.currentFrame].getImage(), x + (width / 2) - (item_width / 2), y + (height / 2) - (item_height / 2), item_width, item_height);
@@ -74,7 +81,7 @@ public class ItemSlot extends Slot {
             var item_height = (int) Math.floor(this.height * .75f);
             handler.drawFilledRectangle(x + (this.width / 2) - (item_width / 2), y + (this.height / 2) - (item_height / 2), item_width, item_height, TailwindColorScheme.slate400);
         }
-        handler.drawStringWithOutline(Integer.toString(stack.getCount()), x + this.width - 8 - 5, y + this.height - 5, Resources.press_start.deriveFont(8f), TailwindColorScheme.white, TailwindColorScheme.slate900, 3);
+        handler.drawStringWithOutline(Integer.toString(stack.getCount()), x + this.width - 8 - 5, y + this.height - 5, Resources.PRESS_START.deriveFont(8f), TailwindColorScheme.white, TailwindColorScheme.slate900, 3);
     }
     
 }

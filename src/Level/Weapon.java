@@ -12,35 +12,37 @@ public class Weapon extends Item {
     protected double weaponSkillCost = 5;
 
     public Weapon(String id, String name) {
-        super(id, name, 1);
+        this(id, name, 1);
     }
     
     public Weapon(String id, String name, int maxStackSize) {
-        super(id, name, maxStackSize);
+        this(id, name, maxStackSize, 10d);
     }
 
     public Weapon(String id, String name, String description, int maxStackSize) {
-        super(id, name, description, maxStackSize);
+        this(id, name, description, maxStackSize, 10d);
     }
 
     public Weapon(String id, String name, double baseDamage) {
-        super(id, name);
-        this.baseDamage = baseDamage;
+        this(id, name, "", baseDamage);
     }
 
     public Weapon(String id, String name, String description, double baseDamage) {
-        super(id, name, description, 1);
+        this(id, name, description, 1, baseDamage);
+    }
+
+    public Weapon(String id, String name, String description, int maxStackSize, double baseDamage) {
+        super(id, name, description, maxStackSize);
         this.baseDamage = baseDamage;
+        this.weaponSkillDamage = this.baseDamage * 1.5;
     }
     
     public Weapon(String name, int maxStackSize, double baseDamage) {
-        super(name, maxStackSize);
-        this.baseDamage = baseDamage;
+        this(name, name, maxStackSize, baseDamage);
     }
 
     public Weapon(String name, String description, int maxStackSize, double baseDamage) {
-        super(name, description, maxStackSize);
-        this.baseDamage = baseDamage;
+        this(name.replace(' ', '_').toLowerCase(), name, description, maxStackSize, baseDamage);
     }
 
     public double getBaseDamage() {

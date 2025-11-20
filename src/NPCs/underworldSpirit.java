@@ -20,7 +20,7 @@ public class underworldSpirit extends NPC {
             id,
             location.x,
             location.y,
-            new SpriteSheetHorizontal(ImageLoader.load("underworldSpirit.png"), 32, 32),
+            new SpriteSheetHorizontal(ImageLoader.load("underWorldSpirit.png"), 32, 32),
             "STAND_RIGHT"
         );
         

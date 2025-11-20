@@ -21,8 +21,8 @@ public class LoseScreen extends Screen {
 
     @Override
     public void initialize() {
-        winMessage = new SpriteFont("You Lose!", 300, 239, Resources.press_start.deriveFont(30f), Color.white);
-        instructions = new SpriteFont("Press Space or Escape to go back to the main menu", 120, 279, Resources.press_start.deriveFont(12f), Color.white);
+        winMessage = new SpriteFont("You Lose!", 300, 239, Resources.PRESS_START.deriveFont(30f), Color.white);
+        instructions = new SpriteFont("Press Space or Escape to go back to the main menu", 120, 279, Resources.PRESS_START.deriveFont(12f), Color.white);
         keyLocker.lockKey(Key.SPACE);
         keyLocker.lockKey(Key.ESC);
     }

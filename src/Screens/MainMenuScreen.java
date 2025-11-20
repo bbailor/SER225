@@ -90,8 +90,8 @@ public class MainMenuScreen extends Screen {
 
         // Play main menu music when main menu loads
         try {
-            Globals.SOUND_SYSTEM.play(Type.Music, Globals.MENU_TRACK, new File("Resources/Sounds/Music/menuSong.wav"));
-            Globals.SOUND_SYSTEM.getTrack(Globals.MENU_TRACK).setLoopPoint(0, -1, true);
+            Globals.SOUND_SYSTEM.play(Type.Music, Globals.MUSIC_TRACK, new File("Resources/Sounds/Music/menuSong.wav"));
+            Globals.SOUND_SYSTEM.getTrack(Globals.MUSIC_TRACK).setLoopPoint(0, -1, true);
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
         }
@@ -170,12 +170,13 @@ public class MainMenuScreen extends Screen {
         }
         if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
             menuItemSelected = currentMenuItemHovered;
+            //// Will be stopped when playing the next map
             // Stop menu music when leaving main menu
-            try {
-                Globals.SOUND_SYSTEM.getTrack(Globals.MENU_TRACK).setSound(null);
-            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
-                e.printStackTrace();
-            }
+            // try {
+            //     Globals.SOUND_SYSTEM.getTrack(Globals.MUSIC_TRACK).setSound(null);
+            // } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            //     e.printStackTrace();
+            // }
 
             if (menuItemSelected == 0) {
                 screenCoordinator.setGameState(GameState.LEVEL);
@@ -201,12 +202,13 @@ public class MainMenuScreen extends Screen {
             mouseLocker.lockMouse();
             Point clickPos = Mouse.getLastPressedPosition();
 
+            //// Will be stopped when playing the next map
             // Stop menu music when leaving main menu
-            try {
-                Globals.SOUND_SYSTEM.getTrack(Globals.MENU_TRACK).setSound(null);
-            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
-                e.printStackTrace();
-            }
+            // try {
+            //     Globals.SOUND_SYSTEM.getTrack(Globals.MUSIC_TRACK).setSound(null);
+            // } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            //     e.printStackTrace();
+            // }
 
             if (playGameBounds.contains(clickPos)) {
                 screenCoordinator.setGameState(GameState.LEVEL);
@@ -232,7 +234,7 @@ public class MainMenuScreen extends Screen {
                 playGame.getText(),
                 Math.round(playX),
                 Math.round(playY + 32),
-                Resources.press_start.deriveFont(20f),
+                Resources.PRESS_START.deriveFont(20f),
                 Color.black,
                 playGameColor,
                 2
@@ -242,7 +244,7 @@ public class MainMenuScreen extends Screen {
                 credits.getText(),
                 Math.round(creditsX),
                 Math.round(creditsY + 32),
-                Resources.press_start.deriveFont(20f),
+                Resources.PRESS_START.deriveFont(20f),
                 Color.black,
                 creditsColor,
                 2
@@ -252,7 +254,7 @@ public class MainMenuScreen extends Screen {
                 controls.getText(),
                 Math.round(controlsX),
                 Math.round(controlsY + 32),
-                Resources.press_start.deriveFont(20f),
+                Resources.PRESS_START.deriveFont(20f),
                 Color.black,
                 controlsColor,
                 2
@@ -264,7 +266,7 @@ public class MainMenuScreen extends Screen {
                 "Requiem for a Gnome",
                 30,
                 62,
-                Resources.press_start.deriveFont(38f),
+                Resources.PRESS_START.deriveFont(38f),
                 TailwindColorScheme.black,
                 TailwindColorScheme.blue300,
                 6

@@ -114,22 +114,22 @@ public class MenuScreen extends Screen implements Menu, MenuListener {
         this.selector.draw(graphicsHandler, (int) this.selectorRec.getX(), (int) this.selectorRec.getY());
 
         // this.selector.draw(graphicsHandler, 0, (int) (Config.GAME_WINDOW_HEIGHT * .24f));
-        
-        // Menu
-        graphicsHandler.drawFilledRectangleWithBorder(this.menuStart, TailwindColorScheme.slate400, TailwindColorScheme.slate700, 5);
-        if (this.selectedAction == null) {
-            String no_menu_text = "No Menu Selected";
-            graphicsHandler.drawString(no_menu_text, (int) (this.menuStart.getX() + (this.menuStart.getWidth() - (no_menu_text.length() * nmt_size))/2), (int) (this.menuStart.getY() + (this.menuStart.getWidth() - nmt_size)/2), Resources.press_start.deriveFont(nmt_size), TailwindColorScheme.white);
-        } else {
-            this.actions.get(this.selectedAction).draw(graphicsHandler, (int) (this.menuStart.getX() + 3), (int) (this.menuStart.getY() + 3));
-        }
 
         // Menu Info
         graphicsHandler.drawFilledRectangleWithBorder(this.menuInfo, TailwindColorScheme.zinc500, TailwindColorScheme.slate700, 5);
         var statusSplit = this.status.split("\n");
         for (int i = 0; i < statusSplit.length; i++) {
             var _status = statusSplit[i];
-            graphicsHandler.drawString(_status, (int)this.menuInfo.getX() + 5, (int)this.menuInfo.getY() + 5 + 14 + i*14, Resources.press_start.deriveFont(12f), TailwindColorScheme.white);
+            graphicsHandler.drawString(_status, (int)this.menuInfo.getX() + 5, (int)this.menuInfo.getY() + 5 + 18 + i*14, Resources.PRESS_START.deriveFont(12f), TailwindColorScheme.white);
+        }
+        
+        // Menu
+        graphicsHandler.drawFilledRectangleWithBorder(this.menuStart, TailwindColorScheme.slate400, TailwindColorScheme.slate700, 5);
+        if (this.selectedAction == null) {
+            String no_menu_text = "No Menu Selected";
+            graphicsHandler.drawString(no_menu_text, (int) (this.menuStart.getX() + (this.menuStart.getWidth() - (no_menu_text.length() * nmt_size))/2), (int) (this.menuStart.getY() + (this.menuStart.getWidth() - nmt_size)/2), Resources.PRESS_START.deriveFont(nmt_size), TailwindColorScheme.white);
+        } else {
+            this.actions.get(this.selectedAction).draw(graphicsHandler, (int) (this.menuStart.getX() + 3), (int) (this.menuStart.getY() + 0));
         }
     }
 
@@ -140,6 +140,7 @@ public class MenuScreen extends Screen implements Menu, MenuListener {
         }
         if (this.selectedAction == null || this.selectorRec.contains(Mouse.getCurrentPosition())) {
             this.selector.update();
+            this.status = "";
             if (Keyboard.isKeyDown(Key.ESC) && this.openMenuCD == 0) {
                 this.close();
             }
@@ -151,7 +152,6 @@ public class MenuScreen extends Screen implements Menu, MenuListener {
     @Override
     public void onMenuClose() {
         this.selectedAction = null;
-        this.status = "";
     }
 
     @Override

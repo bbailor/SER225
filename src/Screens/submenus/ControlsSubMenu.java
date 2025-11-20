@@ -106,7 +106,7 @@ public class ControlsSubMenu implements Menu {
             text,
             PADDING,
             yPosition,
-            Resources.press_start.deriveFont((float) SECTION_SIZE),
+            Resources.PRESS_START.deriveFont((float) SECTION_SIZE),
             SECTION_COLOR
         );
         displayTexts.add(sectionFont);
@@ -118,7 +118,7 @@ public class ControlsSubMenu implements Menu {
             text,
             PADDING,
             yPosition,
-            Resources.press_start.deriveFont((float) TEXT_SIZE),
+            Resources.PRESS_START.deriveFont((float) TEXT_SIZE),
             TEXT_COLOR
         );
         displayTexts.add(textFont);
@@ -178,7 +178,7 @@ public class ControlsSubMenu implements Menu {
             "CONTROLS",
             x + PADDING,
             y + PADDING,
-            Resources.press_start.deriveFont((float) TITLE_SIZE),
+            Resources.PRESS_START.deriveFont((float) TITLE_SIZE),
             TITLE_COLOR
         );
         titleText.draw(graphicsHandler);
@@ -188,7 +188,7 @@ public class ControlsSubMenu implements Menu {
             "Use W/S or Arrow Keys to scroll",
             x + PADDING,
             y + PADDING + TITLE_SIZE + 10,
-            Resources.press_start.deriveFont((float) (TEXT_SIZE - 2)),
+            Resources.PRESS_START.deriveFont((float) (TEXT_SIZE - 2)),
             TailwindColorScheme.slate300
         );
         subtitleText.draw(graphicsHandler);
@@ -226,7 +226,7 @@ public class ControlsSubMenu implements Menu {
                 "^ More above",
                 x + PADDING,
                 y + PADDING + TITLE_SIZE + 30,
-                Resources.press_start.deriveFont(10f),
+                Resources.PRESS_START.deriveFont(10f),
                 TailwindColorScheme.white
             );
             upArrow.draw(graphicsHandler);
@@ -237,7 +237,7 @@ public class ControlsSubMenu implements Menu {
                 "v More below",
                 x + PADDING,
                 contentBottomY + LINE_HEIGHT + 2,
-                Resources.press_start.deriveFont(10f),
+                Resources.PRESS_START.deriveFont(10f),
                 TailwindColorScheme.white
             );
             downArrow.draw(graphicsHandler);

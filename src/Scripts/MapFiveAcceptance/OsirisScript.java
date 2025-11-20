@@ -44,8 +44,8 @@ public class OsirisScript extends Script {
                     @Override
                     public ScriptState execute() {
                         try {
-                            Globals.SOUND_SYSTEM.play(Type.Music, Globals.STORY_TRACK, new File("Resources/Sounds/Music/happyEndingSong.wav"));
-                            Globals.SOUND_SYSTEM.getTrack(Globals.STORY_TRACK).setLoopPoint(0, -1, true);
+                            Globals.SOUND_SYSTEM.play(Type.Music, Globals.MUSIC_TRACK, new File("Resources/Sounds/Music/happyEndingSong.wav"));
+                            Globals.SOUND_SYSTEM.getTrack(Globals.MUSIC_TRACK).setLoopPoint(0, -1, true);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

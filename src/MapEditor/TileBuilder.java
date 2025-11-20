@@ -38,7 +38,9 @@ public class TileBuilder extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                tileSelected(e.getPoint());
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    tileSelected(e.getPoint());
+                }
             }
 
             @Override

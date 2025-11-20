@@ -19,6 +19,7 @@ import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
 import FightAnimations.ArmoredSkeletonAttack;
+import FightAnimations.BagOfGoldAttackAnimation;
 import FightAnimations.DenialBossAttack;
 import FightAnimations.DenialsStaffAttack;
 import FightAnimations.DepressionBossAttack;
@@ -40,6 +41,7 @@ import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Items.DenialsStaff;
 import Items.KnifeOfLife;
+import Items.BagOfGold;
 import Items.SwordOfRage;
 import Level.Entity;
 import Level.Item;
@@ -53,6 +55,7 @@ import Utils.Globals;
 import Utils.Menu;
 import Utils.MenuListener;
 import Utils.Resources;
+import Utils.SoundThreads;
 import Utils.TailwindColorScheme;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -119,7 +122,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         this.isBossBattle = isBossBattle;
 
         try{
-            Globals.SOUND_SYSTEM.play(Type.Music, Globals.BATTLE_TRACK_NUMBER, new File("Resources/Sounds/Music/danceOfKnights8bit.wav"));
+            Globals.SOUND_SYSTEM.play(Type.Music, Globals.BATTLE_TRACK_NUMBER, Resources.BATTLE_MUSIC);
             Globals.SOUND_SYSTEM.getTrack(Globals.BATTLE_TRACK_NUMBER).setLoopPoint(0, -1, true);
         } catch(IOException | UnsupportedAudioFileException | LineUnavailableException e){
             e.printStackTrace();
@@ -152,8 +155,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         this.selector.open();
 
         this.history = new ArrayList<>();
-
-        
+        this.entity.setInBattle(true);
+        this.player.getEntity().setInBattle(true);
     }
 
     // Old constructor for backward compatibility
@@ -174,10 +177,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
     @Override
     public void initialize() {}
 
+    protected BattleTurn prevTurn = BattleTurn.Player;
+    int turn_count = 0;
     @Override
     public void update() {
         if (this.entity.getHealth() <= 0) {
-
             // Notify PlayLevelScreen that this enemy was defeated
             this.sendEvent("enemy_defeated", this.enemySource);
             this.close();
@@ -187,6 +191,17 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         if (this.player.getEntity().getHealth() <= 0) {
             this.sendEvent(LOSE_EVENT_NAME);
             return;
+        }
+
+        // turn effects
+        if (this.currentTurn != this.prevTurn) {
+            this.turn_count++;
+            if (this.currentTurn == BattleTurn.Player) {
+                this.player.getEntity().runEffects(turn_count);
+            } else  {
+                this.entity.runEffects(turn_count);
+            }
+            this.prevTurn = this.currentTurn;
         }
         
         // Handle active PLAYER attack animation
@@ -260,6 +275,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         }
         if (Keyboard.isKeyDown(Key.K)) {
             this.player.getEntity().kill();
+            this.player.getEntity().clearEffect();
         }
     }
 
@@ -296,7 +312,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             String.format("Player Health: %.2f/%.2f", playerEntity.getHealth(), playerEntity.getMaxHealth()),
             (int) (STATUS_LOG_REC.getX() + FONT_SIZE) + 2,
             (int) (STATUS_LOG_REC.getY() + FONT_SIZE) + 7,
-            Resources.press_start.deriveFont(FONT_SIZE),
+            Resources.PRESS_START.deriveFont(FONT_SIZE),
             TailwindColorScheme.white,
             TailwindColorScheme.slate900,
             3
@@ -305,7 +321,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             String.format("Player Mana: %.2f/%.2f", playerEntity.getMana(), playerEntity.getMaxMana()),
             (int) (STATUS_LOG_REC.getX() + FONT_SIZE) + 2,
             (int) (STATUS_LOG_REC.getY() + FONT_SIZE * 2 + 4) + 7,
-            Resources.press_start.deriveFont(FONT_SIZE),
+            Resources.PRESS_START.deriveFont(FONT_SIZE),
             TailwindColorScheme.white,
             TailwindColorScheme.slate900,
             3
@@ -314,7 +330,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             String.format("Enemy Health: %.2f/%.2f", this.entity.getHealth(), this.entity.getMaxHealth()),
             (int) (STATUS_LOG_REC.getX() + FONT_SIZE) + 2,
             (int) (STATUS_LOG_REC.getY() + FONT_SIZE * 3 + 8) + 7,
-            Resources.press_start.deriveFont(FONT_SIZE),
+            Resources.PRESS_START.deriveFont(FONT_SIZE),
             TailwindColorScheme.white,
             TailwindColorScheme.slate900,
             3
@@ -653,11 +669,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         }
 
         // Get equipped weapon and determine animation
-        Weapon weapon = this.player.getEntity().getCurrentWeapon();
+        Weapon weapon = this.player.getEntity( ).getCurrentWeapon();
         String weaponAnimName = weapon.getAttackAnimationName();
 
         try {
-            String attackFileName = "weapons//" + weaponAnimName + "Attack.png";
+            String attackFileName = "weapons/" + weaponAnimName + "Attack.png";
             SpriteSheet attackSheet = null;
             
             // Load sprite sheet with appropriate dimensions based on weapon
@@ -677,6 +693,8 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                     break;
                 case "SwordOfRage":
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 63, 63);
+                    break;
+                case "BagOfGold": 
                     break;
                 default:
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 32, 32);
@@ -858,7 +876,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             case "KnifeOfLife":
                 // Projectile: travels from player to enemy
                 return new KnifeOfLifeAttack(sheet, enemyX, enemyY, playerX, playerY, 100);
-            
+            case "BagOfGold": {
+                return new BagOfGoldAttackAnimation(enemyX + 20, enemyY + 20, playerX, playerY);
+            }
             case "TlalocsStorm":
                 // Static: appears at enemy position
                 return new TlalocsStormAttack(sheet, enemyX, enemyY);
@@ -910,11 +930,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
     @Override
     public void close() {
-        try {
-            Globals.SOUND_SYSTEM.getTrack(Globals.BATTLE_TRACK_NUMBER).setSound(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.entity.clearEffect();
+        this.player.getEntity().clearEffect();
+        this.entity.setInBattle(false);
+        this.player.getEntity().setInBattle(false);
+        Globals.SOUND_SYSTEM.play(Globals.BATTLE_TRACK_NUMBER, null);
         Menu.super.close();
     }
 

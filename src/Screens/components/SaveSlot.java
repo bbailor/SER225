@@ -65,11 +65,11 @@ public class SaveSlot extends Slot {
         int line = 0;
         String header = "Save " + ((this.index + 1) * this.page);
         header = header.substring(0, Math.min(this.width / (FONT_SIZE_BASE + 6), header.length()));
-        handler.drawString(header, x + (this.width - header.length() * (FONT_SIZE_BASE + 6))/2, draw_start_y, Resources.press_start.deriveFont((float)FONT_SIZE_BASE + 6), TailwindColorScheme.white);
+        handler.drawString(header, x + (this.width - header.length() * (FONT_SIZE_BASE + 6))/2, draw_start_y, Resources.PRESS_START.deriveFont((float)FONT_SIZE_BASE + 6), TailwindColorScheme.white);
         if (this.data == null) {
             String noSave = "No Save Data";
             noSave = noSave.substring(0, Math.min(this.width / (FONT_SIZE_BASE), noSave.length()));
-            handler.drawString(noSave, x + (this.width - noSave.length() * FONT_SIZE_BASE) / 2, (int) (y + (this.height - FONT_SIZE_BASE) * .75), Resources.press_start.deriveFont((float)FONT_SIZE_BASE), TailwindColorScheme.white);
+            handler.drawString(noSave, x + (this.width - noSave.length() * FONT_SIZE_BASE) / 2, (int) (y + (this.height - FONT_SIZE_BASE) * .75), Resources.PRESS_START.deriveFont((float)FONT_SIZE_BASE), TailwindColorScheme.white);
             return;
         }
         String playerHealth = "HP: " + this.data.player.getEntity().getHealth() + "/" + this.data.player.getEntity().getMaxHealth();
@@ -78,9 +78,9 @@ public class SaveSlot extends Slot {
         playerHealth = playerHealth.substring(0, Math.min(this.width / FONT_SIZE_BASE, playerHealth.length()));
         mapName = mapName.substring(0, Math.min(this.width / FONT_SIZE_BASE, mapName.length()));
         playerMana = playerMana.substring(0, Math.min(this.width / FONT_SIZE_BASE, playerMana.length()));
-        handler.drawString(mapName, x + (this.width - (mapName.length() * FONT_SIZE_BASE))/2, draw_start_y + header_margin + (FONT_SIZE_BASE) * (line++), Resources.press_start.deriveFont((float)FONT_SIZE_BASE), TailwindColorScheme.white);
-        handler.drawString(playerHealth, x + (this.width - (playerHealth.length() * FONT_SIZE_BASE))/2, draw_start_y + header_margin + (FONT_SIZE_BASE + text_margin) * (line++), Resources.press_start.deriveFont((float)FONT_SIZE_BASE), TailwindColorScheme.white);
-        handler.drawString(playerMana, x + (this.width - (playerMana.length() * FONT_SIZE_BASE))/2, draw_start_y + header_margin + (FONT_SIZE_BASE + text_margin) * (line++), Resources.press_start.deriveFont((float)FONT_SIZE_BASE), TailwindColorScheme.white);
+        handler.drawString(mapName, x + (this.width - (mapName.length() * FONT_SIZE_BASE))/2, draw_start_y + header_margin + (FONT_SIZE_BASE) * (line++), Resources.PRESS_START.deriveFont((float)FONT_SIZE_BASE), TailwindColorScheme.white);
+        handler.drawString(playerHealth, x + (this.width - (playerHealth.length() * FONT_SIZE_BASE))/2, draw_start_y + header_margin + (FONT_SIZE_BASE + text_margin) * (line++), Resources.PRESS_START.deriveFont((float)FONT_SIZE_BASE), TailwindColorScheme.white);
+        handler.drawString(playerMana, x + (this.width - (playerMana.length() * FONT_SIZE_BASE))/2, draw_start_y + header_margin + (FONT_SIZE_BASE + text_margin) * (line++), Resources.PRESS_START.deriveFont((float)FONT_SIZE_BASE), TailwindColorScheme.white);
     }
     
 }

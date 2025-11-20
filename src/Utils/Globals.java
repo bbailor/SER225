@@ -56,10 +56,9 @@ public abstract class Globals {
     public static final Path SAVEPATH = GAMEDATAPATH.resolve("saves");
     public static final boolean DEBUG = true;
     public static final int BATTLE_TRACK_NUMBER = 1;
-    public static final int MAP_TRACK = 2;
-    public static final int STORY_TRACK = 3;
-    public static final int EFFECTS_SOUNDS = 4;
-    public static final int MENU_TRACK = 5;
+    public static final int MUSIC_TRACK = 2;
+    // public static final int STORY_TRACK = 3;
+    public static final int EFFECTS_SOUNDS = 3;
 
     public static boolean saveToFile(SaveData data, int index) {
         String json = GSON.toJson(data);

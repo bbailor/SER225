@@ -71,7 +71,7 @@ public class InventoryBattleMenu extends BattleSubmenu {
 
         var stack = this.inventory.getStack(this.selectedID);
         // Determine target based on item type (offensive items target enemy, healing items target player)
-        if ((Keyboard.isKeyDown(Key.ENTER) || Keyboard.isKeyDown(Key.U)) && stack != null) {
+        if ((Keyboard.isKeyDown(Key.ENTER) || Keyboard.isKeyDown(Key.SPACE) || Keyboard.isKeyDown(Key.U)) && stack != null) {
             Entity target = shouldTargetEnemy(stack) ? this.enemy : this.player.getEntity();
             if (stack.getItem().canUse(stack, target)) {
                 stack.use(target);
@@ -148,7 +148,7 @@ public class InventoryBattleMenu extends BattleSubmenu {
                 selected_offset_y = offset_y;
                 selected_length = stack.getItem().getName().length();
             }
-            graphicsHandler.drawString(stack.getItem().getName(), this.x + offset_x, this.y + offset_y, Resources.press_start.deriveFont(Font.PLAIN, FONT_SIZE), TailwindColorScheme.white);
+            graphicsHandler.drawString(stack.getItem().getName(), this.x + offset_x, this.y + offset_y, Resources.PRESS_START.deriveFont(Font.PLAIN, FONT_SIZE), TailwindColorScheme.white);
             offset_x += (stack.getItem().getName().length() * FONT_SIZE) + (8/2) + BORDER_WIDTH;
         }
         graphicsHandler.drawRectangle(this.x + selected_offset_x - BORDER_WIDTH, this.y + (offset_y/2) - BORDER_WIDTH, (selected_length * FONT_SIZE) + BORDER_WIDTH, FONT_SIZE + 8 + BORDER_WIDTH, Globals.HOVER_COLOR, BORDER_WIDTH);

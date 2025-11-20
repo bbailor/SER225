@@ -60,26 +60,26 @@ public class ControlsScreen extends Screen {
         graphicsHandler.drawFilledRectangleWithBorder(1, 1, 786, 568, new Color(200, 200, 200, 225), Color.black, 3);
 
         //CONTROLS
-        graphicsHandler.drawStringWithOutline("CONTROLS", 335, 50, Resources.press_start.deriveFont(22f), Color.RED, Color.black, 5);
-        graphicsHandler.drawStringWithOutline("Click anywhere or press space to exit.", 30, 550, Resources.press_start.deriveFont(14f), Color.RED, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("CONTROLS", 335, 50, Resources.PRESS_START.deriveFont(22f), Color.RED, Color.black, 5);
+        graphicsHandler.drawStringWithOutline("Click anywhere or press space to exit.", 30, 550, Resources.PRESS_START.deriveFont(14f), Color.RED, Color.black, 2);
 
 
         //MOVEMENT
-        graphicsHandler.drawStringWithOutline("MOVEMENT + INTERACTIONS", 30, 90, Resources.press_start.deriveFont(12f), Color.RED, Color.black, 3);
-        graphicsHandler.drawStringWithOutline("- Use WASD to move. Press SPACE to pick up items.", 30, 120, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
-        graphicsHandler.drawStringWithOutline("- Use SPACE to interact with NPCs and skip dialouge.", 30, 150, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("MOVEMENT + INTERACTIONS", 30, 90, Resources.PRESS_START.deriveFont(12f), Color.RED, Color.black, 3);
+        graphicsHandler.drawStringWithOutline("- Use WASD to move. Press SPACE to pick up items.", 30, 120, Resources.PRESS_START.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("- Use SPACE to interact with NPCs and skip dialouge.", 30, 150, Resources.PRESS_START.deriveFont(12f), Color.white, Color.black, 2);
 
         //MENU SCREEN
-        graphicsHandler.drawStringWithOutline("SCREENS", 30, 200, Resources.press_start.deriveFont(12f), Color.RED, Color.black, 3);
-        graphicsHandler.drawStringWithOutline("- Press ESC to open the menu.", 30, 230, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
-        graphicsHandler.drawStringWithOutline("- Interact with menus using the mouse, or use", 30, 260, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
-        graphicsHandler.drawStringWithOutline("the arrow keys along with ENTER/SPACE and ESC.", 30, 290, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
-        graphicsHandler.drawStringWithOutline("- In the inventory, use U to use items, and BACKSPACE to remove items.", 30, 320, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("SCREENS", 30, 200, Resources.PRESS_START.deriveFont(12f), Color.RED, Color.black, 3);
+        graphicsHandler.drawStringWithOutline("- Press ESC to open the menu.", 30, 230, Resources.PRESS_START.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("- Interact with menus using the mouse, or use", 30, 260, Resources.PRESS_START.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("the arrow keys along with ENTER/SPACE and ESC.", 30, 290, Resources.PRESS_START.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("- In the inventory, use U to use items, and BACKSPACE to remove items.", 30, 320, Resources.PRESS_START.deriveFont(12f), Color.white, Color.black, 2);
 
         //SAVING
-        graphicsHandler.drawStringWithOutline("SAVING", 30, 370, Resources.press_start.deriveFont(12f), Color.RED, Color.black, 3);
-        graphicsHandler.drawStringWithOutline("- Use the SAVE tab in the menu to save your progress.", 30, 400, Resources.press_start.deriveFont(12f), Color.white, Color.black, 2);
-        graphicsHandler.drawStringWithOutline("- To load saved progress, click on the saved file in the save menu.", 30, 430, Resources.press_start.deriveFont(11.2f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("SAVING", 30, 370, Resources.PRESS_START.deriveFont(12f), Color.RED, Color.black, 3);
+        graphicsHandler.drawStringWithOutline("- Use the SAVE tab in the menu to save your progress.", 30, 400, Resources.PRESS_START.deriveFont(12f), Color.white, Color.black, 2);
+        graphicsHandler.drawStringWithOutline("- To load saved progress, click on the saved file in the save menu.", 30, 430, Resources.PRESS_START.deriveFont(11.2f), Color.white, Color.black, 2);
 
        //add mroe controls if needed
     }
