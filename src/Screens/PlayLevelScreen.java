@@ -158,7 +158,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         playLevelScreenState = PlayLevelScreenState.RUNNING;
 
         // load map
-        this.switchMap(new TestMap());
+        this.switchMap(new AngerMap());
         // this.switchMap(new DepressionMap());
         // this.switchMap(new TestMap());
         //this.switchMap(new BargainingMap());

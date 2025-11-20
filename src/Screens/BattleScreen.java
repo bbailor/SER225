@@ -33,12 +33,13 @@ import FightAnimations.TlalocsStormAttack;
 import FightAnimations.SwordOfRageAttack;
 import FightAnimations.StaticPlayerAttackAnimation;
 import FightAnimations.StaticEnemyAttackAnimation;
-import FightAnimations.SwordOfRageAttack;
+import FightAnimations.powerStoneAttack;
 import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Items.SwordOfRage;
 import Level.Entity;
+import Level.Item;
 import Level.Player;
 import Level.Weapon;
 import NPCs.AngerBoss;
@@ -126,7 +127,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             (int) BATTLE_ACTION_REC.getY(),
             BATTLE_ACTION_REC.getWidth(),
             BATTLE_ACTION_REC.getHeight(),
-            this.inventory, player
+            this.inventory, player, this.entity
         );
         this.actions.put("Inventory", inv);
         inv.addistener(LISTENER_NAME, this);
@@ -524,7 +525,21 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 break;
             }
             case "inventory.use": {
-                this.currentTurn = BattleTurn.Enemy;
+                if (args.length >= 2 && args[0] instanceof Item && args[1] instanceof Entity) {
+                    Item usedItem = (Item) args[0];
+                    Entity target = (Entity) args[1];
+
+                    // Check if it's an offensive item that targets enemy
+                    if (usedItem.id.equals("powerStone") && target == this.entity) {
+                        // Trigger power stone attack animation
+                        triggerItemAttackAnimation("powerStone");
+                    } else {
+                        // Healing items don't animate, just switch turn
+                        this.currentTurn = BattleTurn.Enemy;
+                    }
+                } else {
+                    this.currentTurn = BattleTurn.Enemy;
+                }
                 break;
             }
             case SelectionSubmenu.SUBMENU_SELECTION_EVENT: {
@@ -835,6 +850,32 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             default:
                 System.err.println("Unknown weapon type: " + weapon + ", using KnifeOfLife attack");
                 return new KnifeOfLifeAttack(sheet, enemyX, enemyY, playerX, playerY, 100);
+        }
+    }
+
+    private void triggerItemAttackAnimation(String itemId) {
+        try {
+            // Position animation at enemy location
+            int enemyX = (int) (Config.GAME_WINDOW_WIDTH * 0.70);
+            int enemyY = (int) (BATTLE_REC.getY() + BATTLE_REC.getHeight() / 2);
+
+            // Load sprite from Enemies folder
+            String attackFileName = "Enemies/" + itemId + "Attack.png";
+            SpriteSheet attackSheet = null;
+
+            if (itemId.equals("powerStone")) {
+                // powerStoneAttack is 1024x768 with 8 columns x 6 rows = 128x128 per sprite (use 127 for SpriteSheet)
+                attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 127, 127);
+                // Shift animation back by 127 pixels
+                activePlayerAttackAnimation = new powerStoneAttack(attackSheet, enemyX - 127, enemyY);
+            }
+            // Add more offensive items here as needed
+
+        } catch (Exception e) {
+            System.err.println("Failed to load item attack animation for " + itemId + ": " + e.getMessage());
+            // Fallback: damage immediately without animation
+            this.entity.handleDamage(this.player.getEntity(), false);
+            this.currentTurn = BattleTurn.Enemy;
         }
     }
 

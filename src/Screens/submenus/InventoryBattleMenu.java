@@ -8,6 +8,7 @@ import Engine.GraphicsHandler;
 import Engine.Inventory;
 import Engine.Key;
 import Engine.Keyboard;
+import Level.Entity;
 import Level.ItemStack;
 import Level.Player;
 import Utils.Globals;
@@ -16,20 +17,22 @@ import Utils.Resources;
 import Utils.TailwindColorScheme;
 
 public class InventoryBattleMenu extends BattleSubmenu {
-    
+
     protected Map<String, MenuListener> listeners = new HashMap<>();
     protected Inventory inventory;
     protected Player player;
+    protected Entity enemy;
     protected int selectedID = -1;
     protected int pressCD = 0;
 
     public static final int FONT_SIZE = 12;
     public static final int BORDER_WIDTH = 4;
 
-    public InventoryBattleMenu(int x, int y, int width, int height, Inventory inventory, Player player) {
+    public InventoryBattleMenu(int x, int y, int width, int height, Inventory inventory, Player player, Entity enemy) {
         super(x, y, width, height);
         this.inventory = inventory;
         this.player = player;
+        this.enemy = enemy;
     }
 
     @Override
@@ -67,11 +70,14 @@ public class InventoryBattleMenu extends BattleSubmenu {
         }
 
         var stack = this.inventory.getStack(this.selectedID);
-        // TODO: Maybe implement targetting
-        if ((Keyboard.isKeyDown(Key.ENTER) || Keyboard.isKeyDown(Key.U)) && stack != null && stack.getItem().canUse(stack, this.player.getEntity())) {
-            stack.use(this.player.getEntity());
-            this.close();
-            this.sendEvent("inventory.use");
+        // Determine target based on item type (offensive items target enemy, healing items target player)
+        if ((Keyboard.isKeyDown(Key.ENTER) || Keyboard.isKeyDown(Key.U)) && stack != null) {
+            Entity target = shouldTargetEnemy(stack) ? this.enemy : this.player.getEntity();
+            if (stack.getItem().canUse(stack, target)) {
+                stack.use(target);
+                this.close();
+                this.sendEvent("inventory.use", stack.getItem(), target);
+            }
         }
 
         if (Keyboard.isKeyDown(Key.ESC)) {
@@ -107,6 +113,19 @@ public class InventoryBattleMenu extends BattleSubmenu {
             }
         }
         return first == -1 ? current : first;
+    }
+
+    /**
+     * Determines if an item should target the enemy instead of the player
+     * @param stack The item stack to check
+     * @return true if the item targets enemies, false if it targets the player
+     */
+    private boolean shouldTargetEnemy(ItemStack stack) {
+        // Offensive items target the enemy
+        String itemId = stack.getItem().id;
+        return itemId.equals("powerStone");
+        // Add more offensive items here as needed
+        // e.g., || itemId.equals("throwingKnife") || itemId.equals("bomb")
     }
 
     @Override

@@ -5,12 +5,14 @@ import NPCs.ArmoredSkeleton;
 import NPCs.AngerBoss;
 import NPCs.Skeleton;
 import NPCs.Spirit;
+import NPCs.underworldSpirit;
 import NPCs.AngerSpirit;
 import Scripts.MapTwoAnger.AngerBossScript;
 import Scripts.MapTwoAnger.BargainingEntryScript;
 import Scripts.MapTwoAnger.MazeScript;
 import Scripts.MapOneDenial.DenialEnemyScript;
 import Scripts.MapTwoAnger.AngerScript;
+import Scripts.MapTwoAnger.AngerSideQuestScript;
 import Tilesets.Map2Tileset;
 import java.util.ArrayList;
 
@@ -76,6 +78,10 @@ public class AngerMap extends Map {
         ab.setCurrentAnimationName("STAND_LEFT");
         npcs.add(ab);
 
+        underworldSpirit us = new underworldSpirit(103, getMapTile(17, 7).getLocation());
+        us.setInteractScript(new AngerSideQuestScript());
+        us.setCurrentAnimationName("STAND_LEFT");
+        npcs.add(us);
 
         return npcs;
     }
