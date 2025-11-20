@@ -1,6 +1,11 @@
 package Scripts;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.google.gson.annotations.Expose;
 
@@ -14,6 +19,8 @@ import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.TextboxScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
+import Utils.Globals;
+import Utils.SoundThreads.Type;
 
 public class CollectableScript extends Script {
 
