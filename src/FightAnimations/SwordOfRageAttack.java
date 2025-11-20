@@ -24,13 +24,9 @@ public class SwordOfRageAttack extends PlayerProjectileAttackAnimation {
      * @param targetY Target Y position (player Y position)
      * @param duration Number of game frames the animation should take to travel
      */
-    public SwordOfRageAttack(SpriteSheet spriteSheet, float startX, float startY, 
+    public SwordOfRageAttack(SpriteSheet spriteSheet, float startX, float startY,
                           float targetX, float targetY, int duration) {
         super(spriteSheet, startX, startY, targetX, targetY, duration, "ATTACK");
-        startX = targetX;
-        startY = targetY;
-        spriteSheet.setSpriteHeight(63);
-        spriteSheet.setSpriteWidth(63);
     }
     
     @Override

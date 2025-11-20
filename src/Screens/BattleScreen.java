@@ -657,6 +657,9 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
                 case "DenialsStaff":
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 160, 32);
                     break;
+                case "SwordOfRage":
+                    attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 63, 63);
+                    break;
                 default:
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 32, 32);
             }
@@ -731,7 +734,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             String attackFileName = "Enemies/" + currentEnemyAttack.animationType + ".png";
             SpriteSheet attackSheet = null;
             switch (currentEnemyAttack.animationType) {
-                case "ArmoredSkeleton": {
+                case "ArmoredSkeletonAttack": {
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 63, 63);
                     break;
                 }
