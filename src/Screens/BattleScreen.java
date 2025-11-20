@@ -910,6 +910,11 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
 
     @Override
     public void close() {
+        try {
+            Globals.SOUND_SYSTEM.getTrack(Globals.BATTLE_TRACK_NUMBER).setSound(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Menu.super.close();
     }
 

@@ -2,6 +2,7 @@ package Screens;
 
 import Engine.*;
 import SpriteFont.SpriteFont;
+import Utils.Globals;
 
 import java.awt.*;
 
@@ -19,6 +20,11 @@ public class WinScreen extends Screen {
 
     @Override
     public void initialize() {
+        try {
+                    Globals.SOUND_SYSTEM.getTrack(Globals.STORY_TRACK).setSound(null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
         winMessage = new SpriteFont("The End!", 350, 239, "Arial", 30, Color.white);
         instructions = new SpriteFont("Press Space to play again or Escape to go back to the main menu", 120, 279,"Arial", 20, Color.white);
         keyLocker.lockKey(Key.SPACE);
