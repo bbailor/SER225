@@ -4,6 +4,7 @@ import Level.*;
 import NPCs.*;
 import Scripts.MapFiveAcceptance.AcceptanceEntryScript;
 import Scripts.MapFourDepression.*;
+import Scripts.MapOneDenial.DenialEnemyScript;
 import Tilesets.Map4Tileset;
 import java.util.ArrayList;
 
@@ -46,6 +47,14 @@ public class DepressionMap extends Map {
         GnomeGreyscale greyscaleGnome = new GnomeGreyscale(202, getMapTile(29, 7).getLocation());
         greyscaleGnome.setInteractScript(new DepressionQuestScript());
         npcs.add(greyscaleGnome);
+
+        ArmoredSkeleton as = new ArmoredSkeleton(102, getMapTile(31, 7).getLocation());
+        as.setCurrentAnimationName("STAND_LEFT");
+        npcs.add(as);
+
+        ArmoredSkeleton ass = new ArmoredSkeleton(102, getMapTile(28, 6).getLocation());
+        ass.setCurrentAnimationName("STAND_RIGHT");
+        npcs.add(ass);
 
         return npcs;
     }

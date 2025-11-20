@@ -31,7 +31,7 @@ public class NPC extends MapEntity {
     //for enemy battle vision logic
     protected boolean autoBattleEnabled = true;
     protected Direction facingDirection = Direction.RIGHT;
-    protected int visionRange = 6;
+    protected int visionRange = 8;
     protected boolean battleTriggered;
 
     protected List<Point> tiles;
