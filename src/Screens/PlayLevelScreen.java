@@ -197,14 +197,14 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         playLevelScreenState = PlayLevelScreenState.RUNNING;
 
         // load map
-        // this.switchMap(new TutorialMap());
-        this.switchMap(new AngerMap());
+        this.switchMap(new TutorialMap());
+        // this.switchMap(new AngerMap());
         // this.switchMap(new MapOneDenial());
 
         winScreen = new WinScreen(this);
         this.loseScreen = new LoseScreen(this);
 
-        this.player.getEntity().getInventory().addStack(new ItemStack(Item.ItemList.tlalocs_storm));
+        //this.player.getEntity().getInventory().addStack(new ItemStack(Item.ItemList.tlalocs_storm));
         // this.inventoryScreen = new InventorySubmenu(this.player.getEntity().getInventory(), this.player.getEntity());
         // this.inventoryScreen.addistener(LISTENER_NAME, this);
 
