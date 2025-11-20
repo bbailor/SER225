@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class underworldSpirit extends NPC {
 
-    protected String enemyType;
+
 
     public underworldSpirit(int id, Point location) {
         super(
@@ -26,15 +26,7 @@ public class underworldSpirit extends NPC {
             "STAND_RIGHT"
         );
 
-        // Configure stats
-        this.entity.setMaxHealth(12);
-        this.entity.setBaseAttack(0);
-
-        //add attacks
-        this.addAttack("FireOrb", 60, "AngerSpiritAttack", 3.5);
-//        this.addAttack("Explosion", 8, "DenialBossAttack", 8.0);
-
-        enemyType = "An AngerSpirit";
+        setAutoBattle(false); // Disable enemy spotting - this is a friendly NPC
     }
 
     @Override
@@ -57,9 +49,7 @@ public class underworldSpirit extends NPC {
         return map;
     }
 
-    public String getEnemyType() {
-        return enemyType;
-    }
+    
 
     @Override
     public void draw(GraphicsHandler graphicsHandler) {
