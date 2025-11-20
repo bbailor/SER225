@@ -37,10 +37,21 @@ public class AngerMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        // AngerSpirit an   = new AngerSpirit(101, getMapTile(17, 15).getLocation());
-        // an.setInteractScript(new DenialEnemyScript());
-        // an.setCurrentAnimationName("STAND_LEFT");
-        // npcs.add(an);
+        AngerSpirit an   = new AngerSpirit(101, getMapTile(2, 12).getLocation());
+        an.setInteractScript(new DenialEnemyScript());
+        an.setCurrentAnimationName("STAND_LEFT");
+        npcs.add(an);
+
+
+        AngerSpirit ae   = new AngerSpirit(101, getMapTile(3, 7).getLocation());
+        ae.setInteractScript(new DenialEnemyScript());
+        ae.setCurrentAnimationName("STAND_LEFT");
+        npcs.add(ae);
+
+        AngerSpirit ag   = new AngerSpirit(101, getMapTile(17, 2).getLocation());
+        ag.setInteractScript(new DenialEnemyScript());
+        ag.setCurrentAnimationName("STAND_LEFT");
+        npcs.add(ag);
 
         // // enemies near player, all share DenialEnemyScript (spread out a bit)
         // Skeleton s  = new Skeleton(100, getMapTile(10, 8).getLocation().subtractY(16).subtractX(6));
