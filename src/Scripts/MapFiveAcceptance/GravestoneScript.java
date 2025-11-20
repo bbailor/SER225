@@ -1,5 +1,6 @@
 package Scripts.MapFiveAcceptance;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import EnhancedMapTiles.CollectableItem;
@@ -7,7 +8,9 @@ import Level.Item;
 import Level.Script;
 import Level.ScriptState;
 import ScriptActions.*;
+import Utils.Globals;
 import Utils.Point;
+import Utils.SoundThreads.Type;
     
 public class GravestoneScript extends Script {
 
@@ -62,11 +65,23 @@ public class GravestoneScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("JulietAccept", true));
                 addRequirement(new FlagRequirement("JulietFlowersPlacedAtGrave", false));
-
                 addRequirement(new CustomRequirement() {
                     @Override
                     public boolean isRequirementMet() {
                         return playerHasFlowers();
+                    }
+                });
+
+                addScriptAction(new ScriptAction() {
+                    @Override
+                    public ScriptState execute() {
+                        try {
+                            Globals.SOUND_SYSTEM.play(Type.Music, Globals.STORY_TRACK, new File("Resources/Sounds/Music/happyEndingSong.wav"));
+                            Globals.SOUND_SYSTEM.getTrack(Globals.STORY_TRACK).setLoopPoint(0, -1, true);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return ScriptState.COMPLETED;
                     }
                 });
 

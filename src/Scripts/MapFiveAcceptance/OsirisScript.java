@@ -39,18 +39,27 @@ public class OsirisScript extends Script {
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
                 addRequirement(new FlagRequirement("JulietAccept", true));
                 addRequirement(new FlagRequirement("osirisGone", false));
-                try {
-                    Globals.SOUND_SYSTEM.play(Type.Music, Globals.STORY_TRACK, new File("Resources/Sounds/Music/happyEndingSong"));
-                    Globals.SOUND_SYSTEM.getTrack(Globals.STORY_TRACK).setLoopPoint(0, -1, true);
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
+
+                addScriptAction(new ScriptAction() {
+                    @Override
+                    public ScriptState execute() {
+                        try {
+                            Globals.SOUND_SYSTEM.play(Type.Music, Globals.STORY_TRACK, new File("Resources/Sounds/Music/happyEndingSong.wav"));
+                            Globals.SOUND_SYSTEM.getTrack(Globals.STORY_TRACK).setLoopPoint(0, -1, true);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return ScriptState.COMPLETED;
+                    }
+                });
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("Osiris: You’ve finally chosen to let her rest...");
                     addText("Osiris: Well done, Gnomeo.\nShe would be proud of the strength you’ve found");
                     addText("Osiris: You brought something to place at her grave?\n I shall leave you to it.");
                 }});
+
+                
 
                 addScriptAction(new ScriptAction() {
                     @Override
