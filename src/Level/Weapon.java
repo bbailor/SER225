@@ -82,7 +82,10 @@ public class Weapon extends Item {
     @Override
     public void use(ItemStack stack, Entity targetedEntity) {
         System.out.println("Use from weapon class" + this);
-        targetedEntity.getInventory().setStack(NamedSlot.Weapon, stack.copy());
+        var old_weapon = targetedEntity.getInventory().setStack(NamedSlot.Weapon, stack.copy());
+        if (old_weapon != null) {
+            targetedEntity.getInventory().addStack(old_weapon);
+        }
         stack.removeItem();
     }
 }
