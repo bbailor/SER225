@@ -96,6 +96,8 @@ public class MapOneDenial extends Map {
     protected ArrayList<CollectableItem> loadCollectableItems() {
         ArrayList<CollectableItem> collectables = new ArrayList<>();
         collectables.add(new CollectableItem(getMapTile(20, 5).getLocation(), Item.ItemList.cloakOfConcealment));
+        collectables.add(new CollectableItem(getMapTile(23, 4).getLocation(), Item.ItemList.apple));
+        collectables.add(new CollectableItem(getMapTile(18, 4).getLocation(), Item.ItemList.apple));
         return collectables;
     }
 
