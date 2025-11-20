@@ -16,7 +16,7 @@ public class WinScreen extends Screen {
 
     public WinScreen(PlayLevelScreen playLevelScreen) {
         this.playLevelScreen = playLevelScreen;
-        initialize();
+        // initialize();
     }
 
     @Override

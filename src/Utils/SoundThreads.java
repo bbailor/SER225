@@ -43,18 +43,16 @@ public class SoundThreads {
     }
 
     public void play(Type type, int track_number, File file) {
-        new Thread(() -> {
-            try {
-                if (tracks.containsKey(track_number)) {
-                    tracks.get(track_number).setSound(file, type);
-                } else {
-                    tracks.put(track_number, new Track(file, type, track_number));
-                }
-
-            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
-                e.printStackTrace();
+        try {
+            if (tracks.containsKey(track_number)) {
+                tracks.get(track_number).setSound(file, type);
+            } else {
+                tracks.put(track_number, new Track(file, type, track_number));
             }
-        }).start();
+
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     public void play(int track_number, File file) {
@@ -79,6 +77,7 @@ public class SoundThreads {
         protected final State state;
         protected ReentrantLock state_lock = new ReentrantLock();
         protected AudioFormat format;
+        protected final int thread_id;
         protected final SourceDataLine line;
         protected final Thread thread;
         // would need to be a byte array or list, rather not
@@ -273,6 +272,7 @@ public class SoundThreads {
         }
 
         public Track(File file, Type type, int thread_id) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+            this.thread_id = thread_id;
             this.state_lock.lock();
             this.state = new State();
             this.setSound(file, type);

@@ -99,32 +99,29 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
     }
 
     private void loadMapMusic(Map map) {
-        new Thread(() -> {
-            try {
-                File musicFile = null;
-                if (map instanceof TutorialMap) {
-                    musicFile = Resources.TUTORIAL_MAP_MUSIC;
-                } else if (map instanceof MapOneDenial) {
-                    musicFile = Resources.MAP_ONE_MUSIC;
-                } else if (map instanceof AngerMap) {
-                    musicFile = Resources.MAP_TWO_MUSIC;
-                } else if (map instanceof BargainingMap) {
-                    musicFile = Resources.MAP_THREE_MUSIC;
-                } else if (map instanceof DepressionMap) {
-                    musicFile = Resources.MAP_FOUR_MUSIC;
-                } else if (map instanceof AcceptanceMap) {
-                    musicFile = Resources.MAP_FIVE_MUSIC;
-                }
-    
-                if (musicFile != null) {
-                    Thread.sleep(20);
-                    Globals.SOUND_SYSTEM.play(Type.Music, Globals.MUSIC_TRACK, musicFile);
-                    Globals.SOUND_SYSTEM.getTrack(Globals.MUSIC_TRACK).setLoopPoint(0, -1, true);
-                }
-            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException | InterruptedException e) {
-                e.printStackTrace();
+        try {
+            File musicFile = null;
+            if (map instanceof TutorialMap) {
+                musicFile = Resources.TUTORIAL_MAP_MUSIC;
+            } else if (map instanceof MapOneDenial) {
+                musicFile = Resources.MAP_ONE_MUSIC;
+            } else if (map instanceof AngerMap) {
+                musicFile = Resources.MAP_TWO_MUSIC;
+            } else if (map instanceof BargainingMap) {
+                musicFile = Resources.MAP_THREE_MUSIC;
+            } else if (map instanceof DepressionMap) {
+                musicFile = Resources.MAP_FOUR_MUSIC;
+            } else if (map instanceof AcceptanceMap) {
+                musicFile = Resources.MAP_FIVE_MUSIC;
             }
-        }).start();;
+
+            if (musicFile != null) {
+                Globals.SOUND_SYSTEM.play(Type.Music, Globals.MUSIC_TRACK, musicFile);
+                Globals.SOUND_SYSTEM.getTrack(Globals.MUSIC_TRACK).setLoopPoint(0, -1, true);
+            }
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadSave(SaveData data) {
@@ -287,6 +284,7 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
     @Override
     public void onWin() {
+        winScreen.initialize();
         playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
     }
 

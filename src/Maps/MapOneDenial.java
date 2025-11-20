@@ -94,18 +94,6 @@ public class MapOneDenial extends Map {
         npcs.add(db);
 
         // Health Potion Battle
-        Spirit hpSpirit1  = new Spirit(108, getMapTile(27, 9).getLocation().subtractY(16).subtractX(10));
-        hpSpirit1.setInteractScript(new DenialEnemyScript());
-        hpSpirit1.setCurrentAnimationName("STAND_RIGHT");
-        npcs.add(hpSpirit1);
-
-        // Health Potion Battle
-        Spirit hpSpirit2  = new Spirit(109, getMapTile(28, 7).getLocation().subtractY(16).subtractX(10));
-        hpSpirit2.setInteractScript(new DenialEnemyScript());
-        hpSpirit2.setCurrentAnimationName("STAND_LEFT");
-        npcs.add(hpSpirit2);
-
-        // Health Potion Battle
         ArmoredSkeleton hpSkeleton  = new ArmoredSkeleton(110, getMapTile(28, 5).getLocation().subtractY(16).subtractX(10));
         hpSkeleton.setInteractScript(new DenialEnemyScript());
         hpSkeleton.setCurrentAnimationName("STAND_LEFT");

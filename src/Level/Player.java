@@ -190,7 +190,9 @@ public class Player extends GameObject {
         }
 
         if (has_step && sound_frame % 40 == 0) {
-            Globals.SOUND_SYSTEM.play(Type.SFX, Globals.EFFECTS_SOUNDS, Resources.STEP_SFX);
+            new Thread(() -> {
+                Globals.SOUND_SYSTEM.play(Type.SFX, Globals.EFFECTS_SOUNDS, Resources.STEP_SFX);
+            }).start();
         }
 
         ++sound_frame;

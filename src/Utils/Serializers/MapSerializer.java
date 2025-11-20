@@ -222,7 +222,9 @@ public class MapSerializer implements JsonDeserializer<Map>, JsonSerializer<Map>
                 var npc_json = _npc.getAsJsonObject();
                 var clazz = Class.forName(npc_json.get("class").getAsString()).asSubclass(NPC.class);
                 var npc = clazz.getDeclaredConstructor(int.class, Point.class).newInstance(npc_json.get("id").getAsInt(), context.deserialize(npc_json.get("pos"), Point.class));
-                npc.setInteractScript(context.deserialize(npc_json.get("interactScript"), Script.class));
+                try {
+                    npc.setInteractScript(context.deserialize(npc_json.get("interactScript"), Script.class));
+                } catch (Exception e) {}
                 // npc.setIsUpdateOffScreen(npc_json.get("isUpdateOffScreen").getAsBoolean());
                 // npc.setIsHidden(npc_json.get("isHidden").getAsBoolean());
                 // npc.setMapEntityStatus(context.deserialize(npc_json.get("mapEntityStatus"), MapEntityStatus.class));
