@@ -72,18 +72,7 @@ public class GravestoneScript extends Script {
                     }
                 });
 
-                addScriptAction(new ScriptAction() {
-                    @Override
-                    public ScriptState execute() {
-                        try {
-                            Globals.SOUND_SYSTEM.play(Type.Music, Globals.STORY_TRACK, new File("Resources/Sounds/Music/happyEndingSong.wav"));
-                            Globals.SOUND_SYSTEM.getTrack(Globals.STORY_TRACK).setLoopPoint(0, -1, true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return ScriptState.COMPLETED;
-                    }
-                });
+                
 
                 addScriptAction(new TextboxScriptAction() {{
                     addText("You gently place the flowers by the grave...");

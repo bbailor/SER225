@@ -59,6 +59,7 @@ public abstract class Globals {
     public static final int MAP_TRACK = 2;
     public static final int STORY_TRACK = 3;
     public static final int EFFECTS_SOUNDS = 4;
+    public static final int MENU_TRACK = 5;
 
     public static boolean saveToFile(SaveData data, int index) {
         String json = GSON.toJson(data);

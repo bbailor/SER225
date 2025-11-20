@@ -81,8 +81,14 @@ public class MenuScreen extends Screen implements Menu, MenuListener {
     }
 
     @Override
+    public void close() {
+        // Call the default close behavior
+        Menu.super.close();
+    }
+
+    @Override
     public void initialize() {
-        
+
     }
 
     public void setPlayer(Player player) {

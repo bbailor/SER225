@@ -6,10 +6,17 @@ import Game.ScreenCoordinator;
 import Level.Map;
 import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
+import Utils.Globals;
 import Utils.Resources;
+import Utils.SoundThreads.Type;
 import Utils.TailwindColorScheme;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 // This is the class for the main menu screen
 public class MainMenuScreen extends Screen {
@@ -80,6 +87,14 @@ public class MainMenuScreen extends Screen {
 
         pointerX = baseX - 30;
         pointerY = baseY + 7;
+
+        // Play main menu music when main menu loads
+        try {
+            Globals.SOUND_SYSTEM.play(Type.Music, Globals.MENU_TRACK, new File("Resources/Sounds/Music/menuSong.wav"));
+            Globals.SOUND_SYSTEM.getTrack(Globals.MENU_TRACK).setLoopPoint(0, -1, true);
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     public void update() {
@@ -155,6 +170,13 @@ public class MainMenuScreen extends Screen {
         }
         if (!keyLocker.isKeyLocked(Key.SPACE) && Keyboard.isKeyDown(Key.SPACE)) {
             menuItemSelected = currentMenuItemHovered;
+            // Stop menu music when leaving main menu
+            try {
+                Globals.SOUND_SYSTEM.getTrack(Globals.MENU_TRACK).setSound(null);
+            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+                e.printStackTrace();
+            }
+
             if (menuItemSelected == 0) {
                 screenCoordinator.setGameState(GameState.LEVEL);
             } else if (menuItemSelected == 1) {
@@ -178,6 +200,13 @@ public class MainMenuScreen extends Screen {
         if (!mouseLocker.isMouseLocked() && Mouse.isLeftClickDown()) {
             mouseLocker.lockMouse();
             Point clickPos = Mouse.getLastPressedPosition();
+
+            // Stop menu music when leaving main menu
+            try {
+                Globals.SOUND_SYSTEM.getTrack(Globals.MENU_TRACK).setSound(null);
+            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+                e.printStackTrace();
+            }
 
             if (playGameBounds.contains(clickPos)) {
                 screenCoordinator.setGameState(GameState.LEVEL);

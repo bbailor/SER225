@@ -1,5 +1,11 @@
 package Screens;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import com.google.gson.annotations.Expose;
 
 import Engine.Config;
@@ -50,6 +56,7 @@ import Utils.Globals;
 import Utils.MenuListener;
 import Utils.Resources;
 import Utils.SaveData;
+import Utils.SoundThreads.Type;
 import Utils.TailwindColorScheme;
 
 public class PlayLevelScreen extends Screen implements GameListener, MenuListener {
@@ -86,6 +93,37 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         this.map.getCamera().setLocation(this.player.getX(), this.player.getY());
         this.map.addListener(this);
         this.map.preloadScripts();
+
+        // Load music asynchronously to avoid blocking
+        loadMapMusicAsync(this.map);
+    }
+
+    private void loadMapMusicAsync(Map map) {
+        new Thread(() -> {
+            try {
+                File musicFile = null;
+                if (map instanceof TestMap) {
+                    musicFile = new File("Resources/Sounds/Music/testMapSong.wav");
+                } else if (map instanceof MapOneDenial) {
+                    musicFile = new File("Resources/Sounds/Music/map1DenialSong.wav");
+                } else if (map instanceof AngerMap) {
+                    musicFile = new File("Resources/Sounds/Music/map2AngerSong.wav");
+                } else if (map instanceof BargainingMap) {
+                    musicFile = new File("Resources/Sounds/Music/map3BargainingSong.wav");
+                } else if (map instanceof DepressionMap) {
+                    musicFile = new File("Resources/Sounds/Music/map4DepressionSong.wav");
+                } else if (map instanceof AcceptanceMap) {
+                    musicFile = new File("Resources/Sounds/Music/map5AcceptanceSong.wav");
+                }
+
+                if (musicFile != null) {
+                    Globals.SOUND_SYSTEM.play(Type.Music, Globals.MAP_TRACK, musicFile);
+                    Globals.SOUND_SYSTEM.getTrack(Globals.MAP_TRACK).setLoopPoint(0, -1, true);
+                }
+            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+                e.printStackTrace();
+            }
+        }, "Map-Music-Loader").start();
     }
 
     public void loadSave(SaveData data) {
@@ -285,6 +323,23 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
     }
 
     public void goBackToMenu() {
+        // Stop all music tracks before going back to menu (asynchronously to avoid lag)
+        new Thread(() -> {
+            try {
+                var mapTrack = Globals.SOUND_SYSTEM.getTrackIfExists(Globals.MAP_TRACK);
+                if (mapTrack != null) {
+                    mapTrack.setSound(null);
+                }
+
+                var battleTrack = Globals.SOUND_SYSTEM.getTrackIfExists(Globals.BATTLE_TRACK_NUMBER);
+                if (battleTrack != null) {
+                    battleTrack.setSound(null);
+                }
+            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+                e.printStackTrace();
+            }
+        }, "Stop-Music-Thread").start();
+
         screenCoordinator.setGameState(GameState.MENU);
     }
 
@@ -297,6 +352,12 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         this.playLevelScreenState = PlayLevelScreenState.RUNNING;
         this.battleScreen = null;
         this.menuCloseCD = 12;
+
+        // Resume the map music when battle ends (non-blocking)
+        var track = Globals.SOUND_SYSTEM.getTrackIfExists(Globals.MAP_TRACK);
+        if (track != null) {
+            track.resume();
+        }
     }
 
     @Override
@@ -325,13 +386,19 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
         // Start battle event
         if (eventName.equals("start_battle") && args.length > 0 && args[0] instanceof MapEntity me) {
+            // Pause the map music when entering battle (non-blocking)
+            var track = Globals.SOUND_SYSTEM.getTrackIfExists(Globals.MAP_TRACK);
+            if (track != null) {
+                track.pause();
+            }
+
             // Use the NPC's entity instead of building a new one
             Entity enemy = getEnemyEntity(me);
 
             boolean isBossBattle = me.getClass().getSimpleName().contains("Boss");
             this.battleScreen = new BattleScreen(
-                this.player.getEntity().getInventory(), 
-                this.player, 
+                this.player.getEntity().getInventory(),
+                this.player,
                 enemy,  // Use the entity from NPC
                 me,     // Pass the NPC object
                 isBossBattle
