@@ -13,11 +13,11 @@ import Utils.Point;
 import java.util.HashMap;
 
 
-public class underworldSpirit extends NPC {
+public class UnderworldSpirit extends NPC {
 
     protected String enemyType;
 
-    public underworldSpirit(int id, Point location) {
+    public UnderworldSpirit(int id, Point location) {
         super(
             id,
             location.x,
