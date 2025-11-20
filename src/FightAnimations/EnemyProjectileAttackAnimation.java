@@ -1,15 +1,14 @@
 package FightAnimations;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import Engine.GraphicsHandler;
 import GameObject.AnimatedSprite;
 import GameObject.SpriteSheet;
 import Utils.Globals;
+import Utils.Resources;
 import Utils.SoundThreads.Type;
 
 /**
@@ -94,7 +93,7 @@ public abstract class EnemyProjectileAttackAnimation extends AnimatedSprite {
      * Override to add custom behavior (e.g., explosion effect, sound)
      */
     protected void onComplete() {
-        
+        Globals.SOUND_SYSTEM.play(Type.SFX, Globals.EFFECTS_SOUNDS, Resources.ATTACK_SFX);
         // Default: do nothing
     }
     

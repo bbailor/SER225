@@ -2,6 +2,8 @@ package Game;
 
 import Engine.GameWindow;
 import Engine.ScreenManager;
+import Utils.Globals;
+import Utils.SoundThreads.Type;
 
 /*
  * The game starts here
@@ -19,5 +21,7 @@ public class Game {
         ScreenManager screenManager = gameWindow.getScreenManager();
         screenManager.setCurrentScreen(new ScreenCoordinator());
         gameWindow.startGame();
+        Globals.SOUND_SYSTEM.settings.master_volume = 0.9f;
+        Globals.SOUND_SYSTEM.settings.volumes.put(Type.Music, .85f);
     }
 }

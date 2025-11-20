@@ -1,5 +1,6 @@
 package Scripts.MapThreeBargaining;
 
+import Level.Item;
 import Level.Script;
 import Level.ScriptState;
 import Level.TextboxItem;
@@ -10,6 +11,7 @@ import ScriptActions.*;
 import java.util.ArrayList;
 
 import Engine.ImageLoader;
+import EnhancedMapTiles.CollectableItem;
 import NPCs.Wispy;
 import Utils.Point;
 
@@ -326,6 +328,8 @@ public class BargainingBossScript extends Script {
                                             .build();
 
                                         map.addNPC(firstWispy);
+
+                                        map.addCollectableItem(new CollectableItem(map.getMapTile(8, 6).getLocation(), Item.ItemList.bag_of_gold));
                                        
                                         return ScriptState.COMPLETED;
                                     }

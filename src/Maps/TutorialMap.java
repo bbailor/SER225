@@ -25,13 +25,13 @@ import Scripts.MapOneDenial.AngerEntryScript;
 import Scripts.MapTwoAnger.BargainingEntryScript;
 
 // Represents a test map to be used in a level
-public class TestMap extends Map {
+public class TutorialMap extends Map {
 
     //Tileset of all the items that can be placed on the map.
     protected Tileset itemSet;
 
-    public TestMap() {
-        super("test_map.txt", new CommonTileset());
+    public TutorialMap() {
+        super("tutorial_map.txt", new CommonTileset());
         this.playerStartPosition = getMapTile(10, 22).getLocation();
         //itemSet = 
     }

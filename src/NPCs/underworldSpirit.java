@@ -13,18 +13,28 @@ import Utils.Point;
 import java.util.HashMap;
 
 
-public class underworldSpirit extends NPC {
+public class UnderworldSpirit extends NPC {
 
-    public underworldSpirit(int id, Point location) {
+    protected String enemyType;
+
+    public UnderworldSpirit(int id, Point location) {
         super(
             id,
             location.x,
             location.y,
-            new SpriteSheetHorizontal(ImageLoader.load("underworldSpirit.png"), 32, 32),
+            new SpriteSheetHorizontal(ImageLoader.load("UnderworldSpirit.png"), 32, 32),
             "STAND_RIGHT"
         );
-        
-        autoBattleEnabled = false;
+
+        // Configure stats
+        this.entity.setMaxHealth(12);
+        this.entity.setBaseAttack(0);
+
+        //add attacks
+        this.addAttack("FireOrb", 60, "AngerSpiritAttack", 3.5);
+//        this.addAttack("Explosion", 8, "DenialBossAttack", 8.0);
+
+        enemyType = "An AngerSpirit";
     }
 
     @Override
@@ -45,6 +55,10 @@ public class underworldSpirit extends NPC {
         map.put("STAND_LEFT",  new Frame[] { standLeft  });
         map.put("idle",        new Frame[] { standRight }); // Added idle animation
         return map;
+    }
+
+    public String getEnemyType() {
+        return enemyType;
     }
 
     @Override

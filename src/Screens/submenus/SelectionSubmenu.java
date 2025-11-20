@@ -131,7 +131,7 @@ public class SelectionSubmenu implements Menu {
                 name,
                 x + (this.width - (name.length() * FONT_SIZE)) / 2,
                 y + offset_y,
-                Resources.press_start.deriveFont(Font.PLAIN, FONT_SIZE),
+                Resources.PRESS_START.deriveFont(Font.PLAIN, FONT_SIZE),
                 TailwindColorScheme.white,
                 TailwindColorScheme.slate700,
                 3

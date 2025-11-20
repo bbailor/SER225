@@ -42,15 +42,22 @@ public class SoundThreads {
         }
     }
 
-    public void play(Type type, int track_number, File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
-        if (this.tracks.containsKey(track_number)) {
-            this.tracks.get(track_number).setSound(file, type);
-        } else {
-            this.tracks.put(track_number, new Track(file, type, this.id));
-        }
+    public void play(Type type, int track_number, File file) {
+        new Thread(() -> {
+            try {
+                if (tracks.containsKey(track_number)) {
+                    tracks.get(track_number).setSound(file, type);
+                } else {
+                    tracks.put(track_number, new Track(file, type, track_number));
+                }
+
+            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
-    public void play(int track_number, File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+    public void play(int track_number, File file) {
         this.play(Type.Music, track_number, file);
     }
 
@@ -60,6 +67,11 @@ public class SoundThreads {
             this.tracks.put(track_number, track);
             return track;
         }
+        return this.tracks.get(track_number);
+    }
+
+    // Non-blocking version that returns null if track doesn't exist
+    public Track getTrackIfExists(int track_number) {
         return this.tracks.get(track_number);
     }
 
@@ -74,19 +86,22 @@ public class SoundThreads {
 
         // sets or calculates loop point based off of byte position
         public void setLoopPoint(float start, float end, boolean bySecond) {
-            if (start > end && end != -1) {
-                throw new RuntimeException("start > end");
-            }
-            this.state_lock.lock();
-            this.state.loop_point_start = (int) start;
-            this.state.loop_point_end = (int) end;
-            // gemma gave me this calculation (second to frame time)
-            if (bySecond) {
-                this.state.loop_point_start = (int) (this.state.loop_point_start * this.format.getFrameRate() * this.format.getFrameSize());
-                this.state.loop_point_end = end == - 1 ? -1 : (int) (this.state.loop_point_end * this.format.getFrameRate() * this.format.getFrameSize());
-            }
-            this.state.loop_data = new ArrayList<>();
-            this.state_lock.unlock();
+            // new Thread(() -> {
+                if (start > end && end != -1) {
+                    throw new RuntimeException("start > end");
+                }
+                this.state_lock.lock();
+                this.state.loop_point_start = (int) start;
+                this.state.loop_point_end = (int) end;
+                // gemma gave me this calculation (second to frame time)
+                if (bySecond) {
+                    this.state.loop_point_start = (int) (this.state.loop_point_start * this.format.getFrameRate() * this.format.getFrameSize());
+                    this.state.loop_point_end = end == - 1 ? -1 : (int) (this.state.loop_point_end * this.format.getFrameRate() * this.format.getFrameSize());
+                }
+                state.loop_data = new ArrayList<>();
+                this.state_lock.unlock();
+
+            // }).start();
         }
 
         // clear the loop data
@@ -173,59 +188,81 @@ public class SoundThreads {
                 boolean in_loop = false;
                 try {
                     while (Track.this.state.running) {
-                        Track.this.state_lock.lock();
-                        Track.this.updateGain(Track.this.state.type); // set any vol changes
-                        if (Track.this.state.stream.available() <= 0 && !in_loop) {
-                            Track.this.state_lock.unlock();
-                            continue;
-                        }
-                        if (in_loop) {
-                            if (Track.this.state.loop_data == null) {
-                                in_loop = false;
+                        try {
+                            Track.this.state_lock.lock();
+                            Track.this.updateGain(Track.this.state.type); // set any vol changes
+
+                            // Check pause FIRST before any audio processing
+                            if (Track.this.state.paused) {
+                                Track.this.state_lock.unlock();
+                                // Sleep while paused to reduce CPU usage
+                                Thread.sleep(10);
+                                continue;
+                            }
+
+                            if (Track.this.state.stream.available() <= 0 && !in_loop) {
+                                Track.this.state_lock.unlock();
+                                // Sleep to avoid busy-waiting when no audio available
+                                Thread.sleep(10);
+                                continue;
+                            }
+                            if (in_loop) {
+                                if (Track.this.state.loop_data == null) {
+                                    in_loop = false;
+                                    Track.this.state_lock.unlock();
+                                    continue;
+                                }
+                                // end buf pos
+                                var len = Math.min(loop_index + Track.this.state.play_buf_size, Track.this.state.loop_data.size());
+
+                                // Validate that we have data to write
+                                var writeLen = len - loop_index;
+                                if (writeLen <= 0) {
+                                    // Race condition detected - reset loop
+                                    loop_index = 0;
+                                    Track.this.state_lock.unlock();
+                                    continue;
+                                }
+
+                                for (int i = loop_index; i < len; ++i) {
+                                    bytes[i - loop_index] = Track.this.state.loop_data.get(i);
+                                }
+                                Track.this.line.write(bytes, 0, writeLen);
+                                loop_index = len;
+                                Track.this.state.position = Track.this.state.loop_point_start + loop_index;
+                                if (len >= Track.this.state.loop_data.size()) {
+                                    loop_index = 0;
+                                }
                                 Track.this.state_lock.unlock();
                                 continue;
                             }
-                            // end buf pos
-                            var len = Math.min(loop_index + Track.this.state.play_buf_size, Track.this.state.loop_data.size());
-                            for (int i = loop_index; i < len; ++i) {
-                                bytes[i - loop_index] = Track.this.state.loop_data.get(i);
-                            }
-                            Track.this.line.write(bytes, 0, len - loop_index);
-                            loop_index = len;
-                            Track.this.state.position = Track.this.state.loop_point_start + loop_index;
-                            if (len >= Track.this.state.loop_data.size()) {
-                                loop_index = 0;
-                            }
-                            Track.this.state_lock.unlock();
-                            continue;
-                        }
-                        if (Track.this.state.paused) {
-                            Track.this.state_lock.unlock();
-                            continue;
-                        }
-                        
-                        var actual_read = Track.this.state.stream.readNBytes(bytes, 0, Track.this.state.play_buf_size);
-                        Track.this.state.position += actual_read;
-                        Track.this.line.write(bytes, 0, actual_read);
-                        if (Track.this.state.loop_data != null) {
-                            int possible_start = (Track.this.state.position - Track.this.state.loop_point_start);
-                            if (Track.this.state.position >= Track.this.state.loop_point_start) {
-                                int added = 0;
-                                for (; added < actual_read - (possible_start < Track.this.state.play_buf_size ? possible_start : 0); ++added) {
-                                    // this.state.loop_data[added+loop_index] = bytes[added + (possible_start < this.state.play_buf_size ? possible_start : 0)];
-                                    Track.this.state.loop_data.add(bytes[added + (possible_start < Track.this.state.play_buf_size ? possible_start : 0)]);
-                                    if (Track.this.state.loop_data.size() == Track.this.state.loop_point_end - Track.this.state.loop_point_start && Track.this.state.loop_point_end != -1) {
-                                        break;
+
+                            var actual_read = Track.this.state.stream.read(bytes, 0, Track.this.state.play_buf_size);
+                            Track.this.state.position += actual_read;
+                            Track.this.line.write(bytes, 0, actual_read);
+                            if (Track.this.state.loop_data != null) {
+                                int possible_start = (Track.this.state.position - Track.this.state.loop_point_start);
+                                if (Track.this.state.position >= Track.this.state.loop_point_start) {
+                                    int added = 0;
+                                    for (; added < actual_read - (possible_start < Track.this.state.play_buf_size ? possible_start : 0); ++added) {
+                                        // this.state.loop_data[added+loop_index] = bytes[added + (possible_start < this.state.play_buf_size ? possible_start : 0)];
+                                        Track.this.state.loop_data.add(bytes[added + (possible_start < Track.this.state.play_buf_size ? possible_start : 0)]);
+                                        if (Track.this.state.loop_data.size() == Track.this.state.loop_point_end - Track.this.state.loop_point_start && Track.this.state.loop_point_end != -1) {
+                                            break;
+                                        }
                                     }
+                                    // loop_index += added;
                                 }
-                                // loop_index += added;
+                                if (Track.this.state.stream.available() <= 0 || (Track.this.state.loop_data.size() >= (Track.this.state.loop_point_end - Track.this.state.loop_point_start) && Track.this.state.loop_point_end != -1)) {
+                                    in_loop = true;
+                                    loop_index = 0;
+                                }
                             }
-                            if (Track.this.state.stream.available() <= 0 || (Track.this.state.loop_data.size() >= (Track.this.state.loop_point_end - Track.this.state.loop_point_start) && Track.this.state.loop_point_end != -1)) {
-                                in_loop = true;
-                                loop_index = 0;
-                            }
+                            Track.this.state_lock.unlock();
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            break;
                         }
-                        Track.this.state_lock.unlock();
                     }
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
@@ -268,6 +305,20 @@ public class SoundThreads {
             this(null, type, thread_id);
         }
 
+        public void pause() {
+            this.state_lock.lock();
+            // Direct assignment - no lock needed for boolean
+            this.state.paused = true;
+            this.state_lock.unlock();
+        }
+
+        public void resume() {
+            // Direct assignment - no lock needed for boolean
+            this.state_lock.lock();
+            this.state.paused = false;
+            this.state_lock.unlock();
+        }
+
         @Override
         public void close() throws Exception {
             this.state_lock.lock();
@@ -280,15 +331,15 @@ public class SoundThreads {
         }
 
         public static class State {
-            public boolean running = true;
-            public boolean paused = false;
+            public volatile boolean running = true;
+            public volatile boolean paused = false;
             public int position = 0;
             protected int loop_point_start = 0;
             protected int loop_point_end = -1;
             protected List<Byte> loop_data = null;
             protected AudioInputStream stream;
             protected Type type;
-            protected int play_buf_size = 4096;
+            protected int play_buf_size = 512;
         }
     }
 

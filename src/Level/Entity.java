@@ -2,6 +2,7 @@ package Level;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -30,6 +31,8 @@ public class Entity {
     @Expose protected Inventory inventory = new Inventory(90);
     protected boolean isEnemy;
     protected java.util.Map<String, Frame[]> animations = new HashMap<>(); 
+    protected boolean inBattle = false;
+    protected List<TurnEffect> turnEffects = new ArrayList<>();
 
     // Lines 29-77 for enemy multiple attacks system
     protected List<EnemyAttack> availableAttacks = new ArrayList<>();
@@ -42,7 +45,7 @@ public class Entity {
         public int weight; // Higher weight = more likely to be selected
         public String animationType;
         public double damage;
-        
+
         public EnemyAttack(String attackName, int weight, String animationType, double damage) {
             this.attackName = attackName;
             this.weight = weight;
@@ -104,6 +107,24 @@ public class Entity {
         return availableAttacks;
     }
 
+    public void removeTurnEffect(TurnEffect effect) {
+        this.turnEffects.remove(effect);
+    }
+
+    public void addTurnEffect(TurnEffect effect) {
+        this.turnEffects.add(effect);
+    }
+
+    public void runEffects(int turn_count) {
+        try { // I don't feel like handling locking again
+            this.turnEffects.forEach(v -> v.run(this, turn_count));
+        } catch (ConcurrentModificationException e) {}
+    }
+
+    public void clearEffect() {
+        this.turnEffects.clear();
+    }
+
     public double getMana() {
         return this.mana;
     }
@@ -132,6 +153,10 @@ public class Entity {
         return this.resistance;
     }
 
+    public double setResistance(int resistance) {
+        return this.resistance = resistance;
+    }
+
     public double getTempResistance() {
         return this.resistance;
     }
@@ -140,16 +165,24 @@ public class Entity {
         this.tempResistance = resistance;
     }
 
+    public boolean getInBattle() {
+        return this.inBattle;
+    }
+
+    public void setInBattle(boolean inBattle) {
+        this.inBattle = inBattle;
+    }
+
     public Weapon getCurrentWeapon() {
         return (Weapon) this.inventory.getStack(NamedSlot.Weapon).getItem();
     }
 
     public double heal(double amount) {
         // return might change if anti healed or any other section from child classes
-        this.health = Math.min(this.health + amount, this.maxHealth);
+        this.health = Math.clamp(this.health + amount, 0, this.maxHealth);
         return amount;
     }
-    
+
     public double getHealth() {
         return this.health;
     }
@@ -171,39 +204,38 @@ public class Entity {
         if(Math.random() >= critThreshold) {
             System.out.println("Critical Strike! Damage: " + (this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5)));
             return this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5);
-        }
-        else{
+        } else {
             System.out.println("Damage: " + (this.baseAttack + weapon.baseDamage));
             return this.baseAttack + weapon.baseDamage;
         }
     }
 
     public double getAttack(Entity entity) {
-    // If this is an enemy (has attacks configured), use enemy attack damage
-    if (this.isEnemy && !availableAttacks.isEmpty()) {
-        if (Math.random() >= 0.90) {
-            double critDamage = getEnemyAttackDamage() * 1.5;
-            System.out.println("Critical Strike! Damage: " + critDamage);
-            return critDamage;
+        // If this is an enemy (has attacks configured), use enemy attack damage
+        if (this.isEnemy && !availableAttacks.isEmpty()) {
+            if (Math.random() >= 0.90) {
+                double critDamage = getEnemyAttackDamage() * 1.5;
+                System.out.println("Critical Strike! Damage: " + critDamage);
+                return critDamage;
+            } else {
+                System.out.println("Damage: " + getEnemyAttackDamage());
+                return getEnemyAttackDamage();
+            }
+        }
+
+        // Player damage uses weapon
+        Weapon weapon = this.getCurrentWeapon();
+        System.out.println(getCurrentWeapon());
+        // Base crit chance is 10% (0.10), multiplied by weapon's crit multiplier
+        double critThreshold = 1.0 - (0.10 * weapon.getCriticalChanceMultiplier());
+        if (Math.random() >= critThreshold) {
+            System.out.println("Critical Strike! Damage: " + this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5));
+            return this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5);
         } else {
-            System.out.println("Damage: " + getEnemyAttackDamage());
-            return getEnemyAttackDamage();
+            System.out.println("Damage: " + this.baseAttack + weapon.baseDamage);
+            return this.baseAttack + weapon.baseDamage;
         }
     }
-
-    // Player damage uses weapon
-    Weapon weapon = this.getCurrentWeapon();
-    System.out.println(getCurrentWeapon());
-    // Base crit chance is 10% (0.10), multiplied by weapon's crit multiplier
-    double critThreshold = 1.0 - (0.10 * weapon.getCriticalChanceMultiplier());
-    if (Math.random() >= critThreshold) {
-        System.out.println("Critical Strike! Damage: " + this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5));
-        return this.baseAttack + weapon.baseDamage + (weapon.baseDamage * 0.5);
-    } else {
-        System.out.println("Damage: " + this.baseAttack + weapon.baseDamage);
-        return this.baseAttack + weapon.baseDamage;
-    }
-}
 
     public double getSkillAttack() {
         Weapon weapon = this.getCurrentWeapon();
@@ -213,8 +245,7 @@ public class Entity {
             System.out.println("Critical Strike! Damage: " + this.baseAttack + weapon.getWeaponSkillDamage() + (0.5 * weapon.getWeaponSkillDamage()));
 
             return this.baseAttack + weapon.getWeaponSkillDamage() + (0.5 * weapon.getWeaponSkillDamage());
-        }
-        else{
+        } else {
             return this.baseAttack + weapon.getWeaponSkillDamage();
         }
     }
@@ -263,25 +294,27 @@ public class Entity {
     {
         return hidden;
     }
-    public Entity() {}
+    public Entity() {
+    }
 
     public Entity(double maxHealth, double maxMana) {
         this.maxHealth = this.health = maxHealth;
         this.maxMana = this.mana = maxMana;
         this.isEnemy = false;
     }
+
     public Entity(double maxHealth, double maxMana, boolean isEnemy) {
         this.maxHealth = this.health = maxHealth;
         this.maxMana = this.mana = maxMana;
         this.isEnemy = isEnemy;
     }
+
     public Entity(double maxHealth, double maxMana, double resistance) {
         this(maxHealth, maxMana);
         this.resistance = resistance;
     }
 
-    public void setHealth(double d) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setHealth'");
+    public interface TurnEffect {
+        void run(Entity entity, int turn_count);
     }
 }

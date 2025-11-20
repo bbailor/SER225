@@ -230,7 +230,7 @@ public class QuestSubMenu implements Menu {
                 prefix + entry.displayText,
                 PADDING,
                 yPosition,
-                Resources.press_start.deriveFont((float) TEXT_SIZE),
+                Resources.PRESS_START.deriveFont((float) TEXT_SIZE),
                 textColor
             );
 
@@ -244,7 +244,7 @@ public class QuestSubMenu implements Menu {
                     "    → " + entry.locationHint,
                     PADDING + 5,
                     yPosition,
-                    Resources.press_start.deriveFont((float) (TEXT_SIZE - 2)),
+                    Resources.PRESS_START.deriveFont((float) (TEXT_SIZE - 2)),
                     TailwindColorScheme.cyan300
                 );
 
@@ -302,7 +302,7 @@ public class QuestSubMenu implements Menu {
             "Quest Log",
             x + PADDING,
             y + PADDING,
-            Resources.press_start.deriveFont((float) TITLE_SIZE),
+            Resources.PRESS_START.deriveFont((float) TITLE_SIZE),
             TITLE_COLOR
         );
         titleText.draw(graphicsHandler);
@@ -334,7 +334,7 @@ public class QuestSubMenu implements Menu {
                 summaryText,
                 x + PADDING,
                 y + PADDING + TITLE_SIZE + 10,
-                Resources.press_start.deriveFont((float) (TEXT_SIZE - 2)),
+                Resources.PRESS_START.deriveFont((float) (TEXT_SIZE - 2)),
                 TailwindColorScheme.slate300
             );
             summary.draw(graphicsHandler);
@@ -346,7 +346,7 @@ public class QuestSubMenu implements Menu {
                 "No active quests yet...",
                 x + PADDING,
                 y + PADDING + TITLE_SIZE + 50,
-                Resources.press_start.deriveFont((float) TEXT_SIZE),
+                Resources.PRESS_START.deriveFont((float) TEXT_SIZE),
                 TailwindColorScheme.gray500
             );
             noQuestsText.draw(graphicsHandler);
@@ -355,7 +355,7 @@ public class QuestSubMenu implements Menu {
                 "Explore and interact to unlock!",
                 x + PADDING,
                 y + PADDING + TITLE_SIZE + 75,
-                Resources.press_start.deriveFont((float) (TEXT_SIZE - 2)),
+                Resources.PRESS_START.deriveFont((float) (TEXT_SIZE - 2)),
                 TailwindColorScheme.gray600
             );
             hintText.draw(graphicsHandler);
@@ -391,7 +391,7 @@ public class QuestSubMenu implements Menu {
                 "^ More above",
                 x + PADDING,
                 y + PADDING + TITLE_SIZE + 30,
-                Resources.press_start.deriveFont(10f),
+                Resources.PRESS_START.deriveFont(10f),
                 TailwindColorScheme.white
             );
             upArrow.draw(graphicsHandler);
@@ -402,7 +402,7 @@ public class QuestSubMenu implements Menu {
                 "v More below",
                 x + PADDING,
                 y + 520,
-                Resources.press_start.deriveFont(10f),
+                Resources.PRESS_START.deriveFont(10f),
                 TailwindColorScheme.white
             );
             downArrow.draw(graphicsHandler);

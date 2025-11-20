@@ -1,11 +1,14 @@
 package Level;
 
+import java.util.HashMap;
+
 import com.google.gson.annotations.Expose;
 
 public class ItemStack {
     
     @Expose protected Item item;
     @Expose protected int stackSize = 1;
+    @Expose protected java.util.Map<String, Object> properties = new HashMap<>();
     
     public void onUse() {
         this.removeItem();
@@ -58,13 +61,18 @@ public class ItemStack {
         this.item.use(this, entity);
     }
 
+    public java.util.Map<String, Object> getProperties() {
+        return this.properties;
+    }
+
     public ItemStack(Item item) {
-        this.item = item;
+        this(item, 1);
     }
 
     public ItemStack(Item item, int count) {
         this.item = item;
         this.stackSize = count;
+        item.addDefaultProperites(this.properties);
     }
 
 }

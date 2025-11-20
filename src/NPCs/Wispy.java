@@ -18,7 +18,7 @@ public class Wispy extends NPC {
     private Point nextWispyLocation; // Where the next wispy should spawn
     
     public Wispy(int id, float x, float y) {
-        super(id, x, y, new SpriteSheet(ImageLoader.load("Wispy.png"), 96, 96), "IDLE");
+        super(id, x, y, new SpriteSheet(ImageLoader.load("wispy.png"), 96, 96), "IDLE");
         this.nextWispyId = -1; // -1 means this is the last wispy
         this.nextWispyLocation = null;
         this.autoBattleEnabled = false;

@@ -2,7 +2,7 @@ package MapEditor;
 
 import Level.Map;
 import Maps.MapOneDenial;
-import Maps.TestMap;
+import Maps.TutorialMap;
 import Maps.AcceptanceMap;
 import Maps.AngerMap;
 import Maps.DepressionMap;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class EditorMaps {
     public static ArrayList<String> getMapNames() {
         return new ArrayList<String>() {{
-            add("TestMap");
+            add("TutorialMap");
             add("MainMap");
             add("TitleScreen");
             add("Map1Denial");
@@ -26,8 +26,8 @@ public class EditorMaps {
 
     public static Map getMapByName(String mapName) {
         switch(mapName) {
-            case "TestMap":
-                return new TestMap();
+            case "TutorialMap":
+                return new TutorialMap();
             //had to comment this out for 
 //          case "MainMap":
 //              return new MainMap();   

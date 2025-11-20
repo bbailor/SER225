@@ -9,6 +9,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import GameObject.AnimatedSprite;
 import GameObject.SpriteSheet;
 import Utils.Globals;
+import Utils.Resources;
 
 public abstract class StaticPlayerAttackAnimation extends AnimatedSprite {
     
@@ -76,7 +77,7 @@ public abstract class StaticPlayerAttackAnimation extends AnimatedSprite {
      * Override to add custom behavior (e.g., sound effects)
      */
     protected void onComplete() {
-        
+        Globals.SOUND_SYSTEM.play(Type.SFX, Globals.EFFECTS_SOUNDS, Resources.ATTACK_SFX);
     }
     
     public boolean isComplete() {

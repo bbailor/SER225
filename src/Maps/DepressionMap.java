@@ -30,6 +30,7 @@ public class DepressionMap extends Map {
     @Override
     protected ArrayList<CollectableItem> loadCollectableItems() {
         ArrayList<CollectableItem> collectables = new ArrayList<>();
+        collectables.add(new CollectableItem(getMapTile(34, 1).getLocation(), Item.ItemList.health_potion));
         return collectables;
     }
 
@@ -48,13 +49,13 @@ public class DepressionMap extends Map {
         greyscaleGnome.setInteractScript(new DepressionQuestScript());
         npcs.add(greyscaleGnome);
 
-        ArmoredSkeleton as = new ArmoredSkeleton(102, getMapTile(31, 7).getLocation());
-        as.setCurrentAnimationName("STAND_LEFT");
-        npcs.add(as);
+        // ArmoredSkeleton as = new ArmoredSkeleton(102, getMapTile(31, 7).getLocation());
+        // as.setCurrentAnimationName("STAND_LEFT");
+        // npcs.add(as);
 
-        ArmoredSkeleton ass = new ArmoredSkeleton(102, getMapTile(28, 6).getLocation());
-        ass.setCurrentAnimationName("STAND_RIGHT");
-        npcs.add(ass);
+        // ArmoredSkeleton ass = new ArmoredSkeleton(102, getMapTile(28, 6).getLocation());
+        // ass.setCurrentAnimationName("STAND_RIGHT");
+        // npcs.add(ass);
 
         return npcs;
     }

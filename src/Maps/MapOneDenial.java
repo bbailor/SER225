@@ -53,7 +53,7 @@ public class MapOneDenial extends Map {
         npcs.add(sp);
 
         // moved Armored Skeleton to an open tile
-        ArmoredSkeleton as = new ArmoredSkeleton(102, getMapTile(1, 5).getLocation().subtractY(16).subtractX(4));
+        ArmoredSkeleton as = new ArmoredSkeleton(103, getMapTile(1, 5).getLocation().subtractY(16).subtractX(4));
         as.setInteractScript(new DenialEnemyScript());
         // player start is to the LEFT of (22,19) -> face LEFT
         as.setCurrentAnimationName("STAND_RIGHT");
@@ -61,14 +61,14 @@ public class MapOneDenial extends Map {
         npcs.add(as);
 
         // moved Armored Skeleton to an open tile
-        ArmoredSkeleton ass = new ArmoredSkeleton(102, getMapTile(8, 5).getLocation().subtractY(16).subtractX(4));
+        ArmoredSkeleton ass = new ArmoredSkeleton(104, getMapTile(8, 5).getLocation().subtractY(16).subtractX(4));
         ass.setInteractScript(new DenialEnemyScript());
         // player start is to the LEFT of (22,19) -> face LEFT
         ass.setCurrentAnimationName("STAND_LEFT");
         //ass.getVisionTiles();
         npcs.add(ass);
 
-        Spirit spp = new Spirit(102, getMapTile(20, 8).getLocation().subtractY(16).subtractX(4));
+        Spirit spp = new Spirit(105, getMapTile(20, 8).getLocation().subtractY(16).subtractX(4));
         spp.setInteractScript(new DenialEnemyScript());
         spp.setCurrentAnimationName("STAND_RIGHT");
         npcs.add(spp);
@@ -87,13 +87,29 @@ public class MapOneDenial extends Map {
         // enemies near player, all share DenialEnemyScript (spread out a bit)
 
          // adding boss into game (fingers crossed)
-        DenialBoss db = new DenialBoss(102, getMapTile(2, 8).getLocation().subtractY(16).subtractX(4));
+        DenialBoss db = new DenialBoss(107, getMapTile(2, 8).getLocation().subtractY(16).subtractX(4));
         db.setInteractScript(new DenialBossScript());
         // player start is to the LEFT of (22,19) -> face LEFT
         db.setCurrentAnimationName("STAND_LEFT");
         npcs.add(db);
 
+        // Health Potion Battle
+        Spirit hpSpirit1  = new Spirit(108, getMapTile(27, 9).getLocation().subtractY(16).subtractX(10));
+        hpSpirit1.setInteractScript(new DenialEnemyScript());
+        hpSpirit1.setCurrentAnimationName("STAND_RIGHT");
+        npcs.add(hpSpirit1);
 
+        // Health Potion Battle
+        Spirit hpSpirit2  = new Spirit(109, getMapTile(28, 7).getLocation().subtractY(16).subtractX(10));
+        hpSpirit2.setInteractScript(new DenialEnemyScript());
+        hpSpirit2.setCurrentAnimationName("STAND_LEFT");
+        npcs.add(hpSpirit2);
+
+        // Health Potion Battle
+        ArmoredSkeleton hpSkeleton  = new ArmoredSkeleton(110, getMapTile(28, 5).getLocation().subtractY(16).subtractX(10));
+        hpSkeleton.setInteractScript(new DenialEnemyScript());
+        hpSkeleton.setCurrentAnimationName("STAND_LEFT");
+        npcs.add(hpSkeleton);
 
         return npcs;
     }
@@ -102,6 +118,7 @@ public class MapOneDenial extends Map {
     protected ArrayList<CollectableItem> loadCollectableItems() {
         ArrayList<CollectableItem> collectables = new ArrayList<>();
         collectables.add(new CollectableItem(getMapTile(20, 5).getLocation(), Item.ItemList.cloakOfConcealment));
+        collectables.add(new CollectableItem(getMapTile(27, 4).getLocation(), Item.ItemList.health_potion));
         collectables.add(new CollectableItem(getMapTile(23, 4).getLocation(), Item.ItemList.apple));
         collectables.add(new CollectableItem(getMapTile(18, 4).getLocation(), Item.ItemList.apple));
         return collectables;
@@ -118,4 +135,5 @@ public class MapOneDenial extends Map {
     public void loadScripts() {
        getMapTile(11, 13).setInteractScript(new AngerEntryScript());
     }
+
 }

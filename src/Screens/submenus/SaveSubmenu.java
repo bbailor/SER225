@@ -361,9 +361,9 @@ public class SaveSubmenu extends Screen implements Menu {
         );
 
         handler.drawFilledRectangle(this.saveButtonBounds.x, this.saveButtonBounds.y, this.saveButtonBounds.width, this.saveButtonBounds.height, this.selectedElement == 1 ? BUTTON_COLOR_HOVER : BUTTON_COLOR_BASE);
-        handler.drawString("Save", this.saveButtonBounds.x + (this.saveButtonBounds.width - 4 * 14)/2, this.saveButtonBounds.y + (this.saveButtonBounds.width - 14*3)/3, Resources.press_start.deriveFont(14f), TailwindColorScheme.white);
+        handler.drawString("Save", this.saveButtonBounds.x + (this.saveButtonBounds.width - 4 * 14)/2, this.saveButtonBounds.y + (this.saveButtonBounds.width - 14*3)/3, Resources.PRESS_START.deriveFont(14f), TailwindColorScheme.white);
         handler.drawFilledRectangle(this.loadButtonBounds.x, this.loadButtonBounds.y, this.loadButtonBounds.width, this.loadButtonBounds.height, this.selectedElement == 2 ? BUTTON_COLOR_HOVER : BUTTON_COLOR_BASE);
-        handler.drawString("Load", this.loadButtonBounds.x + (this.loadButtonBounds.width - 4 * 15)/2, this.loadButtonBounds.y + (this.loadButtonBounds.width - 14*3)/3, Resources.press_start.deriveFont(14f), TailwindColorScheme.white);
+        handler.drawString("Load", this.loadButtonBounds.x + (this.loadButtonBounds.width - 4 * 15)/2, this.loadButtonBounds.y + (this.loadButtonBounds.width - 14*3)/3, Resources.PRESS_START.deriveFont(14f), TailwindColorScheme.white);
 
         handler.drawImage(ImageLoader.load("right.png", new Color(0, true)), this.rightButtonBounds.x, this.rightButtonBounds.y, this.rightButtonBounds.width, this.rightButtonBounds.height);
     }

@@ -13,31 +13,35 @@ import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Items.CloakOfConcealment;
 import Items.DenialsStaff;
+import Items.HealthPotion;
+import Items.Apple;
+import Items.BagOfGold;
+import Items.Cherry;
 import Items.KnifeOfLife;
+import Items.PowerStone;
 import Items.SwordOfRage;
 import Items.TlalocsStorm;
 
 /**
  * Definition for an item type
  */
-public class Item {
+public abstract class Item {
     
     @Expose public final String id;
     protected String name;
-    protected String description;
+    protected String description = "";
     protected int maxStackSize = 25;
-    protected boolean canUse;
     protected java.util.Map<String, FrameBuilder[]> animations = new HashMap<>();
 
-    public Item(String name) {
+    protected Item(String name) {
         this(name.replace(' ', '_').toLowerCase(), name);
     }
     
-    public Item(String name, int maxStackSize) {
+    protected Item(String name, int maxStackSize) {
         this(name.replace(' ', '_'), name, maxStackSize);
     }
 
-    public Item(String id, String name) {
+    protected Item(String id, String name) {
         this.id = id;
         this.name = name;
         if (ItemList.IDMap.containsKey(this.id)) {
@@ -46,12 +50,12 @@ public class Item {
         ItemList.IDMap.put(this.id, this);
     }
     
-    public Item(String id, String name, int maxStackSize) {
+    protected Item(String id, String name, int maxStackSize) {
         this(id, name);
         this.maxStackSize = maxStackSize;
     }
 
-    public Item(String id, String name, String description, int maxStackSize) {
+    protected Item(String id, String name, String description, int maxStackSize) {
         this(id, name, maxStackSize);
         this.description = description;
     }
@@ -61,11 +65,18 @@ public class Item {
         System.out.println("Use from item class");
     }
 
+    /**
+     * 
+     * @param stack stack that is being checked 
+     * @param targetedEntity the entity that would use the item
+     * @return if the item can be used
+     */
     public boolean canUse(ItemStack stack, Entity targetedEntity) {
         // If the item to be able to be used
         return false;
     }
 
+    public void addDefaultProperites(java.util.Map<String, Object> properties) {}
     
     public String getName() {
         return this.name;
@@ -118,117 +129,30 @@ public class Item {
         this.animations.put(name, frames);
     }
 
-    public void setCanUse(boolean canUse)
-    {
-        this.canUse = canUse;
-    }
-
     public static class ItemList {
         protected static final java.util.Map<String, Item> IDMap = new HashMap<>();
 
-        public static Item apple = new Item("apple", "Apple", "A tasty red apple", 20) {
-            @Override
-            public boolean canUse(ItemStack stack, Entity targetedEntity) {
-                return targetedEntity.getHealth() != targetedEntity.getMaxHealth();
-            }
-
-            @Override
-            public void use(ItemStack stack, Entity targetedEntity) {
-                targetedEntity.heal(15);
-                stack.removeItem();
-            }
-
-            {
-                var sheet = new SpriteSheet(ImageLoader.load("item_imgs/apple.png"), 32, 32);
-                FrameBuilder[] frames = new FrameBuilder[2];
-                Arrays.parallelSetAll(frames, i -> new FrameBuilder(sheet.getSprite(0, i), (int)(60 / 1.5))
-                    .withScale(1.25f)
-                    // .build()
-                );
-                addAnimation("default", frames);
-            }
-        };
+        public static Item apple = new Apple();
 
         public static Item cloakOfConcealment = new CloakOfConcealment();
+
+        public static Item cherry = new Cherry();
         
-        public static Item powerStone = new Item("powerStone", "Mysterious stone", "A strange stone.\n It appears to hold some sort of power.", 1){
-            {
-                var worldSheet = new SpriteSheet(ImageLoader.load("powerStone.png"), 252, 251);
-                FrameBuilder[] worldFrames = new FrameBuilder[] {
-                    new FrameBuilder(worldSheet.getSprite(0, 0), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 1), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 2), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 3), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 4), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 5), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 6), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 7), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 8), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 9), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 10), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 11), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 12), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 13), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 14), 5)
-                        .withScale(0.3f),
-                    new FrameBuilder(worldSheet.getSprite(0, 15), 5)
-                        .withScale(0.3f)
-                };
-                addAnimation("world", worldFrames);
-                FrameBuilder[] inventoryFrames = new FrameBuilder[] {
-                    new FrameBuilder(worldSheet.getSprite(0, 0))
-                };
-                addAnimation("inventory", inventoryFrames);
-            }
-            @Override
-            public boolean canUse(ItemStack stack, Entity targetedEntity) {
-                return targetedEntity.getHealth() > 0;
-            }
+        public static Item powerStone = new PowerStone();
+        
+        public static Item health_potion = new HealthPotion();
 
-            @Override
-            public void use(ItemStack stack, Entity targetedEntity) {
-                targetedEntity.health -= 20;
-                stack.removeItem();
-            }
-        };
-        public static Item cherry = new Item("cherry", "Cherry", "A tasty cherry", 20) {
-            @Override
-            public boolean canUse(ItemStack stack, Entity targetedEntity) {
-                return targetedEntity.getMana() != targetedEntity.getMaxMana();
-            }
+        public static Weapon fist = new Weapon("fist", "Fist", "Your bare fist", 1d);
 
-            @Override
-            public void use(ItemStack stack, Entity targetedEntity) {
-                targetedEntity.setMana(targetedEntity.getMana() + 20);
-                stack.removeItem();
-            }
+        public static Weapon knife_of_life = new KnifeOfLife();
 
-            {
-                var world_sheet = new SpriteSheet(ImageLoader.load("item_imgs/cherry_world.png"), 32, 32);
-                var sheet = new SpriteSheet(ImageLoader.load("item_imgs/cherry_default.png"), 32, 32);
-                FrameBuilder[] world = new FrameBuilder[4];
-                Arrays.parallelSetAll(world, i -> new FrameBuilder(world_sheet.getSprite(0, i), 60 / 3));
-                addAnimation("world", world);
-                addAnimation("inventory", new FrameBuilder[] {
-                    new FrameBuilder(sheet.getSprite(0, 0))
-                });
-            }
-        };
+        public static Weapon tlalocs_storm = new TlalocsStorm();
+        
+        public static Weapon sword_of_rage = new SwordOfRage();
 
+        public static BagOfGold bag_of_gold = new BagOfGold();
+        
+        public static Weapon denials_staff = new DenialsStaff();
 
         //flowers
         public static Item flowers = new Item("flowers", "Flowers", "A bunch of flowers", 20) {
@@ -246,61 +170,6 @@ public class Item {
                 addAnimation("inventory", inventoryFrames);
             }
         };
-
-
-
-
-
-        /* public static Item test_item = new Item("test_item", "Test Item", "A test item", 5) {
-            @Override
-            public boolean canUse(ItemStack stack, Entity targetedEntity) {
-                return true;
-            }
-
-            @Override
-            public void use(ItemStack stack, Entity targetedEntity) {
-                System.out.println("Hello, World!");
-                targetedEntity.setMana(Math.min(targetedEntity.getMana() + 25, targetedEntity.getMaxMana()));
-                stack.removeItem();
-            }
-        };
-
-        public static Item test_item2 = new Item("test_item_2", "Test Item 2", "A second test item", 40) {
-            @Override
-            public boolean canUse(ItemStack stack, Entity targetedEntity) {
-                return true;
-            }
-
-            @Override
-            public void use(ItemStack stack, Entity targetedEntity) {
-                System.out.println("Hello, World! (from 2)");
-                targetedEntity.heal(10d);
-                stack.removeItem();
-            }
-        }; */
-
-        public static Weapon cat = new Weapon("cat", "Cat", "A Cat", 0d) {
-            {
-                this.weaponSkillDamage = 100d;
-                this.weaponSkillCost = 40d;
-                var sheet = new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24);
-                FrameBuilder[] frames = new FrameBuilder[4];
-                Arrays.parallelSetAll(frames, i -> new FrameBuilder(sheet.getSprite(1, i)).withScale(3).withBounds(6, 12, 12, 7));
-                this.animations.put("default", frames);
-            }
-        };
-
-        public static Weapon fist = new Weapon("fist", "Fist", "Your bare fist", 1d) {
-
-        };
-
-        public static Weapon knife_of_life = new KnifeOfLife();
-
-        public static Weapon tlalocs_storm = new TlalocsStorm();
-
-        public static Weapon denials_staff = new DenialsStaff();
-         
-        public static Weapon sword_of_rage = new SwordOfRage();
 
         public static Item getFromID(String id) {
             return IDMap.get(id);
