@@ -60,7 +60,7 @@ public class Weapon extends Item {
     }
 
     public String getAttackAnimationName() {
-        return "KnifeOfLife"; // Default animation
+        return "fist"; // Default animation
     }
 
     /**
@@ -83,5 +83,4 @@ public class Weapon extends Item {
         targetedEntity.getInventory().setStack(NamedSlot.Weapon, stack.copy());
         stack.removeItem();
     }
-    
 }
