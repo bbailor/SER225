@@ -257,13 +257,15 @@ private ArrayList<CollectableItem> loadCollectableItems() {
 
         // player is drawn to screen
 
-        for (CollectableItem collectableItem : activeCollectableItems) {
+        // Create a copy of the list to avoid ConcurrentModificationException
+        ArrayList<CollectableItem> collectableItemsCopy = new ArrayList<>(activeCollectableItems);
+        for (CollectableItem collectableItem : collectableItemsCopy) {
             if (containsDraw(collectableItem)) {
                 //spewing errors to console
             collectableItem.draw(graphicsHandler);
             }
-        
-        }   
+
+        }
 
         // npcs determined to be drawn after player from the above step are drawn here
         for (NPC npc : drawNpcsAfterPlayer) {

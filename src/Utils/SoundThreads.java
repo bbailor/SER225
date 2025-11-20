@@ -144,11 +144,21 @@ public class SoundThreads {
         }
 
         protected FloatControl getGainControl() { // Gain float controller for the line
-            return (FloatControl) this.line.getControl(FloatControl.Type.MASTER_GAIN);
+            // Try MASTER_GAIN first, fall back to VOLUME if not supported
+            if (this.line.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                return (FloatControl) this.line.getControl(FloatControl.Type.MASTER_GAIN);
+            } else if (this.line.isControlSupported(FloatControl.Type.VOLUME)) {
+                return (FloatControl) this.line.getControl(FloatControl.Type.VOLUME);
+            }
+            return null;
         }
 
         protected void updateGain(Type type) {
             var gain = this.getGainControl();
+            if (gain == null) {
+                // Control not supported on this line, skip volume adjustment
+                return;
+            }
             // un-normalization -> min - normalized_value * (max - min) according to gemmma3
             var value = (gain.getMinimum()) + (settings.volumes.getOrDefault(type, 1f) * settings.master_volume) * -(gain.getMinimum());
             gain.setValue(value);

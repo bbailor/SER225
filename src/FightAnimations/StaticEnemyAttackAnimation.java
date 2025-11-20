@@ -1,9 +1,16 @@
 package FightAnimations;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import Utils.SoundThreads.Type;
 import Engine.GraphicsHandler;
 import GameObject.AnimatedSprite;
 import GameObject.SpriteSheet;
 import Level.Map;
+import Utils.Globals;
 
 public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
     
@@ -76,7 +83,7 @@ public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
      * Override to add custom behavior (e.g., sound effects)
      */
     protected void onComplete() {
-        // Default: do nothing
+        
     }
     
     public boolean isComplete() {

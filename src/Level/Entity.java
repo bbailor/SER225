@@ -1,15 +1,21 @@
 package Level;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.google.gson.annotations.Expose;
 
 import Engine.Inventory;
 import Engine.Inventory.NamedSlot;
 import GameObject.Frame;
+import Utils.Globals;
+import Utils.SoundThreads.Type;
 
 public class Entity {
     
@@ -199,6 +205,7 @@ public class Entity {
         Weapon weapon = this.getCurrentWeapon();
         if (Math.random() >= 0.90) {
             System.out.println("Critical Strike! Damage: " + this.baseAttack + weapon.getWeaponSkillDamage() + (0.5 * weapon.getWeaponSkillDamage()));
+            
             return this.baseAttack + weapon.getWeaponSkillDamage() + (0.5 * weapon.getWeaponSkillDamage());
         }
         else{
