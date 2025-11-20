@@ -80,22 +80,71 @@ public class QuestSubMenu implements Menu {
         questEntries.add(new QuestEntry(
             "hasEnteredAnger",
             "Entered the Anger Stage",
-            null,
+            "hasDefeatedAnger",
             "Explore the Anger stage"
         ));
 
         questEntries.add(new QuestEntry(
             "hasTalkedToAngerBoss",
             "Quest: Defeat the Anger Boss",
-            null,
+            "hasDefeatedAnger",
             "Battle the boss in the Anger area"
         ));
 
         questEntries.add(new QuestEntry(
-            "hasTalkedToDepressionBoss",
-            "Quest: Face the Depression Boss",
+            "hasDefeatedAnger",
+            "Anger Boss Defeated!",
             null,
+            "Continue exploring to find the next stage"
+        ));
+
+        questEntries.add(new QuestEntry(
+            "hasEnteredDepression",
+            "Entered the Depression Stage",
+            "hasDefeatedDepression",
+            "Explore the Depression stage"
+        ));
+
+        questEntries.add(new QuestEntry(
+            "hasTalkedToDepressionBoss",
+            "Quest: Defeat the Depression Boss",
+            "hasDefeatedDepression",
             "Battle the Depression Boss"
+        ));
+
+        questEntries.add(new QuestEntry(
+            "hasDefeatedDepression",
+            "Depression Boss Defeated!",
+            null,
+            "Continue exploring to find the next stage"
+        ));
+
+        questEntries.add(new QuestEntry(
+            "hasStartedBargaining",
+            "Entered the Bargaining Stage",
+            "hasDefeatedBargaining",
+            "Explore the Bargaining stage"
+        ));
+
+        questEntries.add(new QuestEntry(
+            "hasTalkedToBargainingBoss",
+            "Quest: Defeat the Bargaining Boss",
+            "hasDefeatedBargaining",
+            "Battle the Bargaining Boss"
+        ));
+
+        questEntries.add(new QuestEntry(
+            "hasDefeatedBargaining",
+            "Bargaining Boss Defeated!",
+            null,
+            "Continue exploring to find the next stage"
+        ));
+
+        questEntries.add(new QuestEntry(
+            "hasEnteredAcceptance",
+            "Entered the Acceptance Stage",
+            null,
+            "Explore the final stage"
         ));
 
         // Wizard Quest Line
@@ -125,7 +174,7 @@ public class QuestSubMenu implements Menu {
             "Met the Wizard",
             null
         ));
- 
+
 
         questEntries.add(new QuestEntry(
             "hasTalkedToDenialEnemy",

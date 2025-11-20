@@ -63,6 +63,15 @@ public class Weapon extends Item {
         return "KnifeOfLife"; // Default animation
     }
 
+    /**
+     * Returns the critical chance multiplier for this weapon.
+     * Default is 1.0 (normal chance). Override to increase/decrease crit chance.
+     * @return multiplier for critical chance (2.0 = double chance, 0.5 = half chance)
+     */
+    public double getCriticalChanceMultiplier() {
+        return 1.0;
+    }
+
     @Override
     public boolean canUse(ItemStack stack, Entity targetedEntity) {
         return true;

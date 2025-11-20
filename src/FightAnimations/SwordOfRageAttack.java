@@ -2,6 +2,7 @@ package FightAnimations;
 
 import Builders.FrameBuilder;
 import GameObject.Frame;
+import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 
 import java.util.HashMap;
@@ -43,32 +44,41 @@ public class SwordOfRageAttack extends PlayerProjectileAttackAnimation {
             put("ATTACK", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0), 5)
                         .withScale(2)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 1), 5)
                         .withScale(2)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 2), 5)
                         .withScale(2)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 3), 5)
                         .withScale(2)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 4), 20)
                         .withScale(2)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),
                 new FrameBuilder(spriteSheet.getSprite(0, 5), 5)
                         .withScale(2)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),
                  new FrameBuilder(spriteSheet.getSprite(0, 6), 5)
                         .withScale(2)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),
                  new FrameBuilder(spriteSheet.getSprite(0, 7), 5)
                         .withScale(2)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),
                  new FrameBuilder(spriteSheet.getSprite(0, 8), 5)
                         .withScale(2)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),
-              
+
             });
         }};
     }
