@@ -5,7 +5,7 @@ import NPCs.ArmoredSkeleton;
 import NPCs.AngerBoss;
 import NPCs.Skeleton;
 import NPCs.Spirit;
-import NPCs.UnderworldSpirit;
+import NPCs.underworldSpirit;
 import NPCs.AngerSpirit;
 import Scripts.MapTwoAnger.AngerBossScript;
 import Scripts.MapTwoAnger.BargainingEntryScript;
@@ -80,7 +80,7 @@ public class AngerMap extends Map {
 
 
 
-        UnderworldSpirit us = new UnderworldSpirit(103, getMapTile(17, 7).getLocation());
+        underworldSpirit us = new underworldSpirit(103, getMapTile(17, 7).getLocation());
         us.setInteractScript(new AngerSideQuestScript());
         us.setCurrentAnimationName("STAND_LEFT");
         npcs.add(us);
