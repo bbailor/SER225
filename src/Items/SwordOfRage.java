@@ -16,4 +16,9 @@ public class SwordOfRage extends Weapon {
             .withBounds(0,0,68,190)
         });
     }
+
+    @Override
+    public String getAttackAnimationName() {
+        return "SwordOfRage";
+    }
 }
