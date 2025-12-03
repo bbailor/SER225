@@ -1,11 +1,11 @@
 package Level;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 import Engine.Config;
@@ -15,6 +15,7 @@ import EnhancedMapTiles.CollectableItem;
 import FightAnimations.StaticEnemyAttackAnimation;
 import GameObject.Rectangle;
 import Utils.Direction;
+import Utils.Globals;
 import Utils.Point;
 
 /*
@@ -60,11 +61,11 @@ public class Map {
     protected String mapFileName;
 
     // lists to hold map entities that are a part of the map
-    protected ArrayList<EnhancedMapTile> enhancedMapTiles;
-    protected ArrayList<NPC> npcs;
-    protected ArrayList<Trigger> triggers;
-    protected ArrayList<CollectableItem> collectableItems;
-    protected ArrayList<StaticEnemyAttackAnimation> overworldAnimations;
+    protected List<EnhancedMapTile> enhancedMapTiles;
+    protected List<NPC> npcs;
+    protected List<Trigger> triggers;
+    protected List<CollectableItem> collectableItems;
+    protected List<StaticEnemyAttackAnimation> overworldAnimations;
 
     // current script that is being executed (if any)
     protected Script activeScript;
@@ -73,7 +74,7 @@ public class Map {
     protected boolean adjustCamera = true;
 
     // map tiles in map that are animated
-    protected ArrayList<MapTile> animatedMapTiles;
+    protected List<MapTile> animatedMapTiles;
 
     // flag manager instance to keep track of flags set while map is loaded
     protected FlagManager flagManager;
@@ -85,7 +86,7 @@ public class Map {
     protected Player player;
 
     // other external classes can use this to listen for events
-    protected ArrayList<GameListener> listeners = new ArrayList<>();
+    protected List<GameListener> listeners = new ArrayList<>();
 
     protected Map(String mapFileName, Tileset tileset) {
         this.mapFileName = mapFileName;
@@ -102,6 +103,7 @@ public class Map {
     }
 
     // For serializtion without reading a file twice
+    @SuppressWarnings("unused")
     private Map(Tileset tileset, String mapFileName) {
         this.tileset = tileset;
         this.mapFileName = mapFileName;
@@ -113,6 +115,7 @@ public class Map {
         this.overworldAnimations = new ArrayList<>();
     }
 
+    @SuppressWarnings("unused")
     private Map() {}
 
     // sets up map by reading in the map file to create the tile map
@@ -166,10 +169,11 @@ public class Map {
     // reads in a map file to create the map's tilemap
     private void loadMapFile() {
         Scanner fileInput;
-        try {
+        var source = Globals.loadResource(Config.MAP_FILES_PATH + this.mapFileName);
+        if (source != null) {
             // open map file that is located in the MAP_FILES_PATH directory
-            fileInput = new Scanner(new File(Config.MAP_FILES_PATH + this.mapFileName));
-        } catch(FileNotFoundException ex) {
+            fileInput = new Scanner(source);
+        } else {
             // if map file does not exist, create a new one for this map (the map editor uses this)
             System.out.println("Map file " + Config.MAP_FILES_PATH + this.mapFileName + " not found! Creating empty map file...");
 
@@ -213,10 +217,9 @@ public class Map {
     // creates an empty map file for this map if one does not exist
     // defaults the map dimensions to 0x0
     private void createEmptyMapFile() throws IOException {
-        FileWriter fileWriter = null;
-        fileWriter = new FileWriter(Config.MAP_FILES_PATH + this.mapFileName);
-        fileWriter.write("0 0\n");
-        fileWriter.close();
+        try (FileWriter fileWriter = new FileWriter(Config.MAP_FILES_PATH + this.mapFileName)) {
+            fileWriter.write("0 0\n");
+        } 
     }
 
     // gets player start position based on player start tile (basically the start tile's position on the map)
@@ -321,23 +324,23 @@ public class Map {
     }
 
     // list of scripts defined to be a part of the map, should be overridden in a subclass
-    protected void loadScripts() { }
+    protected void loadScripts() {}
 
     // list of enhanced map tiles defined to be a part of the map, should be overridden in a subclass
-    protected ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
+    protected List<EnhancedMapTile> loadEnhancedMapTiles() {
         return new ArrayList<>();
     }
 
     // list of npcs defined to be a part of the map, should be overridden in a subclass
-    protected ArrayList<NPC> loadNPCs() {
+    protected List<NPC> loadNPCs() {
         return new ArrayList<>();
     }
 
-    protected ArrayList<Trigger> loadTriggers() {
+    protected List<Trigger> loadTriggers() {
         return new ArrayList<>();
     }
 
-    protected ArrayList<CollectableItem> loadCollectableItems() {
+    protected List<CollectableItem> loadCollectableItems() {
         return new ArrayList<>();
     }
 
@@ -345,20 +348,20 @@ public class Map {
         return camera;
     }
 
-    public ArrayList<EnhancedMapTile> getEnhancedMapTiles() {
+    public List<EnhancedMapTile> getEnhancedMapTiles() {
         return enhancedMapTiles;
     }
 
-    public ArrayList<NPC> getNPCs() {
+    public List<NPC> getNPCs() {
         return npcs;
     }
-    public ArrayList<Trigger> getTriggers() { return triggers; }
+    public List<Trigger> getTriggers() { return triggers; }
 
-    public ArrayList<MapTile> getAnimatedMapTiles() {
+    public List<MapTile> getAnimatedMapTiles() {
         return animatedMapTiles;
     }
 
-    public ArrayList<CollectableItem> getCollectableItems(){
+    public List<CollectableItem> getCollectableItems(){
         return collectableItems;
     }
 
@@ -441,16 +444,16 @@ public class Map {
     }
 
     // returns all active enhanced map tiles (enhanced map tiles that are a part of the current update cycle) -- this changes every frame by the Camera class
-    public ArrayList<EnhancedMapTile> getActiveEnhancedMapTiles() {
+    public List<EnhancedMapTile> getActiveEnhancedMapTiles() {
         return camera.getActiveEnhancedMapTiles();
     }
 
     // returns all active npcs (npcs that are a part of the current update cycle) -- this changes every frame by the Camera class
-    public ArrayList<NPC> getActiveNPCs() {
+    public List<NPC> getActiveNPCs() {
         return camera.getActiveNPCs();
     }
 
-    public ArrayList<Trigger> getActiveTriggers() {
+    public List<Trigger> getActiveTriggers() {
         return camera.getActiveTriggers();
     }
 
@@ -482,7 +485,7 @@ public class Map {
     }
 
 
-    public ArrayList<MapEntity> getSurroundingMapEntities(Player player) {
+    public List<MapEntity> getSurroundingMapEntities(Player player) {
         ArrayList<MapEntity> surroundingMapEntities = new ArrayList<>();
 
         Point playerCurrentTile = getTileIndexByPosition((int)player.getBounds().getX1(), (int)player.getBounds().getY1());
@@ -508,8 +511,8 @@ public class Map {
 // Replace the existing entityInteract method in Map.java with this version
 
 public void entityInteract(Player player) {
-    ArrayList<MapEntity> surroundingMapEntities = getSurroundingMapEntities(player);
-    ArrayList<MapEntity> playerTouchingMapEntities = new ArrayList<>();
+    List<MapEntity> surroundingMapEntities = getSurroundingMapEntities(player);
+    List<MapEntity> playerTouchingMapEntities = new ArrayList<>();
     
     for (MapEntity mapEntity : surroundingMapEntities) {
         if (mapEntity.getInteractScript() != null && mapEntity.intersects(player.getInteractionRange())) {
@@ -750,7 +753,7 @@ public void entityInteract(Player player) {
         this.listeners.add(listener);
     }
 
-    public ArrayList<GameListener> getListeners() {
+    public List<GameListener> getListeners() {
         return listeners;
     }
 

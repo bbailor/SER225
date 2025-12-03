@@ -1,7 +1,6 @@
 package Screens;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +9,8 @@ import java.util.Map;
 import java.util.random.RandomGenerator;
 
 import javax.sound.sampled.LineUnavailableException;
-import Utils.Globals;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import Engine.Config;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
@@ -18,6 +18,8 @@ import Engine.Inventory;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
+import FightAnimations.AngerBossAttack;
+import FightAnimations.AngerSpiritAttack;
 import FightAnimations.ArmoredSkeletonAttack;
 import FightAnimations.BagOfGoldAttackAnimation;
 import FightAnimations.DenialBossAttack;
@@ -29,25 +31,20 @@ import FightAnimations.PlayerFistAttack;
 import FightAnimations.PlayerProjectileAttackAnimation;
 import FightAnimations.SkeletonAttack;
 import FightAnimations.SpiritAttack;
-import FightAnimations.AngerBossAttack;
-import FightAnimations.AngerSpiritAttack;
-import FightAnimations.TlalocsStormAttack;
-import FightAnimations.SwordOfRageAttack;
-import FightAnimations.StaticPlayerAttackAnimation;
 import FightAnimations.StaticEnemyAttackAnimation;
+import FightAnimations.StaticPlayerAttackAnimation;
+import FightAnimations.SwordOfRageAttack;
+import FightAnimations.TlalocsStormAttack;
 import FightAnimations.powerStoneAttack;
 import GameObject.ImageEffect;
 import GameObject.Rectangle;
 import GameObject.SpriteSheet;
 import Items.DenialsStaff;
 import Items.KnifeOfLife;
-import Items.BagOfGold;
-import Items.SwordOfRage;
 import Level.Entity;
 import Level.Item;
 import Level.Player;
 import Level.Weapon;
-import NPCs.AngerBoss;
 import Screens.submenus.BattleSubmenu;
 import Screens.submenus.InventoryBattleMenu;
 import Screens.submenus.SelectionSubmenu;
@@ -55,11 +52,8 @@ import Utils.Globals;
 import Utils.Menu;
 import Utils.MenuListener;
 import Utils.Resources;
-import Utils.SoundThreads;
-import Utils.TailwindColorScheme;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import Utils.SoundThreads.Type;
+import Utils.TailwindColorScheme;
 
 public class BattleScreen extends Screen implements Menu, MenuListener {
 
@@ -100,7 +94,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         2,
         STATUS_LOG_REC.getHeight() + BATTLE_REC.getHeight(),
         (int)((Config.GAME_WINDOW_WIDTH - 5) * .3),
-        (int) (Config.GAME_WINDOW_HEIGHT - (STATUS_LOG_REC.getHeight() + BATTLE_REC.getHeight()) - 38)
+        (Config.GAME_WINDOW_HEIGHT - (STATUS_LOG_REC.getHeight() + BATTLE_REC.getHeight()) - 38)
     );
     protected Rectangle BATTLE_ACTION_REC = new Rectangle(
         SELECTOR_REC.getWidth(),
@@ -122,7 +116,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         this.isBossBattle = isBossBattle;
 
         try{
-            Globals.SOUND_SYSTEM.play(Type.Music, Globals.BATTLE_TRACK_NUMBER, Resources.BATTLE_MUSIC);
+            Globals.SOUND_SYSTEM.play(Type.Music, Globals.BATTLE_TRACK_NUMBER, Resources.BATTLE_MUSIC.get());
             Globals.SOUND_SYSTEM.getTrack(Globals.BATTLE_TRACK_NUMBER).setLoopPoint(0, -1, true);
         } catch(IOException | UnsupportedAudioFileException | LineUnavailableException e){
             e.printStackTrace();

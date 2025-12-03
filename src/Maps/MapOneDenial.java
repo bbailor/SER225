@@ -1,22 +1,21 @@
 package Maps;
 
+import java.util.ArrayList;
+
 import EnhancedMapTiles.CollectableItem;
-import EnhancedMapTiles.PushableRock;
-import Level.*;
+import Level.EnhancedMapTile;
+import Level.Item;
+import Level.Map;
+import Level.NPC;
+import Level.Trigger;
 import NPCs.ArmoredSkeleton;
 import NPCs.DenialBoss;
 import NPCs.Skeleton;
 import NPCs.Spirit;
-import NPCs.Wizard;
-import ScriptActions.CollectableScriptAction;
-import Scripts.SimpleTextScript;
+import Scripts.MapOneDenial.AngerEntryScript;
 import Scripts.MapOneDenial.DenialBossScript;
 import Scripts.MapOneDenial.DenialEnemyScript;
-import Scripts.TestMap.DenialEntryScript;
-import Scripts.TestMap.WizardScript;
 import Tilesets.Map1Tileset;
-import Scripts.MapOneDenial.AngerEntryScript;
-import java.util.ArrayList;
 
 // Represents a test map to be used in a level
 public class MapOneDenial extends Map {
@@ -28,9 +27,7 @@ public class MapOneDenial extends Map {
 
     @Override
     public ArrayList<EnhancedMapTile> loadEnhancedMapTiles() {
-        ArrayList<EnhancedMapTile> enhancedMapTiles = new ArrayList<>();
-
-        return enhancedMapTiles;
+        return new ArrayList<>();
     }
 
     @Override
@@ -114,9 +111,7 @@ public class MapOneDenial extends Map {
 
     @Override
     public ArrayList<Trigger> loadTriggers() {
-        ArrayList<Trigger> triggers = new ArrayList<>();
-        
-        return triggers;
+        return new ArrayList<>();
     }
 
     @Override

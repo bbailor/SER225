@@ -1,6 +1,7 @@
 package Level;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import com.google.gson.annotations.Expose;
@@ -17,7 +18,7 @@ import ScriptActions.ScriptActionOutputManager;
 // Each script defines a set of instructions that will be carried out by the game when it is set to active
 // Some examples include interact scripts (such as talking to an NPC) and trigger scripts (scripts that activate when the player walks on them)
 public abstract class Script {
-    protected ArrayList<ScriptAction> scriptActions;
+    protected List<ScriptAction> scriptActions;
     private int currentScriptActionIndex;
 
     // this is set to true if script is currently being executed
@@ -36,7 +37,7 @@ public abstract class Script {
     protected Player player;
 
     protected ScriptActionOutputManager scriptActionOutputManager;
-    protected ArrayList<GameListener> listeners = new ArrayList<>();
+    protected List<GameListener> listeners = new ArrayList<>();
 
     public Script() {
         scriptActionOutputManager = new ScriptActionOutputManager();
@@ -49,7 +50,7 @@ public abstract class Script {
     public MapEntity getEntity() { return entity; }
     public void setMapEntity(MapEntity entity) { this.entity = entity; }
     
-    public ArrayList<ScriptAction> getScriptActions() {
+    public List<ScriptAction> getScriptActions() {
         return scriptActions;
     }
     
@@ -57,7 +58,7 @@ public abstract class Script {
         return scriptActionOutputManager;
     }
 
-    public void setListeners(ArrayList<GameListener> listeners) {
+    public void setListeners(List<GameListener> listeners) {
         this.listeners = listeners;
     }
 
@@ -101,7 +102,7 @@ public abstract class Script {
         }
     }
 
-    public abstract ArrayList<ScriptAction> loadScriptActions();
+    public abstract List<ScriptAction> loadScriptActions();
 
     private boolean hasScriptActions() {
         return scriptActions.size() > 0;

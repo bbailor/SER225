@@ -1,10 +1,5 @@
 package FightAnimations;
 
-import java.io.IOException;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 import Engine.GraphicsHandler;
 import GameObject.AnimatedSprite;
 import GameObject.SpriteSheet;
@@ -29,7 +24,7 @@ public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
      * @param duration Number of game frames the animation should last (or high value if using AnimatedSprite delays)
      * @param startingAnimationName The animation to play (e.g., "ATTACK")
      */
-    public StaticEnemyAttackAnimation(SpriteSheet spriteSheet, float posX, float posY, 
+    protected StaticEnemyAttackAnimation(SpriteSheet spriteSheet, float posX, float posY, 
                           int duration, String startingAnimationName) {
         super(spriteSheet, posX, posY, startingAnimationName);
         this.posX = posX;
@@ -84,7 +79,7 @@ public abstract class StaticEnemyAttackAnimation extends AnimatedSprite {
      * Override to add custom behavior (e.g., sound effects)
      */
     protected void onComplete() {
-        Globals.SOUND_SYSTEM.play(Type.SFX, Globals.EFFECTS_SOUNDS, Resources.ATTACK_SFX);
+        Globals.SOUND_SYSTEM.play(Type.SFX, Globals.EFFECTS_SOUNDS, Resources.ATTACK_SFX.get());
     }
     
     public boolean isComplete() {

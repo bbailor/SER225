@@ -2,9 +2,6 @@ package Items;
 
 import Builders.FrameBuilder;
 import Engine.ImageLoader;
-import Engine.Inventory;
-import Level.Entity;
-import Level.ItemStack;
 import Level.Weapon;
 
 public class SwordOfRage extends Weapon {

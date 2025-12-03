@@ -98,7 +98,7 @@ public class Inventory implements Iterable<Entry<Integer, ItemStack>> {
         Map<Integer, ItemStack> new_items = new TreeMap<>();
         for (var e : this.items.entrySet()) {
             new_items.put(e.getKey(), e.getValue());
-            System.out.println(e.getValue() != null ? e.getValue().getItem().getName() : "null");
+            // System.out.println(e.getValue() != null ? e.getValue().getItem().getName() : "null");
         }
         return new_items;
     }

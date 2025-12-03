@@ -1,12 +1,9 @@
 package FightAnimations;
 
 import java.awt.Color;
-import java.util.Arrays;
 import java.util.HashMap;
 
-import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
-import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
 import Level.Item;

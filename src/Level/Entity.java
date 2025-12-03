@@ -1,22 +1,16 @@
 package Level;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 import com.google.gson.annotations.Expose;
 
 import Engine.Inventory;
 import Engine.Inventory.NamedSlot;
 import GameObject.Frame;
-import Utils.Globals;
-import Utils.SoundThreads.Type;
 
 public class Entity {
     

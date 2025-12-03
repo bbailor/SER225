@@ -4,8 +4,6 @@ import GameObject.Frame;
 import GameObject.GameObject;
 import GameObject.SpriteSheet;
 
-import java.util.HashMap;
-
 import com.google.gson.annotations.Expose;
 
 // This class represents a map entity, which is any "entity" on a map besides the player
@@ -33,7 +31,7 @@ public class MapEntity extends GameObject {
         super(spriteSheet, x, y, startingAnimation);
     }
 
-    public MapEntity(float x, float y, HashMap<String, Frame[]> animations, String startingAnimation) {
+    public MapEntity(float x, float y, java.util.Map<String, Frame[]> animations, String startingAnimation) {
         super(x, y, animations, startingAnimation);
     }
 

@@ -1,22 +1,23 @@
 package Maps;
 
-import Level.*;
-import NPCs.ArmoredSkeleton;
-import NPCs.AngerBoss;
-import NPCs.Skeleton;
-import NPCs.Spirit;
-import NPCs.underworldSpirit;
-import NPCs.AngerSpirit;
-import Scripts.MapTwoAnger.AngerBossScript;
-import Scripts.MapTwoAnger.BargainingEntryScript;
-import Scripts.MapTwoAnger.MazeScript;
-import Scripts.MapOneDenial.DenialEnemyScript;
-import Scripts.MapTwoAnger.AngerScript;
-import Scripts.MapTwoAnger.AngerSideQuestScript;
-import Tilesets.Map2Tileset;
 import java.util.ArrayList;
 
 import EnhancedMapTiles.CollectableItem;
+import Level.EnhancedMapTile;
+import Level.Item;
+import Level.Map;
+import Level.NPC;
+import Level.Trigger;
+import NPCs.AngerBoss;
+import NPCs.AngerSpirit;
+import NPCs.underworldSpirit;
+import Scripts.MapOneDenial.DenialEnemyScript;
+import Scripts.MapTwoAnger.AngerBossScript;
+import Scripts.MapTwoAnger.AngerScript;
+import Scripts.MapTwoAnger.AngerSideQuestScript;
+import Scripts.MapTwoAnger.BargainingEntryScript;
+import Scripts.MapTwoAnger.MazeScript;
+import Tilesets.Map2Tileset;
 
 // Represents a test map to be used in a level
 public class AngerMap extends Map {

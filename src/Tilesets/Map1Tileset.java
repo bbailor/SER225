@@ -1,20 +1,13 @@
 package Tilesets;
 
+import java.util.ArrayList;
+
 import Builders.FrameBuilder;
 import Builders.MapTileBuilder;
 import Engine.ImageLoader;
 import GameObject.Frame;
-import GameObject.ImageEffect;
-import Level.MapTile;
 import Level.TileType;
 import Level.Tileset;
-import Utils.MathUtils;
-
-import java.util.ArrayList;
-
-import javax.swing.plaf.metal.MetalPopupMenuSeparatorUI;
-
-import org.w3c.dom.events.MutationEvent;
 
 // This class represents a "common" tileset of standard tiles defined in the CommonTileset.png file
 public class Map1Tileset extends Tileset {

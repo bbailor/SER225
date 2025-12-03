@@ -18,7 +18,7 @@ public class AnimatedSprite implements IntersectableRectangle {
 	protected float x, y;
 
 	// maps animation name to an array of Frames representing one animation
-	protected HashMap<String, Frame[]> animations;
+	protected java.util.Map<String, Frame[]> animations;
 
 	// keeps track of current animation the sprite is using
 	protected String currentAnimationName = "";
@@ -45,7 +45,7 @@ public class AnimatedSprite implements IntersectableRectangle {
 		updateCurrentFrame();
 	}
 
-    public AnimatedSprite(float x, float y, HashMap<String, Frame[]> animations, String startingAnimationName) {
+    public AnimatedSprite(float x, float y, java.util.Map<String, Frame[]> animations, String startingAnimationName) {
         this.x = x;
         this.y = y;
         this.animations = animations;
@@ -109,11 +109,11 @@ public class AnimatedSprite implements IntersectableRectangle {
 	}
 
 	// Subclasses can override this method in order to add their own animations, which will be loaded in at initialization time
-	public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
+	public java.util.Map<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
 	    return null;
     }
 
-    public HashMap<String, Frame[]> getAnimations() { return this.animations; }
+    public java.util.Map<String, Frame[]> getAnimations() { return this.animations; }
 
     // currentFrame is essentially a sprite, so each game loop cycle
 	// the sprite needs to have its current state updated based on animation logic,

@@ -1,26 +1,20 @@
 package Level;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.annotations.Expose;
+
 import Engine.GraphicsHandler;
 import GameObject.Frame;
-import GameObject.Rectangle;
 import GameObject.SpriteSheet;
-import Utils.Direction;
-import Utils.Point;
 import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.StartBattleScriptAction;
 import ScriptActions.TextboxScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
-import Scripts.SimpleTextScript;
-
-import java.awt.Color;
-import java.awt.color.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import com.google.gson.annotations.Expose;
+import Utils.Direction;
+import Utils.Point;
 
 // This class is a base class for all npcs in the game -- all npcs should extend from it
 public class NPC extends MapEntity {
@@ -50,7 +44,7 @@ public class NPC extends MapEntity {
         getVisionTiles();
     }
 
-    public NPC(int id, float x, float y, HashMap<String, Frame[]> animations, String startingAnimation) {
+    public NPC(int id, float x, float y, java.util.Map<String, Frame[]> animations, String startingAnimation) {
         super(x, y, animations, startingAnimation);
         this.id = id;
     }

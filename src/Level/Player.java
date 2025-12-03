@@ -2,9 +2,6 @@ package Level;
 
 import com.google.gson.annotations.Expose;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-
 import Builders.FrameBuilder;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
@@ -19,8 +16,8 @@ import GameObject.SpriteSheet;
 import Utils.Direction;
 import Utils.Globals;
 import Utils.Resources;
-import Utils.TailwindColorScheme;
 import Utils.SoundThreads.Type;
+import Utils.TailwindColorScheme;
 
 public class Player extends GameObject {
     // values that affect player movement
@@ -191,7 +188,7 @@ public class Player extends GameObject {
 
         if (has_step && sound_frame % 40 == 0) {
             new Thread(() -> {
-                Globals.SOUND_SYSTEM.play(Type.SFX, Globals.EFFECTS_SOUNDS, Resources.STEP_SFX);
+                Globals.SOUND_SYSTEM.play(Type.SFX, Globals.EFFECTS_SOUNDS, Resources.STEP_SFX.get());
             }).start();
         }
 

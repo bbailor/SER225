@@ -1,20 +1,19 @@
 package FightAnimations;
 
+import java.util.HashMap;
+
 import Builders.FrameBuilder;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
-
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 /**
  * Spirit attack animation that moves from enemy to player
  */
 public class DenialBossAttack extends EnemyProjectileAttackAnimation {
-    private static final int FRAMES_UNTIL_STOP = 48;
-    private float stoppedX, stoppedY;
-    private boolean hasStopped = false;
-    private float scale = 1.0f;
+//     private static final int FRAMES_UNTIL_STOP = 48;
+//     private float stoppedX, stoppedY;
+//     private boolean hasStopped = false;
+//     private float scale = 1.0f;
     
     /**
      * Creates a spirit attack animation

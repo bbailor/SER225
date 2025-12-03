@@ -24,6 +24,7 @@ public class Gnome extends Player {
         walkSpeed = 2.3f;
     }
 
+    @SuppressWarnings("unused")
     private Gnome() {
         this(0, 0);
     }

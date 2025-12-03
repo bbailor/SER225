@@ -1,13 +1,20 @@
 package Scripts.MapFiveAcceptance;
 
+import java.util.ArrayList;
+
+import Level.MapEntityStatus;
 import Level.Script;
 import Level.ScriptState;
-import ScriptActions.*;
+import ScriptActions.ConditionalScriptAction;
+import ScriptActions.ConditionalScriptActionGroup;
+import ScriptActions.FlagRequirement;
+import ScriptActions.LockPlayerScriptAction;
+import ScriptActions.NPCFacePlayerScriptAction;
+import ScriptActions.ScriptAction;
+import ScriptActions.TextboxScriptAction;
+import ScriptActions.UnlockPlayerScriptAction;
 import Utils.Globals;
 import Utils.SoundThreads.Type;
-import Level.MapEntityStatus;
-import java.io.File;
-import java.util.ArrayList;
 
 public class OsirisScript extends Script {
 
@@ -44,7 +51,7 @@ public class OsirisScript extends Script {
                     @Override
                     public ScriptState execute() {
                         try {
-                            Globals.SOUND_SYSTEM.play(Type.Music, Globals.MUSIC_TRACK, new File("Resources/Sounds/Music/happyEndingSong.wav"));
+                            Globals.SOUND_SYSTEM.play(Type.Music, Globals.MUSIC_TRACK, Globals.loadResource("Resources/Sounds/Music/happyEndingSong.wav"));
                             Globals.SOUND_SYSTEM.getTrack(Globals.MUSIC_TRACK).setLoopPoint(0, -1, true);
                         } catch (Exception e) {
                             e.printStackTrace();

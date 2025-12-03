@@ -1,11 +1,10 @@
 package FightAnimations;
 
+import java.util.HashMap;
+
 import Builders.FrameBuilder;
-import Engine.ImageLoader;
 import GameObject.Frame;
 import GameObject.SpriteSheet;
-
-import java.util.HashMap;
 
 /**
  * Overworld animation that uses the BargainingBoss attack sprite sheet

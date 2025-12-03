@@ -7,7 +7,6 @@ import Utils.ImageUtils;
 import Utils.MathUtils;
 
 import java.awt.*;
-import java.util.HashMap;
 
 import com.google.gson.annotations.Expose;
 
@@ -46,7 +45,7 @@ public class GameObject extends AnimatedSprite {
 		this.previousY = y;
 	}
 
-	public GameObject(float x, float y, HashMap<String, Frame[]> animations, String startingAnimation) {
+	public GameObject(float x, float y, java.util.Map<String, Frame[]> animations, String startingAnimation) {
 		super(x, y, animations, startingAnimation);
 		this.startPositionX = x;
 		this.startPositionY = y;

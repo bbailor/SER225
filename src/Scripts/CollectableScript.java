@@ -1,11 +1,6 @@
 package Scripts;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.google.gson.annotations.Expose;
 
@@ -49,7 +44,7 @@ public class CollectableScript extends Script {
             @Override
             public ScriptState execute() {
                 // Resources.
-                Globals.SOUND_SYSTEM.play(Type.SFX, Globals.EFFECTS_SOUNDS, Resources.PICKUP_SFX);
+                Globals.SOUND_SYSTEM.play(Type.SFX, Globals.EFFECTS_SOUNDS, Resources.PICKUP_SFX.get());
                 return ScriptState.COMPLETED;
             }
         });

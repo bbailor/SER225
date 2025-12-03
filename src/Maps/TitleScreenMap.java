@@ -1,23 +1,12 @@
 package Maps;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
-import EnhancedMapTiles.CollectableItem;
 import GameObject.Sprite;
-import Level.Item;
 import Level.Map;
 import Tilesets.CommonTileset;
 import Utils.Colors;
-import Utils.Globals;
 import Utils.Point;
-import Utils.SoundThreads.Type;
 
 // Represents the map that is used as a background for the main menu and credits menu screen
 public class TitleScreenMap extends Map {

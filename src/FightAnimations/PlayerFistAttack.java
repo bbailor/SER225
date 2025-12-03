@@ -1,17 +1,17 @@
 package FightAnimations;
 
+import java.util.HashMap;
+import java.util.random.RandomGenerator;
+
 import Builders.FrameBuilder;
 import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
-import Level.Player;
-
-import java.util.HashMap;
 public class PlayerFistAttack extends PlayerProjectileAttackAnimation {
     
-    private static final int FRAMES_UNTIL_STOP = 5;
-    private float stoppedX, stoppedY;
-    private boolean hasStopped = false;
+    // private static final int FRAMES_UNTIL_STOP = 5;
+    // private float stoppedX, stoppedY;
+    // private boolean hasStopped = false;
     
     /**
      * Creates a player fist attack animation
@@ -38,21 +38,21 @@ public class PlayerFistAttack extends PlayerProjectileAttackAnimation {
             // Adjust these based on your sprite sheet layout
             // Assuming the attack animation frames are in rows 0-1, columns 0-3
             put("ATTACK", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(0, (int)(Math.random() * 8)), (int)(Math.random() * 5) + 1)
+                new FrameBuilder(spriteSheet.getSprite(0, RandomGenerator.getDefault().nextInt(8)), RandomGenerator.getDefault().nextInt(5) + 1)
                         .withScale(2)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, (int)(Math.random() * 8)), (int)(Math.random() * 5) + 1)
+                new FrameBuilder(spriteSheet.getSprite(0, RandomGenerator.getDefault().nextInt(8)), RandomGenerator.getDefault().nextInt(5) + 1)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, (int)(Math.random() * 8)), (int)(Math.random() * 5) + 1)
+                new FrameBuilder(spriteSheet.getSprite(0, RandomGenerator.getDefault().nextInt(8)), RandomGenerator.getDefault().nextInt(5) + 1)
                         .withScale(2)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, (int)(Math.random() * 8)), (int)(Math.random() * 5) + 1)
+                new FrameBuilder(spriteSheet.getSprite(0, RandomGenerator.getDefault().nextInt(8)), RandomGenerator.getDefault().nextInt(5) + 1)
                         .withScale(2)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, (int)(Math.random() * 8)), (int)(Math.random() * 5) + 1)
+                new FrameBuilder(spriteSheet.getSprite(0, RandomGenerator.getDefault().nextInt(8)), RandomGenerator.getDefault().nextInt(5) + 1)
                         .withScale(2)
                         .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                         .build(),

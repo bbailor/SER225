@@ -100,9 +100,10 @@ public abstract class Item {
         return map;
     }
 
+    @SuppressWarnings("null")
     @Nullable
     public Frame[] getFrames(String name) {
-
+        
         var array = !this.animations.containsKey(name) ? this.animations.get("default") : this.animations.get(name);
         if (array == null) {
             return null;

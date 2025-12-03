@@ -1,14 +1,22 @@
 package Maps;
 
-import Level.*;
-import NPCs.*;
-import Scripts.MapFiveAcceptance.AcceptanceEntryScript;
-import Scripts.MapFourDepression.*;
-import Scripts.MapOneDenial.DenialEnemyScript;
-import Tilesets.Map4Tileset;
 import java.util.ArrayList;
+import java.util.List;
 
 import EnhancedMapTiles.CollectableItem;
+import Level.EnhancedMapTile;
+import Level.Item;
+import Level.Map;
+import Level.NPC;
+import Level.Trigger;
+import NPCs.ArmoredSkeleton;
+import NPCs.DepressionBoss;
+import NPCs.GnomeGreyscale;
+import Scripts.MapFiveAcceptance.AcceptanceEntryScript;
+import Scripts.MapFourDepression.DepressionBossScript;
+import Scripts.MapFourDepression.DepressionQuestScript;
+import Scripts.MapFourDepression.DepressionScript;
+import Tilesets.Map4Tileset;
 
 public class DepressionMap extends Map {
 
@@ -35,7 +43,7 @@ public class DepressionMap extends Map {
     }
 
     @Override
-    public ArrayList<NPC> loadNPCs() {
+    public List<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
         // Place Depression Boss at tile (0,3)

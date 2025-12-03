@@ -1,8 +1,10 @@
 package Utils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -44,10 +46,18 @@ public class SoundThreads {
 
     public void play(Type type, int track_number, File file) {
         try {
+            this.play(type, track_number, Files.newInputStream(file.toPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void play(Type type, int track_number, InputStream stream) {
+        try {
             if (tracks.containsKey(track_number)) {
-                tracks.get(track_number).setSound(file, type);
+                tracks.get(track_number).setSound(stream, type);
             } else {
-                tracks.put(track_number, new Track(file, type, track_number));
+                tracks.put(track_number, new Track(stream, type, track_number));
             }
 
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
@@ -113,7 +123,7 @@ public class SoundThreads {
         }
         
         //sets the sound file and volume type
-        protected void setSound(File file, Type type) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        protected void setSound(InputStream stream, Type type) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
             this.state_lock.lock();
             if (type != null) {
                 state.type = type;
@@ -128,8 +138,8 @@ public class SoundThreads {
             this.clearLoop();
             this.state.position = 0;
             // open the new file
-            if (file != null) {
-                this.state.stream = AudioSystem.getAudioInputStream(file);
+            if (stream != null) {
+                this.state.stream = AudioSystem.getAudioInputStream(new BufferedInputStream(stream));
             } else {
                 this.state.stream = new AudioInputStream(new InputStream() {
                     @Override
@@ -154,7 +164,11 @@ public class SoundThreads {
         
         // set sound while keeping the same type
         public void setSound(File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
-            this.setSound(file, null);
+            this.setSound(Files.newInputStream(file.toPath()));
+        }
+
+        public void setSound(InputStream stream) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+            this.setSound(stream, null);
         }
 
         protected FloatControl getGainControl() { // Gain float controller for the line
@@ -272,10 +286,13 @@ public class SoundThreads {
         }
 
         public Track(File file, Type type, int thread_id) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+            this(Files.newInputStream(file.toPath()), type, thread_id);
+        }
+        public Track(InputStream stream, Type type, int thread_id) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
             this.thread_id = thread_id;
             this.state_lock.lock();
             this.state = new State();
-            this.setSound(file, type);
+            this.setSound(stream, type);
             this.line = (SourceDataLine) SoundThreads.this.sound_device.getLine(new DataLine.Info(SourceDataLine.class, format));
             this.line.open(format);
             this.updateGain(type);
@@ -286,7 +303,7 @@ public class SoundThreads {
         }
 
         public Track(int thread_id) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-            this(null, Type.Music, thread_id);
+            this((InputStream) null, Type.Music, thread_id);
         }
 
         public Track(File file) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
@@ -298,11 +315,11 @@ public class SoundThreads {
         }
 
         public Track(Type type) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-            this(null, type, 0);
+            this((InputStream) null, type, 0);
         }
 
         public Track(Type type, int thread_id) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-            this(null, type, thread_id);
+            this((InputStream) null, type, thread_id);
         }
 
         public void pause() {

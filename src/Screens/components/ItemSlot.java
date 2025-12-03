@@ -1,7 +1,5 @@
 package Screens.components;
 
-import org.jetbrains.annotations.Nullable;
-
 import Engine.GraphicsHandler;
 import Engine.Inventory;
 import Engine.Inventory.NamedSlot;

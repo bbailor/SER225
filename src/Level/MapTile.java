@@ -1,7 +1,5 @@
 package Level;
 
-import com.google.gson.annotations.Expose;
-
 import Engine.GraphicsHandler;
 import GameObject.GameObject;
 import GameObject.IntersectableRectangle;
@@ -44,10 +42,19 @@ public class MapTile extends MapEntity {
         this.tileType = tileType;
     }
 
+    /**
+     * @param spriteSheet spritesheet to build bottom layer
+     * @return
+     */
     protected GameObject loadBottomLayer(SpriteSheet spriteSheet) {
         return null;
     }
 
+    
+    /**
+     * @param spriteSheet spritesheet to build top layer
+     * @return
+     */
     protected GameObject loadTopLayer(SpriteSheet spriteSheet) {
         return null;
     }
@@ -74,6 +81,7 @@ public class MapTile extends MapEntity {
 
     // set this game object's map to make it a "part of" the map, allowing calibrated positions and collision handling logic to work
     // note that both the bottom layer and the top layer need the map reference
+    @Override
     public void setMap(Map map) {
         this.map = map;
         this.bottomLayer.setMap(map);

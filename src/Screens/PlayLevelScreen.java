@@ -1,7 +1,7 @@
 package Screens;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -11,18 +11,11 @@ import com.google.gson.annotations.Expose;
 import Engine.Config;
 import Engine.GlobalKeyboardHandler;
 import Engine.GraphicsHandler;
-import Engine.ImageLoader;
 import Engine.Key;
 import Engine.Keyboard;
 import Engine.Screen;
-
 import Game.GameState;
 import Game.ScreenCoordinator;
-
-import GameObject.Frame;
-import GameObject.SpriteSheet;
-import Builders.FrameBuilder;
-
 import Level.Entity;
 import Level.FlagManager;
 import Level.GameListener;
@@ -34,24 +27,17 @@ import Level.MapEntityStatus;
 import Level.NPC;
 import Level.Player;
 import Level.Weapon;
-import Maps.TutorialMap;
-import Maps.BargainingMap;
 import Maps.AcceptanceMap;
 import Maps.AngerMap;
+import Maps.BargainingMap;
 import Maps.DepressionMap;
-import Maps.AcceptanceMap;
 import Maps.MapOneDenial;
+import Maps.TutorialMap;
+import NPCs.DenialBoss;
+import NPCs.Skeleton;
 import Players.Gnome;
 import Screens.submenus.InventorySubmenu;
 import Screens.submenus.SaveSubmenu;
-import ScriptActions.FlagRequirement;
-import NPCs.Skeleton;
-import NPCs.Spirit;
-import NPCs.AngerBoss;
-import NPCs.ArmoredSkeleton;
-import NPCs.BargainingBoss;
-import NPCs.DenialBoss;
-import NPCs.DepressionBoss;
 import Utils.Direction;
 import Utils.Globals;
 import Utils.MenuListener;
@@ -100,19 +86,19 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
 
     private void loadMapMusic(Map map) {
         try {
-            File musicFile = null;
+            InputStream musicFile = null;
             if (map instanceof TutorialMap) {
-                musicFile = Resources.TUTORIAL_MAP_MUSIC;
+                musicFile = Resources.TUTORIAL_MAP_MUSIC.get();
             } else if (map instanceof MapOneDenial) {
-                musicFile = Resources.MAP_ONE_MUSIC;
+                musicFile = Resources.MAP_ONE_MUSIC.get();
             } else if (map instanceof AngerMap) {
-                musicFile = Resources.MAP_TWO_MUSIC;
+                musicFile = Resources.MAP_TWO_MUSIC.get();
             } else if (map instanceof BargainingMap) {
-                musicFile = Resources.MAP_THREE_MUSIC;
+                musicFile = Resources.MAP_THREE_MUSIC.get();
             } else if (map instanceof DepressionMap) {
-                musicFile = Resources.MAP_FOUR_MUSIC;
+                musicFile = Resources.MAP_FOUR_MUSIC.get();
             } else if (map instanceof AcceptanceMap) {
-                musicFile = Resources.MAP_FIVE_MUSIC;
+                musicFile = Resources.MAP_FIVE_MUSIC.get();
             }
 
             if (musicFile != null) {
@@ -328,12 +314,12 @@ public class PlayLevelScreen extends Screen implements GameListener, MenuListene
         try {
             var mapTrack = Globals.SOUND_SYSTEM.getTrackIfExists(Globals.MUSIC_TRACK);
             if (mapTrack != null) {
-                mapTrack.setSound(null);
+                mapTrack.setSound((InputStream) null);
             }
 
             var battleTrack = Globals.SOUND_SYSTEM.getTrackIfExists(Globals.BATTLE_TRACK_NUMBER);
             if (battleTrack != null) {
-                battleTrack.setSound(null);
+                battleTrack.setSound((InputStream) null);
             }
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();

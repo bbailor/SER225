@@ -1,16 +1,8 @@
 package ScriptActions;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 import Engine.Inventory;
 import EnhancedMapTiles.CollectableItem;
 import Level.ScriptState;
-import Utils.Globals;
-import Utils.SoundThreads.Type;
 
 public class PickUpItemScriptAction extends ScriptAction{
     protected CollectableItem collectableItem;

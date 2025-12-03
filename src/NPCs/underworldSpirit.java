@@ -1,16 +1,14 @@
 package NPCs;
 
+import java.util.HashMap;
+
 import Builders.FrameBuilder;
-import Engine.GraphicsHandler;
 import Engine.ImageLoader;
 import GameObject.Frame;
-import GameObject.SpriteSheet;
-import GameObject.SpriteSheetHorizontal;
 import GameObject.ImageEffect;
+import GameObject.SpriteSheetHorizontal;
 import Level.NPC;
 import Utils.Point;
-
-import java.util.HashMap;
 
 
 public class underworldSpirit extends NPC {
@@ -49,10 +47,4 @@ public class underworldSpirit extends NPC {
         return map;
     }
 
-    
-
-    @Override
-    public void draw(GraphicsHandler graphicsHandler) {
-        super.draw(graphicsHandler);
-    }
 }

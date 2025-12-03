@@ -1,15 +1,17 @@
 package Maps;
+import java.util.ArrayList;
+
 import EnhancedMapTiles.CollectableItem;
-import EnhancedMapTiles.PushableRock;
-import Level.*;
-import Tilesets.Map3Tileset;
+import Level.EnhancedMapTile;
+import Level.Item;
+import Level.Map;
+import Level.NPC;
+import Level.Trigger;
 import NPCs.BargainingBoss;
 import Scripts.MapFourDepression.DepressionEntryScript;
 import Scripts.MapThreeBargaining.BargainingBossScript;
 import Scripts.MapThreeBargaining.BargainingScript;
-import Scripts.MapTwoAnger.BargainingEntryScript;
-
-import java.util.ArrayList;
+import Tilesets.Map3Tileset;
 
 // Represents a test map to be used in a level
 public class BargainingMap extends Map {

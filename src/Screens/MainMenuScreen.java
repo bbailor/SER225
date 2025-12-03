@@ -90,7 +90,7 @@ public class MainMenuScreen extends Screen {
 
         // Play main menu music when main menu loads
         try {
-            Globals.SOUND_SYSTEM.play(Type.Music, Globals.MUSIC_TRACK, new File("Resources/Sounds/Music/menuSong.wav"));
+            Globals.SOUND_SYSTEM.play(Type.Music, Globals.MUSIC_TRACK, Globals.loadResource("Resources/Sounds/Music/menuSong.wav"));
             Globals.SOUND_SYSTEM.getTrack(Globals.MUSIC_TRACK).setLoopPoint(0, -1, true);
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();

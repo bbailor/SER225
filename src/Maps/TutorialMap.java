@@ -1,28 +1,24 @@
 package Maps;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import EnhancedMapTiles.CollectableItem;
 import EnhancedMapTiles.PushableRock;
-import Level.*;
-import NPCs.ArmoredSkeleton;
-import NPCs.BargainingBoss;
-import NPCs.DenialBoss;
-import NPCs.DepressionBoss;
-import NPCs.AngerBoss;
+import Level.EnhancedMapTile;
+import Level.Item;
+import Level.Map;
+import Level.NPC;
+import Level.Tileset;
+import Level.Trigger;
 import NPCs.Skeleton;
-import NPCs.Spirit;
 import NPCs.Wizard;
 import Scripts.SimpleTextScript;
-import Scripts.MapOneDenial.DenialBossScript;
-import Scripts.MapOneDenial.DenialEnemyScript;
-import Scripts.MapThreeBargaining.BargainingBossScript;
-import Scripts.MapFourDepression.DepressionBossScript;
-import Scripts.MapTwoAnger.AngerBossScript;
-import Scripts.TestMap.*;
+import Scripts.TestMap.DenialEntryScript;
+import Scripts.TestMap.LostBallScript;
+import Scripts.TestMap.WizardQuestSkeletonScript;
+import Scripts.TestMap.WizardScript;
 import Tilesets.CommonTileset;
-import java.util.ArrayList;
-import NPCs.DenialBoss;
-import Scripts.MapOneDenial.AngerEntryScript;
-import Scripts.MapTwoAnger.BargainingEntryScript;
 
 // Represents a test map to be used in a level
 public class TutorialMap extends Map {
@@ -116,8 +112,9 @@ public class TutorialMap extends Map {
         return npcs;
     }
 
-    public ArrayList<Trigger> loadTriggers() {
-        ArrayList<Trigger> triggers = new ArrayList<>();
+    @Override
+    public List<Trigger> loadTriggers() {
+        List<Trigger> triggers = new ArrayList<>();
 
         triggers.add(new Trigger(0, 0, 5000, 5000, new LostBallScript(), "hasLostBall"));
         
@@ -125,7 +122,7 @@ public class TutorialMap extends Map {
     }
 
     @Override
-    protected ArrayList<CollectableItem> loadCollectableItems() {
+    protected List<CollectableItem> loadCollectableItems() {
         ArrayList<CollectableItem> collectables = new ArrayList<>();
         collectables.add(new CollectableItem(getMapTile(1, 27).getLocation(), Item.ItemList.apple));
         collectables.add(new CollectableItem(getMapTile(1, 22).getLocation(), Item.ItemList.apple));

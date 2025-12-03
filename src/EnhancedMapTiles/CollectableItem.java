@@ -1,8 +1,5 @@
 package EnhancedMapTiles;
 
-import java.awt.Color;
-
-import Engine.GraphicsHandler;
 import Level.Item;
 import Level.ItemStack;
 import Level.MapEntity;
@@ -31,11 +28,6 @@ public class CollectableItem extends MapEntity {
     public CollectableItem(Point pos, Item item) {
         this(pos, new ItemStack(item));
     }
- 
-    @Override
-    public void draw(GraphicsHandler graphicsHandler) {
-        super.draw(graphicsHandler);
-    }
 
     @Override
     public Point getLocation() {
@@ -63,8 +55,11 @@ public class CollectableItem extends MapEntity {
     // {
     //     return true;
     // }
-    public void update(Player player)
-    {
+    /**
+     * 
+     * @param player player
+     */
+    public void update(Player player) {
         super.update();
     }
 

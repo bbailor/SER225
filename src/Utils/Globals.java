@@ -2,6 +2,7 @@ package Utils;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
+import Engine.Config;
 import Level.Item;
 import Level.ItemStack;
 import Level.Map;
@@ -88,6 +90,14 @@ public abstract class Globals {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static InputStream loadResource(String name) {
+        var first = Globals.class.getResourceAsStream(name);
+        if (first == null) {
+            return Globals.class.getResourceAsStream(name.replace(Config.RESOURCES_PATH, "/").replace(Config.MAP_FILES_PATH, "/"));
+        }
+        return first;
     }
 
     private static java.util.Map<Integer, Path> saves = new HashMap<>();

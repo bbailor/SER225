@@ -6,6 +6,7 @@ import Utils.Globals;
 import Utils.Resources;
 
 import java.awt.*;
+import java.io.InputStream;
 
 // This class is for the win level screen
 public class WinScreen extends Screen {
@@ -22,7 +23,7 @@ public class WinScreen extends Screen {
     @Override
     public void initialize() {
         try {
-            Globals.SOUND_SYSTEM.getTrack(Globals.MUSIC_TRACK).setSound(null);
+            Globals.SOUND_SYSTEM.getTrack(Globals.MUSIC_TRACK).setSound((InputStream) null);
         } catch (Exception e) {
             e.printStackTrace();
         }

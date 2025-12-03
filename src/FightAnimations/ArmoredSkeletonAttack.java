@@ -11,9 +11,9 @@ import java.util.HashMap;
  */
 public class ArmoredSkeletonAttack extends EnemyProjectileAttackAnimation {
     
-    private static final int FRAMES_UNTIL_STOP = 5;
-    private float stoppedX, stoppedY;
-    private boolean hasStopped = false;
+//     private static final int FRAMES_UNTIL_STOP = 5;
+//     private float stoppedX, stoppedY;
+//     private boolean hasStopped = false;
     
     /**
      * Creates a spirit attack animation

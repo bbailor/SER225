@@ -43,13 +43,34 @@ sourceSets {
         }
         resources {
             srcDir 'Resources'
+            srcDir 'MapFiles'
         }
+    }
+}
+
+jar {
+    into "Resources", {
+        from 'Resources'
+    }
+    into "MapFiles", {
+        from 'MapFiles'
+    }
+    manifest {
+        attributes(
+            // 'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+            'Main-Class': 'Game.Game'
+        )
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
 application {
     // Define the main class for the application.
     mainClass = 'Game.Game'
+    mainModule = 'Game.Game'
 }
 
 tasks.register("mapEditor", JavaExec) {
