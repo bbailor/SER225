@@ -13,10 +13,10 @@ The main method for the map editor is in the `MapEditor` package > `MapEditor.ja
 
 ## Documentation
 This project includes a GitHub pages website in the `docs` folder where the documentation resides.<br>
-It can be accessed at [https://a-r-t.github.io/SER-225-Game-RPG/](https://github.com/bbailor/SER225).
+It can be accessed at ([https://github.com/bbailor/SER225]).
 
 Changes to content in the `docs` folder will not show up on the website unless they are pushed to the `master` branch.
 
 ## Credits
-**Alex Thimineur**: Programmed the base game and made the for the base game. (See base game: https://a-r-t.github.io/SER-225-Game-RPG/)
+**Alex Thimineur**: Programmed the base game and made the for the base game. (See base game: [https://a-r-t.github.io/SER-225-Game-RPG/])
 **Ben Bailor, Jackson Sennhenn, Ryan Davis, Aurélien Buisine, Dean Acheampong** Added new art, features, and core gameplay mechanics to the base game.
