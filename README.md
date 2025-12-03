@@ -19,4 +19,4 @@ Changes to content in the `docs` folder will not show up on the website unless t
 
 ## Credits
 **Alex Thimineur**: Programmed the base game and made the for the base game. (See base game: [https://a-r-t.github.io/SER-225-Game-RPG/])
-**Ben Bailor, Jackson Sennhenn, Ryan Davis, Aurélien Buisine, Dean Acheampong** Added new art, features, and core gameplay mechanics to the base game.
+**Ben Bailor, Jackson Sennhenn, Mitchell Ryan Davis, Aurélien Buisine, Dean Acheampong** Added new art, features, and core gameplay mechanics to the base game.

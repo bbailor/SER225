@@ -2,6 +2,7 @@ package Screens;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -674,7 +675,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
             switch (weaponAnimName) {
                 case "fist":
                     System.out.println("using fist");
-                    attackSheet = new SpriteSheet(ImageLoader.load("Enemies//ArmoredSkeletonAttack.png"), 63, 63);
+                    attackSheet = new SpriteSheet(ImageLoader.load("Enemies/ArmoredSkeletonAttack.png"), 63, 63);
                     break;
                 case "TlalocsStorm":
                     attackSheet = new SpriteSheet(ImageLoader.load(attackFileName), 60, 200);
@@ -928,7 +929,7 @@ public class BattleScreen extends Screen implements Menu, MenuListener {
         this.player.getEntity().clearEffect();
         this.entity.setInBattle(false);
         this.player.getEntity().setInBattle(false);
-        Globals.SOUND_SYSTEM.play(Globals.BATTLE_TRACK_NUMBER, null);
+        Globals.SOUND_SYSTEM.play(Globals.BATTLE_TRACK_NUMBER, (InputStream) null);
         Menu.super.close();
     }
 

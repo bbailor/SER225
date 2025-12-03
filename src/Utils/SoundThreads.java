@@ -69,6 +69,10 @@ public class SoundThreads {
         this.play(Type.Music, track_number, file);
     }
 
+    public void play(int track_number, InputStream stream) {
+        this.play(Type.Music, track_number, stream);
+    }
+
     public Track getTrack(int track_number) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
         if (!this.tracks.containsKey(track_number)) {
             var track = new Track(this.id);
